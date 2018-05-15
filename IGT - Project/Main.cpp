@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Constants.h"
+#include "GameScreenManager.h"
 
 
 //Globals------------------------------------------------------------------------------------
@@ -95,8 +96,7 @@ bool InitSDL()
 void CloseSDL()
 {
 	//Destroy the game screen manager
-	//delete gGameScreenManager;
-	//gGameScreenManager = NULL;
+	delete GameScreenManager::GetInstance();
 
 	//Release the window
 	SDL_DestroyWindow(gWindow);
@@ -127,7 +127,7 @@ bool Update()
 		events.push_back(e);
 	}
 
-	//GameScreenManager::GetInstance()->Update((float)(newTime - gOldTime) / 1000.0f, events);
+	GameScreenManager::GetInstance()->Update((float)(newTime - gOldTime) / 1000.0f, events);
 
 	//Handle quiting.
 	for (auto e : events)
@@ -149,7 +149,7 @@ void Render()
 	SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0x00);
 	SDL_RenderClear(gRenderer);
 
-	//GameScreenManager::GetInstance()->Render();
+	GameScreenManager::GetInstance()->Render();
 
 	//Present Back Buffer to screen
 	SDL_RenderPresent(gRenderer);
