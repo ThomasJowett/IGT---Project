@@ -1,10 +1,12 @@
 #include "GameScreenMenu.h"
+#include "SoundManager.h"
 
 #include <iostream>
 
 GameScreenMenu::GameScreenMenu() : GameScreen()
 {
 	mTextRender = new TextRender("Fonts/nokiafc22.ttf", 24);
+	SoundManager::GetInstance()->PlayMusic("Music/Diesel.ogg");
 }
 
 

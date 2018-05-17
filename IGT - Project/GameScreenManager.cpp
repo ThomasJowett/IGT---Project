@@ -24,9 +24,9 @@ void GameScreenManager::Render()
 	mCurrentScreen->Render();
 }
 
-void GameScreenManager::Update(float deltaTime, std::vector<SDL_Event> e)
+void GameScreenManager::Update(float deltaTime, std::vector<SDL_Event> events)
 {
-	mCurrentScreen->Update(deltaTime, e);
+	mCurrentScreen->Update(deltaTime, events);
 }
 
 void GameScreenManager::ChangeScreen(SCREENS newScreen)

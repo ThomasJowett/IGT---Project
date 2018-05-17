@@ -14,7 +14,7 @@ public:
 	~GameScreenManager();
 
 	void Render();
-	void Update(float deltaTime, std::vector<SDL_Event> e);
+	void Update(float deltaTime, std::vector<SDL_Event> events);
 
 	void ChangeScreen(SCREENS newScreen);
 

@@ -19,7 +19,7 @@ void GameScreen::Render()
 	//Root->Traverse();
 }
 
-void GameScreen::Update(float deltaTime, std::vector<SDL_Event> e)
+void GameScreen::Update(float deltaTime, std::vector<SDL_Event> events)
 {
 	/*
 	for (auto playerController : mPlayerControllers)

@@ -15,6 +15,7 @@ public:
 	virtual void Update(float deltaTime, std::vector<SDL_Event> e);
 private:
 	TextRender* mTextRender;
+	int texID;
 };
 
 #endif // !_GAMESCREENMENU_H

@@ -76,11 +76,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\IGT - Project\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\IGT - Project\GL;..\IGT - Project\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(PROJECTDIR)\IGT - Project\SDL;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(PROJECTDIR)\IGT - Project\GL;$(PROJECTDIR)\IGT - Project\SDL;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -120,13 +121,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="GameScreenManager.cpp" />
     <ClCompile Include="GameScreenMenu.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="PlayerController.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="TextRender.cpp" />
+    <ClCompile Include="Texture2D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Library Include="GL\glew32.lib" />
     <Library Include="SDL\SDL2.lib" />
     <Library Include="SDL\SDL2main.lib" />
     <Library Include="SDL\SDL2test.lib" />
@@ -137,14 +143,24 @@
   <ItemGroup>
     <ClInclude Include="Commons.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameScreen.h" />
     <ClInclude Include="GameScreenManager.h" />
     <ClInclude Include="GameScreenMenu.h" />
+    <ClInclude Include="iComponents.h" />
+    <ClInclude Include="PlayerController.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SoundManager.h" />
     <ClInclude Include="TextRender.h" />
+    <ClInclude Include="Texture2D.h" />
+    <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="IGT - Project.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BasicShader.frag" />
+    <None Include="BasicShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

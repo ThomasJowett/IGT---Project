@@ -1,7 +1,6 @@
 #include "TextRender.h"
 #include <iostream>
-
-extern SDL_Renderer* gRenderer;
+#include "Commons.h"
 
 TextRender::TextRender(const char * path, int pointSize)
 {
@@ -31,15 +30,25 @@ bool TextRender::DisplayText(const char * text, SDL_Colour textColour, int x, in
 	if (!mFont)
 		LoadFont("Fonts/nokiafc22.ttf", 24);
 
-	SDL_Surface* surface = TTF_RenderText_Solid(mFont, text, textColour);
+	GLuint texture;
+
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	SDL_Surface* surface = TTF_RenderText_Blended(mFont, text, textColour);
 		
 	if (surface == NULL)
 	{
-		std::cerr << "TTF_RendererText_Solid() Failed: " << TTF_GetError() << std::endl;
+		std::cerr << "Could not create surface from text ERROR: " << TTF_GetError() << std::endl;
 		return false;
 	}
 
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(gRenderer, surface);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surface->w, surface->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->pixels);
 
 	if (texture == NULL)
 	{
@@ -61,13 +70,9 @@ bool TextRender::DisplayText(const char * text, SDL_Colour textColour, int x, in
 		renderLocation = { x - (surface->w), y, surface->w, surface->h };
 		break;
 	}
-	
-
-	//Render to Screen
-	SDL_RenderCopyEx(gRenderer, texture, NULL, &renderLocation, 0.0f, NULL, SDL_FLIP_NONE);
 
 	SDL_FreeSurface(surface);
-	SDL_DestroyTexture(texture);
-
+	glDeleteTextures(1, &texture);
+	
 	return true;
 }

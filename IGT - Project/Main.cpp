@@ -1,4 +1,7 @@
+
+
 #include <SDL.h>
+
 #include <SDL_image.h>
 #include <iostream>
 #include <vector>
@@ -8,8 +11,8 @@
 
 
 //Globals------------------------------------------------------------------------------------
-SDL_Window*			gWindow = NULL;
-SDL_Renderer*		gRenderer = NULL;
+SDL_Window*			gWindow = nullptr;
+SDL_GLContext		gGLContext = nullptr;
 Uint32				gOldTime;
 SDL_GameController* gGameControllers[4];
 
@@ -56,14 +59,22 @@ bool InitSDL()
 			std::cerr << "Warning: Linear texture filtering not available";
 		}
 
+		//Set OpenGL attributes---------------------------------------------------------------
+		SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+		SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+		SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+		SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
+		SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
+		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
 		//Create Window-----------------------------------------------------------------------
 
-		gWindow = SDL_CreateWindow("Dungeon Game",
-			SDL_WINDOWPOS_UNDEFINED,
-			SDL_WINDOWPOS_UNDEFINED,
-			SCREEN_WIDTH,
-			SCREEN_HEIGHT,
-			SDL_WINDOW_SHOWN);
+		gWindow = SDL_CreateWindow("Delve, Die, Repeat",
+			SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+			SCREEN_WIDTH, SCREEN_HEIGHT,
+			SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+		gGLContext = SDL_GL_CreateContext(gWindow);
 
 		if (gWindow == NULL)
 		{
@@ -71,24 +82,35 @@ bool InitSDL()
 			return false;
 		}
 
-		//Create Renderer---------------------------------------------------------------------
-		
-		gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
-		if (gRenderer != NULL)
+		//Setup OpenGL------------------------------------------------------------------------
+		glewExperimental = GL_TRUE;
+		GLint GlewInitResult = glewInit();
+		if (GLEW_OK != GlewInitResult)
 		{
-			//Initialise PNG loading
-			int imageFlags = IMG_INIT_PNG;
-			if (!(IMG_Init(imageFlags)&imageFlags))
-			{
-				std::cerr << "SDL_Image could not initialise. ERROR: " << IMG_GetError();
-				return false;
-			}
+			std::cerr << "Glew Setup failed. ERROR: " << glewGetErrorString(GlewInitResult) << std::endl;
+			return false;
+		}
+
+		glEnable(GL_DEPTH_TEST);
+
+		//Setup Controllers---------------------------------------------------------------------
+		if (SDL_NumJoysticks() < 1)
+		{
+			std::cerr << "Warning: No joysticks connected!\n";
 		}
 		else
 		{
-			std::cerr << "Renderer could not initialise. Error: " << SDL_GetError();
-			return false;
+			//load game controllers
+			for (int i = 0; i < SDL_NumJoysticks(); i++)
+			{
+				gGameControllers[i] = SDL_GameControllerOpen(i);
+				if (gGameControllers[i] == NULL)
+				{
+					std::cerr << "Warning: Unable to open game controller! SDL Error: " << SDL_GetError();
+				}
+			}
 		}
+	
 	}
 	return true;
 }
@@ -98,13 +120,19 @@ void CloseSDL()
 	//Destroy the game screen manager
 	delete GameScreenManager::GetInstance();
 
+	//Close game controllers
+	for (auto controller : gGameControllers)
+	{
+		SDL_GameControllerClose(controller);
+	}
+
 	//Release the window
 	SDL_DestroyWindow(gWindow);
 	gWindow = NULL;
 
 	//Release the renderer
-	SDL_DestroyRenderer(gRenderer);
-	gRenderer = NULL;
+	SDL_GL_DeleteContext(gGLContext);
+	gGLContext = NULL;
 
 	//Quit SDL subsystems
 	IMG_Quit();
@@ -121,6 +149,8 @@ bool Update()
 
 	std::vector<SDL_Event>events;
 
+	SDL_PumpEvents();
+
 	//Get the events.
 	while (SDL_PollEvent(&e) != 0)
 	{
@@ -136,7 +166,6 @@ bool Update()
 			return true;
 	}
 
-
 	//Set the current time to be the old time.
 	gOldTime = newTime;
 
@@ -145,14 +174,17 @@ bool Update()
 
 void Render()
 {
-	//clear the Screen
-	SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0x00);
-	SDL_RenderClear(gRenderer);
+	//Clear the Screen
+	glClearColor(0, 0, 0, 1);
 
+	//Render the game
 	GameScreenManager::GetInstance()->Render();
 
 	//Present Back Buffer to screen
-	SDL_RenderPresent(gRenderer);
+	SDL_GL_SwapWindow(gWindow);
+
+	//Clear the buffers
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 
