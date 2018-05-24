@@ -91,6 +91,7 @@ bool InitSDL()
 			return false;
 		}
 
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINES);
 		glEnable(GL_DEPTH_TEST);
 
 		//Setup Controllers---------------------------------------------------------------------

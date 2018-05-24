@@ -6,6 +6,7 @@
 #include <map>
 
 #include "Commons.h"
+#include "Vector.h"
 
 class SoundManager
 {

@@ -4,6 +4,8 @@
 
 #include "GameScreen.h"
 #include "TextRender.h"
+#include "Shader.h"
+#include "Camera.h"
 
 class GameScreenMenu : public GameScreen
 {
@@ -16,6 +18,8 @@ public:
 private:
 	TextRender* mTextRender;
 	int texID;
+	BasicShader* mShader;
+	Camera camera;
 };
 
 #endif // !_GAMESCREENMENU_H

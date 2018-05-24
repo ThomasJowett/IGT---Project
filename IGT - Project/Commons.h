@@ -2,6 +2,8 @@
 
 #include<glew.h>
 
+#include"Vector.h"
+
 enum SCREENS
 {
 	SCREEN_INTRO = 0,
@@ -14,16 +16,11 @@ enum FACING
 	FACING_RIGHT
 };
 
-struct Vector2D
+struct Vertex
 {
-	float x;
-	float y;
+	Vector3D mPosition;
+	Vector2D mTexCoord;
 
-	Vector2D()
-	{
-		x = 0.0f;
-		y = 0.0f;
-	}
-
-	Vector2D(float x, float y):x(x),y(y){}
+	Vertex(const Vector3D& position, const Vector2D& texCoord)
+		:mPosition(position), mTexCoord(texCoord) {}
 };

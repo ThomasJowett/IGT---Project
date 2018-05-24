@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include <vector>
+#include "GameObject.h"
 
 class GameScreen
 {
@@ -16,7 +17,7 @@ public:
 
 protected:
 	//SceneNode * Root;
-	//std::vector<GameObject*>mGameObjects;
+	std::vector<GameObject*>mGameObjects;
 	//std::vector<PlayerController*>mPlayerControllers;
 };
 

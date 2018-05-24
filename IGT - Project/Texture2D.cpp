@@ -4,15 +4,6 @@
 
 using namespace::std;
 
-Texture2D::Texture2D()
-{
-}
-
-
-Texture2D::~Texture2D()
-{
-}
-
 GLuint Texture2D::LoadTexture2D(const char* path)
 {	
 	GLuint ID;
@@ -34,8 +25,8 @@ GLuint Texture2D::LoadTexture2D(const char* path)
 	glBindTexture(GL_TEXTURE_2D, ID); //Bind the texture to the ID.
 	
 	//Set some parameters so it renders correctly
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 

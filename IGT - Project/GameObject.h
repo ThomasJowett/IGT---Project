@@ -14,10 +14,12 @@ public:
 	~GameObject();
 
 	void Update(float deltaTime);
-	void Render();
+	void Render(Shader* shader);
 
 	void AddUpdateableComponent(iUpdateable* component);
 	void AddRenderableComponent(iRenderable* component);
+
+	Transform* GetTransform() { return mTransform; }
 private:
 	std::string mName;
 	Transform * mTransform;

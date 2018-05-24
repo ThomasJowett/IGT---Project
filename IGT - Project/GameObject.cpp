@@ -2,6 +2,7 @@
 
 
 GameObject::GameObject(std::string name, Transform* transform)
+	:mName(name), mTransform(transform)
 {
 }
 
@@ -21,11 +22,14 @@ void GameObject::Update(float deltaTime)
 		//mPhysicsComp->Update(deltaTime);
 }
 
-void GameObject::Render()
+void GameObject::Render(Shader* shader)
 {
+	mTransform->UpdateWorldMatrix();
+	shader->UpdateWorld(mTransform);
+
 	for (auto component : mRenderableComponents)
 	{
-		component->Render();
+		component->Render(shader);
 	}
 }
 
@@ -38,4 +42,3 @@ void GameObject::AddRenderableComponent(iRenderable* component)
 {
 	mRenderableComponents.push_back(component);
 }
-
