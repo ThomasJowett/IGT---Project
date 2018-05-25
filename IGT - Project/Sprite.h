@@ -14,7 +14,7 @@ public:
 
 	void Render(Shader* shader) override;
 private:
-	GLuint TextureID;
+	GLuint mTextureID;
 	std::vector<Mesh*> mTiles;
 	unsigned int mCurrentFrame;
 };

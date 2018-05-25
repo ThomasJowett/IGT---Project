@@ -3,7 +3,7 @@
 
 
 Sprite::Sprite(GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight, int tilesWide, int tilesTall)
-	: TextureID(TextureID)
+	: mTextureID(TextureID)
 {
 	unsigned int indices[] =
 	{
@@ -35,7 +35,7 @@ Sprite::Sprite(GLuint TextureID, float singleSpriteWidth, float singleSpriteHeig
 }
 
 Sprite::Sprite(GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight)
-	: TextureID(TextureID)
+	: mTextureID(TextureID)
 {
 	unsigned int indices[] =
 	{
@@ -61,15 +61,24 @@ Sprite::Sprite(GLuint TextureID, float singleSpriteWidth, float singleSpriteHeig
 
 Sprite::~Sprite()
 {
+	glDeleteTextures(GL_TEXTURE_2D, &mTextureID);
+
+	for (Mesh* tile : mTiles)
+	{
+		delete tile;
+	}
 }
 
 void Sprite::Render(Shader* shader)
 {
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, TextureID);
+	glBindTexture(GL_TEXTURE_2D, mTextureID);
 
 	mTiles[mCurrentFrame]->Draw();
 
+	mCurrentFrame++;
+	if (mCurrentFrame >= mTiles.size())
+		mCurrentFrame = 0;
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);

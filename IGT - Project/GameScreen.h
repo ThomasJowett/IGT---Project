@@ -4,6 +4,8 @@
 #include <SDL.h>
 #include <vector>
 #include "GameObject.h"
+#include "Shader.h"
+#include "Camera.h"
 
 class GameScreen
 {
@@ -19,6 +21,9 @@ protected:
 	//SceneNode * Root;
 	std::vector<GameObject*>mGameObjects;
 	//std::vector<PlayerController*>mPlayerControllers;
+
+	Shader* mShader;
+	Camera mCamera;
 };
 
 #endif //_GAMESCREEN_H

@@ -6,9 +6,12 @@ GameObject::GameObject(std::string name, Transform* transform)
 {
 }
 
-
 GameObject::~GameObject()
 {
+	for (auto component : mComponents)
+	{
+		delete component;
+	}
 }
 
 void GameObject::Update(float deltaTime)
@@ -17,9 +20,6 @@ void GameObject::Update(float deltaTime)
 	{
 		component->Update(deltaTime);
 	}
-
-	//if(mPhysicsComp)
-		//mPhysicsComp->Update(deltaTime);
 }
 
 void GameObject::Render(Shader* shader)
@@ -33,12 +33,13 @@ void GameObject::Render(Shader* shader)
 	}
 }
 
-void GameObject::AddUpdateableComponent(iUpdateable* component)
+void GameObject::AddComponent(Component * component)
 {
-	mUpdateableComponents.push_back(component);
-}
+	mComponents.push_back(component);
 
-void GameObject::AddRenderableComponent(iRenderable* component)
-{
-	mRenderableComponents.push_back(component);
+	if (iRenderable* renderableComp = dynamic_cast<iRenderable*>(component))
+		mRenderableComponents.push_back(renderableComp);
+
+	if (iUpdateable* updateableComp = dynamic_cast<iUpdateable*>(component))
+		mUpdateableComponents.push_back(updateableComp);
 }

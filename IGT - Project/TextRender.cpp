@@ -14,6 +14,9 @@ TextRender::TextRender(const char * path, int pointSize)
 
 TextRender::~TextRender()
 {
+	glDeleteTextures(1, &mTextureID);
+	if (mMesh) delete mMesh;
+	if (mFont) delete mFont;
 }
 
 void TextRender::LoadFont(const char * path, int pointSize)
@@ -25,54 +28,99 @@ void TextRender::LoadFont(const char * path, int pointSize)
 	}
 }
 
-bool TextRender::DisplayText(const char * text, SDL_Colour textColour, int x, int y, ALIGNMENT alignment)
+void TextRender::Render(Shader * shader)
+{
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mTextureID);
+	mMesh->Draw();
+	
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+bool TextRender::UpdateText(const char * text, SDL_Colour textColour, int x, int y, ALIGNMENT alignment)
 {
 	if (!mFont)
 		LoadFont("Fonts/nokiafc22.ttf", 24);
 
-	GLuint texture;
-
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
+	if (text != mText || alignment != mAlignment 
+		|| textColour.r != mTextColour.r 
+		|| textColour.g != mTextColour.g
+		|| textColour.b != mTextColour.b
+		|| textColour.a != mTextColour.a)
+	{
+		mText = text;
+		mTextColour = textColour;
+		mAlignment = alignment;
+	}
+	else
+	{
+		return true;
+	}
 
 	SDL_Surface* surface = TTF_RenderText_Blended(mFont, text, textColour);
-		
+
 	if (surface == NULL)
 	{
 		std::cerr << "Could not create surface from text ERROR: " << TTF_GetError() << std::endl;
 		return false;
 	}
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	if(!mTextureID)
+		glGenTextures( 1, &mTextureID);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mTextureID);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surface->w, surface->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->pixels);
 
-	if (texture == NULL)
+	if (mTextureID == NULL)
 	{
 		std::cerr << "Unable to create texture from surface. Error: " << SDL_GetError() << std::endl;
 		return false;
 	}
-	
-	SDL_Rect renderLocation;
+
+	unsigned int indices[] =
+	{
+		0,1,2,
+		0,2,3
+	};
+
+	Vertex vertices[4];
 
 	switch (alignment)
 	{
 	case CENTER:
-		renderLocation = { x - (surface->w/2), y, surface->w, surface->h };
+		vertices[0] = Vertex(Vector3D(x - (surface->w / 2), y, 8), Vector2D(0, 1));
+		vertices[1] = Vertex(Vector3D(x + (surface->w / 2), y, 8), Vector2D(1, 1));
+		vertices[2] = Vertex(Vector3D(x + (surface->w / 2), y + surface->h, 8), Vector2D(1, 0));
+		vertices[3] = Vertex(Vector3D(x - (surface->w / 2), y + surface->h, 8), Vector2D(0, 0));
 		break;
 	case LEFT:
-		renderLocation = { x,y,surface->w, surface->h };
+		vertices[0] = Vertex(Vector3D(x - surface->w, y, 8), Vector2D(0, 1));
+		vertices[1] = Vertex(Vector3D(x, y, 8), Vector2D(1, 1));
+		vertices[2] = Vertex(Vector3D(x, y + surface->h, 8), Vector2D(1, 0));
+		vertices[3] = Vertex(Vector3D(x - surface->w, y + surface->h, 8), Vector2D(0, 0));
 		break;
 	case RIGHT:
-		renderLocation = { x - (surface->w), y, surface->w, surface->h };
+		vertices[0] = Vertex(Vector3D(x, y, 8), Vector2D(0, 1));
+		vertices[1] = Vertex(Vector3D(x + surface->w, y, 8), Vector2D(1, 1));
+		vertices[2] = Vertex(Vector3D(x + surface->w, y + surface->h, 8), Vector2D(1, 0));
+		vertices[3] = Vertex(Vector3D(x, y + surface->h, 8), Vector2D(0, 0));;
 		break;
 	}
 
+	if (mMesh) delete mMesh;
+
+	mMesh = new Mesh(vertices, 4, indices, 6);
+
 	SDL_FreeSurface(surface);
-	glDeleteTextures(1, &texture);
-	
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 	return true;
 }

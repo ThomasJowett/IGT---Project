@@ -176,7 +176,7 @@ bool Update()
 void Render()
 {
 	//Clear the Screen
-	glClearColor(0, 0, 0, 1);
+	glClearColor(0, 0.5, 0.1, 1);
 
 	//Render the game
 	GameScreenManager::GetInstance()->Render();

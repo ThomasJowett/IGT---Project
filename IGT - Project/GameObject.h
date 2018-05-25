@@ -16,19 +16,36 @@ public:
 	void Update(float deltaTime);
 	void Render(Shader* shader);
 
-	void AddUpdateableComponent(iUpdateable* component);
-	void AddRenderableComponent(iRenderable* component);
+	void AddComponent(Component* component);
+
+	template <typename ComponentType>
+	ComponentType* GetComponent();
+
 
 	Transform* GetTransform() { return mTransform; }
 private:
 	std::string mName;
 	Transform * mTransform;
 
+	std::vector<Component*>mComponents;
+
 	std::vector<iUpdateable*>mUpdateableComponents;
 	std::vector<iRenderable*>mRenderableComponents;
-
-	//Collider mCollider;
-	//PhysicsComponent mPhysicsComp;
 };
 
+
 #endif // !_GAMEOBJECT_H
+
+template<typename ComponentType>
+inline ComponentType * GameObject::GetComponent()
+{
+	for (Component* c : mComponents)
+	{
+		if (ComponentType* cmp = dynamic_cast<ComponentType*>(c)) {
+			return cmp;
+		}
+	}
+	return nullptr;
+
+	//TODO: find better solution for getting a component that dosen't use dynamic_cast
+}

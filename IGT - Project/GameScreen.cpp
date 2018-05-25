@@ -15,6 +15,8 @@ GameScreen::~GameScreen()
 
 void GameScreen::Render()
 {
+	mShader->Bind();
+	mCamera.Update(mShader);
 	//Root->Traverse();
 }
 

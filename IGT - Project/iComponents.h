@@ -1,14 +1,27 @@
-#pragma once
-#include "Shader.h"
+#ifndef _ICOMPONENTS_H
 
-class iUpdateable
+#define _ICOMPONENTS_H
+
+#include "Shader.h"
+#include <vector>
+
+class Component
+{
+public:
+	Component() = default;
+	virtual ~Component() = default;
+};
+
+class iUpdateable : public Component
 {
 public:
 	virtual void Update(float deltaTime) = 0;
 };
 
-class iRenderable
+class iRenderable : public Component
 {
 public:
 	virtual void Render(Shader* shader) = 0;
 };
+
+#endif // !_ICOMPONENTS_H
