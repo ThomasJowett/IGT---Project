@@ -1,8 +1,16 @@
 #pragma once
 
 #include <vector>
+#include <algorithm>
 
-template<class EventType, class DataType
+template<class EventType, class DataType>
+class Observer 
+{
+public:
+	virtual void OnNotify(EventType, DataType) = 0;
+};
+
+template<class EventType, class DataType>
 class Subject
 {
 public:
@@ -12,30 +20,24 @@ public:
 	{
 		mObservers.clear();
 	}
-	virtual void Notify(std::string message)
+	void Notify(EventType event, DataType data)
 	{
-		for (Observer* observer : mObservers)
+		for (Observer<EventType, DataType>* observer : mObservers)
 		{
-			observer->RecieveMessage(message);
+			observer->OnNotify(event, data);
 		}
 	}
-	virtual void AddSubscriber(Observer<EventType, DataType>* observer)
+	void AddObserver(Observer<EventType, DataType>* observer)
 	{
 		mObservers.push_back(observer);
 	}
 
-	virtual void RemoveSubscriber(Observer<EventType, DataType>* observer)
+	virtual void RemoveObserver(Observer<EventType, DataType>* observer)
 	{
-		mObservers.erase(observer);
+		mObservers.erase(std::remove(mObservers.begin(), mObservers.end(), observer), mObservers.end());
 	}
 
 private:
 	std::vector<Observer<EventType, DataType>*> mObservers;
 };
 
-template<class EventType, class DataType>
-class Observer 
-{
-public:
-	virtual void OnNotify(EventType, DataType) = 0;
-};

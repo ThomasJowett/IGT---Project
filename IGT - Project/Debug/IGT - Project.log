@@ -1,7 +1,4 @@
-﻿  GameObject.cpp
-  Generating Code...
-  Skipping... (no relevant changes detected)
-  GameScreenMenu.cpp
-  GameScreenManager.cpp
-  GameScreen.cpp
+﻿  GameScreenMenu.cpp
+f:\documents\onedrive - staffordshire university\university work\igt - project\igt - project\igt - project\gamescreenmenu.cpp(78): warning C4305: '+=': truncation from 'double' to 'float'
+f:\documents\onedrive - staffordshire university\university work\igt - project\igt - project\igt - project\gamescreenmenu.cpp(79): warning C4305: '+=': truncation from 'double' to 'float'
   IGT - Project.vcxproj -> F:\Documents\OneDrive - Staffordshire University\University Work\IGT - Project\IGT - Project\Debug\IGT - Project.exe

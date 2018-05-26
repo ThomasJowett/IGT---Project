@@ -34,7 +34,7 @@ private:
 };
 
 
-#endif // !_GAMEOBJECT_H
+
 
 template<typename ComponentType>
 inline ComponentType * GameObject::GetComponent()
@@ -49,3 +49,4 @@ inline ComponentType * GameObject::GetComponent()
 
 	//TODO: find better solution for getting a component that dosen't use dynamic_cast
 }
+#endif // !_GAMEOBJECT_H
