@@ -178,6 +178,11 @@ public:
 		y = normalized.y;
 	}
 
+	Vector2D Perpendicular()
+	{
+		return Vector2D(y, -x);
+	}
+
 	std::string to_string()
 	{
 		return "x: " + std::to_string(x) + " y: " + std::to_string(y);
@@ -256,6 +261,13 @@ public:
 	}
 
 	Vector2D operator=(const Vector2D& other)
+	{
+		x = other.x;
+		y = other.y;
+		return *this;
+	}
+
+	Vector2D operator=(const Vector3D& other)
 	{
 		x = other.x;
 		y = other.y;

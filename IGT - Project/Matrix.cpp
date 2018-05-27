@@ -166,6 +166,23 @@ Matrix4x4 Matrix4x4::LookAt(Vector3D eyePosition, Vector3D lookAtPosition, Vecto
 	return result;
 }
 
+Vector2D Matrix4x4::MulVec2(Matrix4x4 matrix, Vector2D vector)
+{
+	Vector2D result;
+	result.x = (matrix.m[0][0] * vector.x) + (matrix.m[0][1] * vector.x);
+	result.y = (matrix.m[1][0] * vector.y) + (matrix.m[1][1] * vector.y);
+	return result;
+}
+
+Vector3D Matrix4x4::MulVec3(Matrix4x4 matrix, Vector3D vector)
+{
+	Vector3D result;
+	result.x = (matrix.m[0][0] * vector.x) + (matrix.m[0][1] * vector.x) + (matrix.m[0][2] * vector.x);
+	result.y = (matrix.m[1][0] * vector.y) + (matrix.m[1][1] * vector.y) + (matrix.m[1][2] * vector.y);
+	result.z = (matrix.m[2][0] * vector.z) + (matrix.m[2][1] * vector.z) + (matrix.m[2][2] * vector.z);
+	return result;
+}
+
 Matrix4x4 Matrix4x4::operator*(Matrix4x4 other)
 {
 	Matrix4x4 result;

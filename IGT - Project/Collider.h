@@ -25,7 +25,7 @@ public:
 		
 	Transform * mTransform;
 	virtual bool IntersectsCollider(Collider* otherCollider, Vector2D& normal, float& penetrationDepth) = 0;
-	bool ContatinsPoint(Vector2D point);
+	virtual bool ContainsPoint(Vector2D point) = 0;
 
 	Vector2D GetCentre() 
 	{
@@ -37,6 +37,7 @@ protected:
 	bool mCollided; //TODO: have a list of colliders that this is colliding with
 	Vector2D mOffset;
 
+	Vector2D* GetAxis(Vector2D* box1Corners, Vector2D* box2Corners);
 	bool TestAxis(Vector2D axis, float minA, float maxA, float minB, float maxB, Vector2D & mtvAxis, float & mtvDistance);
 	bool BoxBox(Box2D* box1, Box2D* box2, Vector2D & normal, float& penetrationDepth);
 	bool BoxCircle(Box2D* box, Circle2D* circle, Vector2D & normal, float& penetrationDepth);
@@ -49,8 +50,10 @@ public:
 	Box2D(Transform* transform, float width, float height, Vector2D offset)
 		: mWidth(width), mHeight(height), Collider(transform, BOX2D, offset) {}
 	bool IntersectsCollider(Collider* otherCollider, Vector2D& normal, float& penetrationDepth)override;
+	bool ContainsPoint(Vector2D point)override;
 
 	Vector2D* GetCorners();
+	
 private:
 	float mWidth;
 	float mHeight;
@@ -62,6 +65,7 @@ public:
 	Circle2D(Transform* transform, float radius, Vector2D offset)
 		: mRadius(radius), Collider(transform, CIRCLE2D, offset) {}
 	bool IntersectsCollider(Collider* otherCollider, Vector2D& normal, float& penetrationDepth)override;
+	bool ContainsPoint(Vector2D point)override;
 	float GetRadius() const { return mRadius; }
 private:
 	float mRadius;

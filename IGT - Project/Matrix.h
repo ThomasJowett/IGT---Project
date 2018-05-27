@@ -20,6 +20,9 @@ public:
 	static Matrix4x4 Orthographic(float left, float right, float bottom, float top, float nearDepth, float farDepth);
 	static Matrix4x4 LookAt(Vector3D eyePosition, Vector3D lookAtPosition, Vector3D up);
 
+	static Vector2D MulVec2(Matrix4x4 matrix, Vector2D vector);
+	static Vector3D MulVec3(Matrix4x4 matrix, Vector3D vector);
+
 	Matrix4x4 operator*(Matrix4x4 other);
 };
 

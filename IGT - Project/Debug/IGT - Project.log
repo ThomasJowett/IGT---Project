@@ -1,4 +1,14 @@
-﻿  GameScreenMenu.cpp
-f:\documents\onedrive - staffordshire university\university work\igt - project\igt - project\igt - project\gamescreenmenu.cpp(78): warning C4305: '+=': truncation from 'double' to 'float'
-f:\documents\onedrive - staffordshire university\university work\igt - project\igt - project\igt - project\gamescreenmenu.cpp(79): warning C4305: '+=': truncation from 'double' to 'float'
+﻿  Matrix.cpp
+  Collider.cpp
+  Generating Code...
+f:\documents\onedrive - staffordshire university\university work\igt - project\igt - project\igt - project\collider.cpp(98): warning C4172: returning address of local variable or temporary: corners
+  Skipping... (no relevant changes detected)
+  TextRender.cpp
+  Sprite.cpp
+  Shader.cpp
+  GameScreenMenu.cpp
+  GameScreenManager.cpp
+  GameScreen.cpp
+  GameObject.cpp
+  Camera.cpp
   IGT - Project.vcxproj -> F:\Documents\OneDrive - Staffordshire University\University Work\IGT - Project\IGT - Project\Debug\IGT - Project.exe
