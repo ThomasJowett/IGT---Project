@@ -1,4 +1,5 @@
 #include "Collider.h"
+#include <iostream>
 
 bool Collider::TestAxis(Vector2D axis, float minA, float maxA, float minB, float maxB, Vector2D & mtvAxis, float & mtvDistance)
 {
@@ -25,8 +26,25 @@ bool Collider::TestAxis(Vector2D axis, float minA, float maxA, float minB, float
 
 bool Collider::BoxBox(Box2D* box1, Box2D* box2, Vector2D & normal, float & penetrationDepth)
 {
-	GetAxis(box1->GetCorners(), box2->GetCorners());
-	return false;
+	std::vector<Vector2D> box1Corners = box1->GetCorners();
+	std::vector<Vector2D> box2Corners = box2->GetCorners();
+	std::vector<Vector2D> axis = GetAxis(box1Corners, box2Corners);
+
+	float mtvDistance = FLT_MAX;
+	Vector2D mtvAxis;
+
+	for (int i = 0; i < 4; i++)
+	{
+		float minA, maxA, minB, maxB;
+		ProjectCornersOnAxis(axis[i], box1Corners, minA, maxA);
+		ProjectCornersOnAxis(axis[i], box2Corners, minB, maxB);
+
+		if (!TestAxis(axis[0], minA, maxA, minB, maxB, mtvAxis, mtvDistance))
+			return false;
+	}
+	normal = mtvAxis.GetNormalized();
+	penetrationDepth = (float)sqrt(mtvDistance);
+	return true;
 }
 
 bool Collider::BoxCircle(Box2D* box, Circle2D* circle, Vector2D & normal, float & penetrationDepth)
@@ -71,36 +89,80 @@ bool Box2D::IntersectsCollider(Collider * otherCollider, Vector2D & normal, floa
 
 bool Box2D::ContainsPoint(Vector2D point)
 {
-	return false;
+	std::vector<Vector2D> corners = GetCorners();
+	Vector2D axis1 = (corners[1] - corners[0]).GetNormalized();
+	Vector2D axis2 = (corners[2] - corners[0]).GetNormalized();
+
+	float min, max;
+	ProjectCornersOnAxis(axis1, corners, min, max);
+	float pointOnAxis = Vector2D::Dot(point, axis1);
+	
+	if(pointOnAxis < min || pointOnAxis > max)
+		return false;
+
+	pointOnAxis = Vector2D::Dot(point, axis2);
+	ProjectCornersOnAxis(axis2, corners, min, max);
+
+	if (pointOnAxis < min || pointOnAxis > max)
+		return false;
+	
+	return true;
 }
 
-Vector2D* Box2D::GetCorners()
+std::vector<Vector2D> Box2D::GetCorners()
 {
 	float halfWidth = mWidth / 2;
 	float halfHeight = mHeight / 2;
 
-	Vector2D corners[4];
-	corners[0] = Vector2D(mTransform->mPosition.x - halfWidth, mTransform->mPosition.y - halfHeight) + mOffset;
-	corners[1] = Vector2D(mTransform->mPosition.x + halfWidth, mTransform->mPosition.y - halfHeight) + mOffset;
-	corners[2] = Vector2D(mTransform->mPosition.x + halfWidth, mTransform->mPosition.y + halfHeight) + mOffset;
-	corners[3] = Vector2D(mTransform->mPosition.x - halfWidth, mTransform->mPosition.y + halfHeight) + mOffset;
+	std::vector<Vector2D> corners;
+	Matrix4x4 translateWorld = Matrix4x4::Translate(mTransform->mPosition);
+	Matrix4x4 rotation = Matrix4x4::RotateZ(mTransform->mRotation);
+	Matrix4x4 offset = Matrix4x4::Translate(Vector3D(mOffset.x, mOffset.y, 0));
 
-	corners[0] = Matrix4x4::MulVec2(Matrix4x4::RotateZ(mTransform->mRotation), corners[0]);
-	corners[1] = Matrix4x4::MulVec2(Matrix4x4::RotateZ(mTransform->mRotation), corners[1]);
-	corners[2] = Matrix4x4::MulVec2(Matrix4x4::RotateZ(mTransform->mRotation), corners[2]);
-	corners[3] = Matrix4x4::MulVec2(Matrix4x4::RotateZ(mTransform->mRotation), corners[3]);
+	Matrix4x4 translateCorner = Matrix4x4::Translate(Vector3D(-halfWidth, -halfHeight, 0));
+	Matrix4x4 mPosition = translateWorld  * rotation * offset * translateCorner;
+	corners.push_back((translateWorld*rotation*offset*translateCorner).ToVector2D());
+
+	translateCorner = Matrix4x4::Translate(Vector3D(halfWidth, -halfHeight, 0));
+	corners.push_back((translateWorld*rotation*offset*translateCorner).ToVector2D());
+
+	translateCorner = Matrix4x4::Translate(Vector3D(halfWidth, halfHeight, 0));
+	corners.push_back((translateWorld*rotation*offset*translateCorner).ToVector2D());
+
+	translateCorner = Matrix4x4::Translate(Vector3D(-halfWidth, halfHeight, 0));
+	corners.push_back((translateWorld*rotation*offset*translateCorner).ToVector2D());
 
 	return corners;
 }
 
-Vector2D * Collider::GetAxis(Vector2D * box1Corners, Vector2D * box2Corners)
+std::vector<Vector2D> Collider::GetAxis(std::vector<Vector2D> box1Corners, std::vector<Vector2D> box2Corners)
 {
-	Vector2D axis[4];
-	axis[0] = (box1Corners[1] - box1Corners[0]).GetNormalized();
-	axis[1] = (box1Corners[1] - box1Corners[2]).GetNormalized();
-	axis[2] = (box2Corners[1] - box1Corners[0]).GetNormalized();
-	axis[3] = (box2Corners[1] - box1Corners[2]).GetNormalized();
-	return nullptr;
+	std::vector<Vector2D> axis;
+	axis.push_back((box1Corners[1] - box1Corners[0]).GetNormalized());
+	axis.push_back((box1Corners[3] - box1Corners[0]).GetNormalized());
+	axis.push_back((box2Corners[1] - box1Corners[0]).GetNormalized());
+	axis.push_back((box2Corners[3] - box1Corners[0]).GetNormalized());
+	return axis;
+}
+
+void Collider::ProjectCornersOnAxis(Vector2D axis, std::vector<Vector2D> corners, float & min, float & max)
+{
+	float dotProduct = Vector2D::Dot(axis, corners[0]);
+	min = dotProduct;
+	max = dotProduct;
+
+	for (int i = 1; i < corners.size(); i++)
+	{
+		dotProduct = Vector2D::Dot(axis, corners[i]);
+		if (dotProduct < min)
+		{
+			min = dotProduct;
+		}
+		else if (dotProduct > max)
+		{
+			max = dotProduct;
+		}
+	}
 }
 
 bool Circle2D::IntersectsCollider(Collider * otherCollider, Vector2D & normal, float & penetrationDepth)

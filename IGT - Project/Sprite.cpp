@@ -76,7 +76,6 @@ void Sprite::Render(Shader* shader)
 
 	mTiles[mCurrentFrame]->Draw();
 
-	mCurrentFrame++;
 	if (mCurrentFrame >= mTiles.size())
 		mCurrentFrame = 0;
 

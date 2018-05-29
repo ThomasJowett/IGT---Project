@@ -19,26 +19,29 @@ public:
 	}
 
 	Vector3D(float x, float y, float z) : x(x), y(y), z(z) {}
-	//Vector3D(Vector2D v, float z) : x(v.x), y(v.y), z(z) {}
 
 	~Vector3D() = default;
 
+	//Length of the vector
 	float const Magnitude()
 	{
 		return sqrt(SqrMagnitude());
 	}
 
+	//Square length of the vector
 	float const SqrMagnitude()
 	{
 		return ((x*x) + (y*y) + (z*z));
 	}
 
+	//Gets a vector of same direction with magnitude of 1
 	Vector3D const GetNormalized()
 	{
 		float magnitude = Magnitude();
 		return Vector3D(x / magnitude, y / magnitude, z / magnitude);
 	}
 
+	//makes the magnitude of the vector 1
 	void Normalize()
 	{
 		Vector3D normalized = GetNormalized();
@@ -48,12 +51,15 @@ public:
 		z = normalized.z;
 	}
 
+	//converts vector to a formatted string
 	std::string to_string()
 	{
 		return "x: " + std::to_string(x) + " y: " + std::to_string(y) + " z: " + std::to_string(z);
 	}
 
 	//Static----------------------------------------------------------------
+
+	//returns a vector orthagonal to both v1 and v2
 	static Vector3D Cross(Vector3D v1, Vector3D v2)
 	{
 		Vector3D cross;
@@ -63,38 +69,46 @@ public:
 		return cross;
 	}
 
+	//returns the sum of the products of v1 and v2
 	static float Dot(Vector3D v1, Vector3D v2)
 	{
 		return (v1.x*v2.x + v1.y*v2.y + v1.z*v2.z);
 	}
 
+	//returns a vector that is the reflection v against the normal
 	static Vector3D Reflect(Vector3D v, Vector3D normal)
 	{
 		normal.Normalize();
 		return v - (normal * (2.0f * Dot(v, normal)));
 	}
 
+	//linearly interpolate between v1 and v2
 	static Vector3D Lerp(Vector3D v1, Vector3D v2, float alpha)
 	{
 		return (v1 * alpha) + (v2 * (1 - alpha));
 	}
 
 	//Operators----------------------------------------------------------------
+
+	//multiples each component of the vector by the scaler
 	Vector3D operator*(float scaler)
 	{
 		return Vector3D(x * scaler, y * scaler, z * scaler);
 	}
 
+	//divides each component of the vector by the scaler
 	Vector3D operator/(float scaler)
 	{
 		return Vector3D(x / scaler, y / scaler, z / scaler);
 	}
 
+	//adds the two vectors together
 	Vector3D operator+(const Vector3D & other)
 	{
 		return Vector3D(x + other.x, y + other.y, z + other.z);
 	}
 
+	//subtracts v2 from v2
 	Vector3D operator-(const Vector3D & other)
 	{
 		return Vector3D(x - other.x, y - other.y, z - other.z);
@@ -213,6 +227,16 @@ public:
 	{
 		Vector2D n = normal.GetNormalized();
 		return v - (n*(2.0f * Dot(v, n)));
+	}
+
+	// return projection v1 on to v2
+	static Vector2D Projection(Vector2D v1, Vector2D v2)
+	{
+		float v2SqrMagnitude = v2.SqrMagnitude();
+		if (v2SqrMagnitude > 1.0e-8f)
+			return v2 * (Dot(v2, v1) / v2SqrMagnitude);
+		else
+			return Vector2D();
 	}
 
 	//Operators--------------------------------------------------------------

@@ -29,7 +29,10 @@ public:
 
 	Vector2D GetCentre() 
 	{
-		return Vector2D( mTransform->mPosition.x + mOffset.x, mTransform->mPosition.y + mOffset.y); 
+		Matrix4x4 translate = Matrix4x4::Translate(mTransform->mPosition);
+		Matrix4x4 rotation = Matrix4x4::RotateZ(mTransform->mRotation);
+		Matrix4x4 offset = Matrix4x4::Translate(Vector3D(mOffset.x, mOffset.y, 0));
+		return (translate * rotation * offset).ToVector2D();
 	}
 
 	ColliderType mType;
@@ -37,7 +40,8 @@ protected:
 	bool mCollided; //TODO: have a list of colliders that this is colliding with
 	Vector2D mOffset;
 
-	Vector2D* GetAxis(Vector2D* box1Corners, Vector2D* box2Corners);
+	std::vector<Vector2D> GetAxis(std::vector<Vector2D> box1Corners, std::vector<Vector2D> box2Corners);
+	void ProjectCornersOnAxis(Vector2D axis, std::vector<Vector2D> corners, float & min, float & max);
 	bool TestAxis(Vector2D axis, float minA, float maxA, float minB, float maxB, Vector2D & mtvAxis, float & mtvDistance);
 	bool BoxBox(Box2D* box1, Box2D* box2, Vector2D & normal, float& penetrationDepth);
 	bool BoxCircle(Box2D* box, Circle2D* circle, Vector2D & normal, float& penetrationDepth);
@@ -52,7 +56,8 @@ public:
 	bool IntersectsCollider(Collider* otherCollider, Vector2D& normal, float& penetrationDepth)override;
 	bool ContainsPoint(Vector2D point)override;
 
-	Vector2D* GetCorners();
+	std::vector<Vector2D> GetCorners();
+	
 	
 private:
 	float mWidth;

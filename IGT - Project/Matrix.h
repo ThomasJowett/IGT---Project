@@ -23,6 +23,9 @@ public:
 	static Vector2D MulVec2(Matrix4x4 matrix, Vector2D vector);
 	static Vector3D MulVec3(Matrix4x4 matrix, Vector3D vector);
 
+	Vector2D ToVector2D() const;
+	Vector3D ToVector3D() const;
+
 	Matrix4x4 operator*(Matrix4x4 other);
 };
 

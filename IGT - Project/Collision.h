@@ -41,8 +41,8 @@ namespace Collision
 					}
 					else
 					{
-						gameObjects[i]->GetComponent<TextRender>()->UpdateText("Not Collided", { 0,255,0 }, 0, -5, CENTER);//temp
-						gameObjects[j]->GetComponent<TextRender>()->UpdateText("Not Collided", { 0,255,0 }, 0, -5, CENTER);//temp
+						gameObjects[i]->GetComponent<TextRender>()->UpdateText("Not Collided1", { 0,255,0 }, 0, 0, CENTER);//temp
+						gameObjects[j]->GetComponent<TextRender>()->UpdateText("Not Collided2", { 0,255,0 }, 0, 0, CENTER);//temp
 					}
 				}
 			}
@@ -54,8 +54,8 @@ namespace Collision
 	{
 		for (Contact contact : contacts)
 		{
-			contact.first->GetComponent<TextRender>()->UpdateText("Collided", { 0,0,255 }, 0, -5, CENTER); //Temp
-			contact.second->GetComponent<TextRender>()->UpdateText("Collided", { 0,0,255 }, 0, -5, CENTER);//Temp
+			contact.first->GetComponent<TextRender>()->UpdateText("Collided1", { 0,0,255 }, 0, 0, CENTER); //Temp
+			contact.second->GetComponent<TextRender>()->UpdateText("Collided2", { 0,0,255 }, 0, 0, CENTER);//Temp
 		}
 	}
 };
