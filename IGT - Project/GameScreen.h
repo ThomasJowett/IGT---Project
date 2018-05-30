@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "Shader.h"
 #include "Camera.h"
+#include "PlayerController.h"
 
 class GameScreen
 {
@@ -20,7 +21,7 @@ public:
 protected:
 	//SceneNode * Root;
 	std::vector<GameObject*>mGameObjects;
-	//std::vector<PlayerController*>mPlayerControllers;
+	std::vector<PlayerController*>mPlayerControllers;
 
 	Shader* mShader;
 	Camera mCamera;

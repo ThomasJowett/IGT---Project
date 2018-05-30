@@ -3,7 +3,6 @@
 #define _ICOMPONENTS_H
 
 #include "Shader.h"
-#include <vector>
 
 class Component
 {

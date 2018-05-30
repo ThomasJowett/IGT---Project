@@ -40,4 +40,3 @@ public:
 private:
 	std::vector<Observer<EventType, DataType>*> mObservers;
 };
-

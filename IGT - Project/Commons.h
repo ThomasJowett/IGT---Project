@@ -8,6 +8,7 @@ enum SCREENS
 {
 	SCREEN_INTRO = 0,
 	SCREEN_MENU,
+	SCREEN_LEVEL_1
 };
 
 enum FACING

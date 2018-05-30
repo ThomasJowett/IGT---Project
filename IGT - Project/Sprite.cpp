@@ -61,12 +61,14 @@ Sprite::Sprite(GLuint TextureID, float singleSpriteWidth, float singleSpriteHeig
 
 Sprite::~Sprite()
 {
-	glDeleteTextures(GL_TEXTURE_2D, &mTextureID);
+	if(&mTextureID != nullptr)
+		glDeleteTextures(GL_TEXTURE_2D, &mTextureID);
 
-	for (Mesh* tile : mTiles)
+	for (std::vector< Mesh* >::iterator it = mTiles.begin(); it != mTiles.end(); ++it)
 	{
-		delete tile;
+		delete (*it);
 	}
+	mTiles.clear();
 }
 
 void Sprite::Render(Shader* shader)

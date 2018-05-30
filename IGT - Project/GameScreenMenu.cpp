@@ -1,4 +1,5 @@
 #include "GameScreenMenu.h"
+#include "GameScreenManager.h"
 #include "SoundManager.h"
 #include "Sprite.h"
 #include "Texture2D.h"
@@ -6,8 +7,11 @@
 #include "TextRender.h"
 #include "Collider.h"
 #include "Collision.h"
+#include "MainMenuController.h"
+#include "ObjectPool.h"
 
 #include <iostream>
+#include <utility>
 
 GameScreenMenu::GameScreenMenu() : GameScreen()
 {
@@ -16,6 +20,7 @@ GameScreenMenu::GameScreenMenu() : GameScreen()
 	GLuint backgroundTexture = Texture2D::LoadTexture2D("Images/UVChecker.png");
 
 	mShader = new BasicShader();
+
 
 	Transform* transform = new Transform(Vector3D(0, 0, -1), 0, Vector2D(1, 1));
 	GameObject* gameObject = new GameObject("Background", transform);
@@ -48,15 +53,23 @@ GameScreenMenu::GameScreenMenu() : GameScreen()
 	//text->UpdateText("Not Collided", { 0,255,0 }, 0, -5, CENTER);
 	collider = new Box2D(transform, 50, 10, Vector2D(0, 0));
 
+	sprite = new Sprite(texture, 55, 10);
+
 	gameObject = new GameObject("Test2", transform);
 	gameObject->AddComponent(text);
 	gameObject->AddComponent(collider);
 	gameObject->AddComponent(sprite);
 	mGameObjects.push_back(gameObject);
 
-	camera.Initialise(Vector3D(0, 0, 100), SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4, 0, 1000);
+	mCamera.Orthographic(Vector3D(0, 0, 100), SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4, 0, 1000);
 
-	//mGameObjects[0]->GetComponent<TextRender>()->UpdateText("It Worked?", { 255,255,10 }, 0,0, CENTER);
+	MainMenuController* menuController = new MainMenuController();
+
+	PlayerController* playerController = new PlayerController(0, menuController);
+	mPlayerControllers.push_back(playerController);
+
+	ObjectPool<GameObject> pool(mGameObjects[1]);
+	mGameObjects.push_back(pool.GetObjectA());
 }
 
 GameScreenMenu::~GameScreenMenu()
@@ -65,8 +78,7 @@ GameScreenMenu::~GameScreenMenu()
 
 void GameScreenMenu::Render()
 {
-	mShader->Bind();
-	camera.Update(mShader);
+	GameScreen::Render();
 	for (auto gameObject : mGameObjects)
 	{
 		gameObject->Render(mShader);

@@ -16,7 +16,6 @@ TextRender::~TextRender()
 {
 	glDeleteTextures(1, &mTextureID);
 	if (mMesh) delete mMesh;
-	if (mFont) delete mFont;
 }
 
 void TextRender::LoadFont(const char * path, int pointSize)
@@ -32,7 +31,8 @@ void TextRender::Render(Shader * shader)
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, mTextureID);
-	mMesh->Draw();
+
+	if(mMesh) mMesh->Draw();
 	
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);

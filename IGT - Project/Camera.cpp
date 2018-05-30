@@ -12,12 +12,18 @@ Camera::~Camera()
 {
 }
 
-void Camera::Initialise(Vector3D position, float width, float hieght, float nearDepth, float farDepth)
+void Camera::Orthographic(Vector3D position, float width, float hieght, float nearDepth, float farDepth)
 {
 	mTransform->mPosition = position;
 
-	//mProjection = Matrix4x4::Perspective(60, (float)SCREEN_WIDTH / SCREEN_HEIGHT, nearDepth, farDepth);
 	mProjection = Matrix4x4::Orthographic(-(width / 2), (width / 2), -(hieght / 2), (hieght / 2), nearDepth, farDepth);
+}
+
+void Camera::Perspective(Vector3D position, Vector3D forward, Vector3D up, float fovY, float nearDepth, float farDepth)
+{
+	mTransform->mPosition = position;
+
+	mProjection = Matrix4x4::Perspective(fovY, (float)SCREEN_WIDTH / SCREEN_HEIGHT, nearDepth, farDepth);
 }
 
 void Camera::Update(Shader * shader)

@@ -13,12 +13,9 @@ public:
 	GameScreenMenu();
 	~GameScreenMenu();
 
-	virtual void Render();
-	virtual void Update(float deltaTime, std::vector<SDL_Event> e);
+	virtual void Render()override;
+	virtual void Update(float deltaTime, std::vector<SDL_Event> e)override;
 private:
-	int texID;
-	BasicShader* mShader;
-	Camera camera;
 };
 
 #endif // !_GAMESCREENMENU_H

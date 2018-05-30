@@ -4,14 +4,22 @@
 GameObject::GameObject(std::string name, Transform* transform)
 	:mName(name), mTransform(transform)
 {
+	mIsActive = true;
 }
 
 GameObject::~GameObject()
 {
-	for (auto component : mComponents)
+	for (std::vector< Component* >::iterator it = mComponents.begin(); it != mComponents.end(); ++it)
 	{
-		delete component;
+		if(*it != nullptr) delete (*it);
+		*it = nullptr;
 	}
+	mComponents.clear();
+
+	//for (auto component : mComponents)
+	//{
+	//	delete component;
+	//}
 }
 
 void GameObject::Update(float deltaTime)

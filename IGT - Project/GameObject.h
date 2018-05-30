@@ -21,11 +21,14 @@ public:
 	template <typename ComponentType>
 	ComponentType* GetComponent();
 
+	bool GetActive() {return mIsActive; }
+	void SetActive(bool isActive) { mIsActive = isActive; }
 
 	Transform* GetTransform() { return mTransform; }
 private:
 	std::string mName;
 	Transform * mTransform;
+	bool mIsActive;
 
 	std::vector<Component*>mComponents;
 

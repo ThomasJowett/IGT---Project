@@ -10,7 +10,13 @@ GameScreen::GameScreen()
 
 GameScreen::~GameScreen()
 {
+	for (std::vector< GameObject* >::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
+	{
+		delete (*it);
+		*it = nullptr;
+	}
 	mGameObjects.clear();
+
 }
 
 void GameScreen::Render()
@@ -22,12 +28,12 @@ void GameScreen::Render()
 
 void GameScreen::Update(float deltaTime, std::vector<SDL_Event> events)
 {
-	/*
+	
 	for (auto playerController : mPlayerControllers)
 	{
-		playerController->Update(deltaTime, e);
+		playerController->Update(events);
 	}
-	*/
+	
 	for (auto gameObject : mGameObjects)
 	{
 		gameObject->Update(deltaTime);

@@ -37,9 +37,6 @@ void GameScreenManager::ChangeScreen(SCREENS newScreen)
 		delete mCurrentScreen;
 	}
 
-	GameScreenMenu* tempMenuScreen;
-
-
 	//Initialise the new screen.
 	switch (newScreen)
 	{
@@ -47,11 +44,8 @@ void GameScreenManager::ChangeScreen(SCREENS newScreen)
 		break;
 
 	case SCREEN_MENU:
-		tempMenuScreen = new GameScreenMenu();
-		mCurrentScreen = (GameScreen*)tempMenuScreen;
-		tempMenuScreen = NULL;
+		mCurrentScreen = new GameScreenMenu();
 		break;
-
 	default:
 		break;
 	}
