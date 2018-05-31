@@ -9,45 +9,24 @@ GameObject::GameObject(std::string name, Transform* transform)
 
 GameObject::~GameObject()
 {
-	//for (std::vector< Component* >::iterator it = mComponents.begin(); it != mComponents.end(); ++it)
-	//{
-	//	if(*it != nullptr) delete (*it);
-	//	*it = nullptr;
-	//}
-	//mComponents.clear();
-
-	//for (auto component : mComponents)
-	//{
-	//	delete component;
-	//}
+	mComponents.clear();
 }
 
 void GameObject::Update(float deltaTime)
 {
-	//for (auto component : mUpdateableComponents)
-	//{
-	//	component->Update(deltaTime);
-	//}
+	for (auto component : mUpdateableComponents)
+	{
+		component->Update(deltaTime);
+	}
 }
 
 void GameObject::Render(Shader* shader)
 {
-	//mTransform->UpdateWorldMatrix();
-	//shader->UpdateWorld(mTransform);
-	//
-	//for (auto component : mRenderableComponents)
-	//{
-	//	component->Render(shader);
-	//}
+	mTransform->UpdateWorldMatrix();
+	shader->UpdateWorld(mTransform);
+	
+	for (auto component : mRenderableComponents)
+	{
+		component->Render(shader);
+	}
 }
-
-//void GameObject::AddComponent(Component * component)
-//{
-//	mComponents.push_back(component);
-//
-//	if (iRenderable* renderableComp = dynamic_cast<iRenderable*>(component))
-//		mRenderableComponents.push_back(renderableComp);
-//
-//	if (iUpdateable* updateableComp = dynamic_cast<iUpdateable*>(component))
-//		mUpdateableComponents.push_back(updateableComp);
-//}

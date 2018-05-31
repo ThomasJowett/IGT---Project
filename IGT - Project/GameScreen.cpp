@@ -16,7 +16,6 @@ GameScreen::~GameScreen()
 		*it = nullptr;
 	}
 	mGameObjects.clear();
-
 }
 
 void GameScreen::Render()

@@ -26,4 +26,6 @@ public:
 	virtual void Down() = 0;
 	virtual void Left() = 0;
 	virtual void Right() = 0;
+
+	virtual void MousePosition(int x, int y) = 0;
 };

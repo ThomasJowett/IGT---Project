@@ -81,14 +81,14 @@
     <ClCompile Include="GameScreenManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="MainMenuController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="iComponents.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Texture2D.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuPawn.cpp">
+      <Filter>PlayerControllers</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerPawn.cpp">
+      <Filter>PlayerControllers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -193,11 +193,11 @@
     <ClInclude Include="iInput.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="MainMenuController.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="MainMenuPawn.h">
+      <Filter>PlayerControllers</Filter>
     </ClInclude>
-    <ClInclude Include="test class.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="PlayerPawn.h">
+      <Filter>PlayerControllers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

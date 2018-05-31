@@ -8,7 +8,6 @@
 
 #include "Constants.h"
 #include "GameScreenManager.h"
-#include "test class.h"
 
 
 //Globals------------------------------------------------------------------------------------
@@ -26,7 +25,6 @@ void Render();
 
 int main(int argc, char* args[])
 {
-	test* _test = new test();
 	if (InitSDL())
 	{
 		bool quit = false;
@@ -94,7 +92,7 @@ bool InitSDL()
 		}
 
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINES);
-		glEnable(GL_DEPTH_TEST);
+		//glEnable(GL_DEPTH_TEST);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

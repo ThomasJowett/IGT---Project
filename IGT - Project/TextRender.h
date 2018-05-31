@@ -5,11 +5,6 @@
 #include "Mesh.h"
 #include "iComponents.h"
 
-#define CLASS_DECLARATION( classname )                                                      \
-public:                                                                                     \
-    static const std::size_t Type;                                                          \
-    virtual bool IsClassType( const std::size_t classType ) const override;                 \
-
 enum ALIGNMENT
 {
 	CENTER = 0,
@@ -19,7 +14,6 @@ enum ALIGNMENT
 
 class TextRender: public iRenderable
 {
-	CLASS_DECLARATION(TextRender)
 public:
 	TextRender(const char* path, int pointSize);
 	~TextRender();

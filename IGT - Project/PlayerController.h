@@ -4,6 +4,7 @@
 
 #include <SDL.h>
 #include <vector>
+#include "Vector.h"
 
 class PlayerController
 {
@@ -16,16 +17,13 @@ private:
 	iInput * mPawn;
 	int mControllerID;
 
-	const int mJoystickDeadZone = 2000;
+	const float mJoystickDeadZone = 0.2f;
 
-	float mLeftStickAxis_X = 0.0f;
-	float mLeftStickAxis_Y = 0.0f;
+	Vector2D mLeftStick;
+	Vector2D mRightStick;
 
-	float mRightStickAxis_X = 0.0f;
-	float mRightStickAxis_Y = 0.0f;
-
-	float mRightTrigger = 0.0f;
 	float mLeftTrigger = 0.0f;
+	float mRightTrigger = 0.0f;
 };
 
 #endif // !_PLAYERCONTROLLER_H

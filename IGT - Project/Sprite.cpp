@@ -1,16 +1,7 @@
 #include "Sprite.h"
 #include <iostream>
 
-#define CLASS_DEFINITION( parentclass, childclass )                                         \
-const std::size_t childclass::Type = std::hash< std::string >()( TO_STRING( childclass ) ); \
-bool childclass::IsClassType( const std::size_t classType ) const {                         \
-        if ( classType == childclass::Type )                                                \
-            return true;                                                                    \
-        return parentclass::IsClassType( classType );                                       \
-}                                                                                           \
-
-CLASS_DEFINITION(iRenderable, Sprite)
-
+//Creates a tile sheet from the texture
 Sprite::Sprite(GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight, int tilesWide, int tilesTall)
 	: mTextureID(TextureID)
 {
@@ -45,6 +36,7 @@ Sprite::Sprite(GLuint TextureID, float singleSpriteWidth, float singleSpriteHeig
 	mCurrentFrame = 0;
 }
 
+//Creates a single tile from the texture
 Sprite::Sprite(GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight)
 	: mTextureID(TextureID)
 {
@@ -74,9 +66,6 @@ Sprite::Sprite(GLuint TextureID, float singleSpriteWidth, float singleSpriteHeig
 
 Sprite::~Sprite()
 {
-	if(&mTextureID != nullptr)
-		glDeleteTextures(GL_TEXTURE_2D, &mTextureID);
-
 	for (std::vector< Mesh* >::iterator it = mTiles.begin(); it != mTiles.end(); ++it)
 	{
 		delete (*it);
@@ -84,6 +73,7 @@ Sprite::~Sprite()
 	mTiles.clear();
 }
 
+//Draws the texture to the screen
 void Sprite::Render(Shader* shader)
 {
 	glActiveTexture(GL_TEXTURE0);

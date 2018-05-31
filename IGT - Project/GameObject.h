@@ -11,21 +11,17 @@
 class GameObject
 {
 public:
-	std::vector < std::unique_ptr<Component>> mComponents;
-public:
 	GameObject(std::string name, Transform* transform);
 	~GameObject();
 
 	void Update(float deltaTime);
 	void Render(Shader* shader);
 
-	//void AddComponent(Component* component);
-
 	template<class ComponentType, typename ... Args>
 	void AddComponent(Args&& ... params);
 
 	template <typename ComponentType>
-	ComponentType& GetComponent();
+	ComponentType* GetComponent();
 
 	bool GetActive() {return mIsActive; }
 	void SetActive(bool isActive) { mIsActive = isActive; }
@@ -36,8 +32,7 @@ private:
 	Transform * mTransform;
 	bool mIsActive;
 
-	
-	//std::vector<Component*>mComponents;
+	std::vector < std::unique_ptr<Component>> mComponents;
 
 	std::vector<iUpdateable*>mUpdateableComponents;
 	std::vector<iRenderable*>mRenderableComponents;
@@ -47,17 +42,22 @@ template<class ComponentType, typename ...Args>
 inline void GameObject::AddComponent(Args && ...params)
 {
 	mComponents.emplace_back(std::make_unique<ComponentType>(std::forward<Args>(params)...));
+
+	if (iRenderable * renderableComp = dynamic_cast<iRenderable*>(mComponents.back().get()))
+		mRenderableComponents.push_back(renderableComp);
+	else if (iUpdateable * updateableComp = dynamic_cast<iUpdateable*>(mComponents.back().get()))
+		mUpdateableComponents.push_back(updateableComp);
 }
 
 template<typename ComponentType>
-inline ComponentType & GameObject::GetComponent()
+inline ComponentType * GameObject::GetComponent()
 {
 	for (auto && component : mComponents)
 	{
-		if (component->IsClassType(Component::Type))
-			return *static_cast<ComponentType *>(component.get());
+		if (ComponentType * returnComponent = dynamic_cast<ComponentType*>(component.get()))
+			return returnComponent;
 	}
-	return *std::unique_ptr< ComponentType >(nullptr);
+	return nullptr;
 
 	//TODO: find better solution for getting a component that dosen't use dynamic_cast
 }

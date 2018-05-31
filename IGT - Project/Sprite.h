@@ -5,15 +5,9 @@
 #include "Mesh.h"
 #include <iostream>
 
-#define CLASS_DECLARATION( classname )                                                      \
-public:                                                                                     \
-    static const std::size_t Type;                                                          \
-    virtual bool IsClassType( const std::size_t classType ) const override;                 \
-
 class Sprite :
 	public iRenderable
 {
-	CLASS_DECLARATION(Sprite)
 public:
 	Sprite(GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight, int tilesWide, int tilesTall);
 	Sprite(GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight);
