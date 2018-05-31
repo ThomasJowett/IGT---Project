@@ -3,6 +3,11 @@
 #include "Transform.h"
 #include "Messaging.h"
 
+#define CLASS_DECLARATION( classname )                                                      \
+public:                                                                                     \
+    static const std::size_t Type;                                                          \
+    virtual bool IsClassType( const std::size_t classType ) const override;                 \
+
 enum ColliderType
 {
 	BOX2D,
@@ -18,6 +23,7 @@ class GameObject;
 class Collider :
 	public Component, public Subject<OverlapEvent, GameObject*&>
 {
+	CLASS_DECLARATION(Collider)
 public:
 	Collider(Transform* transform, ColliderType type, Vector2D offset)
 		: mTransform(transform), mType(type), mOffset(offset) {}
@@ -50,6 +56,7 @@ protected:
 
 class Box2D : public Collider
 {
+	CLASS_DECLARATION(Box2D)
 public:
 	Box2D(Transform* transform, float width, float height, Vector2D offset)
 		: mWidth(width), mHeight(height), Collider(transform, BOX2D, offset) {}
@@ -66,6 +73,7 @@ private:
 
 class Circle2D : public Collider
 {
+	CLASS_DECLARATION(Circle2D)
 public:
 	Circle2D(Transform* transform, float radius, Vector2D offset)
 		: mRadius(radius), Collider(transform, CIRCLE2D, offset) {}

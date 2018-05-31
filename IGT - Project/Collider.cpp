@@ -1,6 +1,18 @@
 #include "Collider.h"
 #include <iostream>
 
+#define CLASS_DEFINITION( parentclass, childclass )                                         \
+const std::size_t childclass::Type = std::hash< std::string >()( TO_STRING( childclass ) ); \
+bool childclass::IsClassType( const std::size_t classType ) const {                         \
+        if ( classType == childclass::Type )                                                \
+            return true;                                                                    \
+        return parentclass::IsClassType( classType );                                       \
+}                                                                                           \
+
+CLASS_DEFINITION(Component, Collider)
+CLASS_DEFINITION(Collider, Box2D)
+CLASS_DEFINITION(Collider, Circle2D)
+
 bool Collider::TestAxis(Vector2D axis, float minA, float maxA, float minB, float maxB, Vector2D & mtvAxis, float & mtvDistance)
 {
 	if (axis.SqrMagnitude() < 1.0e-8f)

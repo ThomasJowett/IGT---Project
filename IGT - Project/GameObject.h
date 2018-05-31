@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "Transform.h"
 #include "iComponents.h"
@@ -10,16 +11,21 @@
 class GameObject
 {
 public:
+	std::vector < std::unique_ptr<Component>> mComponents;
+public:
 	GameObject(std::string name, Transform* transform);
 	~GameObject();
 
 	void Update(float deltaTime);
 	void Render(Shader* shader);
 
-	void AddComponent(Component* component);
+	//void AddComponent(Component* component);
+
+	template<class ComponentType, typename ... Args>
+	void AddComponent(Args&& ... params);
 
 	template <typename ComponentType>
-	ComponentType* GetComponent();
+	ComponentType& GetComponent();
 
 	bool GetActive() {return mIsActive; }
 	void SetActive(bool isActive) { mIsActive = isActive; }
@@ -30,25 +36,28 @@ private:
 	Transform * mTransform;
 	bool mIsActive;
 
-	std::vector<Component*>mComponents;
+	
+	//std::vector<Component*>mComponents;
 
 	std::vector<iUpdateable*>mUpdateableComponents;
 	std::vector<iRenderable*>mRenderableComponents;
 };
 
-
-
+template<class ComponentType, typename ...Args>
+inline void GameObject::AddComponent(Args && ...params)
+{
+	mComponents.emplace_back(std::make_unique<ComponentType>(std::forward<Args>(params)...));
+}
 
 template<typename ComponentType>
-inline ComponentType * GameObject::GetComponent()
+inline ComponentType & GameObject::GetComponent()
 {
-	for (Component* c : mComponents)
+	for (auto && component : mComponents)
 	{
-		if (ComponentType* cmp = dynamic_cast<ComponentType*>(c)) {
-			return cmp;
-		}
+		if (component->IsClassType(Component::Type))
+			return *static_cast<ComponentType *>(component.get());
 	}
-	return nullptr;
+	return *std::unique_ptr< ComponentType >(nullptr);
 
 	//TODO: find better solution for getting a component that dosen't use dynamic_cast
 }

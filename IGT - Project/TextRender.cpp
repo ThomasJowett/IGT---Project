@@ -2,6 +2,16 @@
 #include <iostream>
 #include "Commons.h"
 
+#define CLASS_DEFINITION( parentclass, childclass )                                         \
+const std::size_t childclass::Type = std::hash< std::string >()( TO_STRING( childclass ) ); \
+bool childclass::IsClassType( const std::size_t classType ) const {                         \
+        if ( classType == childclass::Type )                                                \
+            return true;                                                                    \
+        return parentclass::IsClassType( classType );                                       \
+}                                                                                           \
+
+CLASS_DEFINITION(iRenderable, TextRender)
+
 TextRender::TextRender(const char * path, int pointSize)
 {
 	if (TTF_Init() != 0)
@@ -122,5 +132,6 @@ bool TextRender::UpdateText(const char * text, SDL_Colour textColour, int x, int
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+	std::cout << mText << std::endl;
 	return true;
 }

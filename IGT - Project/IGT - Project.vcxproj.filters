@@ -75,9 +75,6 @@
     <ClCompile Include="TextRender.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="Texture2D.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="SoundManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
@@ -85,6 +82,12 @@
       <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="MainMenuController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="iComponents.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -192,6 +195,9 @@
     </ClInclude>
     <ClInclude Include="MainMenuController.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="test class.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

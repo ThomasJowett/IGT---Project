@@ -8,6 +8,7 @@
 
 #include "Constants.h"
 #include "GameScreenManager.h"
+#include "test class.h"
 
 
 //Globals------------------------------------------------------------------------------------
@@ -25,6 +26,7 @@ void Render();
 
 int main(int argc, char* args[])
 {
+	test* _test = new test();
 	if (InitSDL())
 	{
 		bool quit = false;

@@ -1,6 +1,15 @@
 #include "Sprite.h"
 #include <iostream>
 
+#define CLASS_DEFINITION( parentclass, childclass )                                         \
+const std::size_t childclass::Type = std::hash< std::string >()( TO_STRING( childclass ) ); \
+bool childclass::IsClassType( const std::size_t classType ) const {                         \
+        if ( classType == childclass::Type )                                                \
+            return true;                                                                    \
+        return parentclass::IsClassType( classType );                                       \
+}                                                                                           \
+
+CLASS_DEFINITION(iRenderable, Sprite)
 
 Sprite::Sprite(GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight, int tilesWide, int tilesTall)
 	: mTextureID(TextureID)
@@ -32,6 +41,8 @@ Sprite::Sprite(GLuint TextureID, float singleSpriteWidth, float singleSpriteHeig
 			mTiles.push_back(mesh);
 		}
 	}
+
+	mCurrentFrame = 0;
 }
 
 Sprite::Sprite(GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight)
@@ -56,6 +67,8 @@ Sprite::Sprite(GLuint TextureID, float singleSpriteWidth, float singleSpriteHeig
 
 	Mesh* mesh = new Mesh(vertices, 4, indices, 6);
 	mTiles.push_back(mesh);
+
+	mCurrentFrame = 0;
 }
 
 

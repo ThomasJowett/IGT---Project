@@ -131,6 +131,7 @@
     <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="GameScreenManager.cpp" />
     <ClCompile Include="GameScreenMenu.cpp" />
+    <ClCompile Include="iComponents.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenuController.cpp" />
     <ClCompile Include="Matrix.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="test class.h" />
     <ClInclude Include="TextRender.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Transform.h" />
