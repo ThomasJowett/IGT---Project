@@ -1,4 +1,5 @@
 #include "PlayerController.h"
+#include "Constants.h"
 
 
 PlayerController::PlayerController(int controllerID, iInput* pawn)
@@ -35,16 +36,16 @@ void PlayerController::Update(std::vector<SDL_Event> events)
 				switch (e.cbutton.button)
 				{
 				case SDL_CONTROLLER_BUTTON_A:
-					mPawn->AButton();
+					mPawn->AButtonDown();
 					break;
 				case SDL_CONTROLLER_BUTTON_B:
-					mPawn->BButton();
+					mPawn->BButtonDown();
 					break;
 				case SDL_CONTROLLER_BUTTON_X:
-					mPawn->XButton();
+					mPawn->XButtonDown();
 					break;
 				case SDL_CONTROLLER_BUTTON_Y:
-					mPawn->YButton();
+					mPawn->YButtonDown();
 					break;
 				case SDL_CONTROLLER_BUTTON_DPAD_UP:
 					mPawn->Up();
@@ -72,59 +73,109 @@ void PlayerController::Update(std::vector<SDL_Event> events)
 					break;
 				}
 			}
-		}
-
-		else if (e.type == SDL_KEYDOWN)
-		{
-			switch (e.key.keysym.sym)
+			else if (e.type == SDL_CONTROLLERBUTTONUP)
 			{
-			case SDLK_UP:
-				mPawn->Up();
-				break;
-			case SDLK_DOWN:
-				mPawn->Down();
-				break;
-			case SDLK_LEFT:
-				mPawn->Left();
-				break;
-			case SDLK_RIGHT:
-				mPawn->Right();
-				break;
-			case SDLK_RETURN:
-				mPawn->AButton();
-				break;
-			case SDLK_BACKSPACE:
-				mPawn->BButton();
-				break;
-			case SDLK_ESCAPE:
-				mPawn->Start();
-				break;
-			case SDLK_TAB:
-				mPawn->Select();
-				break;
-			default:
-				break;
+				switch (e.cbutton.button)
+				{
+				case SDL_CONTROLLER_BUTTON_A:
+					mPawn->AButtonUp();
+					break;
+				case SDL_CONTROLLER_BUTTON_B:
+					mPawn->BButtonUp();
+					break;
+				case SDL_CONTROLLER_BUTTON_X:
+					mPawn->XButtonUp();
+					break;
+				case SDL_CONTROLLER_BUTTON_Y:
+					mPawn->YButtonUp();
+					break;
+				}
 			}
 		}
 
-		else if (e.type == SDL_MOUSEMOTION)
+		if (mControllerID == 0)
 		{
-			mPawn->MousePosition(e.motion.x, e.motion.y);
-
-			mPawn->LookRight(e.motion.xrel);
-			mPawn->LookUp(e.motion.yrel);
-		}
-
-		else if (e.type == SDL_MOUSEBUTTONDOWN)
-		{
-			switch (e.button.button)
+			if (e.type == SDL_KEYDOWN)
 			{
-			case SDL_BUTTON_LEFT:
-				mPawn->LeftTrigger(1.0f);
-				break;
-			case SDL_BUTTON_RIGHT:
-				mPawn->RightTrigger(1.0f);
-				break;
+				switch (e.key.keysym.sym)
+				{
+				case SDLK_UP:
+					mPawn->Up();
+					break;
+				case SDLK_DOWN:
+					mPawn->Down();
+					break;
+				case SDLK_LEFT:
+					mPawn->Left();
+					break;
+				case SDLK_RIGHT:
+					mPawn->Right();
+					break;
+				case SDLK_RETURN:
+					mPawn->AButtonDown();
+					break;
+				case SDLK_BACKSPACE:
+					mPawn->BButtonDown();
+					break;
+				case SDLK_ESCAPE:
+					mPawn->Start();
+					break;
+				case SDLK_TAB:
+					mPawn->Select();
+					break;
+				default:
+					break;
+				}
+			}
+
+			else if (e.type == SDL_KEYUP)
+			{
+				switch (e.key.keysym.sym)
+				{
+				case SDLK_RETURN:
+					mPawn->AButtonUp();
+					break;
+				case SDLK_BACKSPACE:
+					mPawn->BButtonUp();
+					break;
+				default:
+					break;
+				}
+			}
+
+			else if (e.type == SDL_MOUSEMOTION)
+			{
+				//Adjust raw mouse position to screen space
+				mPawn->MousePosition((float)(e.motion.x / (float)SCREEN_SCALE - ((SCREEN_WIDTH / SCREEN_SCALE) / 2)),
+					(float)(SCREEN_HEIGHT / (float)SCREEN_SCALE - (e.motion.y / (float)SCREEN_SCALE + SCREEN_HEIGHT / (float)SCREEN_SCALE / 2)));
+
+				mPawn->LookRight(e.motion.xrel);
+				mPawn->LookUp(e.motion.yrel);
+			}
+
+			else if (e.type == SDL_MOUSEBUTTONDOWN)
+			{
+				switch (e.button.button)
+				{
+				case SDL_BUTTON_LEFT:
+					mPawn->MouseLeftClick();
+					break;
+				case SDL_BUTTON_RIGHT:
+					mPawn->MouseRightClick();
+					break;
+				}
+			}
+			else if (e.type == SDL_MOUSEBUTTONUP)
+			{
+				switch (e.button.button)
+				{
+				case SDL_BUTTON_LEFT:
+					mPawn->MouseLeftUnClick();
+					break;
+				case SDL_BUTTON_RIGHT:
+					mPawn->MouseRightUnClick();
+					break;
+				}
 			}
 		}
 	}
@@ -135,10 +186,13 @@ void PlayerController::Update(std::vector<SDL_Event> events)
 		if (currentKeyStates[SDL_SCANCODE_D]) { mPawn->MoveRight(1.0f); }
 		if (currentKeyStates[SDL_SCANCODE_W]) { mPawn->MoveUp(1.0f); }
 		if (currentKeyStates[SDL_SCANCODE_S]) { mPawn->MoveUp(-1.0f); }
-		if (currentKeyStates[SDL_SCANCODE_SPACE]) { mPawn->AButton(); }
-		if (currentKeyStates[SDL_SCANCODE_2]) { mPawn->BButton(); }
-		if (currentKeyStates[SDL_SCANCODE_3]) { mPawn->XButton(); }
-		if (currentKeyStates[SDL_SCANCODE_4]) { mPawn->YButton(); }
+		if (currentKeyStates[SDL_SCANCODE_SPACE]) { mPawn->AButtonDown(); }
+		if (currentKeyStates[SDL_SCANCODE_1]) { mPawn->BButtonDown(); }
+		if (currentKeyStates[SDL_SCANCODE_2]) { mPawn->XButtonDown(); }
+		if (currentKeyStates[SDL_SCANCODE_3]) { mPawn->YButtonDown(); }
+		if (currentKeyStates[SDL_SCANCODE_LSHIFT]) { mPawn->BButtonDown(); }
+		if (currentKeyStates[SDL_SCANCODE_R]) { mPawn->XButtonDown(); }
+		if (currentKeyStates[SDL_SCANCODE_F]) { mPawn->YButtonDown(); }
 		if (currentKeyStates[SDL_SCANCODE_Q]) { mPawn->LeftBumper(); }
 		if (currentKeyStates[SDL_SCANCODE_E]) { mPawn->RightBumper(); }
 	}

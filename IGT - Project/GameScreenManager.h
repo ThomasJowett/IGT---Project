@@ -26,6 +26,12 @@ private:
 	GameScreenManager(SCREENS startScreen);
 
 	GameScreen* mCurrentScreen;
+
+	SCREENS mScreenToChange;
+
+	bool mDelayedScreenChange = false;
+
+	void DelayedScreenChange(SCREENS newScreen);
 };
 
 #endif //_GAMESCREENMANAGER_H

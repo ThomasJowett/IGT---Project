@@ -6,6 +6,8 @@
 #include "TextRender.h"
 #include "Shader.h"
 #include "Camera.h"
+#include "Button.h"
+#include "ButtonManager.h"
 
 class GameScreenMenu : public GameScreen
 {
@@ -16,6 +18,9 @@ public:
 	virtual void Render()override;
 	virtual void Update(float deltaTime, std::vector<SDL_Event> e)override;
 private:
+
+	std::vector<Button*> mButtons;
+	ButtonManager* mMenuButtonsManager;
 };
 
 #endif // !_GAMESCREENMENU_H

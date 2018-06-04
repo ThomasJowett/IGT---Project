@@ -91,7 +91,7 @@ bool Box2D::ContainsPoint(Vector2D point)
 {
 	std::vector<Vector2D> corners = GetCorners();
 	Vector2D axis1 = (corners[1] - corners[0]).GetNormalized();
-	Vector2D axis2 = (corners[2] - corners[0]).GetNormalized();
+	Vector2D axis2 = (corners[3] - corners[0]).GetNormalized();
 
 	float min, max;
 	ProjectCornersOnAxis(axis1, corners, min, max);

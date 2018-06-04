@@ -92,7 +92,7 @@ bool InitSDL()
 		}
 
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINES);
-		//glEnable(GL_DEPTH_TEST);
+		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -112,8 +112,10 @@ bool InitSDL()
 					std::cerr << "Warning: Unable to open game controller! SDL Error: " << SDL_GetError();
 				}
 			}
+			
 		}
-	
+
+		SDL_ShowCursor(SDL_DISABLE);
 	}
 	return true;
 }

@@ -125,12 +125,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="ButtonManager.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="GameScreenManager.cpp" />
     <ClCompile Include="GameScreenMenu.cpp" />
+    <ClCompile Include="GameScreenLevel1.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenuPawn.cpp" />
     <ClCompile Include="Matrix.cpp" />
@@ -154,6 +157,8 @@
     <Library Include="SDL\SDL2_ttf.lib" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="ButtonManager.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Collision.h" />
@@ -163,6 +168,7 @@
     <ClInclude Include="GameScreen.h" />
     <ClInclude Include="GameScreenManager.h" />
     <ClInclude Include="GameScreenMenu.h" />
+    <ClInclude Include="GameScreenLevel1.h" />
     <ClInclude Include="iComponents.h" />
     <ClInclude Include="iInput.h" />
     <ClInclude Include="MainMenuPawn.h" />

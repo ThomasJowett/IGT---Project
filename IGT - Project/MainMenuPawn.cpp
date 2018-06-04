@@ -2,7 +2,8 @@
 
 #include <iostream>
 
-MainMenuPawn::MainMenuPawn()
+MainMenuPawn::MainMenuPawn(std::vector<Button*> buttons, GameObject* cursor)
+	:mButtons(buttons), mCursor(cursor)
 {
 }
 
@@ -11,62 +12,98 @@ MainMenuPawn::~MainMenuPawn()
 {
 }
 
-void MainMenuPawn::MoveUp(float scale)
-{
-	std::cout << scale << std::endl;
-}
-
-void MainMenuPawn::MoveRight(float scale)
-{
-	std::cout << scale << std::endl;
-}
-
-void MainMenuPawn::LookUp(float scale)
-{
-	//std::cout << scale << std::endl;
-}
-
-void MainMenuPawn::LookRight(float scale)
-{
-	//std::cout << scale << std::endl;
-}
-
 void MainMenuPawn::Up()
 {
-	std::cout << "up\n";
+	mCursor->SetActive(false);
+
+	mButtons[mCurrentButton]->OnUnHovered();
+	mCurrentButton--;
+
+	if (mCurrentButton < 0)
+		mCurrentButton = mButtons.size() -1;
+
+	mButtons[mCurrentButton]->OnHovered();
 }
 
 void MainMenuPawn::Down()
 {
-	std::cout << "down\n";
+	mCursor->SetActive(false);
+
+	mButtons[mCurrentButton]->OnUnHovered();
+	mCurrentButton++;
+
+	if (mCurrentButton > mButtons.size() -1)
+		mCurrentButton = 0;
+	mButtons[mCurrentButton]->OnHovered();
 }
 
 void MainMenuPawn::Start()
 {
-	std::cout << "start\n";
+	//std::cout << "start\n";
 }
 
 void MainMenuPawn::Select()
 {
-	std::cout << "select\n";
+	//std::cout << "select\n";
 }
 
-void MainMenuPawn::AButton()
+void MainMenuPawn::AButtonDown()
 {
-	std::cout << "A\n";
+	mCursor->SetActive(false);
+	mButtons[mCurrentButton]->OnClicked();
 }
 
-void MainMenuPawn::RightTrigger(float scale)
+void MainMenuPawn::AButtonUp()
 {
-	std::cout << scale << std::endl;
+	mButtons[mCurrentButton]->Execute();
 }
 
-void MainMenuPawn::LeftTrigger(float scale)
+void MainMenuPawn::BButtonDown()
 {
-	std::cout << scale << std::endl;
+	mCursor->SetActive(false);
 }
 
-void MainMenuPawn::MousePosition(int x, int y)
+void MainMenuPawn::BButtonUp()
 {
-	//std::cout << x <<" "<< y << std::endl;
 }
+
+void MainMenuPawn::MousePosition(float x, float y)
+{
+	mMousePosition = Vector2D(x, y);
+	for (int i = 0; i < mButtons.size(); i++)
+	{
+		if (mButtons[i]->GetCollisionBox()->ContainsPoint(mMousePosition))
+		{
+			if (mLeftMouseDown)
+			{
+				mButtons[i]->OnClicked();
+			}
+			else
+			{
+				mButtons[i]->OnHovered();
+			}
+			mCurrentButton = i;
+		}
+		else
+		{
+			mButtons[i]->OnUnHovered();
+		}
+	}
+
+	mCursor->SetActive(true);
+	mCursor->GetTransform()->mPosition = Vector3D(x + 8, y - 8, 100);
+}
+
+void MainMenuPawn::MouseLeftClick()
+{
+	mLeftMouseDown = true;
+	MousePosition(mMousePosition.x, mMousePosition.y);
+}
+
+void MainMenuPawn::MouseLeftUnClick()
+{
+	mLeftMouseDown = false;
+	if (mButtons[mCurrentButton]->GetCollisionBox()->ContainsPoint(mMousePosition))
+		mButtons[mCurrentButton]->Execute();
+}
+

@@ -41,9 +41,10 @@ void TextRender::Render(Shader * shader)
 bool TextRender::UpdateText(const char * text, SDL_Colour textColour, int x, int y, ALIGNMENT alignment)
 {
 	if (!mFont)
-		LoadFont("Fonts/nokiafc22.ttf", 24);
+		LoadFont("Fonts/nokiafc22.ttf", 8);
 
 	if (text != mText || alignment != mAlignment 
+		|| x != mOffset.x || y != mOffset.y
 		|| textColour.r != mTextColour.r 
 		|| textColour.g != mTextColour.g
 		|| textColour.b != mTextColour.b
@@ -51,6 +52,7 @@ bool TextRender::UpdateText(const char * text, SDL_Colour textColour, int x, int
 	{
 		mText = text;
 		mTextColour = textColour;
+		mOffset = Vector2D( x,y );
 		mAlignment = alignment;
 	}
 	else
@@ -123,4 +125,24 @@ bool TextRender::UpdateText(const char * text, SDL_Colour textColour, int x, int
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	return true;
+}
+
+bool TextRender::UpdateText(const char * text)
+{
+	return UpdateText(text, mTextColour, mOffset.x, mOffset.y, mAlignment);
+}
+
+bool TextRender::UpdateText(SDL_Colour textColour)
+{
+	return UpdateText(mText, textColour, mOffset.x, mOffset.y, mAlignment);
+}
+
+bool TextRender::UpdateText(int x, int y)
+{
+	return UpdateText(mText, mTextColour, x, y, mAlignment);
+}
+
+bool TextRender::UpdateText(ALIGNMENT alignment)
+{
+	return UpdateText(mText, mTextColour, mOffset.x, mOffset.y, alignment);
 }

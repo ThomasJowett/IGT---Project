@@ -21,10 +21,10 @@ public:
 	void Start()override {}
 	void Select()override {}
 
-	void AButton()override {}
-	void BButton()override {}
-	void XButton()override {}
-	void YButton()override {}
+	void AButtonDown()override {}
+	void BButtonDown()override {}
+	void XButtonDown()override {}
+	void YButtonDown()override {}
 
 	void RightTrigger(float scale) {}
 	void LeftTrigger(float scale) {}
@@ -33,6 +33,11 @@ public:
 	void LeftBumper()override {}
 
 	void MousePosition(int x, int y) {}
+
+	virtual void MouseLeftClick()override {}
+	virtual void MouseLeftUnClick()override {}
+	virtual void MouseRightClick()override {}
+	virtual void MouseRightUnClick()override {}
 
 private:
 	GameObject* mCharacter;

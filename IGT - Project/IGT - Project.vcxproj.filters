@@ -90,6 +90,15 @@
     <ClCompile Include="PlayerPawn.cpp">
       <Filter>PlayerControllers</Filter>
     </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScreenLevel1.cpp">
+      <Filter>GameScreens</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="SDL\SDL2.lib">
@@ -198,6 +207,15 @@
     </ClInclude>
     <ClInclude Include="PlayerPawn.h">
       <Filter>PlayerControllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScreenLevel1.h">
+      <Filter>GameScreens</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

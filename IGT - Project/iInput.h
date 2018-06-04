@@ -3,29 +3,38 @@
 class iInput
 {
 public:
-	virtual void MoveUp(float scale) = 0;
-	virtual void MoveRight(float scale) = 0;
-	virtual void LookUp(float scale) = 0;
-	virtual void LookRight(float scale) = 0;
+	virtual void MoveUp(float scale) {}
+	virtual void MoveRight(float scale) {}
+	virtual void LookUp(float scale) {}
+	virtual void LookRight(float scale) {}
 	
-	virtual void AButton() = 0;
-	virtual void BButton() = 0;
-	virtual void XButton() = 0;
-	virtual void YButton() = 0;
+	virtual void AButtonDown() {}
+	virtual void AButtonUp() {}
+	virtual void BButtonDown() {}
+	virtual void BButtonUp() {}
+	virtual void XButtonDown() {}
+	virtual void XButtonUp() {}
+	virtual void YButtonDown() {}
+	virtual void YButtonUp() {}
 
-	virtual void RightTrigger(float scale) = 0;
-	virtual void LeftTrigger(float scale) = 0;
+	virtual void RightTrigger(float scale) {}
+	virtual void LeftTrigger(float scale) {}
 
-	virtual void RightBumper() = 0;
-	virtual void LeftBumper() = 0;
+	virtual void RightBumper() {}
+	virtual void LeftBumper() {}
 	
-	virtual void Start() = 0;
-	virtual void Select() = 0;
+	virtual void Start() {}
+	virtual void Select() {}
 
-	virtual void Up() = 0;
-	virtual void Down() = 0;
-	virtual void Left() = 0;
-	virtual void Right() = 0;
+	virtual void Up() {}
+	virtual void Down() {}
+	virtual void Left() {}
+	virtual void Right() {}
 
-	virtual void MousePosition(int x, int y) = 0;
+	virtual void MousePosition(float x, float y) {}
+
+	virtual void MouseLeftClick() {}
+	virtual void MouseLeftUnClick() {}
+	virtual void MouseRightClick() {}
+	virtual void MouseRightUnClick() {}
 };

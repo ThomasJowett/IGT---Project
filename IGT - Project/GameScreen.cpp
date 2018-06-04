@@ -35,6 +35,7 @@ void GameScreen::Update(float deltaTime, std::vector<SDL_Event> events)
 	
 	for (auto gameObject : mGameObjects)
 	{
-		gameObject->Update(deltaTime);
+		if(gameObject->GetActive())
+			gameObject->Update(deltaTime);
 	}
 }

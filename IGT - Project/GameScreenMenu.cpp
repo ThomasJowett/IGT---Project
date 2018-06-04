@@ -10,15 +10,19 @@
 #include "MainMenuPawn.h"
 #include "PlayerPawn.h"
 #include "ObjectPool.h"
+#include "ButtonManager.h"
 
 #include <iostream>
 #include <utility>
 
 GameScreenMenu::GameScreenMenu() : GameScreen()
 {
+	mMenuButtonsManager = new ButtonManager();
 	GLuint texture = Texture2D::LoadTexture2D("SpriteSheets/GoblinSprites.png");
-	//SoundManager::GetInstance()->PlayMusic("Music/Diesel.ogg");
+	SoundManager::GetInstance()->PlayMusic("Music/Diesel.ogg");
 	GLuint backgroundTexture = Texture2D::LoadTexture2D("Images/BackGround.png");
+	GLuint ButtonTexture = Texture2D::LoadTexture2D("Images/ButtonsMenu.png");
+	GLuint CursorTexture = Texture2D::LoadTexture2D("Images/Cursor.png");
 
 	mShader = new BasicShader();
 	
@@ -34,38 +38,67 @@ GameScreenMenu::GameScreenMenu() : GameScreen()
 	gameObject->AddComponent<Sprite>(backgroundTexture, 480, 272);
 	mGameObjects.push_back(gameObject);
 
-	transform = new Transform(Vector3D(0, 0, 0), 0, Vector2D(1, 1));
-
-	gameObject = new GameObject("Test", transform);
 	
-	gameObject->AddComponent<Box2D>(transform, 40, 20, Vector2D(0,0));
-	gameObject->AddComponent<Sprite>(texture, 48, 48, 3, 4);
-	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
 
+	Button* button = new Button(ButtonTexture, { 0,25 }, { 100, 20 }, "Play");
+	button->mButtonID = 0;
+	button->AddObserver(mMenuButtonsManager);
+	mButtons.push_back(button);
+
+	button = new Button(ButtonTexture, { 0,0 }, { 100, 20 }, "Options");
+	button->mButtonID = 1;
+	button->AddObserver(mMenuButtonsManager);
+	mButtons.push_back(button);
+
+	button = new Button(ButtonTexture, { 0,-25 }, { 100, 20 }, "Quit");
+	button->mButtonID = 2;
+	button->AddObserver(mMenuButtonsManager);
+	mButtons.push_back(button);
+
+	transform = new Transform();
+	gameObject = new GameObject("Cursor", transform);
+	gameObject->AddComponent<Sprite>(CursorTexture, 16, 16);
 	mGameObjects.push_back(gameObject);
-	
-	gameObject->GetComponent<TextRender>()->UpdateText("Player1", { 0,0,0 }, 0, 15, CENTER);
 
-	transform = new Transform(Vector3D(0, 0, 0), 0, Vector2D(1, 1));
-
-	gameObject = new GameObject("Test2", transform);
-	gameObject->AddComponent<Sprite>(texture, 48, 48, 3, 4);
-	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
-	gameObject->AddComponent<Box2D>(transform, 40, 20, Vector2D(0, 0));
-	mGameObjects.push_back(gameObject);
-	gameObject->GetComponent<TextRender>()->UpdateText("Player2", { 0,0,0 }, 0, 15, CENTER);
-
-	mCamera.Orthographic(Vector3D(0, 0, 100), SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4, 0, 1000);
-
-	//MainMenuPawn* menuController = new MainMenuPawn();
-	PlayerPawn* characterController = new PlayerPawn(mGameObjects[1]);
-	PlayerPawn* character2Controller = new PlayerPawn(mGameObjects[2]);
-
-	PlayerController* playerController = new PlayerController(0, characterController);
+	MainMenuPawn* menuController = new MainMenuPawn(mButtons, gameObject);
+	PlayerController* playerController = new PlayerController(0, menuController);
 	mPlayerControllers.push_back(playerController);
 
-	PlayerController* playerController2 = new PlayerController(1, character2Controller);
-	mPlayerControllers.push_back(playerController2);
+
+
+
+	//transform = new Transform(Vector3D(0, 0, 0), 0, Vector2D(1, 1));
+	//
+	//gameObject = new GameObject("Test", transform);
+	//
+	//gameObject->AddComponent<Box2D>(transform, 40, 20, Vector2D(0,0));
+	//gameObject->AddComponent<Sprite>(texture, 48, 48, 3, 4);
+	//gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
+	//
+	//mGameObjects.push_back(gameObject);
+	//
+	//gameObject->GetComponent<TextRender>()->UpdateText("ABXY", { 0,0,0 }, 0, 15, CENTER);
+	//
+	//transform = new Transform(Vector3D(0, 0, 0), 0, Vector2D(1, 1));
+	//
+	//gameObject = new GameObject("Test2", transform);
+	//gameObject->AddComponent<Sprite>(texture, 48, 48, 3, 4);
+	//gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
+	//gameObject->AddComponent<Box2D>(transform, 40, 20, Vector2D(0, 0));
+	//mGameObjects.push_back(gameObject);
+	//gameObject->GetComponent<TextRender>()->UpdateText("Player2", { 0,0,0 }, 0, 15, CENTER);
+
+	mCamera.Orthographic(Vector3D(0, 0, 100), SCREEN_WIDTH / SCREEN_SCALE, SCREEN_HEIGHT/ SCREEN_SCALE, 0, 1000);
+
+	
+	//PlayerPawn* characterController = new PlayerPawn(mGameObjects[1]);
+	//PlayerPawn* character2Controller = new PlayerPawn(mGameObjects[2]);
+	//
+	//PlayerController* playerController = new PlayerController(0, characterController);
+	//mPlayerControllers.push_back(playerController);
+	//
+	//PlayerController* playerController2 = new PlayerController(1, character2Controller);
+	//mPlayerControllers.push_back(playerController2);
 
 	//ObjectPool<GameObject> pool(mGameObjects[1]);
 	//mGameObjects.push_back(pool.GetObjectA());
@@ -80,7 +113,13 @@ void GameScreenMenu::Render()
 	GameScreen::Render();
 	for (auto gameObject : mGameObjects)
 	{
-		gameObject->Render(mShader);
+		if (gameObject->GetActive())
+			gameObject->Render(mShader);
+	}
+
+	for (auto button : mButtons)
+	{
+		button->Render(mShader);
 	}
 }
 

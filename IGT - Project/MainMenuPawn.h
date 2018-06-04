@@ -1,16 +1,15 @@
 #pragma once
 #include "iInput.h"
+#include "Button.h"
+#include <vector>
+#include "GameObject.h"
+
 class MainMenuPawn :
 	public iInput
 {
 public:
-	MainMenuPawn();
+	MainMenuPawn(std::vector<Button*> buttons, GameObject* cursor);
 	~MainMenuPawn();
-
-	void MoveUp(float scale) override;
-	void MoveRight(float scale)override;
-	void LookUp(float scale);
-	void LookRight(float scale);
 
 	void Up()override;
 	void Down()override;
@@ -20,17 +19,25 @@ public:
 	void Start()override;
 	void Select()override;
 
-	void AButton()override;
-	void BButton()override {}
-	void XButton()override {}
-	void YButton()override {}
+	void AButtonDown()override;
+	void AButtonUp()override;
+	void BButtonDown()override;
+	void BButtonUp()override;
 
-	void RightTrigger(float scale);
-	void LeftTrigger(float scale);
+	void MousePosition(float x, float y)override;
 
-	void RightBumper()override {}
-	void LeftBumper()override {}
+	virtual void MouseLeftClick()override;
+	virtual void MouseLeftUnClick()override;
+	virtual void MouseRightClick()override {}
+	virtual void MouseRightUnClick()override {}
 
-	void MousePosition(int x, int y);
+private:
+	std::vector<Button*> mButtons;
+	GameObject* mCursor;
+
+	int mCurrentButton;
+
+	bool mLeftMouseDown = false;
+	Vector2D mMousePosition;
 };
 
