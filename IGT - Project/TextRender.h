@@ -15,7 +15,7 @@ enum ALIGNMENT
 class TextRender: public iRenderable
 {
 public:
-	TextRender(const char* path, int pointSize);
+	TextRender(GameObject* parent, const char* path, int pointSize);
 	~TextRender();
 
 	void LoadFont(const char* path, int pointSize);
@@ -28,6 +28,8 @@ public:
 
 	const char* GetText() { return mText; }
 
+	Component* Clone()override;
+
 private:
 	TTF_Font * mFont;
 	const char* mText;
@@ -37,6 +39,9 @@ private:
 
 	GLuint mTextureID;
 	Mesh* mMesh;
+
+	const char* mPath;
+	int mPointSize;
 };
 
 #endif // !_TEXTRENDER_H

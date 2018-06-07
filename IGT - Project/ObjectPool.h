@@ -2,24 +2,27 @@
 #define _OBJECTPOOL_H
 
 #include <list>
+#include <array>
+#include <memory>
 
 template<class T>
 class ObjectPool
 {
 public:
 	ObjectPool(T* prefab)
-		:mPrefab(prefab){}
+		:mPrefab(prefab)
+	{
+	}
 	~ObjectPool()
 	{
 		CleanUp();
 	}
 
-	T* GetObject()
+	T* AquireObject()
 	{
 		if (mObjects.empty())
 		{
-			return new T(*mPrefab);
-			//TODO:make it so that this returns a deep copy rather than the same thing
+			return new T (*mPrefab);
 		}
 		else
 		{
@@ -29,7 +32,7 @@ public:
 		}
 	}
 
-	void ReturnObject(T* object)
+	void ReturnObjectToPool(T* object)
 	{
 		mObjects.push_back(object);
 	}
@@ -46,7 +49,7 @@ public:
 	{
 		for (int i = 0; i < numberToLoad; i++)
 		{
-			ReturnObject(GetObject());
+			ReturnObjectToPool(AquireObject());
 		}
 	}
 

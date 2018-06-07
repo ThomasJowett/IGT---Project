@@ -2,7 +2,8 @@
 #include <iostream>
 #include "Commons.h"
 
-TextRender::TextRender(const char * path, int pointSize)
+TextRender::TextRender(GameObject* parent, const char * path, int pointSize)
+	:iRenderable(parent)
 {
 	if (TTF_Init() != 0)
 	{
@@ -20,6 +21,9 @@ TextRender::~TextRender()
 
 void TextRender::LoadFont(const char * path, int pointSize)
 {
+	mPath = path;
+	mPointSize = pointSize;
+
 	mFont = TTF_OpenFont(path, pointSize);
 	if (mFont == NULL)
 	{
@@ -145,4 +149,9 @@ bool TextRender::UpdateText(int x, int y)
 bool TextRender::UpdateText(ALIGNMENT alignment)
 {
 	return UpdateText(mText, mTextColour, mOffset.x, mOffset.y, alignment);
+}
+
+Component * TextRender::Clone()
+{
+	return new TextRender(nullptr, mPath, mPointSize);
 }

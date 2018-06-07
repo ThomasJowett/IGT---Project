@@ -8,10 +8,16 @@
 #include "Transform.h"
 #include "iComponents.h"
 
+class Component;
+class iUpdateable;
+class iRenderable;
+
 class GameObject
 {
 public:
 	GameObject(std::string name, Transform* transform);
+	GameObject(const GameObject& );
+	GameObject();
 	~GameObject();
 
 	void Update(float deltaTime);
@@ -20,13 +26,20 @@ public:
 	template<class ComponentType, typename ... Args>
 	void AddComponent(Args&& ... params);
 
+	void AddComponent(Component*);
+
+	template<class ComponentType>
+	bool RemoveComponent();
+
 	template <typename ComponentType>
-	ComponentType* GetComponent();
+	ComponentType* GetComponent() const;
 
 	bool GetActive() {return mIsActive; }
 	void SetActive(bool isActive) { mIsActive = isActive; }
 
-	Transform* GetTransform() { return mTransform; }
+	Transform* GetTransform() const { return mTransform; }
+
+	void Clone(GameObject & clonedObject) const;
 private:
 	std::string mName;
 	Transform * mTransform;
@@ -41,16 +54,40 @@ private:
 template<class ComponentType, typename ...Args>
 inline void GameObject::AddComponent(Args && ...params)
 {
-	mComponents.emplace_back(std::make_unique<ComponentType>(std::forward<Args>(params)...));
+	mComponents.emplace_back(std::make_unique<ComponentType>(this, std::forward<Args>(params)...));
 
 	if (iRenderable * renderableComp = dynamic_cast<iRenderable*>(mComponents.back().get()))
 		mRenderableComponents.push_back(renderableComp);
 	else if (iUpdateable * updateableComp = dynamic_cast<iUpdateable*>(mComponents.back().get()))
 		mUpdateableComponents.push_back(updateableComp);
+
+	mComponents.back().get()->SetParent(this);
+}
+
+template<class ComponentType>
+inline bool GameObject::RemoveComponent()
+{
+	if(mComponents.empty())
+		return false;
+
+	for (std::vector< std::unique_ptr<Component>> ::iterator it = mComponents.begin(); it != mComponents.end(); ++it)
+	{
+		if (dynamic_cast<ComponentType*>((*it).get()))
+		{
+			if (dynamic_cast<iRenderable*>((*it).get()))
+			{
+
+			}
+			mComponents.erase(it);
+			return true;
+		}
+	}
+
+	return false;
 }
 
 template<typename ComponentType>
-inline ComponentType * GameObject::GetComponent()
+inline ComponentType * GameObject::GetComponent() const
 {
 	for (auto && component : mComponents)
 	{

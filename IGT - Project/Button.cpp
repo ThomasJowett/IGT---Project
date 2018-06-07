@@ -4,11 +4,10 @@
 
 Button::Button(GLuint texture, Vector2D position, Vector2D size, const char* text)
 {
-	mSprite = new Sprite(texture, size.x, size.y, 1, 3);
-	mTransform = new Transform();
-	mTransform->mPosition = Vector3D(position.x, position.y, 10);
-	mCollisionBox = new Box2D(mTransform, size.x, size.y, { 0,0 });
-	mText = new TextRender("Fonts/nokiafc22.ttf", 8);
+	mSprite = new Sprite(this, texture, size.x, size.y, 1, 3);
+	GetTransform()->mPosition = Vector3D(position.x, position.y, 10);
+	mCollisionBox = new Box2D(this, size.x, size.y, { 0,0 });
+	mText = new TextRender(this, "Fonts/nokiafc22.ttf", 8);
 	mText->UpdateText(text, { 255,255,255 }, 0, -size.y/3, CENTER);
 }
 
@@ -16,7 +15,6 @@ Button::~Button()
 {
 	delete mSprite;
 	delete mCollisionBox;
-	delete mTransform;
 }
 
 void Button::OnClicked()
@@ -31,7 +29,8 @@ void Button::OnClicked()
 
 void Button::Execute()
 {
-	Notify(ButtonEvent::ON_CLICKED, mButtonID);
+	if(mButtonStatus == CLICKED)
+		Notify(ButtonEvent::ON_CLICKED, mButtonID);
 }
 
 void Button::OnHovered()
@@ -58,8 +57,8 @@ void Button::OnUnHovered()
 
 void Button::Render(Shader * shader)
 {
-	mTransform->UpdateWorldMatrix();
-	shader->UpdateWorld(mTransform);
+	GetTransform()->UpdateWorldMatrix();
+	shader->UpdateWorld(GetTransform());
 
 	mSprite->Render(shader);
 	mText->Render(shader);

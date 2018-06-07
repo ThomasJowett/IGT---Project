@@ -19,7 +19,7 @@ GameScreenMenu::GameScreenMenu() : GameScreen()
 {
 	mMenuButtonsManager = new ButtonManager();
 	GLuint texture = Texture2D::LoadTexture2D("SpriteSheets/GoblinSprites.png");
-	SoundManager::GetInstance()->PlayMusic("Music/Diesel.ogg");
+	//SoundManager::GetInstance()->PlayMusic("Music/Diesel.ogg");
 	GLuint backgroundTexture = Texture2D::LoadTexture2D("Images/BackGround.png");
 	GLuint ButtonTexture = Texture2D::LoadTexture2D("Images/ButtonsMenu.png");
 	GLuint CursorTexture = Texture2D::LoadTexture2D("Images/Cursor.png");
@@ -37,7 +37,6 @@ GameScreenMenu::GameScreenMenu() : GameScreen()
 	gameObject = new GameObject("Backgorund", transform);
 	gameObject->AddComponent<Sprite>(backgroundTexture, 480, 272);
 	mGameObjects.push_back(gameObject);
-
 	
 
 	Button* button = new Button(ButtonTexture, { 0,25 }, { 100, 20 }, "Play");
@@ -64,18 +63,14 @@ GameScreenMenu::GameScreenMenu() : GameScreen()
 	PlayerController* playerController = new PlayerController(0, menuController);
 	mPlayerControllers.push_back(playerController);
 
+	transform = new Transform(Vector3D(-100, 0, 0), 0, Vector2D(1, 1));
+	gameObject = new GameObject("Test", transform);
 
-
-
-	//transform = new Transform(Vector3D(0, 0, 0), 0, Vector2D(1, 1));
-	//
-	//gameObject = new GameObject("Test", transform);
-	//
-	//gameObject->AddComponent<Box2D>(transform, 40, 20, Vector2D(0,0));
-	//gameObject->AddComponent<Sprite>(texture, 48, 48, 3, 4);
-	//gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
-	//
-	//mGameObjects.push_back(gameObject);
+	gameObject->AddComponent<Box2D>(40, 20, Vector2D(0,0));
+	gameObject->AddComponent<Sprite>(texture, 48, 48, 3, 4);
+	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
+	
+	mGameObjects.push_back(gameObject);
 	//
 	//gameObject->GetComponent<TextRender>()->UpdateText("ABXY", { 0,0,0 }, 0, 15, CENTER);
 	//
@@ -100,8 +95,9 @@ GameScreenMenu::GameScreenMenu() : GameScreen()
 	//PlayerController* playerController2 = new PlayerController(1, character2Controller);
 	//mPlayerControllers.push_back(playerController2);
 
-	//ObjectPool<GameObject> pool(mGameObjects[1]);
-	//mGameObjects.push_back(pool.GetObjectA());
+	ObjectPool<GameObject> pool(mGameObjects[2]);
+	mGameObjects.push_back(pool.AquireObject());
+	//mGameObjects[3]->RemoveComponent<TextRender>();
 }
 
 GameScreenMenu::~GameScreenMenu()
@@ -126,7 +122,7 @@ void GameScreenMenu::Render()
 void GameScreenMenu::Update(float deltaTime, std::vector<SDL_Event> events)
 {
 	GameScreen::Update(deltaTime, events);
-	//mGameObjects[0]->GetTransform()->mRotation += 0.05;
+	mGameObjects[2]->GetTransform()->mRotation += 0.05;
 	//mGameObjects[1]->GetTransform()->mRotation -= 0.05;
 	//mGameObjects[0]->GetTransform()->mPosition.x += 0.1f;
 	//mGameObjects[1]->GetTransform()->mPosition.x -= 0.1f;

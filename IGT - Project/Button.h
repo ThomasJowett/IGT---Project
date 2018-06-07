@@ -16,7 +16,7 @@ enum Status
 enum class ButtonEvent { ON_HOVERED, ON_CLICKED};
 
 class Button
-	:public Subject<ButtonEvent, int>
+	:public Subject<ButtonEvent, int> , public GameObject
 {
 public:
 	Button(GLuint texture, Vector2D position, Vector2D size, const char* text);
@@ -36,7 +36,6 @@ public:
 private:
 	Sprite* mSprite;
 	Box2D* mCollisionBox;
-	Transform* mTransform;
 	TextRender* mText;
 
 	Status mButtonStatus = NORMAL;

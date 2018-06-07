@@ -3,24 +3,38 @@
 #define _ICOMPONENTS_H
 
 #include "Shader.h"
+#include "GameObject.h"
+
+class GameObject;
 
 class Component
 {
 public:
-	Component() = default;
+	Component(GameObject* parent)
+		:mParent(parent){}
 	virtual ~Component() = default;
+
+	virtual Component* Clone() = 0;
+
+	void SetParent(GameObject* parent) { mParent = parent; }
+	GameObject* GetParent() const { return mParent; }
+private:
+	GameObject * mParent;
 };
 
 class iUpdateable : public Component
 {
 public:
-	
+	iUpdateable(GameObject* parent)
+		:Component(parent) {}
 	virtual void Update(float deltaTime) = 0;
 };
 
 class iRenderable : public Component
 {
 public:
+	iRenderable(GameObject* parent)
+		:Component(parent) {}
 	virtual void Render(Shader* shader) = 0;
 };
 

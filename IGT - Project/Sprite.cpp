@@ -2,8 +2,10 @@
 #include <iostream>
 
 //Creates a tile sheet from the texture
-Sprite::Sprite(GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight, int tilesWide, int tilesTall)
-	: mTextureID(TextureID)
+Sprite::Sprite(GameObject* parent, GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight, int tilesWide, int tilesTall)
+	: mTextureID(TextureID), mSingleSpriteWidth(singleSpriteWidth), mSingleSpriteHeight(singleSpriteHeight),
+	mTilesTall(tilesTall), mTilesWide(tilesWide),
+	iRenderable(parent)
 {
 	unsigned int indices[] =
 	{
@@ -37,9 +39,13 @@ Sprite::Sprite(GLuint TextureID, float singleSpriteWidth, float singleSpriteHeig
 }
 
 //Creates a single tile from the texture
-Sprite::Sprite(GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight)
-	: mTextureID(TextureID)
+Sprite::Sprite(GameObject* parent, GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight)
+	: mTextureID(TextureID), mSingleSpriteWidth(singleSpriteWidth), mSingleSpriteHeight(singleSpriteHeight),
+	iRenderable(parent) 
 {
+	mTilesTall = 1;
+	mTilesWide = 1;
+
 	unsigned int indices[] =
 	{
 		0,1,2,
@@ -86,4 +92,9 @@ void Sprite::Render(Shader* shader)
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+Component * Sprite::Clone()
+{
+	return new Sprite(nullptr, mTextureID, mSingleSpriteWidth, mSingleSpriteHeight, mTilesWide, mTilesTall);
 }

@@ -115,8 +115,8 @@ std::vector<Vector2D> Box2D::GetCorners()
 	float halfHeight = mHeight / 2;
 
 	std::vector<Vector2D> corners;
-	Matrix4x4 translateWorld = Matrix4x4::Translate(mTransform->mPosition);
-	Matrix4x4 rotation = Matrix4x4::RotateZ(mTransform->mRotation);
+	Matrix4x4 translateWorld = Matrix4x4::Translate(GetParent()->GetTransform()->mPosition);
+	Matrix4x4 rotation = Matrix4x4::RotateZ(GetParent()->GetTransform()->mRotation);
 	Matrix4x4 offset = Matrix4x4::Translate(Vector3D(mOffset.x, mOffset.y, 0));
 
 	Matrix4x4 translateCorner = Matrix4x4::Translate(Vector3D(-halfWidth, -halfHeight, 0));
@@ -133,6 +133,11 @@ std::vector<Vector2D> Box2D::GetCorners()
 	corners.push_back((translateWorld*rotation*offset*translateCorner).ToVector2D());
 
 	return corners;
+}
+
+Component * Box2D::Clone()
+{
+	return new Box2D(nullptr, mWidth, mHeight, mOffset);
 }
 
 std::vector<Vector2D> Collider::GetAxis(std::vector<Vector2D> box1Corners, std::vector<Vector2D> box2Corners)
@@ -191,4 +196,9 @@ bool Circle2D::ContainsPoint(Vector2D point)
 {
 	Vector2D distance = point - GetCentre();
 	return (distance.SqrMagnitude() > mRadius * mRadius);
+}
+
+Component * Circle2D::Clone()
+{
+	return new Circle2D(nullptr, mRadius, mOffset);
 }

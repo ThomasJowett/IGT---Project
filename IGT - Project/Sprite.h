@@ -9,17 +9,22 @@ class Sprite :
 	public iRenderable
 {
 public:
-	Sprite(GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight, int tilesWide, int tilesTall);
-	Sprite(GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight);
+	Sprite(GameObject* parent, GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight, int tilesWide, int tilesTall);
+	Sprite(GameObject* parent, GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight);
 	~Sprite();
 
 	void Render(Shader* shader) override;
 
 	void SetCurrentFrame(unsigned int frame) { mCurrentFrame = frame; }
 	unsigned int GetCurrentFrame() { std::cout << mCurrentFrame;  return mCurrentFrame; }
+
+	Component* Clone()override;
 private:
 	GLuint mTextureID;
 	std::vector<Mesh*> mTiles;
 	unsigned int mCurrentFrame;
+
+	float mSingleSpriteWidth, mSingleSpriteHeight;
+	int mTilesWide, mTilesTall;
 };
 
