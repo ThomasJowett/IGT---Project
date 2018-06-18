@@ -21,7 +21,7 @@ class Collider :
 public:
 	Collider(GameObject* parent, ColliderType type, Vector2D offset)
 		: mType(type), mOffset(offset), Component(parent) {}
-	~Collider() {}
+	virtual ~Collider() {}
 
 	virtual Component* Clone() override = 0;
 		
@@ -43,6 +43,7 @@ protected:
 
 	std::vector<Vector2D> GetAxis(std::vector<Vector2D> box1Corners, std::vector<Vector2D> box2Corners);
 	void ProjectCornersOnAxis(Vector2D axis, std::vector<Vector2D> corners, float & min, float & max);
+	void ProjectCircleOnAxis(Vector2D axis, Circle2D circle, float & min, float & max);
 	bool TestAxis(Vector2D axis, float minA, float maxA, float minB, float maxB, Vector2D & mtvAxis, float & mtvDistance);
 	bool BoxBox(Box2D* box1, Box2D* box2, Vector2D & normal, float& penetrationDepth);
 	bool BoxCircle(Box2D* box, Circle2D* circle, Vector2D & normal, float& penetrationDepth);

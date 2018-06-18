@@ -99,6 +99,9 @@
     <ClCompile Include="GameScreenLevel1.cpp">
       <Filter>GameScreens</Filter>
     </ClCompile>
+    <ClCompile Include="RigidBody2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="SDL\SDL2.lib">
@@ -216,6 +219,9 @@
     </ClInclude>
     <ClInclude Include="GameScreenLevel1.h">
       <Filter>GameScreens</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBody2D.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

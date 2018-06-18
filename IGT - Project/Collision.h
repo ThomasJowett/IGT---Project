@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include <vector>
 #include "Collider.h"
+#include <memory.h>
 
 struct Contact
 {
@@ -50,10 +51,13 @@ namespace Collision
 	{
 		for (Contact contact : contacts)
 		{
+			std::cout << contact.first->GetName() << std::endl;
+			std::cout << contact.second->GetName() << std::endl;
 			//resolve interpenetration
 
 			//resolve velocities
 		}
+		std::cout << std::endl;
 	}
 };
 

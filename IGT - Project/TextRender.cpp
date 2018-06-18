@@ -17,6 +17,7 @@ TextRender::~TextRender()
 {
 	glDeleteTextures(1, &mTextureID);
 	if (mMesh) delete mMesh;
+	TTF_CloseFont(mFont);
 }
 
 void TextRender::LoadFont(const char * path, int pointSize)
@@ -153,5 +154,7 @@ bool TextRender::UpdateText(ALIGNMENT alignment)
 
 Component * TextRender::Clone()
 {
-	return new TextRender(nullptr, mPath, mPointSize);
+	TextRender* newText = new TextRender(nullptr, mPath, mPointSize);
+	newText->UpdateText(mText, mTextColour, mOffset.x, mOffset.y, mAlignment);
+	return newText;
 }

@@ -1,7 +1,6 @@
 #ifndef _GAMEOBJECT_H
 #define _GAMEOBJECT_H
 
-#include <string>
 #include <vector>
 #include <memory>
 
@@ -15,10 +14,10 @@ class iRenderable;
 class GameObject
 {
 public:
-	GameObject(std::string name, Transform* transform);
+	GameObject(const char* name, Transform* transform);
 	GameObject(const GameObject& );
 	GameObject();
-	~GameObject();
+	virtual ~GameObject();
 
 	void Update(float deltaTime);
 	void Render(Shader* shader);
@@ -39,9 +38,11 @@ public:
 
 	Transform* GetTransform() const { return mTransform; }
 
+	const char* GetName() { return mName; }
+
 	void Clone(GameObject & clonedObject) const;
 private:
-	std::string mName;
+	const char* mName;
 	Transform * mTransform;
 	bool mIsActive;
 
@@ -57,9 +58,13 @@ inline void GameObject::AddComponent(Args && ...params)
 	mComponents.emplace_back(std::make_unique<ComponentType>(this, std::forward<Args>(params)...));
 
 	if (iRenderable * renderableComp = dynamic_cast<iRenderable*>(mComponents.back().get()))
+	{
 		mRenderableComponents.push_back(renderableComp);
+	}
 	else if (iUpdateable * updateableComp = dynamic_cast<iUpdateable*>(mComponents.back().get()))
+	{
 		mUpdateableComponents.push_back(updateableComp);
+	}
 
 	mComponents.back().get()->SetParent(this);
 }
@@ -76,7 +81,7 @@ inline bool GameObject::RemoveComponent()
 		{
 			if (dynamic_cast<iRenderable*>((*it).get()))
 			{
-
+				
 			}
 			mComponents.erase(it);
 			return true;
@@ -84,6 +89,8 @@ inline bool GameObject::RemoveComponent()
 	}
 
 	return false;
+
+	//TODO: find better solution for getting a component that dosen't use dynamic_cast
 }
 
 template<typename ComponentType>

@@ -10,6 +10,9 @@ MainMenuPawn::MainMenuPawn(std::vector<Button*> buttons, GameObject* cursor)
 
 MainMenuPawn::~MainMenuPawn()
 {
+	if (mCursor) delete mCursor;
+
+	mButtons.clear();
 }
 
 void MainMenuPawn::Up()

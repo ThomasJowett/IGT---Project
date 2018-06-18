@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include <vector>
+#include <memory>
 #include "GameObject.h"
 #include "Shader.h"
 #include "Camera.h"
@@ -12,15 +13,15 @@ class GameScreen
 {
 public:
 	GameScreen();
-	~GameScreen();
+	virtual ~GameScreen();
 
 	virtual void Render();
-	virtual void Update(float deltaTime, std::vector<SDL_Event> e);
+	virtual void Update(float deltaTime, std::vector<SDL_Event> events);
 	//std::vector<GameObject*> GetAllGameObjectsWithTag(std::string tag)const;
 
 protected:
 	//SceneNode * Root;
-	std::vector<GameObject*>mGameObjects;
+	std::vector<std::unique_ptr<GameObject>>mGameObjects;
 	std::vector<PlayerController*>mPlayerControllers;
 
 	Shader* mShader;

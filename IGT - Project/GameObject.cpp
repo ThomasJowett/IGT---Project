@@ -1,7 +1,7 @@
 #include "GameObject.h"
 
 
-GameObject::GameObject(std::string name, Transform* transform)
+GameObject::GameObject(const char* name, Transform* transform)
 	:mName(name), mTransform(transform)
 {
 	mIsActive = true;
@@ -25,6 +25,29 @@ GameObject::GameObject()
 
 GameObject::~GameObject()
 {
+	if (mTransform) delete mTransform;
+
+	//delete mRenderableComponents[0];
+
+	//for (auto component : mRenderableComponents)
+	//{
+	//	if (component) delete component;
+	//}
+
+	//for (std::vector< iRenderable* >::iterator it = mRenderableComponents.begin(); it != mRenderableComponents.end(); it++)
+	//{
+	//	if(*it) delete (*it);
+	//	*it = nullptr;
+	//}
+	mRenderableComponents.clear();
+
+	//for (std::vector< iUpdateable* >::iterator it = mUpdateableComponents.begin(); it != mUpdateableComponents.end(); it++)
+	//{
+	//	if (*it) delete (*it);
+	//	*it = nullptr;
+	//}
+	mUpdateableComponents.clear();
+
 	mComponents.clear();
 }
 
@@ -52,9 +75,9 @@ void GameObject::AddComponent(Component * component)
 	mComponents.emplace_back(component);
 
 	if (iRenderable * renderableComp = dynamic_cast<iRenderable*>(component))
-		mRenderableComponents.push_back(renderableComp);
+		mRenderableComponents.emplace_back(renderableComp);
 	else if (iUpdateable * updateablecomp = dynamic_cast<iUpdateable*>(component))
-		mUpdateableComponents.push_back(updateablecomp);
+		mUpdateableComponents.emplace_back(updateablecomp);
 
 	component->SetParent(this);
 }
@@ -65,7 +88,7 @@ void GameObject::Clone(GameObject & clonedObject) const
 	clonedObject.GetTransform()->mRotation = mTransform->mRotation;
 	clonedObject.GetTransform()->mScale = mTransform->mScale;
 
-	clonedObject.mName = mName + "copy";
+	clonedObject.mName = mName;
 
 	for (auto && component : mComponents)
 	{

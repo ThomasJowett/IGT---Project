@@ -32,3 +32,11 @@ struct Vertex
 	Vertex(const Vector3D& position, const Vector2D& texCoord)
 		:mPosition(position), mTexCoord(texCoord) {}
 };
+
+struct PhysicsMaterial
+{
+	float drag;
+	float elasticity;
+	float friction;
+	float angularDrag;
+};

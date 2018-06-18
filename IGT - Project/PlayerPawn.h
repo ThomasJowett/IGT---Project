@@ -18,7 +18,7 @@ public:
 	void Left()override {}
 	void Right()override {}
 
-	void Start()override {}
+	void Start()override;
 	void Select()override {}
 
 	void AButtonDown()override {}
@@ -41,5 +41,7 @@ public:
 
 private:
 	GameObject* mCharacter;
+
+	float mWalkSpeed;
 };
 

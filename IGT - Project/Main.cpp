@@ -1,10 +1,11 @@
 
 
 #include <SDL.h>
-
+#include <SDL_ttf.h>
 #include <SDL_image.h>
 #include <iostream>
 #include <vector>
+#include <Windows.h>
 
 #include "Constants.h"
 #include "GameScreenManager.h"
@@ -23,9 +24,11 @@ void CloseSDL();
 bool Update();
 void Render();
 
+bool AnotherInstance();
+
 int main(int argc, char* args[])
 {
-	if (InitSDL())
+	if (!AnotherInstance() && InitSDL())
 	{
 		bool quit = false;
 		gOldTime = SDL_GetTicks();
@@ -35,7 +38,6 @@ int main(int argc, char* args[])
 			quit = Update();
 			Render();
 		}
-
 	}
 
 	CloseSDL();
@@ -142,6 +144,7 @@ void CloseSDL()
 	//Quit SDL subsystems
 	IMG_Quit();
 	SDL_Quit();
+	TTF_Quit();
 }
 
 bool Update()
@@ -192,4 +195,13 @@ void Render()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+//Checks if another instance of the game is already running
+bool AnotherInstance()
+{
+	HANDLE ourMutex;
+	ourMutex = CreateMutex(NULL, true, "Use_a_different_string_here_for_each_program_48161-XYZZY");
+	if (GetLastError() == ERROR_ALREADY_EXISTS)
+		return true;
 
+	return false;
+}

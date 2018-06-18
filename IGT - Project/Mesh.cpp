@@ -36,6 +36,7 @@ Mesh::Mesh(IndexedModel model)
 Mesh::~Mesh()
 {
 	glDeleteVertexArrays(1, &mVertexArrayObject);
+	glDeleteBuffers(NUM_BUFFERS, mVertexArrayBuffers);
 }
 
 void Mesh::Draw()

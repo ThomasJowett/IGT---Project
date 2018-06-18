@@ -4,6 +4,8 @@
 
 using namespace::std;
 
+static std::vector<GLuint> mTextureIDs;
+
 GLuint Texture2D::LoadTexture2D(const char* path)
 {	
 	GLuint ID;
@@ -35,7 +37,10 @@ GLuint Texture2D::LoadTexture2D(const char* path)
 
 	//clear the surface we don't need it anymore
 	SDL_FreeSurface(surface);
+
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	mTextureIDs.push_back(ID);
 
 	return ID;
 }
@@ -74,5 +79,27 @@ GLuint Texture2D::LoadTexture2DRaw(const char * path, int width, int height)
 	delete[] tempTextureData; // Clear up the data - we don't need it anymore
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+	mTextureIDs.push_back(ID);
+
 	return ID;
+}
+
+void Texture2D::DeleteTexture(GLuint TexID)
+{
+	glDeleteTextures(1, &TexID);
+	for (int i = 0; i <  mTextureIDs.size(); i++)
+	{
+		if (mTextureIDs[i] = TexID)
+			mTextureIDs.erase(mTextureIDs.end() + i);
+	}
+}
+
+void Texture2D::DeleteAllTextures()
+{
+	for (GLuint TexID : mTextureIDs)
+	{
+		glDeleteTextures(1, &TexID);
+	}
+
+	mTextureIDs.clear();
 }

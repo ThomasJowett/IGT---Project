@@ -9,7 +9,7 @@ class MainMenuPawn :
 {
 public:
 	MainMenuPawn(std::vector<Button*> buttons, GameObject* cursor);
-	~MainMenuPawn();
+	virtual ~MainMenuPawn();
 
 	void Up()override;
 	void Down()override;

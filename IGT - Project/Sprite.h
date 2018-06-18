@@ -16,7 +16,7 @@ public:
 	void Render(Shader* shader) override;
 
 	void SetCurrentFrame(unsigned int frame) { mCurrentFrame = frame; }
-	unsigned int GetCurrentFrame() { std::cout << mCurrentFrame;  return mCurrentFrame; }
+	unsigned int GetCurrentFrame() { return mCurrentFrame; }
 
 	Component* Clone()override;
 private:

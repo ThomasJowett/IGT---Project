@@ -49,10 +49,38 @@ bool Collider::BoxBox(Box2D* box1, Box2D* box2, Vector2D & normal, float & penet
 
 bool Collider::BoxCircle(Box2D* box, Circle2D* circle, Vector2D & normal, float & penetrationDepth)
 {
-	Vector2D seperation = circle->GetCentre() - box->GetCentre();
-	Vector2D closestPoint;
+	float radius = circle->GetRadius();
+	
+	std::vector<Vector2D> boxCorners = box->GetCorners();
 
-	return false;
+	Vector2D axis1 = (boxCorners[1] - boxCorners[0]).GetNormalized();
+	Vector2D axis2 = (boxCorners[3] - boxCorners[0]).GetNormalized();
+
+	float minA, maxA, minB, maxB;
+	float mtvDistance = FLT_MAX;
+	Vector2D mtvAxis;
+
+	ProjectCornersOnAxis(axis1, boxCorners, minA, maxA);
+	ProjectCircleOnAxis(axis1, *circle, minB, maxB);
+	if (!TestAxis(axis1, minA, maxA, minB, maxB, mtvAxis, mtvDistance))
+		return false;
+
+	ProjectCornersOnAxis(axis2, boxCorners, minA, maxA);
+	ProjectCircleOnAxis(axis2, *circle, minB, maxB);
+	if (!TestAxis(axis2, minA, maxA, minB, maxB, mtvAxis, mtvDistance))
+		return false;
+	
+	Vector2D seperation = (circle->GetCentre() - box->GetCentre()).GetNormalized();
+	ProjectCornersOnAxis(seperation, boxCorners, minA, maxA);
+	ProjectCircleOnAxis(seperation, *circle, minB, maxB);
+	
+	if (!TestAxis(seperation, minA, maxA, minB, maxB, mtvAxis, mtvDistance))
+		return false;
+
+	normal = mtvAxis.GetNormalized();
+	penetrationDepth = (float)sqrt(mtvDistance);
+
+	return true;
 }
 
 bool Collider::CircleCircle(Circle2D* circle1, Circle2D* circle2, Vector2D & normal, float & penetrationDepth)
@@ -168,6 +196,14 @@ void Collider::ProjectCornersOnAxis(Vector2D axis, std::vector<Vector2D> corners
 			max = dotProduct;
 		}
 	}
+}
+
+void Collider::ProjectCircleOnAxis(Vector2D axis, Circle2D circle, float & min, float & max)
+{
+	float dotProduct = Vector2D::Dot(axis, circle.GetCentre());
+
+	min = dotProduct - circle.GetRadius();
+	max = dotProduct + circle.GetRadius();
 }
 
 bool Circle2D::IntersectsCollider(Collider * otherCollider, Vector2D & normal, float & penetrationDepth)

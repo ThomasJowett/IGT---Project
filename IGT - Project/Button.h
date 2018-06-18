@@ -29,8 +29,6 @@ public:
 
 	Box2D* GetCollisionBox() { return mCollisionBox; }
 
-	void Render(Shader* shader);
-
 	int mButtonID;
 
 private:

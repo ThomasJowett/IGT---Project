@@ -21,3 +21,7 @@ void PlayerPawn::MoveRight(float scale)
 {
 	mCharacter->GetTransform()->mPosition.x += scale;
 }
+
+void PlayerPawn::Start()
+{
+}

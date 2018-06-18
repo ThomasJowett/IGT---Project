@@ -19,7 +19,6 @@ public:
 	virtual void Update(float deltaTime, std::vector<SDL_Event> e)override;
 private:
 
-	std::vector<Button*> mButtons;
 	ButtonManager* mMenuButtonsManager;
 };
 

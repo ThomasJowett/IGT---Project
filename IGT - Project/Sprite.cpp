@@ -75,6 +75,7 @@ Sprite::~Sprite()
 	for (std::vector< Mesh* >::iterator it = mTiles.begin(); it != mTiles.end(); ++it)
 	{
 		delete (*it);
+		(*it) = nullptr;
 	}
 	mTiles.clear();
 }
