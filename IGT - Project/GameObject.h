@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <memory>
+#include <algorithm>
 
 #include "Transform.h"
 #include "iComponents.h"
@@ -19,8 +20,8 @@ public:
 	GameObject();
 	virtual ~GameObject();
 
-	void Update(float deltaTime);
-	void Render(Shader* shader);
+	virtual void Update(float deltaTime);
+	virtual void Render(Shader* shader);
 
 	template<class ComponentType, typename ... Args>
 	void AddComponent(Args&& ... params);
@@ -79,9 +80,23 @@ inline bool GameObject::RemoveComponent()
 	{
 		if (dynamic_cast<ComponentType*>((*it).get()))
 		{
-			if (dynamic_cast<iRenderable*>((*it).get()))
+			bool found = false;
+				auto pos = std::find(mRenderableComponents.begin(), mRenderableComponents.end(), (*it).get());
+				if (pos != mRenderableComponents.end())
+				{
+					auto index = std::distance(mRenderableComponents.begin(), pos);
+					mRenderableComponents.erase(mRenderableComponents.begin() + index);
+					found = true;
+				}
+
+			if (!found)
 			{
-				
+				auto pos = std::find(mUpdateableComponents.begin(), mUpdateableComponents.end(), (*it).get());
+				if (pos != mUpdateableComponents.end())
+				{
+					auto index = std::distance(mUpdateableComponents.begin(), pos);
+					mUpdateableComponents.erase(mUpdateableComponents.begin() + index);
+				}
 			}
 			mComponents.erase(it);
 			return true;
