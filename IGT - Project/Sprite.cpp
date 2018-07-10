@@ -95,6 +95,18 @@ void Sprite::Render(Shader* shader)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+void Sprite::SetCurrentFrame(unsigned int frame)
+{
+	if (frame < mTiles.size())
+	{
+		mCurrentFrame = frame;
+	}
+	else
+	{
+		std::cerr << "Error: Frame out of bounds in " << GetParent()->GetName() << std::endl;
+	}
+}
+
 Component * Sprite::Clone()
 {
 	return new Sprite(nullptr, mTextureID, mSingleSpriteWidth, mSingleSpriteHeight, mTilesWide, mTilesTall);

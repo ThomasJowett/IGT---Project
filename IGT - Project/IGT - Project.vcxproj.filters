@@ -34,6 +34,9 @@
     <Filter Include="Managers">
       <UniqueIdentifier>{545804f8-44fd-48c5-8d0c-c0772554182a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AnimationStates">
+      <UniqueIdentifier>{4f4f279f-4032-48b3-96a7-5aa9a5d5b980}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -99,11 +102,14 @@
     <ClCompile Include="GameScreenLevel1.cpp">
       <Filter>GameScreens</Filter>
     </ClCompile>
-    <ClCompile Include="RigidBody2D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DungeonManager.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Animator.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBody2D.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -223,11 +229,14 @@
     <ClInclude Include="GameScreenLevel1.h">
       <Filter>GameScreens</Filter>
     </ClInclude>
-    <ClInclude Include="RigidBody2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DungeonManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Animator.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBody2D.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

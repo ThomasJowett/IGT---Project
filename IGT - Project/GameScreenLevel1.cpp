@@ -29,6 +29,7 @@ GameScreenLevel1::GameScreenLevel1()
 	gameObject->AddComponent<Box2D>(48, 48, Vector2D());
 	mGameObjects.emplace_back(gameObject);
 	PlayerPawn* characterController = new PlayerPawn(gameObject);
+	PlayerAnimation = new Animation(6, 3, 0.2f, gameObject->GetComponent<Sprite>());
 
 	//player 2
 	transform = new Transform(Vector3D(100, 0, 0), 0, Vector2D(1, 1));
@@ -80,4 +81,6 @@ void GameScreenLevel1::Update(float deltaTime, std::vector<SDL_Event> events)
 	}
 
 	Collision::ResolveCollisions(Collision::DetectCollisions(collisionObejcts));
+
+	PlayerAnimation->Update(deltaTime);
 }

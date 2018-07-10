@@ -15,8 +15,10 @@ public:
 
 	void Render(Shader* shader) override;
 
-	void SetCurrentFrame(unsigned int frame) { mCurrentFrame = frame; }
+	void SetCurrentFrame(unsigned int frame);
 	unsigned int GetCurrentFrame() { return mCurrentFrame; }
+
+	unsigned int GetNumberOfTiles() { return mTiles.size(); }
 
 	Component* Clone()override;
 private:

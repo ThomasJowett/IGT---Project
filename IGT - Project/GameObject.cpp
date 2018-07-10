@@ -27,25 +27,8 @@ GameObject::~GameObject()
 {
 	if (mTransform) delete mTransform;
 
-	//delete mRenderableComponents[0];
-
-	//for (auto component : mRenderableComponents)
-	//{
-	//	if (component) delete component;
-	//}
-
-	//for (std::vector< iRenderable* >::iterator it = mRenderableComponents.begin(); it != mRenderableComponents.end(); it++)
-	//{
-	//	if(*it) delete (*it);
-	//	*it = nullptr;
-	//}
 	mRenderableComponents.clear();
 
-	//for (std::vector< iUpdateable* >::iterator it = mUpdateableComponents.begin(); it != mUpdateableComponents.end(); it++)
-	//{
-	//	if (*it) delete (*it);
-	//	*it = nullptr;
-	//}
 	mUpdateableComponents.clear();
 
 	mComponents.clear();
