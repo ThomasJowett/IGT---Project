@@ -111,6 +111,9 @@
     <ClCompile Include="RigidBody2D.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="AnimatorCharacter.cpp">
+      <Filter>AnimationStates</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="SDL\SDL2.lib">
@@ -237,6 +240,9 @@
     </ClInclude>
     <ClInclude Include="RigidBody2D.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimatorCharacter.h">
+      <Filter>AnimationStates</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,7 @@
 #pragma once
 #include "iInput.h"
 #include "GameObject.h"
+#include "RigidBody2D.h"
 class PlayerPawn :
 	public iInput
 {
@@ -43,5 +44,7 @@ private:
 	GameObject* mCharacter;
 
 	float mWalkSpeed;
+
+	RigidBody2D* mRigidBody;
 };
 

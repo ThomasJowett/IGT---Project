@@ -1,33 +1,5 @@
 #include "Animator.h"
 
-
-
-Animator::Animator(GameObject* parent, int animationCount)
-	:iUpdateable(parent)
-{
-	mSprite = GetParent()->GetComponent<Sprite>();
-
-	for (int i = 0; i < animationCount; i++)
-	{
-
-	}
-}
-
-
-Animator::~Animator()
-{
-}
-
-void Animator::Update(float deltatime)
-{
-	mCurrentAnimation->Update(deltatime);
-}
-
-Component * Animator::Clone()
-{
-	return new Animator(nullptr, 0);
-}
-
 Animation::Animation(int startFrame, int frameCount, float holdTime, Sprite* sprite)
 {	
 	mSprite = sprite;

@@ -5,6 +5,9 @@
 PlayerPawn::PlayerPawn(GameObject* character)
 	:mCharacter(character)
 {
+	mRigidBody = character->GetComponent<RigidBody2D>();
+
+	mWalkSpeed = 300;
 }
 
 
@@ -14,12 +17,14 @@ PlayerPawn::~PlayerPawn()
 
 void PlayerPawn::MoveUp(float scale)
 {
-	mCharacter->GetTransform()->mPosition.y += scale;
+	mRigidBody->AddForce(Vector2D(0.0f, scale*mWalkSpeed));
+	//mCharacter->GetTransform()->mPosition.y += scale;
 }
 
 void PlayerPawn::MoveRight(float scale)
 {
-	mCharacter->GetTransform()->mPosition.x += scale;
+	mRigidBody->AddForce(Vector2D(scale*mWalkSpeed, 0.0f));
+	//mCharacter->GetTransform()->mPosition.x += scale;
 }
 
 void PlayerPawn::Start()

@@ -66,8 +66,6 @@ inline void GameObject::AddComponent(Args && ...params)
 	{
 		mUpdateableComponents.push_back(updateableComp);
 	}
-
-	mComponents.back().get()->SetParent(this);
 }
 
 template<class ComponentType>
