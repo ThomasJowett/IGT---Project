@@ -34,7 +34,7 @@ public:
 	template <typename ComponentType>
 	ComponentType* GetComponent() const;
 
-	bool GetActive() {return mIsActive; }
+	bool GetActive() const {return mIsActive; }
 	void SetActive(bool isActive) { mIsActive = isActive; }
 
 	Transform* GetTransform() const { return mTransform; }

@@ -38,6 +38,10 @@ GameScreenLevel1::GameScreenLevel1()
 	mGameObjects.emplace_back(gameObject);
 	PlayerPawn* characterController = new PlayerPawn(gameObject);
 
+	gameObject = new GameObject(*mGameObjects.back());
+
+	mGameObjects.emplace_back(gameObject);
+
 	//player 2
 	transform = new Transform(Vector3D(100, 0, 0), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Player 2", transform);
@@ -65,6 +69,8 @@ GameScreenLevel1::GameScreenLevel1()
 	gameObject->AddComponent<AnimatorSnake>();
 	
 	mGameObjects.emplace_back(gameObject);
+
+	
 
 	PlayerController* playerController = new PlayerController(0, characterController);
 	mPlayerControllers.push_back(playerController);

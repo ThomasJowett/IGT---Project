@@ -11,7 +11,6 @@ GameObject::GameObject(const GameObject & prefab)
 {
 	mName = "Uninitialised";
 	mTransform = new Transform();
-	mIsActive = true;
 	
 	prefab.Clone(*this);
 }
@@ -34,6 +33,7 @@ GameObject::~GameObject()
 	mComponents.clear();
 }
 
+//Updates all the objects updateable components
 void GameObject::Update(float deltaTime)
 {
 	for (auto component : mUpdateableComponents)
@@ -42,6 +42,7 @@ void GameObject::Update(float deltaTime)
 	}
 }
 
+//Displays all the objects renderable components on the screen
 void GameObject::Render(Shader* shader)
 {
 	mTransform->UpdateWorldMatrix();
@@ -53,6 +54,7 @@ void GameObject::Render(Shader* shader)
 	}
 }
 
+//Adds a component if the component has already been constructed
 void GameObject::AddComponent(Component * component)
 {
 	mComponents.emplace_back(component);
@@ -65,6 +67,7 @@ void GameObject::AddComponent(Component * component)
 	component->SetParent(this);
 }
 
+//Set the x scale of the transform of the game object 
 void GameObject::SetFacing(FACING facing)
 {
 	if (mFacing != facing)
@@ -74,6 +77,7 @@ void GameObject::SetFacing(FACING facing)
 	}
 }
 
+//takes the object passed by reference and sets all its members to be equal to this gameobject
 void GameObject::Clone(GameObject & clonedObject) const
 {
 	clonedObject.GetTransform()->mPosition = mTransform->mPosition;
@@ -81,6 +85,8 @@ void GameObject::Clone(GameObject & clonedObject) const
 	clonedObject.GetTransform()->mScale = mTransform->mScale;
 
 	clonedObject.mName = mName;
+	clonedObject.mIsActive = mIsActive;
+	clonedObject.mFacing = mFacing;
 
 	for (auto && component : mComponents)
 	{

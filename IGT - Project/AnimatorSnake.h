@@ -24,5 +24,6 @@ public:
 	virtual void Enter(SnakeAnimstates state);
 	virtual void During(SnakeAnimstates state, float deltaTime);
 	virtual void Exit(SnakeAnimstates state);
-};
 
+	void CreateAnimations()override;
+};

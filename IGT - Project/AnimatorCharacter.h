@@ -24,6 +24,7 @@ public:
 	virtual void During(CharacterAnimStates state, float deltaTime);
 	virtual void Exit(CharacterAnimStates state);
 
+	void CreateAnimations()override;
 private:
 	RigidBody2D * mRigidbody;
 };

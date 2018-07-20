@@ -5,11 +5,8 @@
 AnimatorSnake::AnimatorSnake(GameObject* parent)
 	:Animator(parent)
 {
-	mAnimations.emplace_back(std::make_unique<Animation>(0, 10, 0.1, mSprite));//Idle
-	mAnimations.emplace_back(std::make_unique<Animation>(10, 10, 0.1, mSprite));//turn
-	mAnimations.emplace_back(std::make_unique<Animation>(20, 10, 0.1, mSprite));//left
-	mAnimations.emplace_back(std::make_unique<Animation>(30, 10, 0.1, mSprite));//attack
-	mAnimations.emplace_back(std::make_unique<Animation>(40, 10, 0.1, mSprite));//death
+	if(GetParent())
+		CreateAnimations();
 }
 
 
@@ -89,4 +86,13 @@ void AnimatorSnake::During(SnakeAnimstates state, float deltaTime)
 
 void AnimatorSnake::Exit(SnakeAnimstates state)
 {
+}
+
+void AnimatorSnake::CreateAnimations()
+{
+	mAnimations.emplace_back(std::make_unique<Animation>(0, 10, 0.1, mSprite));//Idle
+	mAnimations.emplace_back(std::make_unique<Animation>(10, 10, 0.1, mSprite));//turn
+	mAnimations.emplace_back(std::make_unique<Animation>(20, 10, 0.1, mSprite));//left
+	mAnimations.emplace_back(std::make_unique<Animation>(30, 10, 0.1, mSprite));//attack
+	mAnimations.emplace_back(std::make_unique<Animation>(40, 10, 0.1, mSprite));//death
 }

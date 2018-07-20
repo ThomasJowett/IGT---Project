@@ -5,14 +5,12 @@
 AnimatorCharacter::AnimatorCharacter(GameObject* parent)
 	:Animator(parent)
 {
-	mRigidbody = GetParent()->GetComponent<RigidBody2D>();
+	if (GetParent())
+	{
+		mRigidbody = GetParent()->GetComponent<RigidBody2D>();
 
-	//Create all the animations
-	
-	mAnimations.emplace_back(std::make_unique<Animation>(0, 3, 0.1, mSprite));//Forward
-	mAnimations.emplace_back(std::make_unique<Animation>(3, 3, 0.1, mSprite));//Left
-	mAnimations.emplace_back(std::make_unique<Animation>(6, 3, 0.1, mSprite));//Right
-	mAnimations.emplace_back(std::make_unique<Animation>(9, 3, 0.1, mSprite));//Back
+		CreateAnimations();
+	}
 }
 
 
@@ -95,4 +93,13 @@ void AnimatorCharacter::Exit(CharacterAnimStates state)
 	default:
 		break;
 	}
+}
+
+//Create all the animations
+void AnimatorCharacter::CreateAnimations()
+{
+	mAnimations.emplace_back(std::make_unique<Animation>(0, 3, 0.1, mSprite));//Forward
+	mAnimations.emplace_back(std::make_unique<Animation>(3, 3, 0.1, mSprite));//Left
+	mAnimations.emplace_back(std::make_unique<Animation>(6, 3, 0.1, mSprite));//Right
+	mAnimations.emplace_back(std::make_unique<Animation>(9, 3, 0.1, mSprite));//Back
 }

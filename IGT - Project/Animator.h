@@ -29,7 +29,8 @@ public:
 	Animator(GameObject* parent)
 		:iUpdateable(parent)
 	{
-		mSprite = GetParent()->GetComponent<Sprite>();
+		if(GetParent())
+			mSprite = GetParent()->GetComponent<Sprite>();
 	}
 	virtual ~Animator() 
 	{ 
@@ -62,6 +63,13 @@ public:
 
 	virtual void Update(float deltaTime) override
 	{
+		//If the animator has been cloned then it will not have had a parent during construction
+		if (!mSprite)
+		{
+			mSprite = GetParent()->GetComponent<Sprite>();
+			CreateAnimations();
+		}
+
 		mTimeInCurrentState += deltaTime;
 		During(mCurrentState, deltaTime);
 	}
@@ -74,6 +82,8 @@ public:
 	{
 		return (state == mCurrentState);
 	}
+
+	virtual void CreateAnimations() {};
 
 private:
 	T mCurrentState;
