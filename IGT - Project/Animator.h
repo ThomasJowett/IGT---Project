@@ -9,6 +9,8 @@ class Animation
 public:
 	Animation(int startFrame, int frameCount, float holdTime, Sprite* sprite);
 	void Update(float deltaTime);
+
+	float GetAnimationLength();
 private:
 	void Advance();
 	Sprite* mSprite;
@@ -35,7 +37,7 @@ public:
 	}
 
 	virtual void Enter(T state) = 0;
-	virtual void During(T state) = 0;
+	virtual void During(T state, float deltaTime) = 0;
 	virtual void Exit(T state) = 0;
 
 	void ChangeState(T state)
@@ -60,13 +62,8 @@ public:
 
 	virtual void Update(float deltaTime) override
 	{
-		if (mCurrentState)
-		{
-			mTimeInCurrentState += deltaTime;
-			During(mCurrentState);
-		}
-
-		mAnimations[(int)mCurrentState]->Update(deltaTime);
+		mTimeInCurrentState += deltaTime;
+		During(mCurrentState, deltaTime);
 	}
 
 	float GetTimeInCurrentState()const { return mTimeInCurrentState; }

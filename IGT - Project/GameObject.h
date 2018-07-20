@@ -41,11 +41,14 @@ public:
 
 	const char* GetName() { return mName; }
 
+	void SetFacing(FACING facing);
+
 	void Clone(GameObject & clonedObject) const;
 private:
 	const char* mName;
 	Transform * mTransform;
 	bool mIsActive;
+	FACING mFacing;
 
 	std::vector < std::unique_ptr<Component>> mComponents;
 

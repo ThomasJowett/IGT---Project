@@ -34,7 +34,7 @@
     <Filter Include="Managers">
       <UniqueIdentifier>{545804f8-44fd-48c5-8d0c-c0772554182a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="AnimationStates">
+    <Filter Include="Animators">
       <UniqueIdentifier>{4f4f279f-4032-48b3-96a7-5aa9a5d5b980}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -112,7 +112,10 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="AnimatorCharacter.cpp">
-      <Filter>AnimationStates</Filter>
+      <Filter>Animators</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimatorSnake.cpp">
+      <Filter>Animators</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -242,7 +245,10 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="AnimatorCharacter.h">
-      <Filter>AnimationStates</Filter>
+      <Filter>Animators</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimatorSnake.h">
+      <Filter>Animators</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

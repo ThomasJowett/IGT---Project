@@ -65,6 +65,15 @@ void GameObject::AddComponent(Component * component)
 	component->SetParent(this);
 }
 
+void GameObject::SetFacing(FACING facing)
+{
+	if (mFacing != facing)
+	{
+		GetTransform()->mScale.x *= -1.0f;
+		mFacing = facing;
+	}
+}
+
 void GameObject::Clone(GameObject & clonedObject) const
 {
 	clonedObject.GetTransform()->mPosition = mTransform->mPosition;

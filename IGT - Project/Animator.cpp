@@ -36,6 +36,11 @@ void Animation::Update(float deltaTime)
 	}
 }
 
+float Animation::GetAnimationLength()
+{
+	return mHoldTime * mFrameCount;
+}
+
 void Animation::Advance()
 {
 	if (++mCurrentFrame >= mStartFrame + mFrameCount)

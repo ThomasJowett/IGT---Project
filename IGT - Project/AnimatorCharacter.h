@@ -21,7 +21,7 @@ public:
 	Component* Clone()override;
 
 	virtual void Enter(CharacterAnimStates state);
-	virtual void During(CharacterAnimStates state);
+	virtual void During(CharacterAnimStates state, float deltaTime);
 	virtual void Exit(CharacterAnimStates state);
 
 private:

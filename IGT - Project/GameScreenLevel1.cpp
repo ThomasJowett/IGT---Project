@@ -9,6 +9,7 @@
 #include "TextRender.h"
 #include "RigidBody2D.h"
 #include "AnimatorCharacter.h"
+#include "AnimatorSnake.h"
 
 GameScreenLevel1::GameScreenLevel1()
 {
@@ -17,12 +18,13 @@ GameScreenLevel1::GameScreenLevel1()
 
 	GLuint goblinTexture = Texture2D::LoadTexture2D("SpriteSheets/GoblinSprites.png");
 	GLuint batTexture = Texture2D::LoadTexture2D("SpriteSheets/rat and bat spritesheet calciumtrice.png");
+	GLuint SnakeTexture = Texture2D::LoadTexture2D("SpriteSheets/snake spritesheet calciumtrice.png");
 	GLuint circleTexture = Texture2D::LoadTexture2D("Images/Circle.png");
 
 	Transform* transform;
 	GameObject* gameObject;
 
-	PhysicsMaterial physicsMaterial = { 3, 0.8, 0.5, 10 };
+	PhysicsMaterial physicsMaterial = { 30, 0.8, 0.5, 10 };
 
 	//player 1
 	transform = new Transform(Vector3D(-100, 0, 0), 0, Vector2D(1, 1));
@@ -56,10 +58,11 @@ GameScreenLevel1::GameScreenLevel1()
 	//mGameObjects.emplace_back(gameObject);
 
 	transform = new Transform(Vector3D(-10, 0, 0), 0, Vector2D(1, 1));
-	gameObject = new GameObject("Circle2", transform);
+	gameObject = new GameObject("Snake", transform);
 	gameObject->AddComponent<RigidBody2D>(10, Vector2D(0, 0), 10, 0, physicsMaterial);
 	gameObject->AddComponent<Circle2D>(20, Vector2D());
-	gameObject->AddComponent<Sprite>(batTexture, 32, 32, 10, 10);
+	gameObject->AddComponent<Sprite>(SnakeTexture, 32, 32, 10, 5);
+	gameObject->AddComponent<AnimatorSnake>();
 	
 	mGameObjects.emplace_back(gameObject);
 

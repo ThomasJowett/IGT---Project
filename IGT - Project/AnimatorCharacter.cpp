@@ -22,6 +22,9 @@ AnimatorCharacter::~AnimatorCharacter()
 
 void AnimatorCharacter::Update(float deltaTime)
 {
+	if(!mRigidbody)
+		mRigidbody = GetParent()->GetComponent<RigidBody2D>();
+
 	Vector2D velocity = mRigidbody->GetVelocity();
 
 	if (velocity.x > 0.1f)
@@ -58,8 +61,10 @@ void AnimatorCharacter::Enter(CharacterAnimStates state)
 	}
 }
 
-void AnimatorCharacter::During(CharacterAnimStates state)
+void AnimatorCharacter::During(CharacterAnimStates state, float deltaTime)
 {
+	mAnimations[(int)state]->Update(deltaTime);
+
 	switch (state)
 	{
 	case RUN_FORWARD:
