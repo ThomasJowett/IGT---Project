@@ -76,7 +76,7 @@ public:
 
 	float GetTimeInCurrentState()const { return mTimeInCurrentState; }
 	T GetState()const { return mCurrentState; }
-	T GetPreviousState()const { return mCurrentState; }
+	T GetPreviousState()const { return mPreviousState; }
 
 	bool IsInState(T state)const
 	{

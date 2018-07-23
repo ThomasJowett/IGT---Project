@@ -16,6 +16,7 @@ class GameObject
 {
 public:
 	GameObject(const char* name, Transform* transform);
+	GameObject(const char* name, Transform* transform, bool active);
 	GameObject(const GameObject& );
 	GameObject();
 	virtual ~GameObject();

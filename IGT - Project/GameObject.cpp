@@ -7,6 +7,11 @@ GameObject::GameObject(const char* name, Transform* transform)
 	mIsActive = true;
 }
 
+GameObject::GameObject(const char * name, Transform * transform, bool active)
+	: mName(name), mTransform(transform), mIsActive(active)
+{
+}
+
 GameObject::GameObject(const GameObject & prefab)
 {
 	mName = "Uninitialised";

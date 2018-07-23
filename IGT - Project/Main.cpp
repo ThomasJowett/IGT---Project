@@ -101,7 +101,7 @@ bool InitSDL()
 		//Setup Controllers---------------------------------------------------------------------
 		if (SDL_NumJoysticks() < 1)
 		{
-			std::cerr << "Warning: No joysticks connected!\n";
+			std::cerr << "Warning: No Controllers connected!\n";
 		}
 		else
 		{

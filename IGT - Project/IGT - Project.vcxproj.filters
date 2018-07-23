@@ -37,6 +37,9 @@
     <Filter Include="Animators">
       <UniqueIdentifier>{4f4f279f-4032-48b3-96a7-5aa9a5d5b980}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Menus">
+      <UniqueIdentifier>{aaa6f07e-551b-4c9d-ad5e-3028b0ec9be7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -96,9 +99,6 @@
     <ClCompile Include="Button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ButtonManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameScreenLevel1.cpp">
       <Filter>GameScreens</Filter>
     </ClCompile>
@@ -116,6 +116,15 @@
     </ClCompile>
     <ClCompile Include="AnimatorSnake.cpp">
       <Filter>Animators</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="UIMenu.cpp">
+      <Filter>Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="OptionsMenu.cpp">
+      <Filter>Menus</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -229,9 +238,6 @@
     <ClInclude Include="Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ButtonManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameScreenLevel1.h">
       <Filter>GameScreens</Filter>
     </ClInclude>
@@ -249,6 +255,15 @@
     </ClInclude>
     <ClInclude Include="AnimatorSnake.h">
       <Filter>Animators</Filter>
+    </ClInclude>
+    <ClInclude Include="UIMenu.h">
+      <Filter>Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionsMenu.h">
+      <Filter>Menus</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -3,12 +3,13 @@
 #include "Button.h"
 #include <vector>
 #include "GameObject.h"
+#include "UIMenu.h"
 
 class MainMenuPawn :
 	public iInput
 {
 public:
-	MainMenuPawn(std::vector<Button*> buttons, GameObject* cursor);
+	MainMenuPawn(UIMenu* menu, GameObject* cursor);
 	virtual ~MainMenuPawn();
 
 	void Up()override;
@@ -31,8 +32,11 @@ public:
 	virtual void MouseRightClick()override {}
 	virtual void MouseRightUnClick()override {}
 
+	void SetMenu(UIMenu* menu);
+
 private:
-	std::vector<Button*> mButtons;
+	UIMenu * mMenu;
+	UIMenu * mPreviousMenu;
 	GameObject* mCursor;
 
 	int mCurrentButton;
@@ -40,4 +44,3 @@ private:
 	bool mLeftMouseDown = false;
 	Vector2D mMousePosition;
 };
-

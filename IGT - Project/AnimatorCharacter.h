@@ -4,10 +4,11 @@
 
 enum CharacterAnimStates
 {
-	RUN_FORWARD = 0,
-	RUN_LEFT,
-	RUN_RIGHT,
-	RUN_BACK
+	CHARACTER_FORWARD = 0,
+	CHARACTER_LEFT,
+	CHARACTER_RIGHT,
+	CHARACTER_BACK,
+	CHARACTER_IDLE,
 };
 
 class AnimatorCharacter :

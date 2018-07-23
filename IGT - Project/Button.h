@@ -38,4 +38,3 @@ private:
 
 	Status mButtonStatus = NORMAL;
 };
-

@@ -29,23 +29,19 @@ GameScreenLevel1::GameScreenLevel1()
 	//player 1
 	transform = new Transform(Vector3D(-100, 0, 0), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Player 1", transform);
-	gameObject->AddComponent<Sprite>(goblinTexture, 48, 48, 3, 4);
+	gameObject->AddComponent<Sprite>(goblinTexture, 48, 48, 4, 10);
 	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
 	gameObject->GetComponent<TextRender>()->UpdateText("Player 1", { 0,0,0 }, 0, 20, CENTER);
 	gameObject->AddComponent<Box2D>(48, 48, Vector2D());
-	gameObject->AddComponent<RigidBody2D>(10, Vector2D(0, 0), 10, 0, physicsMaterial);
+	gameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, physicsMaterial);
 	gameObject->AddComponent<AnimatorCharacter>();
 	mGameObjects.emplace_back(gameObject);
 	PlayerPawn* characterController = new PlayerPawn(gameObject);
 
-	gameObject = new GameObject(*mGameObjects.back());
-
-	mGameObjects.emplace_back(gameObject);
-
 	//player 2
 	transform = new Transform(Vector3D(100, 0, 0), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Player 2", transform);
-	gameObject->AddComponent<Sprite>(goblinTexture, 48, 48, 3, 4);
+	gameObject->AddComponent<Sprite>(goblinTexture, 48, 48, 4, 10);
 	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
 	gameObject->GetComponent<TextRender>()->UpdateText("Player 2", { 0,0,0 }, 0, 20, CENTER);
 	gameObject->AddComponent<Box2D>(48, 48, Vector2D());
