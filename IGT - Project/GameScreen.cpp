@@ -1,11 +1,17 @@
 #include "GameScreen.h"
 #include <iostream>
-
+#include "Settings.h"
 
 GameScreen::GameScreen()
 {
 	//Root = new SceneNode();
 	mShader = nullptr;
+
+	Settings::GetInstance()->SetCamera(&mCamera);
+
+	mCamera.Orthographic((480), (270), 0, 1000);
+
+	Settings::GetInstance()->ApplySettings();
 }
 
 

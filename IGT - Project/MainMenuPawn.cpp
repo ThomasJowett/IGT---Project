@@ -3,7 +3,7 @@
 #include <iostream>
 
 MainMenuPawn::MainMenuPawn(UIMenu* menu, GameObject* cursor)
-	:mMenu(menu), mCursor(cursor)
+	:mCursor(cursor)
 {
 }
 
@@ -17,25 +17,25 @@ void MainMenuPawn::Up()
 {
 	mCursor->SetActive(false);
 
-	mMenu->GetButtons()[mCurrentButton]->OnUnHovered();
+	MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[mCurrentButton]->OnUnHovered();
 	mCurrentButton--;
 
 	if (mCurrentButton < 0)
-		mCurrentButton = mMenu->GetButtons().size() -1;
+		mCurrentButton = MenuManager::GetInstance()->GetCurrentMenu()->GetButtons().size() -1;
 
-	mMenu->GetButtons()[mCurrentButton]->OnHovered();
+	MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[mCurrentButton]->OnHovered();
 }
 
 void MainMenuPawn::Down()
 {
 	mCursor->SetActive(false);
 
-	mMenu->GetButtons()[mCurrentButton]->OnUnHovered();
+	MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[mCurrentButton]->OnUnHovered();
 	mCurrentButton++;
 
-	if (mCurrentButton > mMenu->GetButtons().size() -1)
+	if (mCurrentButton > MenuManager::GetInstance()->GetCurrentMenu()->GetButtons().size() -1)
 		mCurrentButton = 0;
-	mMenu->GetButtons()[mCurrentButton]->OnHovered();
+	MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[mCurrentButton]->OnHovered();
 }
 
 void MainMenuPawn::Start()
@@ -51,12 +51,12 @@ void MainMenuPawn::Select()
 void MainMenuPawn::AButtonDown()
 {
 	mCursor->SetActive(false);
-	mMenu->GetButtons()[mCurrentButton]->OnClicked();
+	MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[mCurrentButton]->OnClicked();
 }
 
 void MainMenuPawn::AButtonUp()
 {
-	mMenu->GetButtons()[mCurrentButton]->Execute();
+	MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[mCurrentButton]->Execute();
 }
 
 void MainMenuPawn::BButtonDown()
@@ -71,23 +71,23 @@ void MainMenuPawn::BButtonUp()
 void MainMenuPawn::MousePosition(float x, float y)
 {
 	mMousePosition = Vector2D(x, y);
-	for (int i = 0; i < mMenu->GetButtons().size(); i++)
+	for (int i = 0; i < MenuManager::GetInstance()->GetCurrentMenu()->GetButtons().size(); i++)
 	{
-		if (mMenu->GetButtons()[i]->GetCollisionBox()->ContainsPoint(mMousePosition))
+		if (MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[i]->GetCollisionBox()->ContainsPoint(mMousePosition))
 		{
 			if (mLeftMouseDown)
 			{
-				mMenu->GetButtons()[i]->OnClicked();
+				MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[i]->OnClicked();
 			}
 			else
 			{
-				mMenu->GetButtons()[i]->OnHovered();
+				MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[i]->OnHovered();
 			}
 			mCurrentButton = i;
 		}
 		else
 		{
-			mMenu->GetButtons()[i]->OnUnHovered();
+			MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[i]->OnUnHovered();
 		}
 	}
 
@@ -104,16 +104,7 @@ void MainMenuPawn::MouseLeftClick()
 void MainMenuPawn::MouseLeftUnClick()
 {
 	mLeftMouseDown = false;
-	if (mMenu->GetButtons()[mCurrentButton]->GetCollisionBox()->ContainsPoint(mMousePosition))
-		mMenu->GetButtons()[mCurrentButton]->Execute();
-}
-
-void MainMenuPawn::SetMenu(UIMenu * menu)
-{
-	if (menu != mMenu)
-	{
-		mPreviousMenu = mMenu;
-
-	}
+	if (MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[mCurrentButton]->GetCollisionBox()->ContainsPoint(mMousePosition))
+		MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[mCurrentButton]->Execute();
 }
 

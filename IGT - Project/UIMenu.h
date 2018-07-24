@@ -2,6 +2,9 @@
 #include "GameObject.h"
 #include "Messaging.h"
 #include "Button.h"
+#include "MenuManager.h"
+
+class MenuManager;
 
 class UIMenu :
 	public GameObject, public Observer<ButtonEvent, int>

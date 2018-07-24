@@ -3,13 +3,14 @@
 #include "SoundManager.h"
 #include "Sprite.h"
 #include "Texture2D.h"
-#include "Constants.h"
 #include "TextRender.h"
 #include "Collider.h"
 #include "Collision.h"
 #include "MainMenuPawn.h"
 #include "MainMenu.h"
 #include "OptionsMenu.h"
+#include "MenuManager.h"
+#include "Settings.h"
 
 #include "ObjectPool.h"
 
@@ -37,8 +38,9 @@ GameScreenMenu::GameScreenMenu() : GameScreen()
 	mGameObjects.emplace_back(gameObject);
 
 	//Main Menu
-	UIMenu* menus = new MainMenu(new Transform());
-	mGameObjects.emplace_back(menus);
+	UIMenu* mainMenu = new MainMenu(new Transform());
+	mGameObjects.emplace_back(mainMenu);
+	MenuManager::GetInstance()->AddMenu(mainMenu);
 	
 	//Cursor
 	transform = new Transform();
@@ -46,15 +48,17 @@ GameScreenMenu::GameScreenMenu() : GameScreen()
 	gameObject->AddComponent<Sprite>(CursorTexture, 16, 16);
 	mGameObjects.emplace_back(gameObject);
 	
-	MainMenuPawn* menuController = new MainMenuPawn(menus, gameObject);
+	MainMenuPawn* menuController = new MainMenuPawn(mainMenu, gameObject);
 	PlayerController* playerController = new PlayerController(0, menuController);
 	mPlayerControllers.emplace_back(playerController);
 
 	//Options Menu
-	menus = new OptionsMenu(new Transform());
-	mGameObjects.emplace_back(menus);
+	UIMenu* optionsMenu = new OptionsMenu(new Transform());
+	mGameObjects.emplace_back(optionsMenu);
+	MenuManager::GetInstance()->AddMenu(optionsMenu);
 
-	mCamera.Orthographic(Vector3D(0, 0, 100), SCREEN_WIDTH / SCREEN_SCALE, SCREEN_HEIGHT/ SCREEN_SCALE, 0, 1000);
+	mCamera.GetTransform()->mPosition = Vector3D(0, 0, 100);
+
 }
 
 GameScreenMenu::~GameScreenMenu()

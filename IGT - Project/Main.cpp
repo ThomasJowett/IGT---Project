@@ -7,8 +7,8 @@
 #include <vector>
 #include <Windows.h>
 
-#include "Constants.h"
 #include "GameScreenManager.h"
+#include "Settings.h"
 
 
 //Globals------------------------------------------------------------------------------------
@@ -74,7 +74,7 @@ bool InitSDL()
 
 		gWindow = SDL_CreateWindow("Delve, Die, Repeat",
 			SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-			SCREEN_WIDTH, SCREEN_HEIGHT,
+			Settings::GetInstance()->GetScreenWidth(), Settings::GetInstance()->GetScreenHeight(),
 			SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 		gGLContext = SDL_GL_CreateContext(gWindow);
 

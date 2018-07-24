@@ -126,6 +126,12 @@
     <ClCompile Include="OptionsMenu.cpp">
       <Filter>Menus</Filter>
     </ClCompile>
+    <ClCompile Include="MenuManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="SDL\SDL2.lib">
@@ -151,9 +157,6 @@
     </Library>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Constants.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Commons.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -264,6 +267,12 @@
     </ClInclude>
     <ClInclude Include="OptionsMenu.h">
       <Filter>Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

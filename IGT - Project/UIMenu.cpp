@@ -12,6 +12,7 @@ UIMenu::UIMenu(const char * name, Transform * transform, bool active)
 
 UIMenu::~UIMenu()
 {
+	//delete all buttons
 }
 
 void UIMenu::Update(float deltaTime)

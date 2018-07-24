@@ -1,5 +1,5 @@
 #include "GameScreenLevel1.h"
-#include "Constants.h"
+#include "Settings.h"
 #include "GameScreenManager.h"
 #include "PlayerPawn.h"
 #include "Texture2D.h"
@@ -14,7 +14,8 @@
 GameScreenLevel1::GameScreenLevel1()
 {
 	mShader = new BasicShader();
-	mCamera.Orthographic(Vector3D(0, 0, 100), SCREEN_WIDTH / SCREEN_SCALE, SCREEN_HEIGHT / SCREEN_SCALE, 0, 1000);
+
+	mCamera.GetTransform()->mPosition = Vector3D(0, 0, 100);
 
 	GLuint goblinTexture = Texture2D::LoadTexture2D("SpriteSheets/GoblinSprites.png");
 	GLuint batTexture = Texture2D::LoadTexture2D("SpriteSheets/rat and bat spritesheet calciumtrice.png");

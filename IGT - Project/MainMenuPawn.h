@@ -4,6 +4,8 @@
 #include <vector>
 #include "GameObject.h"
 #include "UIMenu.h"
+#include "Messaging.h"
+#include "MenuManager.h"
 
 class MainMenuPawn :
 	public iInput
@@ -32,11 +34,7 @@ public:
 	virtual void MouseRightClick()override {}
 	virtual void MouseRightUnClick()override {}
 
-	void SetMenu(UIMenu* menu);
-
 private:
-	UIMenu * mMenu;
-	UIMenu * mPreviousMenu;
 	GameObject* mCursor;
 
 	int mCurrentButton;

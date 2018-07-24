@@ -142,11 +142,13 @@
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MainMenuPawn.cpp" />
     <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="MenuManager.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="OptionsMenu.cpp" />
     <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="PlayerPawn.cpp" />
     <ClCompile Include="RigidBody2D.cpp" />
+    <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />
     <ClCompile Include="SoundManager.cpp" />
@@ -173,7 +175,6 @@
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Commons.h" />
-    <ClInclude Include="Constants.h" />
     <ClInclude Include="DungeonManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameScreen.h" />
@@ -185,6 +186,7 @@
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MainMenuPawn.h" />
     <ClInclude Include="Matrix.h" />
+    <ClInclude Include="MenuManager.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Messaging.h" />
     <ClInclude Include="ObjectPool.h" />
@@ -194,6 +196,7 @@
     <ClInclude Include="RandomGenerator.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="RigidBody2D.h" />
+    <ClInclude Include="Settings.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="SoundManager.h" />

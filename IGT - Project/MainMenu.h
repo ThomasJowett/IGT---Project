@@ -1,5 +1,8 @@
 #pragma once
 #include "UIMenu.h"
+#include "OptionsMenu.h"
+
+class OptionsMenu;
 
 enum MainMenuButtons
 {
@@ -18,5 +21,7 @@ public:
 	void CreateButtons()override;
 
 	void OnNotify(ButtonEvent event, int ID)override;
+	void SetMainMenuRef(UIMenu* menu) { mOptionsMenu = (OptionsMenu*)menu; }
+private:
+	OptionsMenu* mOptionsMenu;
 };
-

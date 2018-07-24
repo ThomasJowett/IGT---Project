@@ -14,7 +14,6 @@ template<class EventType, class DataType>
 class Subject
 {
 public:
-
 	Subject() = default;
 	~Subject()
 	{

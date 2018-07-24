@@ -19,7 +19,6 @@ void PlayerPawn::MoveUp(float scale)
 {
 	mRigidBody->AddForce(Vector2D(0.0f, scale*mWalkSpeed));
 	//mCharacter->GetTransform()->mPosition.y += scale;
-	std::cout << mRigidBody->GetVelocity().to_string() << std::endl;
 }
 
 void PlayerPawn::MoveRight(float scale)

@@ -1,5 +1,5 @@
 #include "PlayerController.h"
-#include "Constants.h"
+#include "Settings.h"
 
 
 PlayerController::PlayerController(int controllerID, iInput* pawn)
@@ -146,8 +146,8 @@ void PlayerController::Update(std::vector<SDL_Event> events)
 			else if (e.type == SDL_MOUSEMOTION)
 			{
 				//Adjust raw mouse position to screen space
-				mPawn->MousePosition((float)(e.motion.x / (float)SCREEN_SCALE - ((SCREEN_WIDTH / SCREEN_SCALE) / 2)),
-					(float)(SCREEN_HEIGHT / (float)SCREEN_SCALE - (e.motion.y / (float)SCREEN_SCALE + SCREEN_HEIGHT / (float)SCREEN_SCALE / 2)));
+				mPawn->MousePosition((float)(e.motion.x / Settings::GetInstance()->GetScreenScale() - ((Settings::GetInstance()->GetScreenWidth() / Settings::GetInstance()->GetScreenScale()) / 2)),
+					(float)(Settings::GetInstance()->GetScreenHeight() / Settings::GetInstance()->GetScreenScale() - (e.motion.y / Settings::GetInstance()->GetScreenScale() + (Settings::GetInstance()->GetScreenHeight() / (float)Settings::GetInstance()->GetScreenScale() / 2))));
 
 				mPawn->LookRight(e.motion.xrel);
 				mPawn->LookUp(e.motion.yrel);

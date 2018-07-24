@@ -2,16 +2,19 @@
 #include "Texture2D.h"
 #include "GameScreenManager.h"
 
-
 MainMenu::MainMenu(Transform* transform)
 	:UIMenu("MainMenu", transform)
 {
 	CreateButtons();
+
+	//TODO: add the button prompts (A and B) to screen somewhere
+	//AddComponent<Sprite>();
 }
 
 
 MainMenu::~MainMenu()
 {
+	
 }
 
 void MainMenu::CreateButtons()
@@ -41,7 +44,11 @@ void MainMenu::OnNotify(ButtonEvent event, int ID)
 	case ButtonEvent::ON_HOVERED:
 		switch (ID)
 		{
-		case 0:
+		case PLAY:
+			break;
+		case OPTIONS:
+			break;
+		case QUIT:
 			break;
 		}
 		break;
@@ -52,7 +59,7 @@ void MainMenu::OnNotify(ButtonEvent event, int ID)
 			GameScreenManager::GetInstance()->ChangeScreen(SCREEN_LEVEL_1);
 			return;
 		case OPTIONS:
-			GameScreenManager::GetInstance()->ChangeScreen(SCREEN_OPTIONS);
+			MenuManager::GetInstance()->ChangeToMenu(1);
 			return;
 		case QUIT:
 			SDL_Event sdlEvent;

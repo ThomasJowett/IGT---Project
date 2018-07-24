@@ -11,8 +11,8 @@ public:
 	Camera();
 	~Camera();
 
-	void Orthographic(Vector3D position, float width, float hieght, float nearDepth, float farDepth);
-	void Perspective(Vector3D position, Vector3D forward, Vector3D up, float fovY, float nearDepth, float farDepth);
+	void Orthographic(float OrthoWidth, float OrthoHieght, float nearDepth, float farDepth);
+	void Perspective(Vector3D forward, Vector3D up, float fovY, float nearDepth, float farDepth);
 	void Update(Shader* shader);
 
 	Matrix4x4 GetView() const { return mView; }
@@ -24,6 +24,9 @@ private:
 	Transform * mTransform;
 	Matrix4x4 mProjection;
 	Matrix4x4 mView;
+
+	int mOrthoWidth;
+	int mOrthoHeight;
 };
 
 #endif //_CAMERA_H
