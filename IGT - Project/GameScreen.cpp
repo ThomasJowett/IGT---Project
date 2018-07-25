@@ -9,7 +9,7 @@ GameScreen::GameScreen()
 
 	Settings::GetInstance()->SetCamera(&mCamera);
 
-	mCamera.Orthographic((480), (270), 0, 1000);
+	//mCamera.Orthographic((480), (270), 0, 1000);
 
 	Settings::GetInstance()->ApplySettings();
 }

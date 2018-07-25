@@ -12,6 +12,8 @@ UIMenu::UIMenu(const char * name, Transform * transform, bool active)
 
 UIMenu::~UIMenu()
 {
+	for (Button* button : mButtons)
+		delete button;
 	//delete all buttons
 }
 
@@ -33,4 +35,37 @@ void UIMenu::Render(Shader * shader)
 	{
 		button->Render(shader);
 	}
+}
+
+void UIMenu::SetCurrentButton(int button)
+{
+	if (button >= 0 && button < mButtons.size())
+		mCurrentButton = button;
+}
+
+void UIMenu::Up()
+{
+	mButtons[mCurrentButton]->OnUnHovered();
+	mCurrentButton--;
+
+	if (mCurrentButton < 0)
+		mCurrentButton = mButtons.size() - 1;
+
+	mButtons[mCurrentButton]->OnHovered();
+}
+
+void UIMenu::Down()
+{
+	mButtons[mCurrentButton]->OnUnHovered();
+	mCurrentButton++;
+
+	if (mCurrentButton > mButtons.size() - 1)
+		mCurrentButton = 0;
+
+	mButtons[mCurrentButton]->OnHovered();
+}
+
+void UIMenu::Back()
+{
+	MenuManager::GetInstance()->ChangeToPreviousMenu();
 }

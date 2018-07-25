@@ -21,7 +21,18 @@ public:
 	void Render(Shader* shader)override;
 
 	std::vector<Button*> GetButtons() { return mButtons; }
+	Button* GetCurrentButton() { return mButtons[mCurrentButton]; }
+	void SetCurrentButton(int button);
+
+	//Navigation of the menu;
+	virtual void Up();
+	virtual void Down();
+	virtual void Left() {}
+	virtual void Right() {}
+	virtual void Back();
 
 protected:
 	std::vector<Button*> mButtons;
+
+	int mCurrentButton;
 };

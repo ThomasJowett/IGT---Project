@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-MainMenuPawn::MainMenuPawn(UIMenu* menu, GameObject* cursor)
+MainMenuPawn::MainMenuPawn(GameObject* cursor)
 	:mCursor(cursor)
 {
 }
@@ -17,25 +17,28 @@ void MainMenuPawn::Up()
 {
 	mCursor->SetActive(false);
 
-	MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[mCurrentButton]->OnUnHovered();
-	mCurrentButton--;
-
-	if (mCurrentButton < 0)
-		mCurrentButton = MenuManager::GetInstance()->GetCurrentMenu()->GetButtons().size() -1;
-
-	MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[mCurrentButton]->OnHovered();
+	MenuManager::GetInstance()->GetCurrentMenu()->Up();
 }
 
 void MainMenuPawn::Down()
 {
 	mCursor->SetActive(false);
 
-	MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[mCurrentButton]->OnUnHovered();
-	mCurrentButton++;
+	MenuManager::GetInstance()->GetCurrentMenu()->Down();
+}
 
-	if (mCurrentButton > MenuManager::GetInstance()->GetCurrentMenu()->GetButtons().size() -1)
-		mCurrentButton = 0;
-	MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[mCurrentButton]->OnHovered();
+void MainMenuPawn::Left()
+{
+	mCursor->SetActive(false);
+
+	MenuManager::GetInstance()->GetCurrentMenu()->Left();
+}
+
+void MainMenuPawn::Right()
+{
+	mCursor->SetActive(false);
+
+	MenuManager::GetInstance()->GetCurrentMenu()->Right();
 }
 
 void MainMenuPawn::Start()
@@ -51,12 +54,12 @@ void MainMenuPawn::Select()
 void MainMenuPawn::AButtonDown()
 {
 	mCursor->SetActive(false);
-	MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[mCurrentButton]->OnClicked();
+	MenuManager::GetInstance()->GetCurrentButton()->OnClicked();
 }
 
 void MainMenuPawn::AButtonUp()
 {
-	MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[mCurrentButton]->Execute();
+	MenuManager::GetInstance()->GetCurrentButton()->Execute();
 }
 
 void MainMenuPawn::BButtonDown()
@@ -66,6 +69,7 @@ void MainMenuPawn::BButtonDown()
 
 void MainMenuPawn::BButtonUp()
 {
+	MenuManager::GetInstance()->GetCurrentMenu()->Back();
 }
 
 void MainMenuPawn::MousePosition(float x, float y)
@@ -83,7 +87,7 @@ void MainMenuPawn::MousePosition(float x, float y)
 			{
 				MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[i]->OnHovered();
 			}
-			mCurrentButton = i;
+			MenuManager::GetInstance()->GetCurrentMenu()->SetCurrentButton(i);
 		}
 		else
 		{
@@ -104,7 +108,8 @@ void MainMenuPawn::MouseLeftClick()
 void MainMenuPawn::MouseLeftUnClick()
 {
 	mLeftMouseDown = false;
-	if (MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[mCurrentButton]->GetCollisionBox()->ContainsPoint(mMousePosition))
-		MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[mCurrentButton]->Execute();
+
+	if (MenuManager::GetInstance()->GetCurrentButton()->GetCollisionBox()->ContainsPoint(mMousePosition))
+		MenuManager::GetInstance()->GetCurrentButton()->Execute();
 }
 

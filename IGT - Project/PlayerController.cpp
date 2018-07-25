@@ -214,3 +214,13 @@ void PlayerController::Update(std::vector<SDL_Event> events)
 	mPawn->LeftTrigger(mLeftTrigger);
 	mPawn->RightTrigger(mRightTrigger);
 }
+
+void PlayerController::PossesPawn(iInput * pawn)
+{
+
+}
+
+void PlayerController::UnPossesPawn()
+{
+
+}

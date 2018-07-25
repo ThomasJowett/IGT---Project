@@ -10,6 +10,7 @@
 #include "RigidBody2D.h"
 #include "AnimatorCharacter.h"
 #include "AnimatorSnake.h"
+#include "PauseMenu.h"
 
 GameScreenLevel1::GameScreenLevel1()
 {
@@ -51,13 +52,6 @@ GameScreenLevel1::GameScreenLevel1()
 	mGameObjects.emplace_back(gameObject);
 	PlayerPawn* character2Controller = new PlayerPawn(gameObject);
 
-	//transform = new Transform();
-	//gameObject = new GameObject("Circle", transform);
-	//gameObject->AddComponent<RigidBody2D>(10, Vector2D(0, 0), 10, 0.1, physicsMaterial);
-	//gameObject->AddComponent<Circle2D>(10, Vector2D());
-	//gameObject->AddComponent<Sprite>(circleTexture,40,40);
-	//mGameObjects.emplace_back(gameObject);
-
 	transform = new Transform(Vector3D(-10, 0, 0), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Snake", transform);
 	gameObject->AddComponent<RigidBody2D>(10, Vector2D(0, 0), 10, 0, physicsMaterial);
@@ -66,6 +60,12 @@ GameScreenLevel1::GameScreenLevel1()
 	gameObject->AddComponent<AnimatorSnake>();
 	
 	mGameObjects.emplace_back(gameObject);
+
+	//Pause Menu
+	UIMenu* pauseMenu = new PauseMenu(new Transform());
+	mGameObjects.emplace_back(pauseMenu);
+	MenuManager::GetInstance()->AddMenu(pauseMenu);
+
 
 	
 

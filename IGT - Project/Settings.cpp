@@ -1,11 +1,15 @@
 #include "Settings.h"
 #include <SDL.h>
 #include <iostream>
+#include <fstream>
+#include <vector>
 
 extern SDL_Window* gWindow;
 extern SDL_GLContext gGLContext;
 
 static Settings* instance = 0;
+
+static inline std::vector<std::string> SplitString(const std::string &s, char delim);
 
 Settings * Settings::GetInstance()
 {
@@ -24,8 +28,30 @@ void Settings::SaveSettings()
 //Loads settings from Settings.ini
 void Settings::LoadSettings()
 {
-	mScreen_Width = 1280;
-	mScreen_Height = 720;
+	std::ifstream file;
+	file.open("Settings.ini");
+
+	std::string line;
+
+	if (file.is_open())
+	{
+		while (file.good())
+		{
+			getline(file, line);
+
+			const char* lineCStr = line.c_str();
+
+			if (lineCStr == "Display")
+				std::cout << lineCStr << std::endl;
+		}
+	}
+	else
+	{
+		std::cerr << "Unable to locate Settings.ini\n";
+	}
+
+	mScreen_Width = 1920;
+	mScreen_Height = 1080;
 	mFullscreen = false;
 	mFPS = 60;
 	mVSYNC = true;
@@ -42,7 +68,9 @@ void Settings::ApplySettings()
 	//if (mScreen_Height >= 1080)
 		//mOrtho_Height = 240;
 
-	mScreen_Scale =  (float)(mScreen_Width)/(float)(480);
+
+
+	mScreen_Scale =  (float)(mScreen_Width + mScreen_Height)/(float)(480 + 240);
 
 	if(mFullscreen)
 		SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN);
@@ -53,6 +81,8 @@ void Settings::ApplySettings()
 	//	(mScreen_Width / mScreen_Scale), (mScreen_Height / mScreen_Scale), 0, 1000);
 	mCamera->Orthographic((mScreen_Width/mScreen_Scale), (mScreen_Height/mScreen_Scale), 0, 1000);
 	glViewport(0, 0, mScreen_Width, mScreen_Height);
+
+	SaveSettings();
 }
 
 void Settings::SetResolution(int width, int height)
@@ -77,4 +107,30 @@ Settings::Settings()
 
 Settings::~Settings()
 {
+}
+
+static inline std::vector<std::string> SplitString(const std::string &s, char delim)
+{
+	std::vector<std::string> elems;
+
+	const char* cstr = s.c_str();
+	unsigned int strLength = s.length();
+	unsigned int start = 0;
+	unsigned int end = 0;
+
+	while (end <= strLength)
+	{
+		while (end <= strLength)
+		{
+			if (cstr[end] == delim)
+				break;
+			end++;
+		}
+
+		elems.push_back(s.substr(start, end - start));
+		start = end + 1;
+		end = start;
+	}
+
+	return elems;
 }

@@ -78,6 +78,8 @@ bool InitSDL()
 			SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 		gGLContext = SDL_GL_CreateContext(gWindow);
 
+		SDL_SetWindowResizable(gWindow, SDL_TRUE);
+
 		if (gWindow == NULL)
 		{
 			std::cerr << "Window was not created. Error: " << SDL_GetError();
@@ -170,6 +172,13 @@ bool Update()
 	//Handle quiting.
 	for (auto e : events)
 	{
+		if (e.type == SDL_WINDOWEVENT)
+		{
+			if (e.window.event == SDL_WINDOWEVENT_RESIZED)
+			{
+				Settings::GetInstance()->SetResolution(e.window.data1, e.window.data2);
+			}			
+		}
 		if (e.type == SDL_QUIT)
 			return true;
 	}

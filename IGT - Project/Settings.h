@@ -8,14 +8,16 @@ public:
 
 	static Settings* GetInstance();
 
-	static void SaveSettings();
+	void SaveSettings();
 
 	void LoadSettings();
 
 	void ApplySettings();
 
 	void SetResolution(int width, int height);
-	void SetScreenScale(float scale);
+	void SetScreenScale(float scale);	
+	void SetFullScreen(bool isFullscreen);
+
 	void SetCamera(Camera* camera) { mCamera = camera; }
 	
 	int GetScreenWidth() { return mScreen_Width; }
@@ -32,6 +34,7 @@ private:
 	int mScreen_Height;
 
 	float mScreen_Scale;
+	float mZoom;
 
 	bool mFullscreen;
 

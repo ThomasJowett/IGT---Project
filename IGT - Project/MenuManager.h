@@ -14,10 +14,17 @@ public:
 	static MenuManager * GetInstance();
 
 	void ChangeToMenu(int menu);
+	void ChangeToPreviousMenu();
 
 	int AddMenu(UIMenu* menu);
+	void RemoveMenu(int ID);
+	void RemoveAllMenus();
+
+	void ShowCurrentMenu(bool isActive);
 
 	UIMenu* GetCurrentMenu();
+
+	Button* GetCurrentButton();
 
 private:
 	MenuManager();

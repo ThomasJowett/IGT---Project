@@ -1,6 +1,5 @@
 #pragma once
 #include "UIMenu.h"
-#include "OptionsMenu.h"
 
 class OptionsMenu;
 
@@ -21,7 +20,7 @@ public:
 	void CreateButtons()override;
 
 	void OnNotify(ButtonEvent event, int ID)override;
-	void SetMainMenuRef(UIMenu* menu) { mOptionsMenu = (OptionsMenu*)menu; }
-private:
-	OptionsMenu* mOptionsMenu;
+	
+	//overrides the back function as there is no menu to go back to
+	void Back()override {}
 };

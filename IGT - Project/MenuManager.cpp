@@ -26,10 +26,31 @@ void MenuManager::ChangeToMenu(int menu)
 	}
 }
 
+void MenuManager::ChangeToPreviousMenu()
+{
+	if (mCurrentMenuID != mPreviousMenuID)
+		ChangeToMenu(mPreviousMenuID);
+}
+
 int MenuManager::AddMenu(UIMenu * menu)
 {
 	mMenus.emplace_back(menu);
 	return mMenus.size();
+}
+
+void MenuManager::RemoveMenu(int ID)
+{
+	mMenus.erase(mMenus.begin()+ID);
+}
+
+void MenuManager::RemoveAllMenus()
+{
+	mMenus.clear();
+}
+
+void MenuManager::ShowCurrentMenu(bool isActive)
+{
+	mMenus[mCurrentMenuID]->SetActive(isActive);
 }
 
 UIMenu * MenuManager::GetCurrentMenu()
@@ -38,6 +59,12 @@ UIMenu * MenuManager::GetCurrentMenu()
 		return mMenus[mCurrentMenuID];
 	else
 		return nullptr;
+}
+
+Button* MenuManager::GetCurrentButton()
+{
+
+	return mMenus[mCurrentMenuID]->GetCurrentButton();
 }
 
 MenuManager::MenuManager()

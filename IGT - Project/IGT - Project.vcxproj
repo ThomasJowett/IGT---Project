@@ -145,6 +145,7 @@
     <ClCompile Include="MenuManager.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="OptionsMenu.cpp" />
+    <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="PlayerPawn.cpp" />
     <ClCompile Include="RigidBody2D.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="Messaging.h" />
     <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="OptionsMenu.h" />
+    <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="PlayerController.h" />
     <ClInclude Include="PlayerPawn.h" />
     <ClInclude Include="RandomGenerator.h" />

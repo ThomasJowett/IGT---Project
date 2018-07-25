@@ -11,13 +11,13 @@ class MainMenuPawn :
 	public iInput
 {
 public:
-	MainMenuPawn(UIMenu* menu, GameObject* cursor);
+	MainMenuPawn(GameObject* cursor);
 	virtual ~MainMenuPawn();
 
 	void Up()override;
 	void Down()override;
-	void Left()override {}
-	void Right()override {}
+	void Left()override;
+	void Right()override;
 
 	void Start()override;
 	void Select()override;
@@ -37,7 +37,6 @@ public:
 private:
 	GameObject* mCursor;
 
-	int mCurrentButton;
 
 	bool mLeftMouseDown = false;
 	Vector2D mMousePosition;

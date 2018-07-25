@@ -1,6 +1,6 @@
 #include "PlayerPawn.h"
 #include <iostream>
-
+#include "MenuManager.h"
 
 PlayerPawn::PlayerPawn(GameObject* character)
 	:mCharacter(character)
@@ -29,4 +29,5 @@ void PlayerPawn::MoveRight(float scale)
 
 void PlayerPawn::Start()
 {
+	MenuManager::GetInstance()->ShowCurrentMenu(true);
 }

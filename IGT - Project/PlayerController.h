@@ -13,6 +13,9 @@ public:
 	~PlayerController();
 
 	virtual void Update(std::vector<SDL_Event> events);
+
+	void PossesPawn(iInput* pawn);
+	void UnPossesPawn();
 private:
 	iInput * mPawn;
 	int mControllerID;

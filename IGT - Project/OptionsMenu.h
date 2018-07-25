@@ -18,9 +18,10 @@ public:
 
 	void CreateButtons()override;
 	void OnNotify(ButtonEvent event, int ID)override;
-	void SetMainMenuRef(UIMenu* menu) { mMainMenu = (MainMenu*)menu; }
-private:
 
-	MainMenu* mMainMenu;
+	void Up()override;
+	void Down()override;
+	void Left()override;
+	void Right()override;
 };
 
