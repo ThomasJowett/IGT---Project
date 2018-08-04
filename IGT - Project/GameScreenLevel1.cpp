@@ -2,6 +2,7 @@
 #include "Settings.h"
 #include "GameScreenManager.h"
 #include "PlayerPawn.h"
+#include "MainMenuPawn.h"
 #include "Texture2D.h"
 #include "Sprite.h"
 #include "Collider.h"
@@ -22,11 +23,20 @@ GameScreenLevel1::GameScreenLevel1()
 	GLuint batTexture = Texture2D::LoadTexture2D("SpriteSheets/rat and bat spritesheet calciumtrice.png");
 	GLuint SnakeTexture = Texture2D::LoadTexture2D("SpriteSheets/snake spritesheet calciumtrice.png");
 	GLuint circleTexture = Texture2D::LoadTexture2D("Images/Circle.png");
+	GLuint CursorTexture = Texture2D::LoadTexture2D("Images/Cursor_Default.png");
 
 	Transform* transform;
 	GameObject* gameObject;
 
 	PhysicsMaterial physicsMaterial = { 30, 0.8, 0.5, 10 };
+
+	//Cursor
+	transform = new Transform();
+	gameObject = new GameObject("Cursor", transform, false);
+	gameObject->AddComponent<Sprite>(CursorTexture, 16, 16);
+	mGameObjects.emplace_back(gameObject);
+
+	MainMenuPawn* menu = new MainMenuPawn(gameObject);
 
 	//player 1
 	transform = new Transform(Vector3D(-100, 0, 0), 0, Vector2D(1, 1));
@@ -38,7 +48,7 @@ GameScreenLevel1::GameScreenLevel1()
 	gameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, physicsMaterial);
 	gameObject->AddComponent<AnimatorCharacter>();
 	mGameObjects.emplace_back(gameObject);
-	PlayerPawn* characterController = new PlayerPawn(gameObject);
+	PlayerPawn* characterController = new PlayerPawn(gameObject, menu);
 
 	//player 2
 	transform = new Transform(Vector3D(100, 0, 0), 0, Vector2D(1, 1));
@@ -50,7 +60,7 @@ GameScreenLevel1::GameScreenLevel1()
 	gameObject->AddComponent<RigidBody2D>(10, Vector2D(0, 0), 10, 0, physicsMaterial);
 	gameObject->AddComponent<AnimatorCharacter>();
 	mGameObjects.emplace_back(gameObject);
-	PlayerPawn* character2Controller = new PlayerPawn(gameObject);
+	PlayerPawn* character2Controller = new PlayerPawn(gameObject, menu);
 
 	transform = new Transform(Vector3D(-10, 0, 0), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Snake", transform);
@@ -62,13 +72,11 @@ GameScreenLevel1::GameScreenLevel1()
 	mGameObjects.emplace_back(gameObject);
 
 	//Pause Menu
-	UIMenu* pauseMenu = new PauseMenu(new Transform());
+	UIMenu* pauseMenu = new PauseMenu(new Transform(), characterController);
 	mGameObjects.emplace_back(pauseMenu);
 	MenuManager::GetInstance()->AddMenu(pauseMenu);
 
-
-	
-
+	//PlayerControllers
 	PlayerController* playerController = new PlayerController(0, characterController);
 	mPlayerControllers.push_back(playerController);
 
@@ -78,6 +86,7 @@ GameScreenLevel1::GameScreenLevel1()
 
 GameScreenLevel1::~GameScreenLevel1()
 {
+	MenuManager::GetInstance()->RemoveAllMenus();
 }
 
 void GameScreenLevel1::Update(float deltaTime, std::vector<SDL_Event> events)

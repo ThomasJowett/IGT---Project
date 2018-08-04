@@ -18,10 +18,36 @@ Button::Button(GLuint texture, Vector2D position, Vector2D size, const char* tex
 	AddComponent(mText);
 }
 
+Button::Button(GLuint texture, Vector2D position, Vector2D size)
+	:GameObject("Button", new Transform())
+{
+	GetTransform()->mPosition = Vector3D(position.x, position.y, 10);
+
+	mSprite = new Sprite(this, texture, size.x, size.y, 1, 3);
+	AddComponent(mSprite);
+
+	mCollisionBox = new Box2D(this, size.x, size.y, { 0,0 });
+	AddComponent(mCollisionBox);
+
+	mText = nullptr;
+}
+
+Button::Button(GLuint texture, Vector2D position)
+	:GameObject("CheckBox", new Transform())
+{
+	GetTransform()->mPosition = Vector3D(position.x, position.y, 10);
+
+	mSprite = new Sprite(this, texture, 20, 20, 1, 4);
+	AddComponent(mSprite);
+
+	mCollisionBox = new Box2D(this, 20, 20, { 0,0 });
+	AddComponent(mCollisionBox);
+
+	mText = nullptr;
+}
+
 Button::~Button()
 {
-	//delete mSprite;
-	//delete mCollisionBox;
 }
 
 void Button::OnClicked()
@@ -30,7 +56,8 @@ void Button::OnClicked()
 	{
 		mButtonStatus = CLICKED;
 		mSprite->SetCurrentFrame(CLICKED);
-		mText->UpdateText({ 0, 0, 255 });
+		if(mText)
+			mText->UpdateText({ 0, 0, 255 });
 	}
 }
 
@@ -46,7 +73,8 @@ void Button::OnHovered()
 	{
 		mButtonStatus = HOVERED;
 		mSprite->SetCurrentFrame(HOVERED);
-		mText->UpdateText({ 255, 255, 255 });
+		if (mText)
+			mText->UpdateText({ 255, 255, 255 });
 
 		Notify(ButtonEvent::ON_HOVERED, mButtonID);
 	}
@@ -58,6 +86,7 @@ void Button::OnUnHovered()
 	{
 		mButtonStatus = NORMAL;
 		mSprite->SetCurrentFrame(NORMAL);
-		mText->UpdateText({ 255, 255, 255 });
+		if (mText)
+			mText->UpdateText({ 255, 255, 255 });
 	}
 }

@@ -11,6 +11,7 @@ class Sprite :
 public:
 	Sprite(GameObject* parent, GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight, int tilesWide, int tilesTall);
 	Sprite(GameObject* parent, GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight);
+	Sprite(GameObject* parent, GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight, Vector2D offset);
 	~Sprite();
 
 	void Render(Shader* shader) override;
@@ -28,5 +29,7 @@ private:
 
 	float mSingleSpriteWidth, mSingleSpriteHeight;
 	int mTilesWide, mTilesTall;
+
+	Matrix4x4 mOffset;
 };
 

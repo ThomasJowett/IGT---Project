@@ -37,4 +37,10 @@ public:
 	virtual void MouseLeftUnClick() {}
 	virtual void MouseRightClick() {}
 	virtual void MouseRightUnClick() {}
+
+	virtual void OnPossessed(int controllerID) { mControllerID = controllerID; }
+	virtual void OnUnPossesed() { mControllerID = -1; }
+
+private:
+	int mControllerID;
 };

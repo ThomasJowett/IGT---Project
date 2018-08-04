@@ -27,7 +27,7 @@ public:
 	void Bind() { glUseProgram(mProgram); }
 	void UnBind() { glUseProgram(0); }
 
-	void UpdateWorld(const Transform* transform);
+	void UpdateWorld(const Matrix4x4 world);
 	void UpdateViewProjection(const Matrix4x4& view, const Matrix4x4& projection);
 protected:
 	GLuint mProgram;

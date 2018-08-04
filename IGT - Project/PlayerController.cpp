@@ -5,11 +5,14 @@
 PlayerController::PlayerController(int controllerID, iInput* pawn)
 	:mControllerID(controllerID), mPawn(pawn)
 {
+	mPawn->OnPossessed(mControllerID);
 }
 
 
 PlayerController::~PlayerController()
 {
+	if (mPawn)
+		mPawn->OnUnPossesed();
 }
 
 void PlayerController::Update(std::vector<SDL_Event> events)
@@ -217,10 +220,16 @@ void PlayerController::Update(std::vector<SDL_Event> events)
 
 void PlayerController::PossesPawn(iInput * pawn)
 {
-
+	if (pawn != mPawn)
+	{
+		mPawn->OnUnPossesed();
+		mPawn = pawn;
+	}
 }
 
 void PlayerController::UnPossesPawn()
 {
-
+	if(mPawn)
+		mPawn->OnUnPossesed();
+	mPawn = nullptr;
 }

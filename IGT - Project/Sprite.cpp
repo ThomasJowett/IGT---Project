@@ -36,6 +36,8 @@ Sprite::Sprite(GameObject* parent, GLuint TextureID, float singleSpriteWidth, fl
 	}
 
 	mCurrentFrame = 0;
+
+	mOffset = Matrix4x4();
 }
 
 //Creates a single tile from the texture
@@ -67,6 +69,40 @@ Sprite::Sprite(GameObject* parent, GLuint TextureID, float singleSpriteWidth, fl
 	mTiles.push_back(mesh);
 
 	mCurrentFrame = 0;
+
+	mOffset = Matrix4x4();
+}
+
+Sprite::Sprite(GameObject * parent, GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight, Vector2D offset)
+	: mTextureID(TextureID), mSingleSpriteWidth(singleSpriteWidth), mSingleSpriteHeight(singleSpriteHeight),
+	iRenderable(parent)
+{
+	mTilesTall = 1;
+	mTilesWide = 1;
+
+	unsigned int indices[] =
+	{
+		0,1,2,
+		0,2,3
+	};
+
+	float halfHeight = singleSpriteHeight / 2;
+	float halfWidth = singleSpriteWidth / 2;
+
+	Vertex vertices[] =
+	{
+		Vertex(Vector3D(-halfWidth,-halfHeight,0), Vector2D(0,1)),
+		Vertex(Vector3D(halfWidth,-halfHeight,0), Vector2D(1, 1)),
+		Vertex(Vector3D(halfWidth,halfHeight,0), Vector2D(1,0)),
+		Vertex(Vector3D(-halfWidth,halfHeight,0), Vector2D(0,0))
+	};
+
+	Mesh* mesh = new Mesh(vertices, 4, indices, 6);
+	mTiles.push_back(mesh);
+
+	mCurrentFrame = 0;
+
+	mOffset = Matrix4x4::Translate(Vector3D(offset.x, offset.y, 0));
 }
 
 
@@ -86,6 +122,8 @@ void Sprite::Render(Shader* shader)
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, mTextureID);
 
+	shader->UpdateWorld(GetParent()->GetTransform()->GetWorldMatrix() * mOffset);
+
 	mTiles[mCurrentFrame]->Draw();
 
 	if (mCurrentFrame >= mTiles.size())
@@ -93,6 +131,8 @@ void Sprite::Render(Shader* shader)
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	shader->UpdateWorld(GetParent()->GetTransform()->GetWorldMatrix());
 }
 
 void Sprite::SetCurrentFrame(unsigned int frame)

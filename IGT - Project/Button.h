@@ -20,21 +20,24 @@ class Button
 {
 public:
 	Button(GLuint texture, Vector2D position, Vector2D size, const char* text);
+	Button(GLuint texture, Vector2D position, Vector2D size);
+	Button(GLuint texture, Vector2D position);
 	~Button();
 
-	void OnClicked();
-	void Execute();
-	void OnHovered();
-	void OnUnHovered();
+	virtual void OnClicked();
+	virtual void Execute();
+	virtual void OnHovered();
+	virtual void OnUnHovered();
 
 	Box2D* GetCollisionBox() { return mCollisionBox; }
 
 	int mButtonID;
 
 private:
-	Sprite* mSprite;
 	Box2D* mCollisionBox;
 	TextRender* mText;
 
+protected:
+	Sprite * mSprite;
 	Status mButtonStatus = NORMAL;
 };

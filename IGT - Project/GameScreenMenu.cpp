@@ -36,7 +36,7 @@ GameScreenMenu::GameScreenMenu() : GameScreen()
 	//Background Image
 	transform = new Transform(Vector3D(0, 0, -1), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Backgorund", transform);
-	gameObject->AddComponent<Sprite>(backgroundTexture, 480, 272);
+	gameObject->AddComponent<Sprite>(backgroundTexture, 600, 600);
 	mGameObjects.emplace_back(gameObject);
 
 	//Main Menu

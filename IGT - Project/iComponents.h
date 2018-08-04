@@ -18,8 +18,12 @@ public:
 
 	void SetParent(GameObject* parent) { mParent = parent; }
 	GameObject* GetParent() const { return mParent; }
+
+	bool GetActive() const { return mIsActive; }
+	void SetActive(bool isActive) { mIsActive = isActive; }
 private:
 	GameObject * mParent;
+	bool mIsActive = true;
 };
 
 class iUpdateable : public Component

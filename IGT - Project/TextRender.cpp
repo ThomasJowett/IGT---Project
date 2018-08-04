@@ -13,6 +13,19 @@ TextRender::TextRender(GameObject* parent, const char * path, int pointSize)
 	LoadFont(path, pointSize);
 }
 
+TextRender::TextRender(GameObject * parent, const char * path, int pointSize, const char * text, SDL_Colour textColour, int x, int y, ALIGNMENT alignment)
+	:iRenderable(parent)
+{
+	if (TTF_Init() != 0)
+	{
+		std::cerr << "TTF_OpenFont() Failed: " << TTF_GetError() << std::endl;
+	}
+
+	LoadFont(path, pointSize);
+
+	UpdateText(text, textColour, x, y, alignment);
+}
+
 TextRender::~TextRender()
 {
 	glDeleteTextures(1, &mTextureID);

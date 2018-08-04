@@ -14,16 +14,16 @@ UIMenu::~UIMenu()
 {
 	for (Button* button : mButtons)
 		delete button;
-	//delete all buttons
 }
 
 void UIMenu::Update(float deltaTime)
 {
 	GameObject::Update(deltaTime);
-
+	
 	for (Button* button : mButtons)
 	{
-		button->Update(deltaTime);
+		if (button->GetActive())
+			button->Update(deltaTime);
 	}
 }
 
@@ -33,7 +33,8 @@ void UIMenu::Render(Shader * shader)
 
 	for (Button* button : mButtons)
 	{
-		button->Render(shader);
+		if(button->GetActive())
+			button->Render(shader);
 	}
 }
 

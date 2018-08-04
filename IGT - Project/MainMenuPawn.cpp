@@ -77,21 +77,26 @@ void MainMenuPawn::MousePosition(float x, float y)
 	mMousePosition = Vector2D(x, y);
 	for (int i = 0; i < MenuManager::GetInstance()->GetCurrentMenu()->GetButtons().size(); i++)
 	{
-		if (MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[i]->GetCollisionBox()->ContainsPoint(mMousePosition))
+		Button* button = MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[i];
+
+		if (button->GetActive())
 		{
-			if (mLeftMouseDown)
+			if (button->GetCollisionBox()->ContainsPoint(mMousePosition))
 			{
-				MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[i]->OnClicked();
+				if (mLeftMouseDown)
+				{
+					button->OnClicked();
+				}
+				else
+				{
+					button->OnHovered();
+				}
+				MenuManager::GetInstance()->GetCurrentMenu()->SetCurrentButton(i);
 			}
 			else
 			{
-				MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[i]->OnHovered();
+				MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[i]->OnUnHovered();
 			}
-			MenuManager::GetInstance()->GetCurrentMenu()->SetCurrentButton(i);
-		}
-		else
-		{
-			MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[i]->OnUnHovered();
 		}
 	}
 
@@ -111,5 +116,15 @@ void MainMenuPawn::MouseLeftUnClick()
 
 	if (MenuManager::GetInstance()->GetCurrentButton()->GetCollisionBox()->ContainsPoint(mMousePosition))
 		MenuManager::GetInstance()->GetCurrentButton()->Execute();
+}
+
+void MainMenuPawn::OnPossessed(int controllerID)
+{
+	mCursor->SetActive(true);
+}
+
+void MainMenuPawn::OnUnPossesed()
+{
+	mCursor->SetActive(false);
 }
 

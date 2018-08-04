@@ -43,7 +43,8 @@ void GameObject::Update(float deltaTime)
 {
 	for (auto component : mUpdateableComponents)
 	{
-		component->Update(deltaTime);
+		if(component->GetActive())
+			component->Update(deltaTime);
 	}
 }
 
@@ -51,11 +52,12 @@ void GameObject::Update(float deltaTime)
 void GameObject::Render(Shader* shader)
 {
 	mTransform->UpdateWorldMatrix();
-	shader->UpdateWorld(mTransform);
+	shader->UpdateWorld(mTransform->GetWorldMatrix());
 	
 	for (auto component : mRenderableComponents)
 	{
-		component->Render(shader);
+		if(component->GetActive())
+			component->Render(shader);
 	}
 }
 

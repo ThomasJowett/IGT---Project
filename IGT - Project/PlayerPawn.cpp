@@ -1,9 +1,10 @@
 #include "PlayerPawn.h"
 #include <iostream>
 #include "MenuManager.h"
+#include "GameScreenManager.h"
 
-PlayerPawn::PlayerPawn(GameObject* character)
-	:mCharacter(character)
+PlayerPawn::PlayerPawn(GameObject* character, iInput* menuPawn)
+	:mCharacter(character),mMenuPawn(menuPawn)
 {
 	mRigidBody = character->GetComponent<RigidBody2D>();
 
@@ -30,4 +31,5 @@ void PlayerPawn::MoveRight(float scale)
 void PlayerPawn::Start()
 {
 	MenuManager::GetInstance()->ShowCurrentMenu(true);
+	GameScreenManager::GetInstance()->GetCurrentScreen()->GetPlayerControllers()[0]->PossesPawn(mMenuPawn);
 }

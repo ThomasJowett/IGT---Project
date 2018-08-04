@@ -50,6 +50,9 @@ void Settings::LoadSettings()
 		std::cerr << "Unable to locate Settings.ini\n";
 	}
 
+	mOrtho_Width = 480;
+	mOrtho_Height = 270;
+
 	mScreen_Width = 1920;
 	mScreen_Height = 1080;
 	mFullscreen = false;
@@ -59,26 +62,21 @@ void Settings::LoadSettings()
 
 void Settings::ApplySettings()
 {
-	//TODO: write function that changes the ortho width depending on screen size so that it maintains aspect ratio
-	//if (mScreen_Width >= 1920)
-		//mOrtho_Width = 480;
-	//else
-	//	mOrtho_Width = 
-
-	//if (mScreen_Height >= 1080)
-		//mOrtho_Height = 240;
-
-
-
-	mScreen_Scale =  (float)(mScreen_Width + mScreen_Height)/(float)(480 + 240);
-
-	if(mFullscreen)
+	if (mFullscreen)
+	{
 		SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN);
+		SDL_SetWindowDisplayMode(gWindow, &mCurrentMode);
+
+		mScreen_Height = mCurrentMode.h;
+		mScreen_Width = mCurrentMode.w;
+	}
 
 	SDL_SetWindowSize(gWindow, mScreen_Width, mScreen_Height);
 
-	//mCamera->Orthographic(mCamera->GetTransform()->mPosition,
-	//	(mScreen_Width / mScreen_Scale), (mScreen_Height / mScreen_Scale), 0, 1000);
+	mScreen_Scale = (float)(mScreen_Width + mScreen_Height) / (float)(mOrtho_Width + mOrtho_Height);
+
+	SetVsync(mVSYNC);
+
 	mCamera->Orthographic((mScreen_Width/mScreen_Scale), (mScreen_Height/mScreen_Scale), 0, 1000);
 	glViewport(0, 0, mScreen_Width, mScreen_Height);
 
@@ -89,13 +87,44 @@ void Settings::SetResolution(int width, int height)
 {
 	mScreen_Width = width;
 	mScreen_Height = height;
-
-	ApplySettings();
 }
 
 void Settings::SetScreenScale(float scale)
 {
 	mScreen_Scale = scale;
+}
+
+void Settings::SetFullScreen(bool isFullscreen)
+{
+	if (mFullscreen != isFullscreen)
+	{
+		SDL_SetWindowFullscreen(gWindow, isFullscreen);
+		mFullscreen = isFullscreen;
+	}
+}
+
+void Settings::SetDisplayMode(SDL_DisplayMode mode)
+{
+	mCurrentMode = mode;
+}
+
+void Settings::SetVsync(bool isVsyncEnabled)
+{
+	if (isVsyncEnabled)
+	{
+		if (SDL_GL_SetSwapInterval(-1) == -1)
+		{
+			SDL_GL_SetSwapInterval(1);
+		}
+
+		mVSYNC = true;
+	}
+	else
+	{
+		SDL_GL_SetSwapInterval(0);
+
+		mVSYNC = false;
+	}
 }
 
 Settings::Settings()

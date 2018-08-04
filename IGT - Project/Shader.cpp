@@ -22,10 +22,9 @@ BasicShader::BasicShader()
 	glUniform1i(mUniforms[TEXTURE_U], 0);
 }
 
-void Shader::UpdateWorld(const Transform * transform)
+void Shader::UpdateWorld(const Matrix4x4 world)
 {
-	Matrix4x4 model = transform->GetWorldMatrix();
-	glUniformMatrix4fv(mUniforms[MODEL_U], 1, GL_TRUE, &model.m[0][0]);
+	glUniformMatrix4fv(mUniforms[MODEL_U], 1, GL_TRUE, &world.m[0][0]);
 }
 
 void Shader::UpdateViewProjection(const Matrix4x4 & view, const Matrix4x4 & projection)

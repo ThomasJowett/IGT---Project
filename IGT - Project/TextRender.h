@@ -16,6 +16,7 @@ class TextRender: public iRenderable
 {
 public:
 	TextRender(GameObject* parent, const char* path, int pointSize);
+	TextRender(GameObject* parent, const char* path, int pointSize, const char* text, SDL_Colour textColour, int x, int y, ALIGNMENT alignment);
 	~TextRender();
 
 	void LoadFont(const char* path, int pointSize);

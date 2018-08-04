@@ -43,7 +43,6 @@ void GameScreen::Render()
 
 void GameScreen::Update(float deltaTime, std::vector<SDL_Event> events)
 {
-	
 	for (auto playerController : mPlayerControllers)
 	{
 		playerController->Update(events);
@@ -54,10 +53,4 @@ void GameScreen::Update(float deltaTime, std::vector<SDL_Event> events)
 		if (it->get()->GetActive())
 			it->get()->Update(deltaTime);
 	}
-	
-	//for (auto gameObject : mGameObjects)
-	//{
-	//	if(gameObject->GetActive())
-	//		gameObject->Update(deltaTime);
-	//}
 }

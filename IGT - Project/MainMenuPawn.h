@@ -34,6 +34,9 @@ public:
 	virtual void MouseRightClick()override {}
 	virtual void MouseRightUnClick()override {}
 
+	void OnPossessed(int controllerID)override;
+	void OnUnPossesed()override;
+
 private:
 	GameObject* mCursor;
 

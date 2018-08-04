@@ -2,8 +2,8 @@
 #include "Texture2D.h"
 #include "GameScreenManager.h"
 
-PauseMenu::PauseMenu(Transform* transform)
-	:UIMenu("Pause Menu", transform)
+PauseMenu::PauseMenu(Transform* transform, iInput* playerPawn)
+	:UIMenu("Pause Menu", transform), mPlayerPawn(playerPawn)
 {
 	CreateButtons();
 
@@ -45,11 +45,9 @@ void PauseMenu::OnNotify(ButtonEvent event, int ID)
 		{
 		case 0:
 			MenuManager::GetInstance()->ShowCurrentMenu(false);
+			GameScreenManager::GetInstance()->GetCurrentScreen()->GetPlayerControllers()[0]->PossesPawn(mPlayerPawn);
 			return;
 		case 1:
-			MenuManager::GetInstance()->ChangeToMenu(1);
-			return;
-		case 2:
 			GameScreenManager::GetInstance()->ChangeScreen(SCREEN_MENU);
 			break;
 		default:
@@ -59,4 +57,10 @@ void PauseMenu::OnNotify(ButtonEvent event, int ID)
 	default:
 		break;
 	}
+}
+
+void PauseMenu::Back()
+{
+	MenuManager::GetInstance()->ShowCurrentMenu(false);
+	GameScreenManager::GetInstance()->GetCurrentScreen()->GetPlayerControllers()[0]->PossesPawn(mPlayerPawn);
 }

@@ -6,7 +6,7 @@ class PlayerPawn :
 	public iInput
 {
 public:
-	PlayerPawn(GameObject* character);
+	PlayerPawn(GameObject* character, iInput* menuPawn);
 	~PlayerPawn();
 
 	void MoveUp(float scale) override;
@@ -46,5 +46,7 @@ private:
 	float mWalkSpeed;
 
 	RigidBody2D* mRigidBody;
+
+	iInput* mMenuPawn;
 };
 
