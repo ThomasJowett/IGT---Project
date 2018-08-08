@@ -14,6 +14,12 @@ enum OptionsMenuButtons
 	RES_ARROW_LEFT,
 	FULLSCREEN,
 	VSYNC,
+	VOL_MASTER_LEFT,
+	VOL_MASTER_RIGHT,
+	VOL_MUSIC_LEFT,
+	VOL_MUSIC_RIGHT,
+	VOL_SOUND_LEFT,
+	VOL_SOUND_RIGHT,
 
 	BACK
 };
@@ -32,6 +38,9 @@ public:
 	void Down()override;
 	void Left()override;
 	void Right()override;
+
+	void Next()override;
+	void Previous()override;
 
 private:
 	void SwitchMenu(OptionsMenuButtons menu);
@@ -53,5 +62,8 @@ private:
 	TextRender* mResolutionsText;
 
 	int mCurrentResolution;
+
+	OptionsMenuButtons mCurrentMenu;
+	int mCurrentOption = 0;
 };
 

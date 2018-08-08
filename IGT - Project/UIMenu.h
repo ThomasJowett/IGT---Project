@@ -30,6 +30,8 @@ public:
 	virtual void Left() {}
 	virtual void Right() {}
 	virtual void Back();
+	virtual void Next() {}
+	virtual void Previous() {}
 
 protected:
 	std::vector<Button*> mButtons;

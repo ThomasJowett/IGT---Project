@@ -47,8 +47,6 @@ private:
 
 	bool mFullscreen;
 
-	int mFPS;
-
 	bool mVSYNC;
 
 	Camera* mCamera;

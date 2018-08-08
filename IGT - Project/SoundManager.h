@@ -24,13 +24,24 @@ public:
 
 	void PlayMusic(const char* filename);
 	void PauseMusic();
+	void PlayPauseMusic();
 	void StopMusic();
 	bool PlaySoundEffect(const std::string filename, int channel, int repeat);
 	bool PlaySoundAtLocation(const std::string filename, int channel, int repeat, Vector2D location);
 	void LoadMusic(const char* filename);
 	bool LoadSoundEffect(std::string filename);
 
+	void SetSoundEffectVolume(unsigned int volume);
+	void SetMusicVolume(unsigned int volume);
+	void SetMasterVolume(int volume);
+
+	int GetMusicVolume() const { return mMusicVolume; }
+	int GetSoundEffectVolume() const { return mSoundEffectsVolume; }
+	int GetMasterVolume()const { return mMasterVolume; }
+
 private:
+	void LoadSettings();
+	void SaveSettings();
 	static const char* mCurrentMusicFilename;
 	Mix_Music* mMusic;
 
@@ -42,6 +53,9 @@ private:
 
 	SoundManager();
 
+	int mMusicVolume;
+	float mSoundEffectsVolume;
+	float mMasterVolume;
 };
 
 #endif

@@ -39,10 +39,31 @@ void Settings::LoadSettings()
 		{
 			getline(file, line);
 
-			const char* lineCStr = line.c_str();
+			std::vector<std::string> lineSplit = SplitString(line, '=');
 
-			if (lineCStr == "Display")
-				std::cout << lineCStr << std::endl;
+			if (lineSplit[0] == "SCREEN_WIDTH")
+			{
+				mScreen_Width = atoi(lineSplit[1].c_str());
+			}
+			else if (lineSplit[0] == "SCREEN_HEIGHT")
+			{
+				mScreen_Height = atoi(lineSplit[1].c_str());
+			}
+			else if (lineSplit[0] == "ZOOM")
+			{
+				mZoom = atoi(lineSplit[1].c_str());
+
+				mOrtho_Width = 480 * mZoom;
+				mOrtho_Height = 270 * mZoom;
+			}
+			else if (lineSplit[0] == "FULLSCREEN")
+			{
+				mFullscreen = atoi(lineSplit[1].c_str());
+			}
+			else if (lineSplit[0] == "V-SYNC")
+			{
+				mVSYNC = atoi(lineSplit[1].c_str());
+			}
 		}
 	}
 	else
@@ -50,14 +71,12 @@ void Settings::LoadSettings()
 		std::cerr << "Unable to locate Settings.ini\n";
 	}
 
-	mOrtho_Width = 480;
-	mOrtho_Height = 270;
+	file.close();
 
-	mScreen_Width = 1920;
-	mScreen_Height = 1080;
-	mFullscreen = false;
-	mFPS = 60;
-	mVSYNC = true;
+	SDL_GetCurrentDisplayMode(0, &mCurrentMode);
+
+	mCurrentMode.h = mScreen_Height;
+	mCurrentMode.w = mScreen_Width;
 }
 
 void Settings::ApplySettings()
@@ -65,6 +84,7 @@ void Settings::ApplySettings()
 	if (mFullscreen)
 	{
 		SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN);
+
 		SDL_SetWindowDisplayMode(gWindow, &mCurrentMode);
 
 		mScreen_Height = mCurrentMode.h;
@@ -87,6 +107,8 @@ void Settings::SetResolution(int width, int height)
 {
 	mScreen_Width = width;
 	mScreen_Height = height;
+
+	ApplySettings();
 }
 
 void Settings::SetScreenScale(float scale)

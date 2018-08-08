@@ -177,7 +177,7 @@ bool Update()
 			if (e.window.event == SDL_WINDOWEVENT_RESIZED)
 			{
 				Settings::GetInstance()->SetResolution(e.window.data1, e.window.data2);
-			}			
+			}
 		}
 		if (e.type == SDL_QUIT)
 			return true;

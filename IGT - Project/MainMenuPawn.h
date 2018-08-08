@@ -27,6 +27,9 @@ public:
 	void BButtonDown()override;
 	void BButtonUp()override;
 
+	void RightBumper()override;
+	void LeftBumper()override;
+
 	void MousePosition(float x, float y)override;
 
 	virtual void MouseLeftClick()override;

@@ -72,6 +72,16 @@ void MainMenuPawn::BButtonUp()
 	MenuManager::GetInstance()->GetCurrentMenu()->Back();
 }
 
+void MainMenuPawn::RightBumper()
+{
+	MenuManager::GetInstance()->GetCurrentMenu()->Next();
+}
+
+void MainMenuPawn::LeftBumper()
+{
+	MenuManager::GetInstance()->GetCurrentMenu()->Previous();
+}
+
 void MainMenuPawn::MousePosition(float x, float y)
 {
 	mMousePosition = Vector2D(x, y);

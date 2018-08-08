@@ -1,6 +1,7 @@
 #include "OptionsMenu.h"
 #include "Texture2D.h"
 #include "Settings.h"
+#include "SoundManager.h"
 #include "CheckBox.h"
 
 
@@ -18,6 +19,7 @@ OptionsMenu::OptionsMenu(Transform * transform)
 	//GamePlay------------------------------------------------------------------------------------------------------------
 
 	//Video Settings------------------------------------------------------------------------------------------------------
+
 	component = new TextRender(this, "Fonts/nokiafc22.ttf", 8, "Fullscreen Resolution", { 255,255,255 }, -100, 20, CENTER);
 	AddComponent(component);
 	mVideoComponents.push_back(component);
@@ -36,6 +38,18 @@ OptionsMenu::OptionsMenu(Transform * transform)
 
 	//Audio---------------------------------------------------------------------------------------------------------------
 
+	component = new TextRender(this, "Fonts/nokiafc22.ttf", 8, "Master Volume", { 255,255,255 }, -100, 20, CENTER);
+	AddComponent(component);
+	mAudioComponents.push_back(component);
+
+	component = new TextRender(this, "Fonts/nokiafc22.ttf", 8, "Music", { 255,255,255 }, -100, 0, CENTER);
+	AddComponent(component);
+	mAudioComponents.push_back(component);
+
+	component = new TextRender(this, "Fonts/nokiafc22.ttf", 8, "SFX", { 255,255,255 }, -100, -20, CENTER);
+	AddComponent(component);
+	mAudioComponents.push_back(component);
+
 	//Controls------------------------------------------------------------------------------------------------------------
 	//xbox controller image
 	GLuint ControllerTexture = Texture2D::LoadTexture2D("Images/Controller.png");
@@ -44,7 +58,39 @@ OptionsMenu::OptionsMenu(Transform * transform)
 	mControlsComponents.push_back(component);
 	component->SetActive(false);
 
+	GLuint KeyWTexture = Texture2D::LoadTexture2D("Images/Key_W.png");
+	component = new Sprite(this, KeyWTexture, 16, 16, Vector2D(148, 50));
+	AddComponent(component);
+	mControlsComponents.push_back(component);
+	component->SetActive(false);
+
+	GLuint KeyATexture = Texture2D::LoadTexture2D("Images/Key_A.png");
+	component = new Sprite(this, KeyATexture, 16, 16, Vector2D(164, 50));
+	AddComponent(component);
+	mControlsComponents.push_back(component);
+	component->SetActive(false);
+
+	GLuint KeySTexture = Texture2D::LoadTexture2D("Images/Key_S.png");
+	component = new Sprite(this, KeySTexture, 16, 16, Vector2D(180, 50));
+	AddComponent(component);
+	mControlsComponents.push_back(component);
+	component->SetActive(false);
+
+	GLuint KeyDTexture = Texture2D::LoadTexture2D("Images/Key_D.png");
+	component = new Sprite(this, KeyDTexture, 16, 16, Vector2D(196, 50));
+	AddComponent(component);
+	mControlsComponents.push_back(component);
+	component->SetActive(false);
+
+	component = new TextRender(this, "Fonts/nokiafc22.ttf", 8, "Move", { 255,255,255 }, 100, 44, LEFT);
+	AddComponent(component);
+	mControlsComponents.push_back(component);
+	
+
 	CreateButtons();
+
+	SwitchMenu(VIDEO);
+
 	GetAvailableResolutions();
 
 	GetCurrentResolution();
@@ -81,13 +127,15 @@ void OptionsMenu::CreateButtons()
 	button->AddObserver(this);
 	mButtons.emplace_back(button);
 
-	button = new Button(ArrowRightTexture, { 150,24 }, { 7, 11 });
+	//Video Settings------------------------------------------------------------------------------------------------------
+
+	button = new Button(ArrowRightTexture, { 150,26 }, { 7, 11 });
 	button->mButtonID = RES_ARROW_RIGHT;
 	button->AddObserver(this);
 	mButtons.emplace_back(button);
 	mVideoButtons.push_back(button);
 
-	button = new Button(ArrowLeftTexture, { 20,24 }, { 7, 11 });
+	button = new Button(ArrowLeftTexture, { 20,26 }, { 7, 11 });
 	button->mButtonID = RES_ARROW_LEFT;
 	button->AddObserver(this);
 	mButtons.emplace_back(button);
@@ -104,6 +152,20 @@ void OptionsMenu::CreateButtons()
 	button->AddObserver(this);
 	mButtons.emplace_back(button);
 	mVideoButtons.push_back(button);
+
+	//Audio---------------------------------------------------------------------------------------------------------------
+	button = new Button(ArrowRightTexture, { 150,24 }, { 7, 11 });
+	button->mButtonID = 12;
+	button->AddObserver(this);
+	mButtons.emplace_back(button);
+	mAudioButtons.push_back(button);
+
+	button = new Button(ArrowLeftTexture, { 20,24 }, { 7, 11 });
+	button->mButtonID = 13;
+	button->AddObserver(this);
+	mButtons.emplace_back(button);
+	mAudioButtons.push_back(button);
+
 
 	button = new Button(ButtonTexture, { 154,-100 }, { 100, 20 }, "Back");
 	button->mButtonID = BACK;
@@ -140,7 +202,7 @@ void OptionsMenu::OnNotify(ButtonEvent event, int ID)
 		case GAMEPLAY:
 			break;
 		case VIDEO:
-			//TODO:get a list of available resolutions and go through them
+			break;
 		case AUDIO:
 			break;
 		case CONTROLS:
@@ -156,6 +218,17 @@ void OptionsMenu::OnNotify(ButtonEvent event, int ID)
 			break;
 		case VSYNC:
 			Settings::GetInstance()->SetVsync(!(Settings::GetInstance()->GetIsVsync()));
+			SoundManager::GetInstance()->PlaySoundEffect("SoundEffects/yay.ogg", 1, 0);
+			break;
+		case 12:
+			SoundManager::GetInstance()->SetMusicVolume(SoundManager::GetInstance()->GetMusicVolume()-1);
+			SoundManager::GetInstance()->SetMasterVolume(100);
+			SoundManager::GetInstance()->PlaySoundEffect("SoundEffects/yay.ogg", -1, 0);
+			break;
+		case 13:
+			SoundManager::GetInstance()->SetMusicVolume(SoundManager::GetInstance()->GetMusicVolume() + 1);
+			SoundManager::GetInstance()->SetMasterVolume(50);
+			SoundManager::GetInstance()->PlaySoundEffect("SoundEffects/one_blast_from_shot_gun.wav", -1, 0);
 			break;
 		case BACK:
 			MenuManager::GetInstance()->ChangeToPreviousMenu();
@@ -169,22 +242,168 @@ void OptionsMenu::OnNotify(ButtonEvent event, int ID)
 
 void OptionsMenu::Up()
 {
+	mCurrentOption--;
+
+	if (mCurrentOption < 0)
+		mCurrentOption = 0;
+
+	switch (mCurrentMenu)
+	{
+	case GAMEPLAY:
+		break;
+	case VIDEO:
+		if (mCurrentOption == 1)
+		{
+			GetCurrentButton()->OnUnHovered();
+			SetCurrentButton(6);
+			GetCurrentButton()->OnHovered();
+		}
+		else if (mCurrentOption == 2)
+		{
+			GetCurrentButton()->OnUnHovered();
+			SetCurrentButton(7);
+			GetCurrentButton()->OnHovered();
+		}
+		else
+		{
+			GetCurrentButton()->OnUnHovered();
+		}
+
+		break;
+	case AUDIO:
+		break;
+	case CONTROLS:
+		break;
+	default:
+		break;
+	}
 }
 
 void OptionsMenu::Down()
 {
+	mCurrentOption++;
+
+	switch (mCurrentMenu)
+	{
+	case GAMEPLAY:
+		break;
+	case VIDEO:
+		if (mCurrentOption > 2)
+			mCurrentOption = 2;
+
+		if (mCurrentOption == 1)
+		{
+			GetCurrentButton()->OnUnHovered();
+			SetCurrentButton(6);
+			GetCurrentButton()->OnHovered();
+		}
+		else if (mCurrentOption == 2)
+		{
+			GetCurrentButton()->OnUnHovered();
+			SetCurrentButton(7);
+			GetCurrentButton()->OnHovered();
+		}
+		else
+		{
+			GetCurrentButton()->OnUnHovered();
+		}
+
+		break;
+	case AUDIO:
+		break;
+	case CONTROLS:
+		break;
+	default:
+		break;
+	}
 }
 
 void OptionsMenu::Left()
 {
+	switch (mCurrentMenu)
+	{
+	case GAMEPLAY:
+		break;
+	case VIDEO:
+		if (mCurrentOption == 0)
+		{
+			ResolutionSelector(mCurrentResolution + 1);
+		}
+		break;
+	case AUDIO:
+		break;
+	case CONTROLS:
+		break;
+	default:
+		break;
+	}
 }
 
 void OptionsMenu::Right()
 {
+	switch (mCurrentMenu)
+	{
+	case GAMEPLAY:
+		break;
+	case VIDEO:
+		if (mCurrentOption == 0)
+		{
+			ResolutionSelector(mCurrentResolution - 1);
+		}
+		break;
+	case AUDIO:
+		break;
+	case CONTROLS:
+		break;
+	default:
+		break;
+	}
+}
+
+void OptionsMenu::Next()
+{
+	switch (mCurrentMenu)
+	{
+	case GAMEPLAY:
+		SwitchMenu(VIDEO);
+		break;
+	case VIDEO:
+		SwitchMenu(AUDIO);
+		break;
+	case AUDIO:
+		SwitchMenu(CONTROLS);
+		break;
+	case CONTROLS:
+		break;
+	default:
+		break;
+	}
+}
+
+void OptionsMenu::Previous()
+{
+	switch (mCurrentMenu)
+	{
+	case GAMEPLAY:
+		break;
+	case VIDEO:
+		SwitchMenu(GAMEPLAY);
+		break;
+	case AUDIO:
+		SwitchMenu(VIDEO);
+		break;
+	case CONTROLS:
+		SwitchMenu(AUDIO);
+		break;
+	default:
+		break;
+	}
 }
 
 void OptionsMenu::SwitchMenu(OptionsMenuButtons menu)
 {
+	mCurrentMenu = menu;
+
 	switch (menu)
 	{
 	case GAMEPLAY:
@@ -332,12 +551,8 @@ void OptionsMenu::GetAvailableResolutions()
 {
 	int display_count = SDL_GetNumVideoDisplays();
 
-	SDL_Log("Number of displays: %i", display_count);
-
 	for (int display_index = 0; display_index < display_count; display_index++)
 	{
-		SDL_Log("Display %i:", display_index);
-
 		int modes_count = SDL_GetNumDisplayModes(display_index);
 
 		for (int mode_index = 0; mode_index <= modes_count; mode_index++)
@@ -346,9 +561,6 @@ void OptionsMenu::GetAvailableResolutions()
 
 			if (SDL_GetDisplayMode(display_index, mode_index, &mode) == 0)
 			{
-				SDL_Log(" %i bpp\t%i x %i @ %iHz",
-					SDL_BITSPERPIXEL(mode.format), mode.w, mode.h, mode.refresh_rate);
-
 				mResolutions.push_back(mode);
 			}
 		}
@@ -388,13 +600,13 @@ void OptionsMenu::GetCurrentResolution()
 
 void OptionsMenu::ResolutionSelector(int resolutionIndex)
 {
-	if (resolutionIndex > mResolutions.size() -1)
+	if (resolutionIndex > (mResolutions.size() -1) && resolutionIndex != -1)
 	{
 		mCurrentResolution = 0;
 	}
 	else if (resolutionIndex < 0)
-	{
-		mCurrentResolution = mResolutions.size() -1;
+	{	
+		mCurrentResolution = (mResolutions.size() -1);
 	}
 	else
 	{
