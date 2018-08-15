@@ -87,7 +87,7 @@ OptionsMenu::OptionsMenu(Transform * transform)
 	mControlsComponents.push_back(component);
 	
 
-	CreateButtons();
+	CreateWidgets();
 
 	SwitchMenu(VIDEO);
 
@@ -100,85 +100,85 @@ OptionsMenu::~OptionsMenu()
 {
 }
 
-void OptionsMenu::CreateButtons()
+void OptionsMenu::CreateWidgets()
 {
 	GLuint ButtonTexture = Texture2D::LoadTexture2D("Images/ButtonsMenu.png");
 	GLuint ArrowRightTexture = Texture2D::LoadTexture2D("Images/Arrow_Right.png");
 	GLuint ArrowLeftTexture = Texture2D::LoadTexture2D("Images/Arrow_Left.png");
 	GLuint CheckBoxTexture = Texture2D::LoadTexture2D("Images/CheckBox.png");
 
-	Button* button = new Button(ButtonTexture, { -154,90 }, { 100, 20 }, "Gameplay");
-	button->mButtonID = GAMEPLAY;
-	button->AddObserver(this);
-	mButtons.emplace_back(button);
+	UIWidget* widget = new Button(ButtonTexture, { 0.5,0.0 }, { -154,-20 }, { 100, 20 }, "Gameplay");
+	widget->mWidgetData.ID = GAMEPLAY;
+	widget->AddObserver(this);
+	mWidgets.emplace_back(widget);
 
-	button = new Button(ButtonTexture, { -52,90 }, { 100, 20 }, "Video");
-	button->mButtonID = VIDEO;
-	button->AddObserver(this);
-	mButtons.emplace_back(button);
+	widget = new Button(ButtonTexture, { 0.5,0.0 }, { -52,-20 }, { 100, 20 }, "Video");
+	widget->mWidgetData.ID = VIDEO;
+	widget->AddObserver(this);
+	mWidgets.emplace_back(widget);
 
-	button = new Button(ButtonTexture, { 52,90 }, { 100, 20 }, "Audio");
-	button->mButtonID = AUDIO;
-	button->AddObserver(this);
-	mButtons.emplace_back(button);
+	widget = new Button(ButtonTexture, { 0.5,0.0 }, { 52,-20 }, { 100, 20 }, "Audio");
+	widget->mWidgetData.ID = AUDIO;
+	widget->AddObserver(this);
+	mWidgets.emplace_back(widget);
 
-	button = new Button(ButtonTexture, { 154,90 }, { 100, 20 }, "Controls");
-	button->mButtonID = CONTROLS;
-	button->AddObserver(this);
-	mButtons.emplace_back(button);
+	widget = new Button(ButtonTexture, { 0.5,0.0 }, { 154,-20 }, { 100, 20 }, "Controls");
+	widget->mWidgetData.ID = CONTROLS;
+	widget->AddObserver(this);
+	mWidgets.emplace_back(widget);
 
 	//Video Settings------------------------------------------------------------------------------------------------------
 
-	button = new Button(ArrowRightTexture, { 150,26 }, { 7, 11 });
-	button->mButtonID = RES_ARROW_RIGHT;
-	button->AddObserver(this);
-	mButtons.emplace_back(button);
-	mVideoButtons.push_back(button);
+	widget = new Button(ArrowRightTexture, { 0.5,0.5 }, { 150, 26 }, { 7, 11 });
+	widget->mWidgetData.ID = RES_ARROW_RIGHT;
+	widget->AddObserver(this);
+	mWidgets.emplace_back(widget);
+	mVideoButtons.push_back(widget);
 
-	button = new Button(ArrowLeftTexture, { 20,26 }, { 7, 11 });
-	button->mButtonID = RES_ARROW_LEFT;
-	button->AddObserver(this);
-	mButtons.emplace_back(button);
-	mVideoButtons.push_back(button);
+	widget = new Button(ArrowLeftTexture, { 0.5,0.5 }, { 20,26 }, { 7, 11 });
+	widget->mWidgetData.ID = RES_ARROW_LEFT;
+	widget->AddObserver(this);
+	mWidgets.emplace_back(widget);
+	mVideoButtons.push_back(widget);
 
-	button = new CheckBox(CheckBoxTexture, Vector2D(80, 5), Vector2D(20, 20), Settings::GetInstance()->GetIsFullScreen());
-	button->mButtonID = FULLSCREEN;
-	button->AddObserver(this);
-	mButtons.emplace_back(button);
-	mVideoButtons.push_back(button);
+	widget = new CheckBox("FullScreen CheckBox", { 0.5,0.5 }, Vector2D(80, 5), CheckBoxTexture, Vector2D(20, 20),  Settings::GetInstance()->GetIsFullScreen());
+	widget->mWidgetData.ID = FULLSCREEN;
+	widget->AddObserver(this);
+	mWidgets.emplace_back(widget);
+	mVideoButtons.push_back(widget);
 
-	button = new CheckBox(CheckBoxTexture, Vector2D(80, -15), Vector2D(20, 20), true);
-	button->mButtonID = VSYNC;
-	button->AddObserver(this);
-	mButtons.emplace_back(button);
-	mVideoButtons.push_back(button);
+	widget = new CheckBox("Vsync CheckBox", { 0.5,0.5 }, Vector2D(80, -15), CheckBoxTexture, Vector2D(20, 20), true);
+	widget->mWidgetData.ID = VSYNC;
+	widget->AddObserver(this);
+	mWidgets.emplace_back(widget);
+	mVideoButtons.push_back(widget);
 
 	//Audio---------------------------------------------------------------------------------------------------------------
-	button = new Button(ArrowRightTexture, { 150,24 }, { 7, 11 });
-	button->mButtonID = 12;
-	button->AddObserver(this);
-	mButtons.emplace_back(button);
-	mAudioButtons.push_back(button);
+	widget = new Button(ArrowRightTexture, { 0.5,0.5 }, { 150, 24 }, { 7, 11 });
+	widget->mWidgetData.ID = 12;
+	widget->AddObserver(this);
+	mWidgets.emplace_back(widget);
+	mAudioButtons.push_back(widget);
 
-	button = new Button(ArrowLeftTexture, { 20,24 }, { 7, 11 });
-	button->mButtonID = 13;
-	button->AddObserver(this);
-	mButtons.emplace_back(button);
-	mAudioButtons.push_back(button);
+	widget = new Button(ArrowLeftTexture, { 0.5,0.5 }, { 20,24 }, { 7, 11 });
+	widget->mWidgetData.ID = 13;
+	widget->AddObserver(this);
+	mWidgets.emplace_back(widget);
+	mAudioButtons.push_back(widget);
 
 
-	button = new Button(ButtonTexture, { 154,-100 }, { 100, 20 }, "Back");
-	button->mButtonID = BACK;
-	button->AddObserver(this);
-	mButtons.emplace_back(button);
+	widget = new Button(ButtonTexture, { 1.0f, 1.0f }, { -65, 20 }, { 100, 20 }, "Back");
+	widget->mWidgetData.ID = BACK;
+	widget->AddObserver(this);
+	mWidgets.emplace_back(widget);
 }
 
-void OptionsMenu::OnNotify(ButtonEvent event, int ID)
+void OptionsMenu::OnNotify(WidgetEvent event, WidgetEventData data)
 {
 	switch (event)
 	{
-	case ButtonEvent::ON_HOVERED:
-		switch (ID)
+	case WidgetEvent::ON_HOVERED:
+		switch (data.ID)
 		{
 		case GAMEPLAY:
 			SwitchMenu(GAMEPLAY);
@@ -196,8 +196,8 @@ void OptionsMenu::OnNotify(ButtonEvent event, int ID)
 			break;
 		}
 		break;
-	case ButtonEvent::ON_CLICKED:
-		switch (ID)
+	case WidgetEvent::ON_CLICKED:
+		switch (data.ID)
 		{
 		case GAMEPLAY:
 			break;
@@ -214,21 +214,16 @@ void OptionsMenu::OnNotify(ButtonEvent event, int ID)
 			ResolutionSelector(mCurrentResolution-1);
 			break;
 		case FULLSCREEN:
-			Settings::GetInstance()->SetFullScreen(!(Settings::GetInstance()->GetIsFullScreen()));
+			Settings::GetInstance()->SetFullScreen(!data.value);
 			break;
 		case VSYNC:
-			Settings::GetInstance()->SetVsync(!(Settings::GetInstance()->GetIsVsync()));
-			SoundManager::GetInstance()->PlaySoundEffect("SoundEffects/yay.ogg", 1, 0);
+			Settings::GetInstance()->SetVsync(!data.value);
 			break;
 		case 12:
-			SoundManager::GetInstance()->SetMusicVolume(SoundManager::GetInstance()->GetMusicVolume()-1);
-			SoundManager::GetInstance()->SetMasterVolume(100);
-			SoundManager::GetInstance()->PlaySoundEffect("SoundEffects/yay.ogg", -1, 0);
+			SoundManager::GetInstance()->SetMasterVolume(10);
 			break;
 		case 13:
-			SoundManager::GetInstance()->SetMusicVolume(SoundManager::GetInstance()->GetMusicVolume() + 1);
-			SoundManager::GetInstance()->SetMasterVolume(50);
-			SoundManager::GetInstance()->PlaySoundEffect("SoundEffects/one_blast_from_shot_gun.wav", -1, 0);
+			SoundManager::GetInstance()->SetMasterVolume(SoundManager::GetInstance()->GetMasterVolume() - 10);
 			break;
 		case BACK:
 			MenuManager::GetInstance()->ChangeToPreviousMenu();
@@ -254,19 +249,19 @@ void OptionsMenu::Up()
 	case VIDEO:
 		if (mCurrentOption == 1)
 		{
-			GetCurrentButton()->OnUnHovered();
-			SetCurrentButton(6);
-			GetCurrentButton()->OnHovered();
+			GetCurrentWidget()->OnUnHovered();
+			SetCurrentWidget(6);
+			GetCurrentWidget()->OnHovered();
 		}
 		else if (mCurrentOption == 2)
 		{
-			GetCurrentButton()->OnUnHovered();
-			SetCurrentButton(7);
-			GetCurrentButton()->OnHovered();
+			GetCurrentWidget()->OnUnHovered();
+			SetCurrentWidget(7);
+			GetCurrentWidget()->OnHovered();
 		}
 		else
 		{
-			GetCurrentButton()->OnUnHovered();
+			GetCurrentWidget()->OnUnHovered();
 		}
 
 		break;
@@ -293,19 +288,19 @@ void OptionsMenu::Down()
 
 		if (mCurrentOption == 1)
 		{
-			GetCurrentButton()->OnUnHovered();
-			SetCurrentButton(6);
-			GetCurrentButton()->OnHovered();
+			GetCurrentWidget()->OnUnHovered();
+			SetCurrentWidget(6);
+			GetCurrentWidget()->OnHovered();
 		}
 		else if (mCurrentOption == 2)
 		{
-			GetCurrentButton()->OnUnHovered();
-			SetCurrentButton(7);
-			GetCurrentButton()->OnHovered();
+			GetCurrentWidget()->OnUnHovered();
+			SetCurrentWidget(7);
+			GetCurrentWidget()->OnHovered();
 		}
 		else
 		{
-			GetCurrentButton()->OnUnHovered();
+			GetCurrentWidget()->OnUnHovered();
 		}
 
 		break;
@@ -411,7 +406,7 @@ void OptionsMenu::SwitchMenu(OptionsMenuButtons menu)
 		{
 			component->SetActive(true);
 		}
-		for (Button* button : mGameplayButtons)
+		for (UIWidget* button : mGameplayButtons)
 		{
 			button->SetActive(true);
 		}
@@ -419,7 +414,7 @@ void OptionsMenu::SwitchMenu(OptionsMenuButtons menu)
 		{
 			component->SetActive(false);
 		}
-		for (Button* button : mVideoButtons)
+		for (UIWidget* button : mVideoButtons)
 		{
 			button->SetActive(false);
 		}
@@ -427,7 +422,7 @@ void OptionsMenu::SwitchMenu(OptionsMenuButtons menu)
 		{
 			component->SetActive(false);
 		}
-		for (Button* button : mAudioButtons)
+		for (UIWidget* button : mAudioButtons)
 		{
 			button->SetActive(false);
 		}
@@ -435,7 +430,7 @@ void OptionsMenu::SwitchMenu(OptionsMenuButtons menu)
 		{
 			component->SetActive(false);
 		}
-		for (Button* button : mControlsButtons)
+		for (UIWidget* button : mControlsButtons)
 		{
 			button->SetActive(false);
 		}
@@ -445,7 +440,7 @@ void OptionsMenu::SwitchMenu(OptionsMenuButtons menu)
 		{
 			component->SetActive(true);
 		}
-		for (Button* button : mVideoButtons)
+		for (UIWidget* button : mVideoButtons)
 		{
 			button->SetActive(true);
 		}
@@ -453,7 +448,7 @@ void OptionsMenu::SwitchMenu(OptionsMenuButtons menu)
 		{
 			component->SetActive(false);
 		}
-		for (Button* button : mGameplayButtons)
+		for (UIWidget* button : mGameplayButtons)
 		{
 			button->SetActive(false);
 		}
@@ -461,7 +456,7 @@ void OptionsMenu::SwitchMenu(OptionsMenuButtons menu)
 		{
 			component->SetActive(false);
 		}
-		for (Button* button : mAudioButtons)
+		for (UIWidget* button : mAudioButtons)
 		{
 			button->SetActive(false);
 		}
@@ -469,7 +464,7 @@ void OptionsMenu::SwitchMenu(OptionsMenuButtons menu)
 		{
 			component->SetActive(false);
 		}
-		for (Button* button : mControlsButtons)
+		for (UIWidget* button : mControlsButtons)
 		{
 			button->SetActive(false);
 		}
@@ -479,7 +474,7 @@ void OptionsMenu::SwitchMenu(OptionsMenuButtons menu)
 		{
 			component->SetActive(false);
 		}
-		for (Button* button : mVideoButtons)
+		for (UIWidget* button : mVideoButtons)
 		{
 			button->SetActive(false);
 		}
@@ -487,7 +482,7 @@ void OptionsMenu::SwitchMenu(OptionsMenuButtons menu)
 		{
 			component->SetActive(false);
 		}
-		for (Button* button : mGameplayButtons)
+		for (UIWidget* button : mGameplayButtons)
 		{
 			button->SetActive(false);
 		}
@@ -495,7 +490,7 @@ void OptionsMenu::SwitchMenu(OptionsMenuButtons menu)
 		{
 			component->SetActive(true);
 		}
-		for (Button* button : mAudioButtons)
+		for (UIWidget* button : mAudioButtons)
 		{
 			button->SetActive(true);
 		}
@@ -503,7 +498,7 @@ void OptionsMenu::SwitchMenu(OptionsMenuButtons menu)
 		{
 			component->SetActive(false);
 		}
-		for (Button* button : mControlsButtons)
+		for (UIWidget* button : mControlsButtons)
 		{
 			button->SetActive(false);
 		}
@@ -513,7 +508,7 @@ void OptionsMenu::SwitchMenu(OptionsMenuButtons menu)
 		{
 			component->SetActive(false);
 		}
-		for (Button* button : mGameplayButtons)
+		for (UIWidget* button : mGameplayButtons)
 		{
 			button->SetActive(false);
 		}
@@ -521,7 +516,7 @@ void OptionsMenu::SwitchMenu(OptionsMenuButtons menu)
 		{
 			component->SetActive(false);
 		}
-		for (Button* button : mVideoButtons)
+		for (UIWidget* button : mVideoButtons)
 		{
 			button->SetActive(false);
 		}
@@ -529,7 +524,7 @@ void OptionsMenu::SwitchMenu(OptionsMenuButtons menu)
 		{
 			component->SetActive(false);
 		}
-		for (Button* button : mAudioButtons)
+		for (UIWidget* button : mAudioButtons)
 		{
 			button->SetActive(false);
 		}
@@ -537,7 +532,7 @@ void OptionsMenu::SwitchMenu(OptionsMenuButtons menu)
 		{
 			component->SetActive(true);
 		}
-		for (Button* button : mControlsButtons)
+		for (UIWidget* button : mControlsButtons)
 		{
 			button->SetActive(true);
 		}

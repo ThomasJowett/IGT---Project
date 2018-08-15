@@ -15,7 +15,7 @@
 
 GameScreenLevel1::GameScreenLevel1()
 {
-	mShader = new BasicShader();
+	mShaderBasic = new BasicShader();
 
 	mCamera.GetTransform()->mPosition = Vector3D(0, 0, 100);
 
@@ -32,11 +32,10 @@ GameScreenLevel1::GameScreenLevel1()
 
 	//Cursor
 	transform = new Transform();
-	gameObject = new GameObject("Cursor", transform, false);
-	gameObject->AddComponent<Sprite>(CursorTexture, 16, 16);
-	mGameObjects.emplace_back(gameObject);
+	GameObject* cursor = new GameObject("Cursor", transform, false);
+	cursor->AddComponent<Sprite>(CursorTexture, 16, 16);
 
-	MainMenuPawn* menu = new MainMenuPawn(gameObject);
+	MainMenuPawn* menu = new MainMenuPawn(cursor);
 
 	//player 1
 	transform = new Transform(Vector3D(-100, 0, 0), 0, Vector2D(1, 1));
@@ -73,8 +72,10 @@ GameScreenLevel1::GameScreenLevel1()
 
 	//Pause Menu
 	UIMenu* pauseMenu = new PauseMenu(new Transform(), characterController);
-	mGameObjects.emplace_back(pauseMenu);
+	mUIWidgets.emplace_back(pauseMenu);
 	MenuManager::GetInstance()->AddMenu(pauseMenu);
+	
+	mUIWidgets.emplace_back(cursor);
 
 	//PlayerControllers
 	PlayerController* playerController = new PlayerController(0, characterController);

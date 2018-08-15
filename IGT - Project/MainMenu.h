@@ -17,9 +17,9 @@ public:
 	MainMenu(Transform* transform);
 	virtual ~MainMenu();
 
-	void CreateButtons()override;
+	void CreateWidgets()override;
 
-	void OnNotify(ButtonEvent event, int ID)override;
+	void OnNotify(WidgetEvent event, WidgetEventData data)override;
 	
 	//overrides the back function as there is no menu to go back to
 	void Back()override {}

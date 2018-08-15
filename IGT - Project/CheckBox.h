@@ -1,5 +1,6 @@
 #pragma once
 #include "Button.h"
+#include "UIWidget.h"
 
 enum CheckBoxStatus
 {
@@ -10,18 +11,17 @@ enum CheckBoxStatus
 };
 
 class CheckBox :
-	public Button
+	public UIWidget
 {
 public:
-	CheckBox(GLuint texture, Vector2D position, Vector2D size, bool checked);
+	CheckBox(const char* name, Vector2D anchorPoint, Vector2D offset, GLuint texture, Vector2D size, bool checked);
 	virtual ~CheckBox();
 
-	void OnClicked()override;
-	void Execute()override;
-	void OnHovered()override;
-	void OnUnHovered()override;
+	bool OnReleased()override;
+	bool OnHovered()override;
+	bool OnUnHovered()override;
 
 private:
-	bool mChecked;
+	Sprite * mSprite;
 };
 

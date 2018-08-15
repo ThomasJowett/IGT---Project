@@ -61,10 +61,9 @@ UIMenu * MenuManager::GetCurrentMenu()
 		return nullptr;
 }
 
-Button* MenuManager::GetCurrentButton()
+UIWidget* MenuManager::GetCurrentWidget()
 {
-
-	return mMenus[mCurrentMenuID]->GetCurrentButton();
+	return mMenus[mCurrentMenuID]->GetCurrentWidget();
 }
 
 MenuManager::MenuManager()

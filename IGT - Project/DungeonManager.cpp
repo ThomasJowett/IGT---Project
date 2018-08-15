@@ -22,7 +22,7 @@ void DungeonManager::Update(float deltaTime)
 void DungeonManager::Render(Shader * shader)
 {
 	GetTransform()->UpdateWorldMatrix();
-	shader->UpdateWorld(GetTransform()->GetWorldMatrix());
+	shader->UpdateMatrixUniform(MODEL_U, GetTransform()->GetWorldMatrix(),true);
 
 	for (int i = 0; i < 20; i++)
 	{

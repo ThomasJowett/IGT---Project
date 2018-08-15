@@ -5,39 +5,26 @@
 #include "Vector.h"
 #include "TextRender.h"
 #include "Messaging.h"
-
-enum Status
-{
-	NORMAL = 0,
-	HOVERED,
-	CLICKED
-};
+#include "UIWidget.h"
 
 enum class ButtonEvent { ON_HOVERED, ON_CLICKED};
 
 class Button
-	:public Subject<ButtonEvent, int> , public GameObject
+	:public UIWidget
 {
 public:
-	Button(GLuint texture, Vector2D position, Vector2D size, const char* text);
-	Button(GLuint texture, Vector2D position, Vector2D size);
-	Button(GLuint texture, Vector2D position);
+	Button(GLuint texture, Vector2D anchorPoint, Vector2D offset, Vector2D size, const char* text);
+	Button(GLuint texture, Vector2D anchorPoint, Vector2D offset, Vector2D size);
 	~Button();
 
-	virtual void OnClicked();
-	virtual void Execute();
-	virtual void OnHovered();
-	virtual void OnUnHovered();
-
-	Box2D* GetCollisionBox() { return mCollisionBox; }
-
-	int mButtonID;
+	virtual bool OnPressed() override;
+	virtual bool OnReleased() override;
+	virtual bool OnHovered()override;
+	virtual bool OnUnHovered()override;
 
 private:
-	Box2D* mCollisionBox;
 	TextRender* mText;
 
 protected:
 	Sprite * mSprite;
-	Status mButtonStatus = NORMAL;
 };

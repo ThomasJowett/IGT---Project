@@ -100,6 +100,8 @@ void Settings::ApplySettings()
 	mCamera->Orthographic((mScreen_Width/mScreen_Scale), (mScreen_Height/mScreen_Scale), 0, 1000);
 	glViewport(0, 0, mScreen_Width, mScreen_Height);
 
+	Notify(SettingsEvent::ON_RESOLUTION_CHANGE, Vector2D(mScreen_Width, mScreen_Height));
+
 	SaveSettings();
 }
 

@@ -26,12 +26,13 @@ void Camera::Perspective(Vector3D forward, Vector3D up, float fovY, float nearDe
 		nearDepth, farDepth);
 }
 
-void Camera::Update(Shader * shader)
+void Camera::UpdateView(Shader * shader)
 {
 	//mOrthoWidth++;
 	//mOrthoHeight++;
-	mProjection = Matrix4x4::Orthographic(-(mOrthoWidth / 2), (mOrthoWidth / 2), -(mOrthoHeight / 2), (mOrthoHeight / 2), 0, 1000);
+	//mProjection = Matrix4x4::Orthographic(-(mOrthoWidth / 2), (mOrthoWidth / 2), -(mOrthoHeight / 2), (mOrthoHeight / 2), 0, 1000);
 
 	mView = Matrix4x4::LookAt(mTransform->mPosition, mTransform->mPosition + Vector3D(0, 0, -1), Vector3D(0, 1, 0));
-	shader->UpdateViewProjection(mView, mProjection);
+	shader->UpdateMatrixUniform(VIEW_U, mView,false);
+	shader->UpdateMatrixUniform(PROJECTION_U, mProjection,false);
 }

@@ -33,7 +33,7 @@ public:
 
 	void SetSoundEffectVolume(unsigned int volume);
 	void SetMusicVolume(unsigned int volume);
-	void SetMasterVolume(int volume);
+	void SetMasterVolume(unsigned int volume);
 
 	int GetMusicVolume() const { return mMusicVolume; }
 	int GetSoundEffectVolume() const { return mSoundEffectsVolume; }

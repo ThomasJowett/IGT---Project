@@ -5,7 +5,7 @@
 MainMenu::MainMenu(Transform* transform)
 	:UIMenu("MainMenu", transform)
 {
-	CreateButtons();
+	CreateWidgets();
 
 	//TODO: add the button prompts (A and B) to screen somewhere
 	//AddComponent<Sprite>();
@@ -17,32 +17,32 @@ MainMenu::~MainMenu()
 	
 }
 
-void MainMenu::CreateButtons()
+void MainMenu::CreateWidgets()
 {
 	GLuint ButtonTexture = Texture2D::LoadTexture2D("Images/ButtonsMenu.png");
 
-	Button* button = new Button(ButtonTexture, { 0,25 }, { 100, 20 }, "Play");
-	button->mButtonID = PLAY;
+	Button* button = new Button(ButtonTexture, { 0.5,0.5 }, { 0, 25 }, { 100, 20 }, "Play");
+	button->mWidgetData.ID = PLAY;
 	button->AddObserver(this);
-	mButtons.emplace_back(button);
+	mWidgets.emplace_back(button);
 
-	button = new Button(ButtonTexture, { 0,0 }, { 100, 20 }, "Options");
-	button->mButtonID = OPTIONS;
+	button = new Button(ButtonTexture, { 0.5,0.5 }, { 0,0 }, { 100, 20 }, "Options");
+	button->mWidgetData.ID = OPTIONS;
 	button->AddObserver(this);
-	mButtons.emplace_back(button);
+	mWidgets.emplace_back(button);
 
-	button = new Button(ButtonTexture, { 0,-25 }, { 100, 20 }, "Quit");
-	button->mButtonID = QUIT;
+	button = new Button(ButtonTexture, { 0.5,0.5 }, { 0,-25 }, { 100, 20 }, "Quit");
+	button->mWidgetData.ID = QUIT;
 	button->AddObserver(this);
-	mButtons.emplace_back(button);
+	mWidgets.emplace_back(button);
 }
 
-void MainMenu::OnNotify(ButtonEvent event, int ID)
+void MainMenu::OnNotify(WidgetEvent event, WidgetEventData data)
 {
 	switch (event)
 	{
-	case ButtonEvent::ON_HOVERED:
-		switch (ID)
+	case WidgetEvent::ON_HOVERED:
+		switch (data.ID)
 		{
 		case PLAY:
 			break;
@@ -52,8 +52,8 @@ void MainMenu::OnNotify(ButtonEvent event, int ID)
 			break;
 		}
 		break;
-	case ButtonEvent::ON_CLICKED:
-		switch (ID)
+	case WidgetEvent::ON_CLICKED:
+		switch (data.ID)
 		{
 		case PLAY:
 			GameScreenManager::GetInstance()->ChangeScreen(SCREEN_LEVEL_1);

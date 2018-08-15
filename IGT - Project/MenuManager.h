@@ -24,7 +24,7 @@ public:
 
 	UIMenu* GetCurrentMenu();
 
-	Button* GetCurrentButton();
+	UIWidget* GetCurrentWidget();
 
 private:
 	MenuManager();

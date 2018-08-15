@@ -27,8 +27,8 @@ public:
 	void Bind() { glUseProgram(mProgram); }
 	void UnBind() { glUseProgram(0); }
 
-	void UpdateWorld(const Matrix4x4 world);
-	void UpdateViewProjection(const Matrix4x4& view, const Matrix4x4& projection);
+	void UpdateMatrixUniform(int uniform, const Matrix4x4& matrix, bool transpose);
+
 protected:
 	GLuint mProgram;
 	GLuint mUniforms[NUM_UNIFORMS];
@@ -41,5 +41,13 @@ public:
 	~BasicShader() { }
 private:
 
+};
+
+class GUIShader : public Shader
+{
+public:
+	GUIShader();
+	~GUIShader() { }
+private:
 };
 #endif // !_SHADER_H

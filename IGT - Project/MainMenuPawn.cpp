@@ -54,12 +54,12 @@ void MainMenuPawn::Select()
 void MainMenuPawn::AButtonDown()
 {
 	mCursor->SetActive(false);
-	MenuManager::GetInstance()->GetCurrentButton()->OnClicked();
+	MenuManager::GetInstance()->GetCurrentWidget()->OnPressed();
 }
 
 void MainMenuPawn::AButtonUp()
 {
-	MenuManager::GetInstance()->GetCurrentButton()->Execute();
+	MenuManager::GetInstance()->GetCurrentWidget()->OnReleased();
 }
 
 void MainMenuPawn::BButtonDown()
@@ -85,33 +85,33 @@ void MainMenuPawn::LeftBumper()
 void MainMenuPawn::MousePosition(float x, float y)
 {
 	mMousePosition = Vector2D(x, y);
-	for (int i = 0; i < MenuManager::GetInstance()->GetCurrentMenu()->GetButtons().size(); i++)
+	for (int i = 0; i < MenuManager::GetInstance()->GetCurrentMenu()->GetWidgets().size(); i++)
 	{
-		Button* button = MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[i];
+		UIWidget* widget = MenuManager::GetInstance()->GetCurrentMenu()->GetWidgets()[i];
 
-		if (button->GetActive())
+		if (widget->GetActive())
 		{
-			if (button->GetCollisionBox()->ContainsPoint(mMousePosition))
+			if (widget->ContainsMouse(mMousePosition))
 			{
 				if (mLeftMouseDown)
 				{
-					button->OnClicked();
+					widget->OnPressed();
 				}
 				else
 				{
-					button->OnHovered();
+					widget->OnHovered();
 				}
-				MenuManager::GetInstance()->GetCurrentMenu()->SetCurrentButton(i);
+				MenuManager::GetInstance()->GetCurrentMenu()->SetCurrentWidget(i);
 			}
 			else
 			{
-				MenuManager::GetInstance()->GetCurrentMenu()->GetButtons()[i]->OnUnHovered();
+				MenuManager::GetInstance()->GetCurrentMenu()->GetWidgets()[i]->OnUnHovered();
 			}
 		}
 	}
 
 	mCursor->SetActive(true);
-	mCursor->GetTransform()->mPosition = Vector3D(x + 8, y - 8, 100);
+	mCursor->GetTransform()->mPosition = Vector3D(x + 8, y - 8, 0);
 }
 
 void MainMenuPawn::MouseLeftClick()
@@ -124,8 +124,8 @@ void MainMenuPawn::MouseLeftUnClick()
 {
 	mLeftMouseDown = false;
 
-	if (MenuManager::GetInstance()->GetCurrentButton()->GetCollisionBox()->ContainsPoint(mMousePosition))
-		MenuManager::GetInstance()->GetCurrentButton()->Execute();
+	if (MenuManager::GetInstance()->GetCurrentWidget()->ContainsMouse(mMousePosition))
+		MenuManager::GetInstance()->GetCurrentWidget()->OnReleased();
 }
 
 void MainMenuPawn::OnPossessed(int controllerID)

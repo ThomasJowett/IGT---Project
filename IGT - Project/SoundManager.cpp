@@ -154,16 +154,14 @@ void SoundManager::SetMusicVolume(unsigned int volume)
 	}
 }
 
-void SoundManager::SetMasterVolume(int volume)
+void SoundManager::SetMasterVolume(unsigned int volume)
 {
 	if (volume < SDL_MIX_MAXVOLUME)
 	{
 		mMasterVolume = volume;
 
-		Mix_VolumeMusic((mMusicVolume/mMasterVolume)*128);
+		Mix_VolumeMusic((mMusicVolume / mMasterVolume) * 128);
 	}
-
-	std::cout << mSoundEffectsVolume << " "<< mMusicVolume << std::endl;
 }
 
 void SoundManager::LoadSettings()

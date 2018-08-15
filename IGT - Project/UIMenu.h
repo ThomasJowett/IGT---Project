@@ -1,28 +1,29 @@
 #pragma once
 #include "GameObject.h"
 #include "Messaging.h"
+#include "UIWidget.h"
 #include "Button.h"
 #include "MenuManager.h"
 
 class MenuManager;
 
 class UIMenu :
-	public GameObject, public Observer<ButtonEvent, int>
+	public GameObject, public Observer<WidgetEvent, WidgetEventData>
 {
 public:
 	UIMenu(const char* name, Transform* transform);
 	UIMenu(const char* name, Transform* transform, bool active);
 	virtual ~UIMenu();
 
-	virtual void CreateButtons() = 0;
-	virtual void OnNotify(ButtonEvent event, int ID)override = 0;
+	virtual void CreateWidgets() = 0;
+	virtual void OnNotify(WidgetEvent event, WidgetEventData data)override = 0;
 	
 	void Update(float deltaTime)override;
 	void Render(Shader* shader)override;
 
-	std::vector<Button*> GetButtons() { return mButtons; }
-	Button* GetCurrentButton() { return mButtons[mCurrentButton]; }
-	void SetCurrentButton(int button);
+	std::vector<UIWidget*> GetWidgets() { return mWidgets; }
+	UIWidget* GetCurrentWidget() { return mWidgets[mCurrentWidget]; }
+	void SetCurrentWidget(int widgetID);
 
 	//Navigation of the menu;
 	virtual void Up();
@@ -34,9 +35,7 @@ public:
 	virtual void Previous() {}
 
 protected:
-	std::vector<Button*> mButtons;
+	std::vector<UIWidget*> mWidgets;
 
-	int mCurrentButton;
-
-	
+	int mCurrentWidget;
 };

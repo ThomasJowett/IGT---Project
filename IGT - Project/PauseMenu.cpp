@@ -5,32 +5,32 @@
 PauseMenu::PauseMenu(Transform* transform, iInput* playerPawn)
 	:UIMenu("Pause Menu", transform), mPlayerPawn(playerPawn)
 {
-	CreateButtons();
+	CreateWidgets();
 
 	SetActive(false);
 }
 
-void PauseMenu::CreateButtons()
+void PauseMenu::CreateWidgets()
 {
 	GLuint ButtonTexture = Texture2D::LoadTexture2D("Images/ButtonsMenu.png");
 
-	Button* button = new Button(ButtonTexture, { 0,25 }, { 100, 20 }, "Resume");
-	button->mButtonID = 0;
+	Button* button = new Button(ButtonTexture, { 0.5, 0.5 }, { 0,25 }, { 100, 20 }, "Resume");
+	button->mWidgetData.ID = 0;
 	button->AddObserver(this);
-	mButtons.emplace_back(button);
+	mWidgets.emplace_back(button);
 
-	button = new Button(ButtonTexture, { 0,-25 }, { 100, 20 }, "Quit");
-	button->mButtonID = 1;
+	button = new Button(ButtonTexture, { 0.5, 0.5 }, { 0, -25 }, { 100, 20 }, "Quit");
+	button->mWidgetData.ID = 1;
 	button->AddObserver(this);
-	mButtons.emplace_back(button);
+	mWidgets.emplace_back(button);
 }
 
-void PauseMenu::OnNotify(ButtonEvent event, int ID)
+void PauseMenu::OnNotify(WidgetEvent event, WidgetEventData data)
 {
 	switch (event)
 	{
-	case ButtonEvent::ON_HOVERED:
-		switch (ID)
+	case WidgetEvent::ON_HOVERED:
+		switch (data.ID)
 		{
 		case 0:
 			break;
@@ -40,8 +40,8 @@ void PauseMenu::OnNotify(ButtonEvent event, int ID)
 			break;
 		}
 		break;
-	case ButtonEvent::ON_CLICKED:
-		switch (ID)
+	case WidgetEvent::ON_CLICKED:
+		switch (data.ID)
 		{
 		case 0:
 			MenuManager::GetInstance()->ShowCurrentMenu(false);

@@ -31,8 +31,8 @@ public:
 	OptionsMenu(Transform* transform);
 	virtual ~OptionsMenu();
 
-	void CreateButtons()override;
-	void OnNotify(ButtonEvent event, int ID)override;
+	void CreateWidgets()override;
+	void OnNotify(WidgetEvent event, WidgetEventData data)override;
 
 	void Up()override;
 	void Down()override;
@@ -49,13 +49,13 @@ private:
 	void ResolutionSelector(int resolutionIndex);
 
 	std::vector<Component*> mGameplayComponents;
-	std::vector<Button*> mGameplayButtons;
+	std::vector<UIWidget*> mGameplayButtons;
 	std::vector<Component*> mVideoComponents;
-	std::vector<Button*> mVideoButtons;
+	std::vector<UIWidget*> mVideoButtons;
 	std::vector<Component*> mAudioComponents;
-	std::vector<Button*> mAudioButtons;
+	std::vector<UIWidget*> mAudioButtons;
 	std::vector<Component*> mControlsComponents;
-	std::vector<Button*> mControlsButtons;
+	std::vector<UIWidget*> mControlsButtons;
 
 	std::vector<SDL_DisplayMode> mResolutions;
 

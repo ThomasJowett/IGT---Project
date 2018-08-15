@@ -2,11 +2,9 @@
 
 
 
-Button::Button(GLuint texture, Vector2D position, Vector2D size, const char* text)
-	:GameObject(text, new Transform())
-{	
-	GetTransform()->mPosition = Vector3D(position.x, position.y, 10);
-
+Button::Button(GLuint texture, Vector2D anchorPoint, Vector2D offset, Vector2D size, const char* text)
+	:UIWidget(text, anchorPoint, offset)
+{
 	mSprite = new Sprite(this, texture, size.x, size.y, 1, 3);
 	AddComponent(mSprite);
 	
@@ -18,11 +16,9 @@ Button::Button(GLuint texture, Vector2D position, Vector2D size, const char* tex
 	AddComponent(mText);
 }
 
-Button::Button(GLuint texture, Vector2D position, Vector2D size)
-	:GameObject("Button", new Transform())
+Button::Button(GLuint texture, Vector2D anchorPoint, Vector2D offset, Vector2D size)
+	:UIWidget("Button", anchorPoint, offset)
 {
-	GetTransform()->mPosition = Vector3D(position.x, position.y, 10);
-
 	mSprite = new Sprite(this, texture, size.x, size.y, 1, 3);
 	AddComponent(mSprite);
 
@@ -32,61 +28,60 @@ Button::Button(GLuint texture, Vector2D position, Vector2D size)
 	mText = nullptr;
 }
 
-Button::Button(GLuint texture, Vector2D position)
-	:GameObject("CheckBox", new Transform())
-{
-	GetTransform()->mPosition = Vector3D(position.x, position.y, 10);
-
-	mSprite = new Sprite(this, texture, 20, 20, 1, 4);
-	AddComponent(mSprite);
-
-	mCollisionBox = new Box2D(this, 20, 20, { 0,0 });
-	AddComponent(mCollisionBox);
-
-	mText = nullptr;
-}
-
 Button::~Button()
 {
 }
 
-void Button::OnClicked()
+bool Button::OnPressed()
 {
-	if (mButtonStatus == NORMAL || mButtonStatus == HOVERED)
+	if (UIWidget::OnPressed())
 	{
-		mButtonStatus = CLICKED;
-		mSprite->SetCurrentFrame(CLICKED);
-		if(mText)
-			mText->UpdateText({ 0, 0, 255 });
-	}
-}
-
-void Button::Execute()
-{
-	if(mButtonStatus == CLICKED)
-		Notify(ButtonEvent::ON_CLICKED, mButtonID);
-}
-
-void Button::OnHovered()
-{
-	if (mButtonStatus == NORMAL || mButtonStatus == CLICKED)
-	{
-		mButtonStatus = HOVERED;
-		mSprite->SetCurrentFrame(HOVERED);
+		mSprite->SetCurrentFrame(PRESSED);
 		if (mText)
-			mText->UpdateText({ 255, 255, 255 });
+			mText->UpdateText({ 0, 0, 255 });
 
-		Notify(ButtonEvent::ON_HOVERED, mButtonID);
+		return true;
 	}
+
+	return false;
 }
 
-void Button::OnUnHovered()
+bool Button::OnReleased()
 {
-	if (mButtonStatus == HOVERED || mButtonStatus == CLICKED)
+	if (UIWidget::OnReleased())
 	{
-		mButtonStatus = NORMAL;
 		mSprite->SetCurrentFrame(NORMAL);
 		if (mText)
 			mText->UpdateText({ 255, 255, 255 });
+
+		return true;
 	}
+
+	return false;
+}
+
+bool Button::OnHovered()
+{
+	if (UIWidget::OnHovered())
+	{
+		mSprite->SetCurrentFrame(HOVERED);
+		if (mText)
+			mText->UpdateText({ 255, 255, 255 });
+		return true;
+	}
+
+	return false;
+}
+
+bool Button::OnUnHovered()
+{
+	if (UIWidget::OnUnHovered())
+	{
+		mSprite->SetCurrentFrame(NORMAL);
+		if (mText)
+			mText->UpdateText({ 255, 255, 255 });
+		return true;
+	}
+
+	return false;
 }

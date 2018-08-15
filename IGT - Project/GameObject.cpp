@@ -52,7 +52,7 @@ void GameObject::Update(float deltaTime)
 void GameObject::Render(Shader* shader)
 {
 	mTransform->UpdateWorldMatrix();
-	shader->UpdateWorld(mTransform->GetWorldMatrix());
+	shader->UpdateMatrixUniform(MODEL_U, mTransform->GetWorldMatrix(),true);
 	
 	for (auto component : mRenderableComponents)
 	{

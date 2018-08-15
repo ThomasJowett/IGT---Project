@@ -5,20 +5,22 @@
 GameScreen::GameScreen()
 {
 	//Root = new SceneNode();
-	mShader = nullptr;
+	mShaderBasic = new BasicShader();
+	mShaderGUI = new GUIShader();
 
 	Settings::GetInstance()->SetCamera(&mCamera);
 
-	//mCamera.Orthographic((480), (270), 0, 1000);
-
 	Settings::GetInstance()->ApplySettings();
+
+	//mShaderBasic->UpdateMatrixUniform(PROJECTION_U, mCamera.GetProjection());
+	//mShaderGUI->UpdateMatrixUniform(PROJECTION_U, mCamera.GetProjection());
 }
 
 
 GameScreen::~GameScreen()
 {
 	mGameObjects.clear();
-	if (mShader) delete mShader;
+	if (mShaderBasic) delete mShaderBasic;
 
 	for (std::vector< PlayerController* >::iterator it = mPlayerControllers.begin(); it != mPlayerControllers.end(); ++it)
 	{
@@ -29,16 +31,28 @@ GameScreen::~GameScreen()
 
 void GameScreen::Render()
 {
-	mShader->Bind();
-	mCamera.Update(mShader);
+	mShaderBasic->Bind();
+	mCamera.UpdateView(mShaderBasic);
 
 	for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
 	{
 		if (it->get()->GetActive())
-			it->get()->Render(mShader);
+			it->get()->Render(mShaderBasic);
 	}
 
 	//Root->Traverse();
+
+	mShaderGUI->Bind();
+	glDisable(GL_DEPTH_TEST);
+	mCamera.UpdateView(mShaderGUI);
+	
+	for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mUIWidgets.begin(); it != mUIWidgets.end(); ++it)
+	{
+		if (it->get()->GetActive())
+			it->get()->Render(mShaderGUI);
+	}
+
+	glEnable(GL_DEPTH_TEST);
 }
 
 void GameScreen::Update(float deltaTime, std::vector<SDL_Event> events)
@@ -49,6 +63,12 @@ void GameScreen::Update(float deltaTime, std::vector<SDL_Event> events)
 	}
 	
 	for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
+	{
+		if (it->get()->GetActive())
+			it->get()->Update(deltaTime);
+	}
+
+	for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mUIWidgets.begin(); it != mUIWidgets.end(); ++it)
 	{
 		if (it->get()->GetActive())
 			it->get()->Update(deltaTime);

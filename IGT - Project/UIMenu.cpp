@@ -12,18 +12,18 @@ UIMenu::UIMenu(const char * name, Transform * transform, bool active)
 
 UIMenu::~UIMenu()
 {
-	for (Button* button : mButtons)
-		delete button;
+	for (UIWidget* widget : mWidgets)
+		delete widget;
 }
 
 void UIMenu::Update(float deltaTime)
 {
 	GameObject::Update(deltaTime);
 	
-	for (Button* button : mButtons)
+	for (UIWidget* widget : mWidgets)
 	{
-		if (button->GetActive())
-			button->Update(deltaTime);
+		if (widget->GetActive())
+			widget->Update(deltaTime);
 	}
 }
 
@@ -31,39 +31,42 @@ void UIMenu::Render(Shader * shader)
 {
 	GameObject::Render(shader);
 
-	for (Button* button : mButtons)
+	for (UIWidget* widget : mWidgets)
 	{
-		if(button->GetActive())
-			button->Render(shader);
+		if(widget->GetActive())
+			widget->Render(shader);
 	}
 }
 
-void UIMenu::SetCurrentButton(int button)
+void UIMenu::SetCurrentWidget(int widgetID)
 {
-	if (button >= 0 && button < mButtons.size())
-		mCurrentButton = button;
+	if (widgetID >= 0 && widgetID < mWidgets.size())
+	{
+		if (mWidgets[widgetID]->GetIsFocusable())
+			mCurrentWidget = widgetID;
+	}
 }
 
 void UIMenu::Up()
 {
-	mButtons[mCurrentButton]->OnUnHovered();
-	mCurrentButton--;
+	mWidgets[mCurrentWidget]->OnUnHovered();
+	mCurrentWidget--;
 
-	if (mCurrentButton < 0)
-		mCurrentButton = mButtons.size() - 1;
+	if (mCurrentWidget < 0)
+		mCurrentWidget = mWidgets.size() - 1;
 
-	mButtons[mCurrentButton]->OnHovered();
+	mWidgets[mCurrentWidget]->OnHovered();
 }
 
 void UIMenu::Down()
 {
-	mButtons[mCurrentButton]->OnUnHovered();
-	mCurrentButton++;
+	mWidgets[mCurrentWidget]->OnUnHovered();
+	mCurrentWidget++;
 
-	if (mCurrentButton > mButtons.size() - 1)
-		mCurrentButton = 0;
+	if (mCurrentWidget > mWidgets.size() - 1)
+		mCurrentWidget = 0;
 
-	mButtons[mCurrentButton]->OnHovered();
+	mWidgets[mCurrentWidget]->OnHovered();
 }
 
 void UIMenu::Back()

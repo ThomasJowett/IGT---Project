@@ -2,12 +2,18 @@
 
 
 
-CheckBox::CheckBox(GLuint texture, Vector2D position, Vector2D size, bool checked)
-	:Button(texture, position)
+CheckBox::CheckBox(const char* name, Vector2D anchorPoint, Vector2D offset, GLuint texture, Vector2D size, bool checked)
+	:UIWidget(name, anchorPoint, offset)
 {
-	mChecked = checked;
+	mWidgetData.value = checked;
 
-	if (mChecked)
+	mSprite = new Sprite(this, texture, size.x, size.y, 1, 4);
+	AddComponent(mSprite);
+
+	mCollisionBox = new Box2D(this, size.x, size.y, { 0,0 });
+	AddComponent(mCollisionBox);
+
+	if (mWidgetData.value)
 		mSprite->SetCurrentFrame(CHECKED_NORMAL);
 }
 
@@ -15,46 +21,50 @@ CheckBox::~CheckBox()
 {
 }
 
-void CheckBox::OnClicked()
+bool CheckBox::OnReleased()
 {
-	if (mButtonStatus == NORMAL || mButtonStatus == HOVERED)
-	{
-		mButtonStatus = CLICKED;
-		if (mChecked)
+	if (UIWidget::OnReleased())
+	{	
+		if (mWidgetData.value == 1)
+		{
 			mSprite->SetCurrentFrame(UNCHECKED_HOVERED);
+			mWidgetData.value = 0;
+		}
 		else
+		{
 			mSprite->SetCurrentFrame(CHECKED_HOVERED);
+			mWidgetData.value = 1;
+		}
+
+		return true;
 	}
+	return false;
 }
 
-void CheckBox::Execute()
+bool CheckBox::OnHovered()
 {
-	Button::Execute();
-	mChecked = !mChecked;
-}
-
-void CheckBox::OnHovered()
-{
-	if (mButtonStatus == NORMAL || mButtonStatus == CLICKED)
+	if (UIWidget::OnHovered())
 	{
-		mButtonStatus = HOVERED;
-		if (mChecked)
+		if (mWidgetData.value)
 			mSprite->SetCurrentFrame(CHECKED_HOVERED);
 		else
 			mSprite->SetCurrentFrame(UNCHECKED_HOVERED);
-
-		Notify(ButtonEvent::ON_HOVERED, mButtonID);
+		return true;
 	}
+
+	return false;
 }
 
-void CheckBox::OnUnHovered()
+bool CheckBox::OnUnHovered()
 {
-	if (mButtonStatus == HOVERED || mButtonStatus == CLICKED)
+	if (UIWidget::OnUnHovered())
 	{
-		mButtonStatus = NORMAL;
-		if (mChecked)
+		if (mWidgetData.value)
 			mSprite->SetCurrentFrame(CHECKED_NORMAL);
 		else
 			mSprite->SetCurrentFrame(UNCHECKED_NORMAL);
+		return true;
 	}
+
+	return false;
 }

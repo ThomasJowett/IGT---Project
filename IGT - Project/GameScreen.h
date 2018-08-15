@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include "GameObject.h"
+#include "UIWidget.h"
 #include "Shader.h"
 #include "Camera.h"
 #include "PlayerController.h"
@@ -23,9 +24,13 @@ public:
 protected:
 	//SceneNode * Root;
 	std::vector<std::unique_ptr<GameObject>>mGameObjects;
+	std::vector<std::unique_ptr<GameObject>>mUIWidgets;
 	std::vector<PlayerController*>mPlayerControllers;
 
-	Shader* mShader;
+	
+	Shader* mShaderBasic;
+	Shader* mShaderGUI;
+
 	Camera mCamera;
 };
 

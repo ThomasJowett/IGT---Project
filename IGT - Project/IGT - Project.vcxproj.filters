@@ -40,6 +40,9 @@
     <Filter Include="Menus">
       <UniqueIdentifier>{aaa6f07e-551b-4c9d-ad5e-3028b0ec9be7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UIWidgets">
+      <UniqueIdentifier>{10b3376f-0511-4065-bec9-7c754d9b0302}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -96,9 +99,6 @@
     <ClCompile Include="PlayerPawn.cpp">
       <Filter>PlayerControllers</Filter>
     </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameScreenLevel1.cpp">
       <Filter>GameScreens</Filter>
     </ClCompile>
@@ -135,8 +135,14 @@
     <ClCompile Include="PauseMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>UIWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="UIWidget.cpp">
+      <Filter>UIWidgets</Filter>
+    </ClCompile>
     <ClCompile Include="CheckBox.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>UIWidgets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -286,6 +292,9 @@
     <ClInclude Include="CheckBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UIWidget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="IGT - Project.rc">
@@ -297,6 +306,12 @@
       <Filter>Shader Files</Filter>
     </None>
     <None Include="Shaders\BasicShader.vert">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="Shaders\GUIShader.frag">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="Shaders\GUIShader.vert">
       <Filter>Shader Files</Filter>
     </None>
   </ItemGroup>

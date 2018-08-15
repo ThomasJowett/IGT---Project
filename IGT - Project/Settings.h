@@ -1,9 +1,13 @@
 #pragma once
 
 #include "Camera.h"
+#include "Messaging.h"
 #include <SDL.h>
 
+enum class SettingsEvent { ON_RESOLUTION_CHANGE};
+
 class Settings
+	:public Subject<SettingsEvent, Vector2D>
 {
 public:
 
@@ -25,6 +29,8 @@ public:
 	
 	int GetScreenWidth() { return mScreen_Width; }
 	int GetScreenHeight() { return mScreen_Height; }
+	int GetOrthoWidth() { return mOrtho_Width; }
+	int GetOrthoHeight() { return mOrtho_Height; }
 	float GetScreenScale() { return mScreen_Scale; }
 
 	bool GetIsFullScreen() { return mFullscreen; }

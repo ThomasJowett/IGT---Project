@@ -158,6 +158,7 @@
     <ClCompile Include="TextRender.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="UIMenu.cpp" />
+    <ClCompile Include="UIWidget.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="GL\glew32.lib" />
@@ -209,6 +210,7 @@
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UIMenu.h" />
+    <ClInclude Include="UIWidget.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
@@ -217,6 +219,8 @@
   <ItemGroup>
     <None Include="Shaders\BasicShader.frag" />
     <None Include="Shaders\BasicShader.vert" />
+    <None Include="Shaders\GUIShader.frag" />
+    <None Include="Shaders\GUIShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

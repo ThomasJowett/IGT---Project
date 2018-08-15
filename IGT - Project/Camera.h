@@ -13,7 +13,7 @@ public:
 
 	void Orthographic(float OrthoWidth, float OrthoHieght, float nearDepth, float farDepth);
 	void Perspective(Vector3D forward, Vector3D up, float fovY, float nearDepth, float farDepth);
-	void Update(Shader* shader);
+	void UpdateView(Shader* shader);
 
 	Matrix4x4 GetView() const { return mView; }
 	Matrix4x4 GetProjection() const { return mProjection; }
