@@ -12,7 +12,7 @@ Button::Button(GLuint texture, Vector2D anchorPoint, Vector2D offset, Vector2D s
 	AddComponent(mCollisionBox);
 
 	mText = new TextRender(this, "Fonts/nokiafc22.ttf", 8);
-	mText->UpdateText(text, { 255,255,255 }, 0, -size.y/3, CENTER);
+	mText->UpdateText(text, mNormalColour, 0, -size.y/3, CENTER);
 	AddComponent(mText);
 }
 
@@ -38,7 +38,7 @@ bool Button::OnPressed()
 	{
 		mSprite->SetCurrentFrame(PRESSED);
 		if (mText)
-			mText->UpdateText({ 0, 0, 255 });
+			mText->UpdateText(mPressedColour);
 
 		return true;
 	}
@@ -52,7 +52,7 @@ bool Button::OnReleased()
 	{
 		mSprite->SetCurrentFrame(NORMAL);
 		if (mText)
-			mText->UpdateText({ 255, 255, 255 });
+			mText->UpdateText(mNormalColour);
 
 		return true;
 	}
@@ -66,7 +66,7 @@ bool Button::OnHovered()
 	{
 		mSprite->SetCurrentFrame(HOVERED);
 		if (mText)
-			mText->UpdateText({ 255, 255, 255 });
+			mText->UpdateText(mHoveredColour);
 		return true;
 	}
 
@@ -79,7 +79,7 @@ bool Button::OnUnHovered()
 	{
 		mSprite->SetCurrentFrame(NORMAL);
 		if (mText)
-			mText->UpdateText({ 255, 255, 255 });
+			mText->UpdateText(mNormalColour);
 		return true;
 	}
 

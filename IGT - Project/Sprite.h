@@ -22,6 +22,8 @@ public:
 	unsigned int GetNumberOfTiles() { return mTiles.size(); }
 
 	Component* Clone()override;
+
+	void SetOffset(Vector2D offset);
 private:
 	GLuint mTextureID;
 	std::vector<Mesh*> mTiles;

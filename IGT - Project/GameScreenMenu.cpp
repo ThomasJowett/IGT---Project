@@ -21,7 +21,7 @@ GameScreenMenu::GameScreenMenu() : GameScreen()
 {
 	mCamera.GetTransform()->mPosition = Vector3D(0, 0, 100);
 
-	SoundManager::GetInstance()->LoadMusic("Music/Diesel.ogg");
+	SoundManager::GetInstance()->PlayMusic("Music/Diesel.ogg");
 
 	GLuint texture =			Texture2D::LoadTexture2D("SpriteSheets/GoblinSprites.png");
 	GLuint backgroundTexture =	Texture2D::LoadTexture2D("Images/BackGround.png");

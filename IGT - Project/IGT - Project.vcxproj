@@ -139,6 +139,7 @@
     <ClCompile Include="GameScreenManager.cpp" />
     <ClCompile Include="GameScreenMenu.cpp" />
     <ClCompile Include="GameScreenLevel1.cpp" />
+    <ClCompile Include="Image.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MainMenuPawn.cpp" />
@@ -153,8 +154,10 @@
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />
+    <ClCompile Include="Slider.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="TextBox.cpp" />
     <ClCompile Include="TextRender.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="UIMenu.cpp" />
@@ -187,6 +190,7 @@
     <ClInclude Include="GameScreenLevel1.h" />
     <ClInclude Include="iComponents.h" />
     <ClInclude Include="iInput.h" />
+    <ClInclude Include="Image.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MainMenuPawn.h" />
     <ClInclude Include="Matrix.h" />
@@ -204,8 +208,10 @@
     <ClInclude Include="Settings.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderLoader.h" />
+    <ClInclude Include="Slider.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="TextBox.h" />
     <ClInclude Include="TextRender.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Transform.h" />

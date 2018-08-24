@@ -144,6 +144,15 @@
     <ClCompile Include="CheckBox.cpp">
       <Filter>UIWidgets</Filter>
     </ClCompile>
+    <ClCompile Include="Slider.cpp">
+      <Filter>UIWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="Image.cpp">
+      <Filter>UIWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="TextBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="SDL\SDL2.lib">
@@ -294,6 +303,15 @@
     </ClInclude>
     <ClInclude Include="UIWidget.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Slider.h">
+      <Filter>UIWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Image.h">
+      <Filter>UIWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="TextBox.h">
+      <Filter>UIWidgets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

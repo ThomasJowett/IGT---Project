@@ -36,6 +36,8 @@ public:
 		return (translate * rotation * offset).ToVector2D();
 	}
 
+	void SetOffset(Vector2D offset) { mOffset = offset; }
+
 	ColliderType mType;
 protected:
 	bool mCollided; //TODO: have a list of colliders that this is colliding with

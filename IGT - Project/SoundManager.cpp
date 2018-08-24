@@ -90,7 +90,7 @@ bool SoundManager::PlaySoundEffect(const std::string filename, int channel, int 
 {
 	if (mSoundEffects.find(filename) != mSoundEffects.end())
 	{
-		Mix_Volume(Mix_PlayChannel(channel, mSoundEffects.at(filename), repeat), (mSoundEffectsVolume/mMasterVolume)*128);
+		Mix_Volume(Mix_PlayChannel(channel, mSoundEffects.at(filename), repeat), mSoundEffectsVolume * (mMasterVolume / SDL_MIX_MAXVOLUME));
 		return true;
 	}
 	else
@@ -150,7 +150,7 @@ void SoundManager::SetMusicVolume(unsigned int volume)
 	if (volume < SDL_MIX_MAXVOLUME)
 	{
 		mMusicVolume = volume;
-		Mix_VolumeMusic((mMusicVolume/mMasterVolume)*128); 
+		Mix_VolumeMusic((int)(mMusicVolume * (mMasterVolume / SDL_MIX_MAXVOLUME)));
 	}
 }
 
@@ -160,7 +160,7 @@ void SoundManager::SetMasterVolume(unsigned int volume)
 	{
 		mMasterVolume = volume;
 
-		Mix_VolumeMusic((mMusicVolume / mMasterVolume) * 128);
+		Mix_VolumeMusic((int)(mMusicVolume * (mMasterVolume / SDL_MIX_MAXVOLUME)));
 	}
 }
 

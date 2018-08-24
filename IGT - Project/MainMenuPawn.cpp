@@ -96,6 +96,7 @@ void MainMenuPawn::MousePosition(float x, float y)
 				if (mLeftMouseDown)
 				{
 					widget->OnPressed();
+					widget->OnDragged(mMousePosition);
 				}
 				else
 				{

@@ -3,89 +3,17 @@
 #include "Settings.h"
 #include "SoundManager.h"
 #include "CheckBox.h"
+#include "Slider.h"
+#include "Image.h"
+#include "TextBox.h"
 
 
 OptionsMenu::OptionsMenu(Transform * transform)
 	:UIMenu("Options Menu", transform, false)
 {
-	Component* component;
-
-	GLuint LeftBumber = Texture2D::LoadTexture2D("Images/Button_LB.png");
-	GLuint RightBumber = Texture2D::LoadTexture2D("Images/Button_RB.png");
-	component = new Sprite(this, LeftBumber, 16, 16, Vector2D(-212, 90));
-	AddComponent(component);
-	component = new Sprite(this, RightBumber, 16, 16, Vector2D(212, 90));
-	AddComponent(component);
-	//GamePlay------------------------------------------------------------------------------------------------------------
-
-	//Video Settings------------------------------------------------------------------------------------------------------
-
-	component = new TextRender(this, "Fonts/nokiafc22.ttf", 8, "Fullscreen Resolution", { 255,255,255 }, -100, 20, CENTER);
-	AddComponent(component);
-	mVideoComponents.push_back(component);
-
 	mResolutionsText = new TextRender(this, "Fonts/nokiafc22.ttf", 8, "2560 x 1440 @ 60Hz", {255, 255, 255}, 90, 20, CENTER);
 	AddComponent(mResolutionsText);
-	mVideoComponents.push_back(mResolutionsText);
-
-	component = new TextRender(this, "Fonts/nokiafc22.ttf", 8, "Fullscreen", { 255,255,255 }, -100, 0, CENTER);
-	AddComponent(component);
-	mVideoComponents.push_back(component);
-
-	component = new TextRender(this, "Fonts/nokiafc22.ttf", 8, "V - Sync", { 255,255,255 }, -100, -20, CENTER);
-	AddComponent(component);
-	mVideoComponents.push_back(component);
-
-	//Audio---------------------------------------------------------------------------------------------------------------
-
-	component = new TextRender(this, "Fonts/nokiafc22.ttf", 8, "Master Volume", { 255,255,255 }, -100, 20, CENTER);
-	AddComponent(component);
-	mAudioComponents.push_back(component);
-
-	component = new TextRender(this, "Fonts/nokiafc22.ttf", 8, "Music", { 255,255,255 }, -100, 0, CENTER);
-	AddComponent(component);
-	mAudioComponents.push_back(component);
-
-	component = new TextRender(this, "Fonts/nokiafc22.ttf", 8, "SFX", { 255,255,255 }, -100, -20, CENTER);
-	AddComponent(component);
-	mAudioComponents.push_back(component);
-
-	//Controls------------------------------------------------------------------------------------------------------------
-	//xbox controller image
-	GLuint ControllerTexture = Texture2D::LoadTexture2D("Images/Controller.png");
-	component = new Sprite(this, ControllerTexture, 147, 108, Vector2D(-120, -50));
-	AddComponent(component);
-	mControlsComponents.push_back(component);
-	component->SetActive(false);
-
-	GLuint KeyWTexture = Texture2D::LoadTexture2D("Images/Key_W.png");
-	component = new Sprite(this, KeyWTexture, 16, 16, Vector2D(148, 50));
-	AddComponent(component);
-	mControlsComponents.push_back(component);
-	component->SetActive(false);
-
-	GLuint KeyATexture = Texture2D::LoadTexture2D("Images/Key_A.png");
-	component = new Sprite(this, KeyATexture, 16, 16, Vector2D(164, 50));
-	AddComponent(component);
-	mControlsComponents.push_back(component);
-	component->SetActive(false);
-
-	GLuint KeySTexture = Texture2D::LoadTexture2D("Images/Key_S.png");
-	component = new Sprite(this, KeySTexture, 16, 16, Vector2D(180, 50));
-	AddComponent(component);
-	mControlsComponents.push_back(component);
-	component->SetActive(false);
-
-	GLuint KeyDTexture = Texture2D::LoadTexture2D("Images/Key_D.png");
-	component = new Sprite(this, KeyDTexture, 16, 16, Vector2D(196, 50));
-	AddComponent(component);
-	mControlsComponents.push_back(component);
-	component->SetActive(false);
-
-	component = new TextRender(this, "Fonts/nokiafc22.ttf", 8, "Move", { 255,255,255 }, 100, 44, LEFT);
-	AddComponent(component);
-	mControlsComponents.push_back(component);
-	
+	mVideoComponents.push_back(mResolutionsText);	
 
 	CreateWidgets();
 
@@ -106,6 +34,8 @@ void OptionsMenu::CreateWidgets()
 	GLuint ArrowRightTexture = Texture2D::LoadTexture2D("Images/Arrow_Right.png");
 	GLuint ArrowLeftTexture = Texture2D::LoadTexture2D("Images/Arrow_Left.png");
 	GLuint CheckBoxTexture = Texture2D::LoadTexture2D("Images/CheckBox.png");
+	GLuint SliderBarTexture = Texture2D::LoadTexture2D("Images/SliderBar.png");
+	GLuint SliderThumbTexture = Texture2D::LoadTexture2D("Images/SliderThumb.png");
 
 	UIWidget* widget = new Button(ButtonTexture, { 0.5,0.0 }, { -154,-20 }, { 100, 20 }, "Gameplay");
 	widget->mWidgetData.ID = GAMEPLAY;
@@ -127,7 +57,30 @@ void OptionsMenu::CreateWidgets()
 	widget->AddObserver(this);
 	mWidgets.emplace_back(widget);
 
+	widget = new Image("RightBumber", { 0.5,0.0 }, { 214, -20 }, Texture2D::LoadTexture2D("Images/Button_RB.png"), { 16,16 });
+	widget->AddObserver(this);
+	mWidgets.emplace_back(widget);
+
+	widget = new Image("LeftBumber", { 0.5,0.0 }, { -214, -20 }, Texture2D::LoadTexture2D("Images/Button_LB.png"), { 16,16 });
+	widget->AddObserver(this);
+	mWidgets.emplace_back(widget);
+
 	//Video Settings------------------------------------------------------------------------------------------------------
+
+	widget = new TextBox("Fullscreen Resolution Text", { 0.5,0.5 }, { -100, 20 }, "Fonts/nokiafc22.ttf", 8, "Fullscreen Resolution", { 255,255,255 }, CENTER);
+	widget->AddObserver(this);
+	mWidgets.emplace_back(widget);
+	mVideoButtons.push_back(widget);
+
+	widget = new TextBox("Fullscreen Text", { 0.5,0.5 }, { -100, 0 }, "Fonts/nokiafc22.ttf", 8, "Fullscreen", { 255,255,255 }, CENTER);
+	widget->AddObserver(this);
+	mWidgets.emplace_back(widget);
+	mVideoButtons.push_back(widget);
+
+	widget = new TextBox("Vsync Text", { 0.5,0.5 }, { -100, -20 }, "Fonts/nokiafc22.ttf", 8, "V - Sync", { 255,255,255 }, CENTER);
+	widget->AddObserver(this);
+	mWidgets.emplace_back(widget);
+	mVideoButtons.push_back(widget);
 
 	widget = new Button(ArrowRightTexture, { 0.5,0.5 }, { 150, 26 }, { 7, 11 });
 	widget->mWidgetData.ID = RES_ARROW_RIGHT;
@@ -154,18 +107,69 @@ void OptionsMenu::CreateWidgets()
 	mVideoButtons.push_back(widget);
 
 	//Audio---------------------------------------------------------------------------------------------------------------
-	widget = new Button(ArrowRightTexture, { 0.5,0.5 }, { 150, 24 }, { 7, 11 });
-	widget->mWidgetData.ID = 12;
+	widget = new TextBox("Master Volume Text", { 0.5,0.5 }, { -100, 20 }, "Fonts/nokiafc22.ttf", 8, "Master Volume", { 255,255,255 }, CENTER);
 	widget->AddObserver(this);
 	mWidgets.emplace_back(widget);
 	mAudioButtons.push_back(widget);
 
-	widget = new Button(ArrowLeftTexture, { 0.5,0.5 }, { 20,24 }, { 7, 11 });
-	widget->mWidgetData.ID = 13;
+	widget = new TextBox("Music Volume Text", { 0.5,0.5 }, { -100, 0 }, "Fonts/nokiafc22.ttf", 8, "Music Volume", { 255,255,255 }, CENTER);
 	widget->AddObserver(this);
 	mWidgets.emplace_back(widget);
 	mAudioButtons.push_back(widget);
 
+	widget = new TextBox("Sound Effect Volume Text", { 0.5,0.5 }, { -100, -20 }, "Fonts/nokiafc22.ttf", 8, "Sound Effect Volume", { 255,255,255 }, CENTER);
+	widget->AddObserver(this);
+	mWidgets.emplace_back(widget);
+	mAudioButtons.push_back(widget);
+
+	widget = new Slider("MasterVolume Slider", { 0.5,0.5 }, { 100, 24 }, { 114, 4 }, SliderBarTexture, { 15,12 }, SliderThumbTexture, SoundManager::GetInstance()->GetMasterVolume(), 128);
+	widget->mWidgetData.ID = VOL_MASTER;
+	widget->AddObserver(this);
+	mWidgets.emplace_back(widget);
+	mAudioButtons.push_back(widget);
+
+	widget = new Slider("MusicVolume Slider", { 0.5,0.5 }, { 100, 4 }, { 114, 4 }, SliderBarTexture, { 15,12 }, SliderThumbTexture, SoundManager::GetInstance()->GetMusicVolume(), 128);
+	widget->mWidgetData.ID = VOL_MUSIC;
+	widget->AddObserver(this);
+	mWidgets.emplace_back(widget);
+	mAudioButtons.push_back(widget);
+
+	widget = new Slider("SoundEffectVolume Slider", { 0.5,0.5 }, { 100, -14 }, { 114, 4 }, SliderBarTexture, { 15,12 }, SliderThumbTexture, SoundManager::GetInstance()->GetSoundEffectVolume(), 128);
+	widget->mWidgetData.ID = VOL_SOUND;
+	widget->AddObserver(this);
+	mWidgets.emplace_back(widget);
+	mAudioButtons.push_back(widget);
+
+	//Controls------------------------------------------------------------------------------------------------------------
+	widget = new Image("Controller", { 0.25,0.5 }, { 0,0 }, Texture2D::LoadTexture2D("Images/Controller.png"), { 147, 108 });
+	mWidgets.emplace_back(widget);
+	widget->AddObserver(this);
+	mControlsButtons.push_back(widget);
+
+	widget = new TextBox("Move Text", { 0.75,0.5 }, { -20,44 }, "Fonts/nokiafc22.ttf", 8, "Move", { 255,255,255 }, CENTER);
+	mWidgets.emplace_back(widget);
+	widget->AddObserver(this);
+	mControlsButtons.push_back(widget);
+
+	widget = new Image("W", { 0.75,0.5 }, { 28,50 }, Texture2D::LoadTexture2D("Images/Key_W.png"), { 16, 16 });
+	mWidgets.emplace_back(widget);
+	widget->AddObserver(this);
+	mControlsButtons.push_back(widget);
+
+	widget = new Image("A", { 0.75,0.5 }, { 44,50 }, Texture2D::LoadTexture2D("Images/Key_A.png"), { 16, 16 });
+	mWidgets.emplace_back(widget);
+	widget->AddObserver(this);
+	mControlsButtons.push_back(widget);
+
+	widget = new Image("S", { 0.75,0.5 }, { 60,50 }, Texture2D::LoadTexture2D("Images/Key_S.png"), { 16, 16 });
+	mWidgets.emplace_back(widget);
+	widget->AddObserver(this);
+	mControlsButtons.push_back(widget);
+
+	widget = new Image("D", { 0.75,0.5 }, { 76,50 }, Texture2D::LoadTexture2D("Images/Key_D.png"), { 16, 16 });
+	mWidgets.emplace_back(widget);
+	widget->AddObserver(this);
+	mControlsButtons.push_back(widget);
 
 	widget = new Button(ButtonTexture, { 1.0f, 1.0f }, { -65, 20 }, { 100, 20 }, "Back");
 	widget->mWidgetData.ID = BACK;
@@ -219,11 +223,14 @@ void OptionsMenu::OnNotify(WidgetEvent event, WidgetEventData data)
 		case VSYNC:
 			Settings::GetInstance()->SetVsync(!data.value);
 			break;
-		case 12:
-			SoundManager::GetInstance()->SetMasterVolume(10);
+		case VOL_MASTER:
+			SoundManager::GetInstance()->SetMasterVolume(data.value);
 			break;
-		case 13:
-			SoundManager::GetInstance()->SetMasterVolume(SoundManager::GetInstance()->GetMasterVolume() - 10);
+		case VOL_MUSIC:
+			SoundManager::GetInstance()->SetMusicVolume(data.value);
+			break;
+		case VOL_SOUND:
+			SoundManager::GetInstance()->SetSoundEffectVolume(data.value);
 			break;
 		case BACK:
 			MenuManager::GetInstance()->ChangeToPreviousMenu();
@@ -232,6 +239,20 @@ void OptionsMenu::OnNotify(WidgetEvent event, WidgetEventData data)
 		default:
 			break;
 		}
+	case WidgetEvent::ON_DRAGGED:
+		switch (data.ID)
+		{
+		case VOL_MASTER:
+			SoundManager::GetInstance()->SetMasterVolume(data.value);
+			break;
+		case VOL_MUSIC:
+			SoundManager::GetInstance()->SetMusicVolume(data.value);
+			break;
+		case VOL_SOUND:
+			SoundManager::GetInstance()->SetSoundEffectVolume(data.value);
+			break;
+		}
+		break;
 	}
 }
 

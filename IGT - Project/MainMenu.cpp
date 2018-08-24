@@ -1,6 +1,7 @@
 #include "MainMenu.h"
 #include "Texture2D.h"
 #include "GameScreenManager.h"
+#include "Image.h"
 
 MainMenu::MainMenu(Transform* transform)
 	:UIMenu("MainMenu", transform)
@@ -8,7 +9,6 @@ MainMenu::MainMenu(Transform* transform)
 	CreateWidgets();
 
 	//TODO: add the button prompts (A and B) to screen somewhere
-	//AddComponent<Sprite>();
 }
 
 
@@ -19,19 +19,25 @@ MainMenu::~MainMenu()
 
 void MainMenu::CreateWidgets()
 {
+	Image* image = new Image("Logo", { 0.5, 0.25 }, { 0,0 }, Texture2D::LoadTexture2D("Images/Logo.png"), { 90, 73 });
+	mWidgets.emplace_back(image);
+
+	image = new Image("A ButtonPrompt", { 1,1 }, { -65, 20 }, Texture2D::LoadTexture2D("Images/Button_A.png"), { 16,16 });
+	mWidgets.emplace_back(image);
+
 	GLuint ButtonTexture = Texture2D::LoadTexture2D("Images/ButtonsMenu.png");
 
-	Button* button = new Button(ButtonTexture, { 0.5,0.5 }, { 0, 25 }, { 100, 20 }, "Play");
+	Button* button = new Button(ButtonTexture, { 0.5,0.6f }, { 0, 25 }, { 100, 20 }, "Play");
 	button->mWidgetData.ID = PLAY;
 	button->AddObserver(this);
 	mWidgets.emplace_back(button);
 
-	button = new Button(ButtonTexture, { 0.5,0.5 }, { 0,0 }, { 100, 20 }, "Options");
+	button = new Button(ButtonTexture, { 0.5,0.6f }, { 0,0 }, { 100, 20 }, "Options");
 	button->mWidgetData.ID = OPTIONS;
 	button->AddObserver(this);
 	mWidgets.emplace_back(button);
 
-	button = new Button(ButtonTexture, { 0.5,0.5 }, { 0,-25 }, { 100, 20 }, "Quit");
+	button = new Button(ButtonTexture, { 0.5,0.6f }, { 0,-25 }, { 100, 20 }, "Quit");
 	button->mWidgetData.ID = QUIT;
 	button->AddObserver(this);
 	mWidgets.emplace_back(button);

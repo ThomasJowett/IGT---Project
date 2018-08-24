@@ -151,3 +151,8 @@ Component * Sprite::Clone()
 {
 	return new Sprite(nullptr, mTextureID, mSingleSpriteWidth, mSingleSpriteHeight, mTilesWide, mTilesTall);
 }
+
+void Sprite::SetOffset(Vector2D offset)
+{
+	mOffset = Matrix4x4::Translate(Vector3D(offset.x, offset.y, 0));
+}
