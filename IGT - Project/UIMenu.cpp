@@ -38,7 +38,7 @@ void UIMenu::Render(Shader * shader)
 	}
 }
 
-void UIMenu::SetCurrentWidget(int widgetID)
+void UIMenu::SetCurrentWidget(unsigned int widgetID)
 {
 	if (widgetID >= 0 && widgetID < mWidgets.size())
 	{
@@ -49,12 +49,17 @@ void UIMenu::SetCurrentWidget(int widgetID)
 
 void UIMenu::Up()
 {
-	mWidgets[mCurrentWidget]->OnUnHovered();
+	mWidgets[mCurrentWidget]->OnUnHovered();	
 	mCurrentWidget--;
 
 	if (mCurrentWidget < 0)
 		mCurrentWidget = mWidgets.size() - 1;
 
+	if (!mWidgets[mCurrentWidget]->GetIsFocusable() || !mWidgets[mCurrentWidget]->GetActive())
+	{
+		Up();
+	}
+	
 	mWidgets[mCurrentWidget]->OnHovered();
 }
 
@@ -65,6 +70,11 @@ void UIMenu::Down()
 
 	if (mCurrentWidget > mWidgets.size() - 1)
 		mCurrentWidget = 0;
+
+	if (!mWidgets[mCurrentWidget]->GetIsFocusable() || !mWidgets[mCurrentWidget]->GetActive())
+	{
+		Down();
+	}
 
 	mWidgets[mCurrentWidget]->OnHovered();
 }

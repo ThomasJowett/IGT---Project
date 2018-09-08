@@ -40,21 +40,25 @@ void OptionsMenu::CreateWidgets()
 	UIWidget* widget = new Button(ButtonTexture, { 0.5,0.0 }, { -154,-20 }, { 100, 20 }, "Gameplay");
 	widget->mWidgetData.ID = GAMEPLAY;
 	widget->AddObserver(this);
+	widget->SetIsFocusable(false);
 	mWidgets.emplace_back(widget);
 
 	widget = new Button(ButtonTexture, { 0.5,0.0 }, { -52,-20 }, { 100, 20 }, "Video");
 	widget->mWidgetData.ID = VIDEO;
 	widget->AddObserver(this);
+	widget->SetIsFocusable(false);
 	mWidgets.emplace_back(widget);
 
 	widget = new Button(ButtonTexture, { 0.5,0.0 }, { 52,-20 }, { 100, 20 }, "Audio");
 	widget->mWidgetData.ID = AUDIO;
 	widget->AddObserver(this);
+	widget->SetIsFocusable(false);
 	mWidgets.emplace_back(widget);
 
 	widget = new Button(ButtonTexture, { 0.5,0.0 }, { 154,-20 }, { 100, 20 }, "Controls");
 	widget->mWidgetData.ID = CONTROLS;
 	widget->AddObserver(this);
+	widget->SetIsFocusable(false);
 	mWidgets.emplace_back(widget);
 
 	widget = new Image("RightBumber", { 0.5,0.0 }, { 214, -20 }, Texture2D::LoadTexture2D("Images/Button_RB.png"), { 16,16 });
@@ -256,83 +260,83 @@ void OptionsMenu::OnNotify(WidgetEvent event, WidgetEventData data)
 	}
 }
 
-void OptionsMenu::Up()
-{
-	mCurrentOption--;
+//void OptionsMenu::Up()
+//{
+//	mCurrentOption--;
+//
+//	if (mCurrentOption < 0)
+//		mCurrentOption = 0;
+//
+//	switch (mCurrentMenu)
+//	{
+//	case GAMEPLAY:
+//		break;
+//	case VIDEO:
+//		if (mCurrentOption == 1)
+//		{
+//			GetCurrentWidget()->OnUnHovered();
+//			SetCurrentWidget(6);
+//			GetCurrentWidget()->OnHovered();
+//		}
+//		else if (mCurrentOption == 2)
+//		{
+//			GetCurrentWidget()->OnUnHovered();
+//			SetCurrentWidget(7);
+//			GetCurrentWidget()->OnHovered();
+//		}
+//		else
+//		{
+//			GetCurrentWidget()->OnUnHovered();
+//		}
+//
+//		break;
+//	case AUDIO:
+//		break;
+//	case CONTROLS:
+//		break;
+//	default:
+//		break;
+//	}
+//}
 
-	if (mCurrentOption < 0)
-		mCurrentOption = 0;
-
-	switch (mCurrentMenu)
-	{
-	case GAMEPLAY:
-		break;
-	case VIDEO:
-		if (mCurrentOption == 1)
-		{
-			GetCurrentWidget()->OnUnHovered();
-			SetCurrentWidget(6);
-			GetCurrentWidget()->OnHovered();
-		}
-		else if (mCurrentOption == 2)
-		{
-			GetCurrentWidget()->OnUnHovered();
-			SetCurrentWidget(7);
-			GetCurrentWidget()->OnHovered();
-		}
-		else
-		{
-			GetCurrentWidget()->OnUnHovered();
-		}
-
-		break;
-	case AUDIO:
-		break;
-	case CONTROLS:
-		break;
-	default:
-		break;
-	}
-}
-
-void OptionsMenu::Down()
-{
-	mCurrentOption++;
-
-	switch (mCurrentMenu)
-	{
-	case GAMEPLAY:
-		break;
-	case VIDEO:
-		if (mCurrentOption > 2)
-			mCurrentOption = 2;
-
-		if (mCurrentOption == 1)
-		{
-			GetCurrentWidget()->OnUnHovered();
-			SetCurrentWidget(6);
-			GetCurrentWidget()->OnHovered();
-		}
-		else if (mCurrentOption == 2)
-		{
-			GetCurrentWidget()->OnUnHovered();
-			SetCurrentWidget(7);
-			GetCurrentWidget()->OnHovered();
-		}
-		else
-		{
-			GetCurrentWidget()->OnUnHovered();
-		}
-
-		break;
-	case AUDIO:
-		break;
-	case CONTROLS:
-		break;
-	default:
-		break;
-	}
-}
+//void OptionsMenu::Down()
+//{
+//	mCurrentOption++;
+//
+//	switch (mCurrentMenu)
+//	{
+//	case GAMEPLAY:
+//		break;
+//	case VIDEO:
+//		if (mCurrentOption > 2)
+//			mCurrentOption = 2;
+//
+//		if (mCurrentOption == 1)
+//		{
+//			GetCurrentWidget()->OnUnHovered();
+//			SetCurrentWidget(6);
+//			GetCurrentWidget()->OnHovered();
+//		}
+//		else if (mCurrentOption == 2)
+//		{
+//			GetCurrentWidget()->OnUnHovered();
+//			SetCurrentWidget(7);
+//			GetCurrentWidget()->OnHovered();
+//		}
+//		else
+//		{
+//			GetCurrentWidget()->OnUnHovered();
+//		}
+//
+//		break;
+//	case AUDIO:
+//		break;
+//	case CONTROLS:
+//		break;
+//	default:
+//		break;
+//	}
+//}
 
 void OptionsMenu::Left()
 {
@@ -423,10 +427,6 @@ void OptionsMenu::SwitchMenu(OptionsMenuButtons menu)
 	switch (menu)
 	{
 	case GAMEPLAY:
-		for (Component* component : mGameplayComponents)
-		{
-			component->SetActive(true);
-		}
 		for (UIWidget* button : mGameplayButtons)
 		{
 			button->SetActive(true);
@@ -439,17 +439,9 @@ void OptionsMenu::SwitchMenu(OptionsMenuButtons menu)
 		{
 			button->SetActive(false);
 		}
-		for (Component* component : mAudioComponents)
-		{
-			component->SetActive(false);
-		}
 		for (UIWidget* button : mAudioButtons)
 		{
 			button->SetActive(false);
-		}
-		for (Component* component : mControlsComponents)
-		{
-			component->SetActive(false);
 		}
 		for (UIWidget* button : mControlsButtons)
 		{
@@ -465,25 +457,13 @@ void OptionsMenu::SwitchMenu(OptionsMenuButtons menu)
 		{
 			button->SetActive(true);
 		}
-		for (Component* component : mGameplayComponents)
-		{
-			component->SetActive(false);
-		}
 		for (UIWidget* button : mGameplayButtons)
 		{
 			button->SetActive(false);
 		}
-		for (Component* component : mAudioComponents)
-		{
-			component->SetActive(false);
-		}
 		for (UIWidget* button : mAudioButtons)
 		{
 			button->SetActive(false);
-		}
-		for (Component* component : mControlsComponents)
-		{
-			component->SetActive(false);
 		}
 		for (UIWidget* button : mControlsButtons)
 		{
@@ -499,25 +479,13 @@ void OptionsMenu::SwitchMenu(OptionsMenuButtons menu)
 		{
 			button->SetActive(false);
 		}
-		for (Component* component : mGameplayComponents)
-		{
-			component->SetActive(false);
-		}
 		for (UIWidget* button : mGameplayButtons)
 		{
 			button->SetActive(false);
 		}
-		for (Component* component : mAudioComponents)
-		{
-			component->SetActive(true);
-		}
 		for (UIWidget* button : mAudioButtons)
 		{
 			button->SetActive(true);
-		}
-		for (Component* component : mControlsComponents)
-		{
-			component->SetActive(false);
 		}
 		for (UIWidget* button : mControlsButtons)
 		{
@@ -525,10 +493,6 @@ void OptionsMenu::SwitchMenu(OptionsMenuButtons menu)
 		}
 		break;
 	case CONTROLS:
-		for (Component* component : mGameplayComponents)
-		{
-			component->SetActive(false);
-		}
 		for (UIWidget* button : mGameplayButtons)
 		{
 			button->SetActive(false);
@@ -541,17 +505,9 @@ void OptionsMenu::SwitchMenu(OptionsMenuButtons menu)
 		{
 			button->SetActive(false);
 		}
-		for (Component* component : mAudioComponents)
-		{
-			component->SetActive(false);
-		}
 		for (UIWidget* button : mAudioButtons)
 		{
 			button->SetActive(false);
-		}
-		for (Component* component : mControlsComponents)
-		{
-			component->SetActive(true);
 		}
 		for (UIWidget* button : mControlsButtons)
 		{

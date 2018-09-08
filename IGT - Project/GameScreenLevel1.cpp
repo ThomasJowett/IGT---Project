@@ -12,6 +12,7 @@
 #include "AnimatorCharacter.h"
 #include "AnimatorSnake.h"
 #include "PauseMenu.h"
+#include "TileMap.h"
 
 GameScreenLevel1::GameScreenLevel1()
 {
@@ -56,7 +57,7 @@ GameScreenLevel1::GameScreenLevel1()
 	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
 	gameObject->GetComponent<TextRender>()->UpdateText("Player 2", { 0,0,0 }, 0, 20, CENTER);
 	gameObject->AddComponent<Box2D>(48, 48, Vector2D());
-	gameObject->AddComponent<RigidBody2D>(10, Vector2D(0, 0), 10, 0, physicsMaterial);
+	gameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, physicsMaterial);
 	gameObject->AddComponent<AnimatorCharacter>();
 	mGameObjects.emplace_back(gameObject);
 	PlayerPawn* character2Controller = new PlayerPawn(gameObject, menu);
@@ -83,6 +84,9 @@ GameScreenLevel1::GameScreenLevel1()
 
 	PlayerController* playerController2 = new PlayerController(1, character2Controller);
 	mPlayerControllers.push_back(playerController2);
+
+	gameObject = new TileMap("Maps/TestMap.xml", "Maps/DungeonTileSet.png");
+	mGameObjects.emplace_back(gameObject);
 }
 
 GameScreenLevel1::~GameScreenLevel1()
@@ -93,7 +97,6 @@ GameScreenLevel1::~GameScreenLevel1()
 void GameScreenLevel1::Update(float deltaTime, std::vector<SDL_Event> events)
 {
 	GameScreen::Update(deltaTime, events);
-	//mGameObjects[2]->GetComponent<RigidBody2D>()->AddPointForce(Vector2D(-100, 0), Vector2D(0, 0.002));
 
 	std::vector<GameObject*> collisionObejcts;
 
@@ -104,4 +107,6 @@ void GameScreenLevel1::Update(float deltaTime, std::vector<SDL_Event> events)
 	}
 
 	Collision::ResolveCollisions(Collision::DetectCollisions(collisionObejcts));
+
+	mCamera.GetTransform()->mPosition = mGameObjects[0]->GetTransform()->mPosition;
 }

@@ -160,6 +160,8 @@
     <ClCompile Include="TextBox.cpp" />
     <ClCompile Include="TextRender.cpp" />
     <ClCompile Include="Texture2D.cpp" />
+    <ClCompile Include="TileMap.cpp" />
+    <ClCompile Include="TinyXML2.cpp" />
     <ClCompile Include="UIMenu.cpp" />
     <ClCompile Include="UIWidget.cpp" />
   </ItemGroup>
@@ -214,6 +216,8 @@
     <ClInclude Include="TextBox.h" />
     <ClInclude Include="TextRender.h" />
     <ClInclude Include="Texture2D.h" />
+    <ClInclude Include="TileMap.h" />
+    <ClInclude Include="TinyXML2.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UIMenu.h" />
     <ClInclude Include="UIWidget.h" />
@@ -223,6 +227,7 @@
     <ResourceCompile Include="IGT - Project.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="Shaders\BasicShader.frag" />
     <None Include="Shaders\BasicShader.vert" />
     <None Include="Shaders\GUIShader.frag" />

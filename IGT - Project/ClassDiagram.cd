@@ -1,0 +1,326 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Vector2D" Collapsed="true">
+    <Position X="6.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAEAEAAAAQABCAAAAQBEoEBgAAEQAAA=</HashCode>
+      <FileName>Vector.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameObject" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABQgIABAAAAIAAAAAgBABAAAAAAQAAAEABgIAIIARFA=</HashCode>
+      <FileName>GameObject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sprite" Collapsed="true">
+    <Position X="0.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACUAAAAAAAAAigAAAAAAAACGAAAgQABIAAAAAABI=</HashCode>
+      <FileName>Sprite.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Collider" Collapsed="true">
+    <Position X="4.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>hAAAAAAAAABAAQABgAAEABQAAAIEAAAQAAIAAAQAIBA=</HashCode>
+      <FileName>Collider.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Component" Collapsed="true">
+    <Position X="5.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgIAAAAEAAAAAAAAAAAAAAAAAAAAAAAEBIAIQAABA=</HashCode>
+      <FileName>iComponents.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnimatorCharacter" Collapsed="true">
+    <Position X="6.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQQAAAAIAAAAAARAAAAAAAAAAAAEAgAAIAAAAAAAABA=</HashCode>
+      <FileName>AnimatorCharacter.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Animator&lt;T&gt;" Collapsed="true">
+    <Position X="7.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQUAAEAAAIAABEBAQAAIABAAAABEAAAAIAAAAQQEQBA=</HashCode>
+      <FileName>Animator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Animation" Collapsed="true">
+    <Position X="7.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAQAIAIAAAAAAwAAAAAIAAAAAIAAABAAAAAAAAIA=</HashCode>
+      <FileName>Animator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Image" Collapsed="true">
+    <Position X="0.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAA=</HashCode>
+      <FileName>Image.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iInput" Collapsed="true">
+    <Position X="9.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAFAAAIABDAACYAAAEAAEhAABAQAAAgAaACBYDACBBo=</HashCode>
+      <FileName>iInput.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iUpdateable" Collapsed="true">
+    <Position X="6.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>iComponents.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iRenderable" Collapsed="true">
+    <Position X="2.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>iComponents.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PauseMenu" Collapsed="true">
+    <Position X="6.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAwAAAAAAAAAAAAAAAAAAEAAAAgAAAAAA=</HashCode>
+      <FileName>PauseMenu.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mesh" Collapsed="true">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="Mesh::__unnamed_enum_0205_1" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Mesh.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgFAAgAAAAAAgAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Mesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MenuManager" Collapsed="true">
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAgBAAECAABIEAAAAAAACAhAACAAAAAAAAAAAAQQA=</HashCode>
+      <FileName>MenuManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Matrix4x4" Collapsed="true">
+    <Position X="8.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAWAAAAAQADAAAAAIAAAAAAAAAAgAAAgAkAAADAAI=</HashCode>
+      <FileName>Matrix.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MainMenu" Collapsed="true">
+    <Position X="5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAACgAAAAAAAAAAQAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>MainMenu.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUIShader" Collapsed="true">
+    <Position X="10" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Shader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameScreenMenu" Collapsed="true">
+    <Position X="12.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameScreenMenu.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UIWidget" Collapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAADAAAAAAQAEAAAgAIgADGAFAAQgAAAAMAgAAAARA=</HashCode>
+      <FileName>UIWidget.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UIMenu" Collapsed="true">
+    <Position X="4.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AwQAAAIAAAAAgoAACAAAAAAAAAACAAAACBSAgAABEAI=</HashCode>
+      <FileName>UIMenu.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TileSet" Collapsed="true">
+    <Position X="3.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>TileMap.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TileMap" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAACACAAQAAAEIAAEAAAAAAAAAAAACAAg=</HashCode>
+      <FileName>TileMap.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TextBox" Collapsed="true">
+    <Position X="0.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TextBox.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TextRender" Collapsed="true">
+    <Position X="2.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEGAAAgAAAAIAAAKAIACAACAAEAAIBIAAAAAABg=</HashCode>
+      <FileName>TextRender.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Subject&lt;EventType, DataType&gt;" Collapsed="true">
+    <Position X="2.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAhAAAEAAIAAAAAAAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>Messaging.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Slider" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAgAAAkAAAACEAAAAAAAEACAAAAAABAA=</HashCode>
+      <FileName>Slider.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RigidBody2D" Collapsed="true">
+    <Position X="5.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAwEAAAEoIAAAGgAAEgCAAADFAEBAEIACAgAAAQAEBE=</HashCode>
+      <FileName>RigidBody2D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerPawn" Collapsed="true">
+    <Position X="9" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAFAAAIABDIQCYAAAEAAEoAABAQAAAgASAOIYAACBAI=</HashCode>
+      <FileName>PlayerPawn.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerController" Collapsed="true">
+    <Position X="6.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQQAAAAAAQAAAAAAAAACADAEAACAAAAAQAAAgAAAIEA=</HashCode>
+      <FileName>PlayerController.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OptionsMenu" Collapsed="true">
+    <Position X="8.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgEAkCIAgAQBggAAFAAAAAAAAAACCAABCACAgAAgAAQ=</HashCode>
+      <FileName>OptionsMenu.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Observer&lt;EventType, DataType&gt;" Collapsed="true">
+    <Position X="4.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Messaging.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ObjectPool&lt;T&gt;" Collapsed="true">
+    <Position X="5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEBAQAAAAAAAAAAAAAAAAAAAAAAAAAABAABEAEACAAA=</HashCode>
+      <FileName>ObjectPool.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MainMenuPawn" Collapsed="true">
+    <Position X="10.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAADAAAYAAAMAAEgAAAAQAAAIAKQDBQDACBAI=</HashCode>
+      <FileName>MainMenuPawn.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameScreenManager" Collapsed="true">
+    <Position X="12.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAQABAAAAAAAAAAABAAAAAAABIAAEAAAABAQBAAAAAQ=</HashCode>
+      <FileName>GameScreenManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameScreenLevel1" Collapsed="true">
+    <Position X="14.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQACAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameScreenLevel1.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameScreen" Collapsed="true">
+    <Position X="14.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQICAAAoIEAAAAAAAIAAgAAAAAAAAAAABAACAAAAAA=</HashCode>
+      <FileName>GameScreen.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Circle2D" Collapsed="true">
+    <Position X="3" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAgAAAgAABA=</HashCode>
+      <FileName>Collider.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CheckBox" Collapsed="true">
+    <Position X="0.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAQgAAAADAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>CheckBox.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Camera" Collapsed="true">
+    <Position X="10.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAECgQBAAAAAAAAARABAAABAAAAAAAAAAAABABABAAA=</HashCode>
+      <FileName>Camera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Button" Collapsed="true">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IEAAAAAAAAAAAAAAQgAAAADCAEAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Button.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Box2D" Collapsed="true">
+    <Position X="4.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAABAAAAAAAAAAAAAAAAAAIAAAAAAAABBI=</HashCode>
+      <FileName>Collider.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnimatorSnake" Collapsed="true">
+    <Position X="8.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQQAgAAAAAAAAABAAAAAAAAAQAAEAAAAIAAAAAAAABA=</HashCode>
+      <FileName>AnimatorSnake.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shader" Collapsed="true">
+    <Position X="11.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAgAAAAAAAAAABAAAAAAAAAIAAAAAABAAEAAAAAAA=</HashCode>
+      <FileName>Shader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BasicShader" Collapsed="true">
+    <Position X="12" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Shader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

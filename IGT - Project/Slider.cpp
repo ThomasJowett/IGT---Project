@@ -10,7 +10,7 @@ Slider::Slider(const char * name, Vector2D anchorPoint, Vector2D offset, Vector2
 
 	AddComponent<Sprite>(barTexture, barSize.x, barSize.y);
 
-	mThumbSprite = new Sprite(this, thumbTexture, thumbSize.x, thumbSize.y);
+	mThumbSprite = new Sprite(this, thumbTexture, thumbSize.x, thumbSize.y, 1, 2);
 	AddComponent(mThumbSprite);
 
 	mCollisionBox = new Box2D(this, barSize.x, thumbSize.y, { 0,0 });
@@ -30,6 +30,28 @@ void Slider::OnDragged(Vector2D mousePosition)
 	float mouseRelativePosition = (mousePosition.x - GetTransform()->mPosition.x) + (mBarWidth / 2);
 	
 	SetValue((mouseRelativePosition/mBarWidth) * mMaxValue);
+}
+
+bool Slider::OnHovered()
+{
+	if (UIWidget::OnHovered())
+	{
+		mThumbSprite->SetCurrentFrame(HOVERED);
+		return true;
+	}
+
+	return false;
+}
+
+bool Slider::OnUnHovered()
+{
+	if (UIWidget::OnUnHovered())
+	{
+		mThumbSprite->SetCurrentFrame(NORMAL);
+		return true;
+	}
+
+	return false;
 }
 
 void Slider::SetValue(int value)

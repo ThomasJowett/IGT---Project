@@ -8,7 +8,7 @@ PlayerPawn::PlayerPawn(GameObject* character, iInput* menuPawn)
 {
 	mRigidBody = character->GetComponent<RigidBody2D>();
 
-	mWalkSpeed = 1500;
+	mWalkSpeed = 2000;
 }
 
 

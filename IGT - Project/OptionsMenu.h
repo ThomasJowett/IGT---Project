@@ -31,8 +31,8 @@ public:
 	void CreateWidgets()override;
 	void OnNotify(WidgetEvent event, WidgetEventData data)override;
 
-	void Up()override;
-	void Down()override;
+	//void Up()override;
+	//void Down()override;
 	void Left()override;
 	void Right()override;
 
@@ -45,13 +45,11 @@ private:
 	void GetCurrentResolution();
 	void ResolutionSelector(int resolutionIndex);
 
-	std::vector<Component*> mGameplayComponents;
+	
 	std::vector<UIWidget*> mGameplayButtons;
 	std::vector<Component*> mVideoComponents;
 	std::vector<UIWidget*> mVideoButtons;
-	std::vector<Component*> mAudioComponents;
 	std::vector<UIWidget*> mAudioButtons;
-	std::vector<Component*> mControlsComponents;
 	std::vector<UIWidget*> mControlsButtons;
 
 	std::vector<SDL_DisplayMode> mResolutions;

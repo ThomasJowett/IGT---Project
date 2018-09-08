@@ -23,7 +23,7 @@ public:
 
 	std::vector<UIWidget*> GetWidgets() { return mWidgets; }
 	UIWidget* GetCurrentWidget() { return mWidgets[mCurrentWidget]; }
-	void SetCurrentWidget(int widgetID);
+	void SetCurrentWidget(unsigned int widgetID);
 
 	//Navigation of the menu;
 	virtual void Up();

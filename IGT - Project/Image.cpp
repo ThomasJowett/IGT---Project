@@ -8,6 +8,8 @@ Image::Image(const char * name, Vector2D anchorPoint, Vector2D offset, GLuint te
 	:UIWidget(name, anchorPoint, offset)
 {
 	AddComponent<Sprite>(texture, size.x, size.y);
+
+	SetIsFocusable(false);
 }
 
 Image::Image(const char * name, Vector2D anchorPoint, Vector2D offset, GLuint texture, Vector2D size, int tilesWide, int tilesTall)
