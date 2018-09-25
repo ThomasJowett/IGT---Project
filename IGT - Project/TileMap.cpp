@@ -32,6 +32,8 @@ TileMap::~TileMap()
 void TileMap::Update(float deltatime)
 {
 	GameObject::Update(deltatime);
+
+	//TODO: if camera distance from the center is too far from the center re draw the map
 }
 
 void TileMap::Render(Shader * shader)
@@ -159,6 +161,34 @@ bool TileMap::LoadTileSet(const char * tileSetfilename, const char* spritefilena
 	mTileSet = new Sprite(this, Texture2D::LoadTexture2D(spritefilename), 16, 16, 12, 11);
 
 	return false;
+}
+
+//Creates a grid mesh with the map correctly laid out on it
+void TileMap::RedrawMap()
+{
+	//TODO: make the map be drawn as a single mesh so that it does not have the wierd lines occassionally;
+	float width = mTilesWide * mTileWidth;
+	float height = mTilesHigh * mTileHeight;
+
+	unsigned int tilecount = mTilesWide * mTilesHigh;
+
+	IndexedModel model;
+
+	model.positions.reserve(tilecount + 1);
+	model.texCoords.reserve(tilecount * 4);
+	//model.indices.reserve();
+
+	//for (unsigned int i = 0; i < mTilesWide + 1; i++);
+	//{
+	//	float y = (height / 2) - (i * mTileHeight);
+	//	for (unsigned int j = 0; j < mTilesHigh + 1; ++j)
+	//	{
+	//		float x = -width / 2 + j * mTileWidth;
+	//		model.positions[i*(mTilesHigh + 1) + j] = Vector3D(x, y, 0);
+	//
+	//		model.positions[]
+	//	}
+	//}
 }
 
 int TileMap::GetTileAt(float x, float y)

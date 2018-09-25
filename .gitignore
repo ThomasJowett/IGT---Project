@@ -8,7 +8,7 @@
 *.userprefs
 
 # Build results
-[Dd]ebug/
+#[Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
@@ -20,12 +20,12 @@ bld/
 [Ll]og/
 
 # Visual Studio 2015/2017 cache/options directory
-.vs/
+#.vs/
 
 # Visual Studio 2017 auto generated files
 Generated\ Files/
 
-IGT - Project/Debug/
+#IGT - Project/Debug/
 
 # Files built by Visual Studio
 *_i.c

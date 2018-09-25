@@ -1,6 +1,7 @@
 #pragma once
 #include "Sprite.h"
 #include "GameObject.h"
+#include "Mesh.h"
 
 class TileMap
 	:public GameObject
@@ -16,6 +17,8 @@ public:
 	bool LoadMap(const char* filename);
 	bool LoadTileSet(const char* tileSetfilename, const char* spritefilename);
 
+	void RedrawMap();
+
 	int GetTileAt(float x, float y);
 
 private:
@@ -26,4 +29,6 @@ private:
 
 	Sprite* mTileSet;
 	bool** mCollision;
+
+	Mesh* mMesh;
 };
