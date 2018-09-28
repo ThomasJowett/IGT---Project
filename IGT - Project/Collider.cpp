@@ -1,6 +1,7 @@
 #include "Collider.h"
 #include <iostream>
 
+//takes a min and max value for two colliders along an axis and returns if the ranges are overlapping
 bool Collider::TestAxis(Vector2D axis, float minA, float maxA, float minB, float maxB, Vector2D & mtvAxis, float & mtvDistance)
 {
 	if (axis.SqrMagnitude() < 1.0e-8f)
@@ -137,6 +138,23 @@ bool Box2D::ContainsPoint(Vector2D point)
 	return true;
 }
 
+
+bool Box2D::TestAxis(Vector2D axis, float offset, bool greater)
+{
+	std::vector<Vector2D> corners = GetCorners();
+	float min, max;
+	ProjectCornersOnAxis(axis.Perpendicular(), corners, min, max);
+
+	if (greater)
+	{
+		return min > offset;
+	}
+	else
+	{
+		return max < offset;
+	}
+}
+
 std::vector<Vector2D> Box2D::GetCorners()
 {
 	float halfWidth = mWidth / 2;
@@ -232,6 +250,21 @@ bool Circle2D::ContainsPoint(Vector2D point)
 {
 	Vector2D distance = point - GetCentre();
 	return (distance.SqrMagnitude() > mRadius * mRadius);
+}
+
+bool Circle2D::TestAxis(Vector2D axis, float offset, bool greater)
+{
+	float min, max;
+	ProjectCircleOnAxis(axis.Perpendicular(), *this, min, max);
+
+	if (greater)
+	{
+		return min > offset;
+	}
+	else
+	{
+		return max < offset;
+	}
 }
 
 Component * Circle2D::Clone()
