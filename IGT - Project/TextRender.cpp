@@ -61,22 +61,22 @@ bool TextRender::UpdateText(const char * text, SDL_Colour textColour, int x, int
 	if (!mFont)
 		LoadFont("Fonts/nokiafc22.ttf", 8);
 
-	if (text != mText || alignment != mAlignment 
-		|| x != mOffset.x || y != mOffset.y
-		|| textColour.r != mTextColour.r 
-		|| textColour.g != mTextColour.g
-		|| textColour.b != mTextColour.b
-		|| textColour.a != mTextColour.a)
-	{
+	//if (text != mText || alignment != mAlignment 
+	//	|| x != mOffset.x || y != mOffset.y
+	//	|| textColour.r != mTextColour.r 
+	//	|| textColour.g != mTextColour.g
+	//	|| textColour.b != mTextColour.b
+	//	|| textColour.a != mTextColour.a)
+	//{
 		mText = text;
 		mTextColour = textColour;
 		mOffset = Vector2D( x,y );
 		mAlignment = alignment;
-	}
-	else
-	{
-		return true;
-	}
+	//}
+	//else
+	//{
+	//	return true;
+	//}
 
 	SDL_Surface* surface = TTF_RenderText_Blended(mFont, text, textColour);
 

@@ -4,7 +4,7 @@ Animation::Animation(int startFrame, int frameCount, float holdTime, Sprite* spr
 {	
 	mSprite = sprite;
 
-	if (mStartFrame > mSprite->GetNumberOfTiles())
+	if (mStartFrame > mSprite->GetNumberOfFrames())
 	{
 		mStartFrame = 0;
 		std::cerr << "Error: Animation start frame is after sprites last tile\n";
@@ -13,7 +13,7 @@ Animation::Animation(int startFrame, int frameCount, float holdTime, Sprite* spr
 		mStartFrame = startFrame;
 
 	mCurrentFrame = mStartFrame;
-	if (frameCount + mStartFrame > mSprite->GetNumberOfTiles())
+	if (frameCount + mStartFrame > mSprite->GetNumberOfFrames())
 	{
 		std::cerr << "Error: Animation has more frames than sprite has Tiles\n";
 		mFrameCount = 1;

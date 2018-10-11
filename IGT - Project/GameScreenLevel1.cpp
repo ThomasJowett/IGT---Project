@@ -39,11 +39,12 @@ GameScreenLevel1::GameScreenLevel1()
 	MainMenuPawn* menu = new MainMenuPawn(cursor);
 
 	//player 1
-	transform = new Transform(Vector3D(-100, 0, 0), 0, Vector2D(1, 1));
+	transform = new Transform(Vector3D(0, 0, 0), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Player 1", transform);
 	gameObject->AddComponent<Sprite>(goblinTexture, 48, 48, 4, 10);
 	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
 	gameObject->GetComponent<TextRender>()->UpdateText("Player 1", { 0,0,0 }, 0, 20, CENTER);
+	gameObject->GetComponent<TextRender>()->UpdateText("_", { 0,0,0 }, 0, 0, CENTER);
 	gameObject->AddComponent<Box2D>(48, 48, Vector2D());
 	gameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, physicsMaterial);
 	gameObject->AddComponent<AnimatorCharacter>();
@@ -62,6 +63,7 @@ GameScreenLevel1::GameScreenLevel1()
 	mGameObjects.emplace_back(gameObject);
 	PlayerPawn* character2Controller = new PlayerPawn(gameObject, menu);
 
+	//temporary spawning enemy
 	transform = new Transform(Vector3D(-10, 0, 0), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Snake", transform);
 	gameObject->AddComponent<RigidBody2D>(10, Vector2D(0, 0), 10, 0, physicsMaterial);
@@ -85,7 +87,7 @@ GameScreenLevel1::GameScreenLevel1()
 	PlayerController* playerController2 = new PlayerController(1, character2Controller);
 	mPlayerControllers.push_back(playerController2);
 
-	gameObject = new TileMap("Maps/TestMap.xml", "Maps/DungeonTileSet.png");
+	gameObject = new TileMap("Maps/TestMap.xml", "Maps/DungeonTileSet.png", "Maps/TestMapCollision.xml");
 	mGameObjects.emplace_back(gameObject);
 }
 
@@ -108,5 +110,5 @@ void GameScreenLevel1::Update(float deltaTime, std::vector<SDL_Event> events)
 
 	Collision::ResolveCollisions(Collision::DetectCollisions(collisionObejcts));
 
-	mCamera.GetTransform()->mPosition = mGameObjects[0]->GetTransform()->mPosition;
+	mCamera.GetTransform()->mPosition = mGameObjects[0]->GetTransform()->mPosition + Vector3D(0,0,100);
 }

@@ -26,6 +26,7 @@ public:
 	void SetVsync(bool isVsyncEnabled);
 
 	void SetCamera(Camera* camera) { mCamera = camera; }
+	Camera* GetCamera() { return mCamera; }
 	
 	int GetScreenWidth() { return mScreen_Width; }
 	int GetScreenHeight() { return mScreen_Height; }

@@ -9,6 +9,7 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "PlayerController.h"
+#include "FPS.h"
 
 class GameScreen
 {
@@ -32,6 +33,8 @@ protected:
 	Shader* mShaderGUI;
 
 	Camera mCamera;
+
+	FPS mFPS;
 };
 
 #endif //_GAMESCREEN_H

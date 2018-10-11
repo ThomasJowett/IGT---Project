@@ -24,6 +24,7 @@ Sprite::Sprite(GameObject* parent, GLuint TextureID, float singleSpriteWidth, fl
 		{
 			Vertex vertices[] =
 			{
+
 				Vertex(Vector3D(-halfWidth,-halfHeight,0), Vector2D(j*inverseWide, (i + 1) * inverseTall)),
 				Vertex(Vector3D(halfWidth,-halfHeight,0), Vector2D((j + 1) * inverseWide, (i + 1) * inverseTall)),
 				Vertex(Vector3D(halfWidth,halfHeight,0), Vector2D((j + 1) * inverseWide,i * inverseTall)),
@@ -31,7 +32,7 @@ Sprite::Sprite(GameObject* parent, GLuint TextureID, float singleSpriteWidth, fl
 			};
 
 			Mesh* mesh = new Mesh(vertices, 4, indices, 6);
-			mTiles.push_back(mesh);
+			mFrames.push_back(mesh);
 		}
 	}
 
@@ -66,7 +67,7 @@ Sprite::Sprite(GameObject* parent, GLuint TextureID, float singleSpriteWidth, fl
 	};
 
 	Mesh* mesh = new Mesh(vertices, 4, indices, 6);
-	mTiles.push_back(mesh);
+	mFrames.push_back(mesh);
 
 	mCurrentFrame = 0;
 
@@ -98,7 +99,7 @@ Sprite::Sprite(GameObject * parent, GLuint TextureID, float singleSpriteWidth, f
 	};
 
 	Mesh* mesh = new Mesh(vertices, 4, indices, 6);
-	mTiles.push_back(mesh);
+	mFrames.push_back(mesh);
 
 	mCurrentFrame = 0;
 
@@ -108,12 +109,12 @@ Sprite::Sprite(GameObject * parent, GLuint TextureID, float singleSpriteWidth, f
 
 Sprite::~Sprite()
 {
-	for (std::vector< Mesh* >::iterator it = mTiles.begin(); it != mTiles.end(); ++it)
+	for (std::vector< Mesh* >::iterator it = mFrames.begin(); it != mFrames.end(); ++it)
 	{
 		delete (*it);
 		(*it) = nullptr;
 	}
-	mTiles.clear();
+	mFrames.clear();
 }
 
 //Draws the texture to the screen
@@ -124,9 +125,9 @@ void Sprite::Render(Shader* shader)
 
 	shader->UpdateMatrixUniform(MODEL_U, GetParent()->GetTransform()->GetWorldMatrix() * mOffset, true);
 
-	mTiles[mCurrentFrame]->Draw();
+	mFrames[mCurrentFrame]->Draw();
 
-	if (mCurrentFrame >= mTiles.size())
+	if (mCurrentFrame >= mFrames.size())
 		mCurrentFrame = 0;
 
 	glActiveTexture(GL_TEXTURE0);
@@ -137,7 +138,7 @@ void Sprite::Render(Shader* shader)
 
 void Sprite::SetCurrentFrame(unsigned int frame)
 {
-	if (frame < mTiles.size())
+	if (frame < mFrames.size())
 	{
 		mCurrentFrame = frame;
 	}

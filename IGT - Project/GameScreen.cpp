@@ -52,6 +52,8 @@ void GameScreen::Render()
 			it->get()->Render(mShaderGUI);
 	}
 
+	mFPS.Render(mShaderGUI);
+
 	glEnable(GL_DEPTH_TEST);
 }
 
@@ -73,4 +75,6 @@ void GameScreen::Update(float deltaTime, std::vector<SDL_Event> events)
 		if (it->get()->GetActive())
 			it->get()->Update(deltaTime);
 	}
+
+	mFPS.Update(deltaTime);
 }
