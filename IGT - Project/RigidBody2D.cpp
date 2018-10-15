@@ -6,6 +6,7 @@ RigidBody2D::RigidBody2D(GameObject* parent, float mass, Vector2D velocity, Phys
 	:mMass(mass), mVelocity(velocity), mPhysicsMaterial(physicsMaterial),
 	iUpdateable(parent)
 {
+	mInverseMass = 1 / mass;
 	mFreezeRotation = true;
 }
 
@@ -13,6 +14,7 @@ RigidBody2D::RigidBody2D(GameObject * parent, float mass, Vector2D velocity, flo
 	:mMass(mass), mVelocity(velocity),mRotationalInertia(inertia), mAngularVelocity(angularVelocity),mPhysicsMaterial(physicsMaterial),
 	iUpdateable(parent)
 {
+	mInverseMass = 1 / mass;
 	mFreezeRotation = false;
 }
 
@@ -64,14 +66,14 @@ void RigidBody2D::AddForce(Vector2D force)
 void RigidBody2D::AddPointForce(Vector2D force, Vector2D position)
 {
 	Vector2D relativePosition = Vector2D(GetParent()->GetTransform()->mPosition.x + position.x, GetParent()->GetTransform()->mPosition.y + position.y);
-	float torque = (Vector3D::Cross(Vector3D(force.x, force.y, 0.0f), Vector3D(relativePosition.x, relativePosition.y, 0.0f))).Magnitude();
+	float torque = Vector2D::Cross(Vector2D(force.x, force.y), Vector2D(relativePosition.x, relativePosition.y));
 	AddTorque(torque);
 	AddForce(force);
 }
 
 void RigidBody2D::AddRelativeForce(Vector2D force, Vector2D position)
 {
-	float torque = (Vector3D::Cross(Vector3D(force.x, force.y, 0.0f), Vector3D(position.x, position.y, 0.0f))).Magnitude();
+	float torque = Vector2D::Cross(Vector2D(force.x, force.y), Vector2D(position.x, position.y));
 
 	AddTorque(torque);
 	AddForce(force);
@@ -80,4 +82,9 @@ void RigidBody2D::AddRelativeForce(Vector2D force, Vector2D position)
 void RigidBody2D::AddTorque(float torque)
 {
 	mNetTorque += torque;
+}
+
+void RigidBody2D::ApplyImpulse(Vector2D impulse)
+{
+	mVelocity += mInverseMass * impulse;
 }

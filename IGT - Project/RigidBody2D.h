@@ -16,13 +16,15 @@ public:
 	void AddPointForce(Vector2D force, Vector2D position);
 	void AddRelativeForce(Vector2D force, Vector2D position);
 	void AddTorque(float torque);
+	void ApplyImpulse(Vector2D impulse);
 
 	//Getters and Setters
 	Vector2D GetVelocity()const { return mVelocity; }
 	void SetVelocity(Vector2D velocity) { mVelocity = velocity; }
 
 	float GetMass()const { return mMass; }
-	void SetMass(float mass) { mMass = mass; }
+	float GetInverseMass()const { return mInverseMass; }
+	void SetMass(float mass) { mMass = mass; mInverseMass = 1 / mass; }
 
 	bool IsRotationFrozen() const { return mFreezeRotation; }
 	void FreezeRotation(bool freeze) { mFreezeRotation = freeze; }
@@ -38,6 +40,7 @@ public:
 
 private:
 	float mMass;
+	float mInverseMass;
 	Vector2D mVelocity;
 	Vector2D mNetForce;
 

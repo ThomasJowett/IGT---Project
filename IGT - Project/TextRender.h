@@ -32,6 +32,7 @@ public:
 	Component* Clone()override;
 
 private:
+	bool UpdateText();
 	TTF_Font * mFont;
 	const char* mText;
 	SDL_Colour mTextColour;

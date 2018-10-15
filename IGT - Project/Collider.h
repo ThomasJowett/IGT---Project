@@ -20,6 +20,11 @@ class Collider :
 {
 public:
 	Collider(GameObject* parent, ColliderType type, Vector2D offset)
+		: mType(type), Component(parent) 
+	{
+		mOffset = Matrix4x4::Translate(Vector3D(offset.x, offset.y, 0));
+	}
+	Collider(GameObject* parent, ColliderType type, Matrix4x4 offset)
 		: mType(type), mOffset(offset), Component(parent) {}
 	virtual ~Collider() {}
 
@@ -34,16 +39,15 @@ public:
 	{
 		Matrix4x4 translate = Matrix4x4::Translate(GetParent()->GetTransform()->mPosition);
 		Matrix4x4 rotation = Matrix4x4::RotateZ(GetParent()->GetTransform()->mRotation);
-		Matrix4x4 offset = Matrix4x4::Translate(Vector3D(mOffset.x, mOffset.y, 0));
-		return (translate * rotation * offset).ToVector2D();
+		return (translate * rotation * mOffset).ToVector2D();
 	}
 
-	void SetOffset(Vector2D offset) { mOffset = offset; }
+	void SetOffset(Vector2D offset) { mOffset = Matrix4x4::Translate(Vector3D(offset.x, offset.y, 0)); }
 
 	ColliderType mType;
 protected:
 	bool mCollided; //TODO: have a list of colliders that this is colliding with
-	Vector2D mOffset;
+	Matrix4x4 mOffset;
 
 	std::vector<Vector2D> GetAxis(std::vector<Vector2D> box1Corners, std::vector<Vector2D> box2Corners);
 	void ProjectCornersOnAxis(Vector2D axis, std::vector<Vector2D> corners, float & min, float & max);
@@ -58,6 +62,8 @@ class Box2D : public Collider
 {
 public:
 	Box2D(GameObject* parent, float width, float height, Vector2D offset)
+		: mWidth(width), mHeight(height), Collider(parent, BOX2D, offset) {}
+	Box2D(GameObject* parent, float width, float height, Matrix4x4 offset)
 		: mWidth(width), mHeight(height), Collider(parent, BOX2D, offset) {}
 	bool IntersectsCollider(Collider* otherCollider, Vector2D& normal, float& penetrationDepth)override;
 	bool ContainsPoint(Vector2D point)override;
@@ -75,6 +81,8 @@ class Circle2D : public Collider
 {
 public:
 	Circle2D(GameObject* parent, float radius, Vector2D offset)
+		: mRadius(radius), Collider(parent, CIRCLE2D, offset) {}
+	Circle2D(GameObject* parent, float radius, Matrix4x4 offset)
 		: mRadius(radius), Collider(parent, CIRCLE2D, offset) {}
 	bool IntersectsCollider(Collider* otherCollider, Vector2D& normal, float& penetrationDepth)override;
 	bool ContainsPoint(Vector2D point)override;

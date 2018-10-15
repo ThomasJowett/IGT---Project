@@ -20,6 +20,8 @@ FPS::FPS()
 	position.y = ((screenHeight * (1 - +0.5f)) - (screenHeight / 2)) + offset.y;
 
 	mScreenPosition = Matrix4x4::Translate(Vector3D(position.x, position.y, 0.0f));
+
+	mTextRender->UpdateText({ 255,255,255 });
 }
 
 
@@ -55,7 +57,6 @@ void FPS::Update(float deltaTime)
 	{
 		sprintf_s(FPSc_str, "%i", mFrameCount / (mFinalTime - mInitialTime));
 		mTextRender->UpdateText(FPSc_str);
-		mTextRender->UpdateText({ 255,255,255 });
 		mFrameCount = 0;
 		mInitialTime = mFinalTime;
 	}

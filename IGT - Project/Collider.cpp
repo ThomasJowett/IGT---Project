@@ -40,7 +40,7 @@ bool Collider::BoxBox(Box2D* box1, Box2D* box2, Vector2D & normal, float & penet
 		ProjectCornersOnAxis(axis[i], box1Corners, minA, maxA);
 		ProjectCornersOnAxis(axis[i], box2Corners, minB, maxB);
 
-		if (!TestAxis(axis[0], minA, maxA, minB, maxB, mtvAxis, mtvDistance))
+		if (!TestAxis(axis[i], minA, maxA, minB, maxB, mtvAxis, mtvDistance))
 			return false;
 	}
 	normal = mtvAxis.GetNormalized();
@@ -92,7 +92,7 @@ bool Collider::CircleCircle(Circle2D* circle1, Circle2D* circle2, Vector2D & nor
 
 	if ((sumOfBoundingRadii*sumOfBoundingRadii) > seperation.SqrMagnitude())
 	{
-		penetrationDepth = sumOfBoundingRadii - seperation.Magnitude();
+		penetrationDepth = seperation.Magnitude() - sumOfBoundingRadii;
 		normal = seperation.GetNormalized();
 		return true;
 	}
@@ -163,20 +163,19 @@ std::vector<Vector2D> Box2D::GetCorners()
 	std::vector<Vector2D> corners;
 	Matrix4x4 translateWorld = Matrix4x4::Translate(GetParent()->GetTransform()->mPosition);
 	Matrix4x4 rotation = Matrix4x4::RotateZ(GetParent()->GetTransform()->mRotation);
-	Matrix4x4 offset = Matrix4x4::Translate(Vector3D(mOffset.x, mOffset.y, 0));
 
 	Matrix4x4 translateCorner = Matrix4x4::Translate(Vector3D(-halfWidth, -halfHeight, 0));
-	Matrix4x4 mPosition = translateWorld  * rotation * offset * translateCorner;
-	corners.push_back((translateWorld*rotation*offset*translateCorner).ToVector2D());
+	Matrix4x4 mPosition = translateWorld  * rotation * mOffset * translateCorner;
+	corners.push_back((translateWorld*rotation*mOffset*translateCorner).ToVector2D());
 
 	translateCorner = Matrix4x4::Translate(Vector3D(halfWidth, -halfHeight, 0));
-	corners.push_back((translateWorld*rotation*offset*translateCorner).ToVector2D());
+	corners.push_back((translateWorld*rotation*mOffset*translateCorner).ToVector2D());
 
 	translateCorner = Matrix4x4::Translate(Vector3D(halfWidth, halfHeight, 0));
-	corners.push_back((translateWorld*rotation*offset*translateCorner).ToVector2D());
+	corners.push_back((translateWorld*rotation*mOffset*translateCorner).ToVector2D());
 
 	translateCorner = Matrix4x4::Translate(Vector3D(-halfWidth, halfHeight, 0));
-	corners.push_back((translateWorld*rotation*offset*translateCorner).ToVector2D());
+	corners.push_back((translateWorld*rotation*mOffset*translateCorner).ToVector2D());
 
 	return corners;
 }
@@ -191,8 +190,8 @@ std::vector<Vector2D> Collider::GetAxis(std::vector<Vector2D> box1Corners, std::
 	std::vector<Vector2D> axis;
 	axis.push_back((box1Corners[1] - box1Corners[0]).GetNormalized());
 	axis.push_back((box1Corners[3] - box1Corners[0]).GetNormalized());
-	axis.push_back((box2Corners[1] - box1Corners[0]).GetNormalized());
-	axis.push_back((box2Corners[3] - box1Corners[0]).GetNormalized());
+	axis.push_back((box2Corners[1] - box2Corners[0]).GetNormalized());
+	axis.push_back((box2Corners[3] - box2Corners[0]).GetNormalized());
 	return axis;
 }
 
@@ -231,7 +230,8 @@ bool Circle2D::IntersectsCollider(Collider * otherCollider, Vector2D & normal, f
 		Box2D * otherBox = dynamic_cast<Box2D*>(otherCollider);
 		if (BoxCircle(otherBox, this, normal, penetrationDepth))
 		{
-			normal * -1.0f;
+			//because BoxCircle() tests from box to circle and we need circle to box the normal is flipped
+			normal = normal * -1.0f;
 			return true;
 		}
 		else

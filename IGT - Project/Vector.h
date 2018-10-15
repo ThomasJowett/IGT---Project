@@ -114,6 +114,11 @@ public:
 		return Vector3D(x - other.x, y - other.y, z - other.z);
 	}
 
+	Vector3D operator-(void)const
+	{
+		return Vector3D(-x, -y, -z);
+	}
+
 	Vector3D operator+=(const Vector3D & other)
 	{
 		x += other.x;
@@ -154,6 +159,16 @@ public:
 		return *this;
 	}
 };
+
+inline Vector3D operator*(float scaler, const Vector3D& v)
+{
+	return Vector3D(scaler * v.x, scaler * v.y, scaler * v.z);
+}
+
+inline Vector3D operator/(float scaler, const Vector3D& v)
+{
+	return Vector3D(scaler / v.x, scaler / v.y, scaler / v.z);
+}
 
 class Vector2D
 {
@@ -218,6 +233,11 @@ public:
 		return v1.x*v2.x + v1.y*v2.y; 
 	}
 
+	static float Cross(Vector2D v1, Vector2D v2)
+	{
+		return v1.x * v2.y - v1.y * v2.x;
+	}
+
 	static Vector2D Lerp(Vector2D v1, Vector2D v2, float alpha) 
 	{ 
 		return (v1 * alpha) + (v2 * (1 - alpha)); 
@@ -265,6 +285,11 @@ public:
 		return Vector2D(x - other.x, y - other.y);
 	}
 
+	Vector2D operator-(void)const
+	{
+		return Vector2D(-x, -y);
+	}
+
 	Vector2D operator+=(const Vector2D& other)
 	{
 		x += other.x;
@@ -303,5 +328,15 @@ public:
 		return *this;
 	}
 };
+
+inline Vector2D operator*(float scaler, const Vector2D& v)
+{
+	return Vector2D(scaler * v.x, scaler * v.y);
+}
+
+inline Vector2D operator/(float scaler, const Vector2D& v)
+{
+	return Vector2D(scaler / v.x, scaler / v.y);
+}
 
 #endif // !_VECTOR_H

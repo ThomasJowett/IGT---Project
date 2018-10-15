@@ -24,12 +24,14 @@ GameScreenLevel1::GameScreenLevel1()
 	GLuint batTexture = Texture2D::LoadTexture2D("SpriteSheets/rat and bat spritesheet calciumtrice.png");
 	GLuint SnakeTexture = Texture2D::LoadTexture2D("SpriteSheets/snake spritesheet calciumtrice.png");
 	GLuint circleTexture = Texture2D::LoadTexture2D("Images/Circle.png");
+	GLuint squareTexture = Texture2D::LoadTexture2D("Images/Square.png");
 	GLuint CursorTexture = Texture2D::LoadTexture2D("Images/Cursor_Default.png");
 
 	Transform* transform;
 	GameObject* gameObject;
 
 	PhysicsMaterial physicsMaterial = { 30, 0.8, 0.5, 10 };
+	PhysicsMaterial physicsMaterialcircle = { 3, 0.8, 0.5, 1 };
 
 	//Cursor
 	transform = new Transform();
@@ -38,14 +40,15 @@ GameScreenLevel1::GameScreenLevel1()
 
 	MainMenuPawn* menu = new MainMenuPawn(cursor);
 
+	
+
 	//player 1
 	transform = new Transform(Vector3D(0, 0, 0), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Player 1", transform);
 	gameObject->AddComponent<Sprite>(goblinTexture, 48, 48, 4, 10);
 	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
 	gameObject->GetComponent<TextRender>()->UpdateText("Player 1", { 0,0,0 }, 0, 20, CENTER);
-	gameObject->GetComponent<TextRender>()->UpdateText("_", { 0,0,0 }, 0, 0, CENTER);
-	gameObject->AddComponent<Box2D>(48, 48, Vector2D());
+	gameObject->AddComponent<Box2D>(18, 30, Vector2D(0, -10));
 	gameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, physicsMaterial);
 	gameObject->AddComponent<AnimatorCharacter>();
 	mGameObjects.emplace_back(gameObject);
@@ -57,21 +60,21 @@ GameScreenLevel1::GameScreenLevel1()
 	gameObject->AddComponent<Sprite>(goblinTexture, 48, 48, 4, 10);
 	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
 	gameObject->GetComponent<TextRender>()->UpdateText("Player 2", { 0,0,0 }, 0, 20, CENTER);
-	gameObject->AddComponent<Box2D>(48, 48, Vector2D());
+	gameObject->AddComponent<Box2D>(18, 30, Vector2D(0, -10));
 	gameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, physicsMaterial);
 	gameObject->AddComponent<AnimatorCharacter>();
 	mGameObjects.emplace_back(gameObject);
 	PlayerPawn* character2Controller = new PlayerPawn(gameObject, menu);
 
 	//temporary spawning enemy
-	transform = new Transform(Vector3D(-10, 0, 0), 0, Vector2D(1, 1));
-	gameObject = new GameObject("Snake", transform);
-	gameObject->AddComponent<RigidBody2D>(10, Vector2D(0, 0), 10, 0, physicsMaterial);
-	gameObject->AddComponent<Circle2D>(20, Vector2D());
-	gameObject->AddComponent<Sprite>(SnakeTexture, 32, 32, 10, 5);
-	gameObject->AddComponent<AnimatorSnake>();
-	
-	mGameObjects.emplace_back(gameObject);
+	//transform = new Transform(Vector3D(-10, 0, 0), 0, Vector2D(1, 1));
+	//gameObject = new GameObject("Snake", transform);
+	//gameObject->AddComponent<RigidBody2D>(10, Vector2D(0, 0), 10, 0, physicsMaterial);
+	//gameObject->AddComponent<Circle2D>(8, Vector2D());
+	//gameObject->AddComponent<Sprite>(SnakeTexture, 32, 32, 10, 5);
+	//gameObject->AddComponent<AnimatorSnake>();
+	//
+	//mGameObjects.emplace_back(gameObject);
 
 	//Pause Menu
 	UIMenu* pauseMenu = new PauseMenu(new Transform(), characterController);
@@ -89,6 +92,35 @@ GameScreenLevel1::GameScreenLevel1()
 
 	gameObject = new TileMap("Maps/TestMap.xml", "Maps/DungeonTileSet.png", "Maps/TestMapCollision.xml");
 	mGameObjects.emplace_back(gameObject);
+
+	
+
+	transform = new Transform(Vector3D(-30, 0, 5), 0, Vector2D(1, 1));
+	gameObject = new GameObject("Circle", transform);
+	gameObject->AddComponent<Sprite>(circleTexture, 32, 32);
+	gameObject->AddComponent<Circle2D>(16, Vector2D());
+	mGameObjects.emplace_back(gameObject);
+
+	transform = new Transform(Vector3D(-80, 0, 5), 0, Vector2D(1, 1));
+	gameObject = new GameObject("Square", transform);
+	gameObject->AddComponent<Sprite>(squareTexture, 32, 32);
+	gameObject->AddComponent<Box2D>(32, 32, Vector2D());
+	mGameObjects.emplace_back(gameObject);
+
+	transform = new Transform(Vector3D(0, -50, 5), 0, Vector2D(1, 1));
+	gameObject = new GameObject("Ball", transform);
+	gameObject->AddComponent<Sprite>(circleTexture, 16, 16);
+	gameObject->AddComponent<Circle2D>(8, Vector2D());
+	gameObject->AddComponent<RigidBody2D>(100, Vector2D(0, 0), 1, 0, physicsMaterialcircle);
+	mGameObjects.emplace_back(gameObject);
+
+	for (int i = 0; i < 10; i++)
+	{
+		gameObject = new GameObject(*gameObject);
+		gameObject->GetTransform()->mPosition = Vector3D(800 * (float)rand() / (RAND_MAX)-400, 80 * (float)rand() / (RAND_MAX) + 40, 5);
+		//gameObject->GetComponent<RigidBody2D>()->SetVelocity(Vector2D(80 * (float)rand() / (RAND_MAX)-40, 80 * (float)rand() / (RAND_MAX)-40));
+		mGameObjects.emplace_back(gameObject);
+	}
 }
 
 GameScreenLevel1::~GameScreenLevel1()

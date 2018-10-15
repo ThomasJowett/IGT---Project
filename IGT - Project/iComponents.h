@@ -26,6 +26,7 @@ private:
 	bool mIsActive = true;
 };
 
+//Updateable Interface
 class iUpdateable : public Component
 {
 public:
@@ -34,6 +35,7 @@ public:
 	virtual void Update(float deltaTime) = 0;
 };
 
+//Renderable Interface
 class iRenderable : public Component
 {
 public:

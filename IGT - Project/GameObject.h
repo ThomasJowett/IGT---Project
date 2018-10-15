@@ -57,6 +57,8 @@ private:
 	std::vector<iRenderable*>mRenderableComponents;
 };
 
+//Add component by passing type and the parameters
+//Will construct the component
 template<class ComponentType, typename ...Args>
 inline void GameObject::AddComponent(Args && ...params)
 {
@@ -110,6 +112,7 @@ inline bool GameObject::RemoveComponent()
 	//TODO: find better solution for getting a component that dosen't use dynamic_cast
 }
 
+//Return the first component of that type
 template<typename ComponentType>
 inline ComponentType * GameObject::GetComponent() const
 {

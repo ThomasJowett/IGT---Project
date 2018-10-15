@@ -127,9 +127,6 @@ void Sprite::Render(Shader* shader)
 
 	mFrames[mCurrentFrame]->Draw();
 
-	if (mCurrentFrame >= mFrames.size())
-		mCurrentFrame = 0;
-
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
