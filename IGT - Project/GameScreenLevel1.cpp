@@ -40,10 +40,15 @@ GameScreenLevel1::GameScreenLevel1()
 
 	MainMenuPawn* menu = new MainMenuPawn(cursor);
 
-	
+	transform = new Transform(Vector3D(0, 50, 5), 0, Vector2D(1, 1));
+	gameObject = new GameObject("Ball", transform);
+	gameObject->AddComponent<Sprite>(circleTexture, 4, 4);
+	gameObject->AddComponent<Circle2D>(2, Vector2D());
+	gameObject->AddComponent<RigidBody2D>(100, Vector2D(0, 0), 1, 0, physicsMaterialcircle);
+	mGameObjects.emplace_back(gameObject);
 
 	//player 1
-	transform = new Transform(Vector3D(0, 0, 0), 0, Vector2D(1, 1));
+	transform = new Transform(Vector3D(100, 100, 0), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Player 1", transform);
 	gameObject->AddComponent<Sprite>(goblinTexture, 48, 48, 4, 10);
 	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
@@ -55,7 +60,7 @@ GameScreenLevel1::GameScreenLevel1()
 	PlayerPawn* characterController = new PlayerPawn(gameObject, menu);
 
 	//player 2
-	transform = new Transform(Vector3D(100, 0, 0), 0, Vector2D(1, 1));
+	transform = new Transform(Vector3D(100, -100, 0), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Player 2", transform);
 	gameObject->AddComponent<Sprite>(goblinTexture, 48, 48, 4, 10);
 	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
@@ -117,10 +122,17 @@ GameScreenLevel1::GameScreenLevel1()
 	for (int i = 0; i < 10; i++)
 	{
 		gameObject = new GameObject(*gameObject);
-		gameObject->GetTransform()->mPosition = Vector3D(800 * (float)rand() / (RAND_MAX)-400, 80 * (float)rand() / (RAND_MAX) + 40, 5);
-		//gameObject->GetComponent<RigidBody2D>()->SetVelocity(Vector2D(80 * (float)rand() / (RAND_MAX)-40, 80 * (float)rand() / (RAND_MAX)-40));
+		gameObject->GetTransform()->mPosition = Vector3D(800 * (float)rand() / (RAND_MAX)-400, 80 * (float)rand() / (RAND_MAX)+40, 5);
+		gameObject->GetComponent<RigidBody2D>()->SetVelocity(Vector2D(80 * (float)rand() / (RAND_MAX)-40, 80 * (float)rand() / (RAND_MAX)-40));
 		mGameObjects.emplace_back(gameObject);
 	}
+
+	transform = new Transform(Vector3D(0, -50, 5), 0, Vector2D(1, 1));
+	gameObject = new GameObject("little box", transform);
+	gameObject->AddComponent<Sprite>(squareTexture, 16, 16);
+	gameObject->AddComponent<Box2D>(16, 16, Vector2D());
+	gameObject->AddComponent<RigidBody2D>(100, Vector2D(0, 0), 1, 0, physicsMaterialcircle);
+	mGameObjects.emplace_back(gameObject);
 }
 
 GameScreenLevel1::~GameScreenLevel1()
@@ -140,7 +152,8 @@ void GameScreenLevel1::Update(float deltaTime, std::vector<SDL_Event> events)
 			collisionObejcts.push_back(it->get());
 	}
 
-	Collision::ResolveCollisions(Collision::DetectCollisions(collisionObejcts));
+	//Collision::ResolveCollisions(Collision::DetectCollisions(collisionObejcts));
+	Collision::DetectCollisions(collisionObejcts);
 
 	mCamera.GetTransform()->mPosition = mGameObjects[0]->GetTransform()->mPosition + Vector3D(0,0,100);
 }

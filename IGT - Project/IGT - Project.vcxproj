@@ -133,6 +133,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CheckBox.cpp" />
     <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="DungeonManager.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameObject.cpp" />

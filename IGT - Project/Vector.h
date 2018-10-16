@@ -207,6 +207,7 @@ public:
 		y = normalized.y;
 	}
 
+	//Perpendicular clockwise
 	Vector2D Perpendicular()
 	{
 		return Vector2D(y, -x);

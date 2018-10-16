@@ -23,7 +23,7 @@ public:
 	QuadTree(AABB* boundary, int level);
 	~QuadTree();
 
-	int MAXOBJECTS = 10;
+	int MAXOBJECTS = 1;
 	int MAXLEVELS = 5;
 
 	void Insert(GameObject* gameobject);
@@ -39,4 +39,3 @@ private:
 	int mLevel;
 	bool mIsLeaf = true;
 };
-

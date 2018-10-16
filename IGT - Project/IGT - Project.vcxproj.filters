@@ -165,6 +165,9 @@
     <ClCompile Include="FPS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="SDL\SDL2.lib">

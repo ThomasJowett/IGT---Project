@@ -16,7 +16,7 @@ bool Collider::TestAxis(Vector2D axis, float minA, float maxA, float minB, float
 	float overlap = (d0 < d1) ? d0 : -d1;
 
 	Vector2D seperation = axis * (overlap / axis.SqrMagnitude());
-
+	
 	if (seperation.SqrMagnitude() < mtvDistance)
 	{
 		mtvDistance = seperation.SqrMagnitude();
@@ -45,6 +45,10 @@ bool Collider::BoxBox(Box2D* box1, Box2D* box2, Vector2D & normal, float & penet
 	}
 	normal = mtvAxis.GetNormalized();
 	penetrationDepth = (float)sqrt(mtvDistance);
+
+	if (penetrationDepth > 1.0f)
+		std::cout << penetrationDepth << std::endl;
+	
 	return true;
 }
 
@@ -139,20 +143,13 @@ bool Box2D::ContainsPoint(Vector2D point)
 }
 
 
-bool Box2D::TestAxis(Vector2D axis, float offset, bool greater)
+bool Box2D::TestAxis(Vector2D axis, float offset)
 {
 	std::vector<Vector2D> corners = GetCorners();
 	float min, max;
-	ProjectCornersOnAxis(axis.Perpendicular(), corners, min, max);
+	ProjectCornersOnAxis(axis, corners, min, max);
 
-	if (greater)
-	{
-		return min > offset;
-	}
-	else
-	{
-		return max < offset;
-	}
+	return min > offset;
 }
 
 std::vector<Vector2D> Box2D::GetCorners()
@@ -231,7 +228,9 @@ bool Circle2D::IntersectsCollider(Collider * otherCollider, Vector2D & normal, f
 		if (BoxCircle(otherBox, this, normal, penetrationDepth))
 		{
 			//because BoxCircle() tests from box to circle and we need circle to box the normal is flipped
-			normal = normal * -1.0f;
+			normal = -normal;
+			penetrationDepth /= 100;
+			//std::cout << penetrationDepth << std::endl;
 			return true;
 		}
 		else
@@ -240,6 +239,7 @@ bool Circle2D::IntersectsCollider(Collider * otherCollider, Vector2D & normal, f
 	else if(otherCollider->mType == CIRCLE2D)
 	{
 		Circle2D * otherCircle = dynamic_cast<Circle2D*>(otherCollider);
+		
 		return CircleCircle(this, otherCircle, normal, penetrationDepth);
 	}
 
@@ -252,19 +252,13 @@ bool Circle2D::ContainsPoint(Vector2D point)
 	return (distance.SqrMagnitude() > mRadius * mRadius);
 }
 
-bool Circle2D::TestAxis(Vector2D axis, float offset, bool greater)
+bool Circle2D::TestAxis(Vector2D axis, float offset)
 {
 	float min, max;
 	ProjectCircleOnAxis(axis.Perpendicular(), *this, min, max);
 
-	if (greater)
-	{
-		return min > offset;
-	}
-	else
-	{
-		return max < offset;
-	}
+	return min > offset;
+
 }
 
 Component * Circle2D::Clone()

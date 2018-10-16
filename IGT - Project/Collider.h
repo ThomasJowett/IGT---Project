@@ -32,7 +32,7 @@ public:
 		
 	virtual bool IntersectsCollider(Collider* otherCollider, Vector2D& normal, float& penetrationDepth) = 0;
 	virtual bool ContainsPoint(Vector2D point) = 0;
-	virtual bool TestAxis(Vector2D axis, float offset, bool greater) = 0;
+	virtual bool TestAxis(Vector2D axis, float offset) = 0;
 	
 
 	Vector2D GetCentre() 
@@ -67,7 +67,7 @@ public:
 		: mWidth(width), mHeight(height), Collider(parent, BOX2D, offset) {}
 	bool IntersectsCollider(Collider* otherCollider, Vector2D& normal, float& penetrationDepth)override;
 	bool ContainsPoint(Vector2D point)override;
-	bool TestAxis(Vector2D axis, float offset, bool greater)override;
+	bool TestAxis(Vector2D axis, float offset)override;
 
 	std::vector<Vector2D> GetCorners();
 	
@@ -86,7 +86,7 @@ public:
 		: mRadius(radius), Collider(parent, CIRCLE2D, offset) {}
 	bool IntersectsCollider(Collider* otherCollider, Vector2D& normal, float& penetrationDepth)override;
 	bool ContainsPoint(Vector2D point)override;
-	bool TestAxis(Vector2D axis, float offset, bool greater)override;
+	bool TestAxis(Vector2D axis, float offset)override;
 	float GetRadius() const { return mRadius; }
 
 	Component* Clone()override;
