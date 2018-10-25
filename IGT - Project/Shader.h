@@ -4,7 +4,6 @@
 #include <string>
 
 #include "ShaderLoader.h"
-#include "Transform.h"
 #include "Matrix.h"
 
 enum

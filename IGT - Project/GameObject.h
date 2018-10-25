@@ -5,6 +5,7 @@
 #include <memory>
 #include <algorithm>
 
+#include "SceneNode.h"
 #include "Transform.h"
 #include "iComponents.h"
 

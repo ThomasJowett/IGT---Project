@@ -154,6 +154,7 @@
     <ClCompile Include="PlayerPawn.cpp" />
     <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="RigidBody2D.cpp" />
+    <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />
@@ -212,6 +213,7 @@
     <ClInclude Include="RandomGenerator.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="RigidBody2D.h" />
+    <ClInclude Include="SceneNode.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderLoader.h" />

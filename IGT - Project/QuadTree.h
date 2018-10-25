@@ -6,7 +6,7 @@ class AABB
 public:
 	AABB(float width, float height, float positionX, float positionY)
 		:mWidth(width), mHeight(height), mPositionX(positionX), mPositionY(positionY) {}
-	~AABB();
+	~AABB() {}
 
 	float GetWidth() { return mWidth; }
 	float GetHeight() { return mHeight; }
@@ -23,7 +23,7 @@ public:
 	QuadTree(AABB* boundary, int level);
 	~QuadTree();
 
-	int MAXOBJECTS = 1;
+	int MAXOBJECTS = 10;
 	int MAXLEVELS = 5;
 
 	void Insert(GameObject* gameobject);

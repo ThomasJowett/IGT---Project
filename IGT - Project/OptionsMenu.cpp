@@ -104,7 +104,7 @@ void OptionsMenu::CreateWidgets()
 	mWidgets.emplace_back(widget);
 	mVideoButtons.push_back(widget);
 
-	widget = new CheckBox("Vsync CheckBox", { 0.5,0.5 }, Vector2D(80, -15), CheckBoxTexture, Vector2D(20, 20), true);
+	widget = new CheckBox("Vsync CheckBox", { 0.5,0.5 }, Vector2D(80, -15), CheckBoxTexture, Vector2D(20, 20), Settings::GetInstance()->GetIsVsync());
 	widget->mWidgetData.ID = VSYNC;
 	widget->AddObserver(this);
 	mWidgets.emplace_back(widget);

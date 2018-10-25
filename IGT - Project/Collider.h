@@ -6,7 +6,7 @@
 enum ColliderType
 {
 	BOX2D,
-	CIRCLE2D
+	CIRCLE2D,
 };
 
 enum class OverlapEvent { BEGIN_OVERLAP, END_OVERLAP};
@@ -24,6 +24,11 @@ public:
 	{
 		mOffset = Matrix4x4::Translate(Vector3D(offset.x, offset.y, 0));
 	}
+	Collider(GameObject* parent, ColliderType type, Vector2D offset, bool isTrigger)
+		: mType(type), mIsTrigger(isTrigger), Component(parent)
+	{
+		mOffset = Matrix4x4::Translate(Vector3D(offset.x, offset.y, 0));
+	}
 	Collider(GameObject* parent, ColliderType type, Matrix4x4 offset)
 		: mType(type), mOffset(offset), Component(parent) {}
 	virtual ~Collider() {}
@@ -33,6 +38,7 @@ public:
 	virtual bool IntersectsCollider(Collider* otherCollider, Vector2D& normal, float& penetrationDepth) = 0;
 	virtual bool ContainsPoint(Vector2D point) = 0;
 	virtual bool TestAxis(Vector2D axis, float offset) = 0;
+	virtual void GetBounds(float& Xmax, float &Xmin, float &Ymax, float &Ymin) = 0;
 	
 
 	Vector2D GetCentre() 
@@ -49,10 +55,13 @@ protected:
 	bool mCollided; //TODO: have a list of colliders that this is colliding with
 	Matrix4x4 mOffset;
 
+	bool mIsTrigger;
+
 	std::vector<Vector2D> GetAxis(std::vector<Vector2D> box1Corners, std::vector<Vector2D> box2Corners);
 	void ProjectCornersOnAxis(Vector2D axis, std::vector<Vector2D> corners, float & min, float & max);
 	void ProjectCircleOnAxis(Vector2D axis, Circle2D circle, float & min, float & max);
 	bool TestAxis(Vector2D axis, float minA, float maxA, float minB, float maxB, Vector2D & mtvAxis, float & mtvDistance);
+
 	bool BoxBox(Box2D* box1, Box2D* box2, Vector2D & normal, float& penetrationDepth);
 	bool BoxCircle(Box2D* box, Circle2D* circle, Vector2D & normal, float& penetrationDepth);
 	bool CircleCircle(Circle2D* circle1, Circle2D* circle2, Vector2D & normal, float& penetrationDepth);
@@ -68,6 +77,7 @@ public:
 	bool IntersectsCollider(Collider* otherCollider, Vector2D& normal, float& penetrationDepth)override;
 	bool ContainsPoint(Vector2D point)override;
 	bool TestAxis(Vector2D axis, float offset)override;
+	void GetBounds(float& Xmax, float &Xmin, float &Ymax, float &Ymin)override;
 
 	std::vector<Vector2D> GetCorners();
 	
@@ -87,6 +97,7 @@ public:
 	bool IntersectsCollider(Collider* otherCollider, Vector2D& normal, float& penetrationDepth)override;
 	bool ContainsPoint(Vector2D point)override;
 	bool TestAxis(Vector2D axis, float offset)override;
+	void GetBounds(float& Xmax, float &Xmin, float &Ymax, float &Ymin)override;
 	float GetRadius() const { return mRadius; }
 
 	Component* Clone()override;

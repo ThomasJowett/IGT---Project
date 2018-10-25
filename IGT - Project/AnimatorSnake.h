@@ -21,9 +21,9 @@ public:
 	void Update(float deltaTime)override;
 	Component* Clone()override;
 
-	virtual void Enter(SnakeAnimstates state);
-	virtual void During(SnakeAnimstates state, float deltaTime);
-	virtual void Exit(SnakeAnimstates state);
+	void Enter(SnakeAnimstates state)override;
+	void During(SnakeAnimstates state, float deltaTime)override;
+	void Exit(SnakeAnimstates state)override;
 
 	void CreateAnimations()override;
 };

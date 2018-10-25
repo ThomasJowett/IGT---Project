@@ -109,8 +109,6 @@ int QuadTree::GetIndex(GameObject * gameobject)
 
 std::vector<GameObject*> QuadTree::Retrieve(std::vector<GameObject*>& returnObjects, GameObject * gameobject)
 {
-	mLevel;
-
 	int index = GetIndex(gameobject);
 
 	//If this quadtree is not the leaf node then retrieve from nodes above it

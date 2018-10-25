@@ -6,6 +6,7 @@
 #include "Collider.h"
 #include "RigidBody2D.h"
 #include "QuadTree.h"
+#include "TileMap.h"
 #include <memory.h>
 
 struct Contact
@@ -20,8 +21,10 @@ struct Contact
 namespace Collision
 {
 	std::vector<Contact> DetectCollisions(std::vector<GameObject*>gameObjects);
+
+	std::vector<Contact> DetectCollisions(TileMap* tileMap, std::vector<GameObject*>gameObjects);
 	
-	void ResolveCollisions(std::vector<Contact>contacts);
+	void ResolveCollision(Contact contact);
 };
 
 #endif // !_COLLISION_H

@@ -45,9 +45,6 @@ bool Collider::BoxBox(Box2D* box1, Box2D* box2, Vector2D & normal, float & penet
 	}
 	normal = mtvAxis.GetNormalized();
 	penetrationDepth = (float)sqrt(mtvDistance);
-
-	if (penetrationDepth > 1.0f)
-		std::cout << penetrationDepth << std::endl;
 	
 	return true;
 }
@@ -104,6 +101,7 @@ bool Collider::CircleCircle(Circle2D* circle1, Circle2D* circle2, Vector2D & nor
 	return false;
 }
 
+
 bool Box2D::IntersectsCollider(Collider * otherCollider, Vector2D & normal, float & penetrationDepth)
 {
 	if (otherCollider->mType == BOX2D)
@@ -150,6 +148,14 @@ bool Box2D::TestAxis(Vector2D axis, float offset)
 	ProjectCornersOnAxis(axis, corners, min, max);
 
 	return min > offset;
+}
+
+void Box2D::GetBounds(float & Xmax, float & Xmin, float & Ymax, float & Ymin)
+{
+	std::vector<Vector2D> corners = GetCorners();
+
+	ProjectCornersOnAxis(Vector2D(1, 0), corners, Xmin, Xmax);
+	ProjectCornersOnAxis(Vector2D(0, 1), corners, Ymin, Ymax);
 }
 
 std::vector<Vector2D> Box2D::GetCorners()
@@ -229,8 +235,7 @@ bool Circle2D::IntersectsCollider(Collider * otherCollider, Vector2D & normal, f
 		{
 			//because BoxCircle() tests from box to circle and we need circle to box the normal is flipped
 			normal = -normal;
-			penetrationDepth /= 100;
-			//std::cout << penetrationDepth << std::endl;
+			penetrationDepth /= 100;//TODO : fix this properly
 			return true;
 		}
 		else
@@ -259,6 +264,17 @@ bool Circle2D::TestAxis(Vector2D axis, float offset)
 
 	return min > offset;
 
+}
+
+void Circle2D::GetBounds(float & Xmax, float & Xmin, float & Ymax, float & Ymin)
+{
+	Vector3D position = GetParent()->GetTransform()->mPosition;
+
+	Xmax = position.x + mRadius;
+	Xmin = position.x - mRadius;
+
+	Ymax = position.y + mRadius;
+	Ymin = position.y - mRadius;
 }
 
 Component * Circle2D::Clone()
