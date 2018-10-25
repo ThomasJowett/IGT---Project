@@ -8,19 +8,26 @@ SceneNode::SceneNode()
 	mRightSibling = nullptr;
 
 	mTransform = new Transform();
+
+	mIsActive = true;
 }
 
 SceneNode::SceneNode(Transform * transform)
+	:mTransform(transform)
 {
 	mParent = nullptr;
 	mLeftChild = nullptr;
 	mLeftSibling = nullptr;
 	mRightSibling = nullptr;
+
+	mIsActive = true;
 }
 
 SceneNode::~SceneNode()
 {
 	RemoveSelf();
+
+	if (mTransform) delete mTransform;
 }
 
 void SceneNode::AddChild(SceneNode * child)
@@ -72,19 +79,22 @@ void SceneNode::Traverse(Shader * shader, Matrix4x4 & worldMatrix)
 	//add it to the previous
 	worldMatrix = worldMatrix * mTransform->GetWorldMatrix();
 
+	mWorldMatrix = worldMatrix;
+
 	//update the shader world matrix
 	shader->UpdateMatrixUniform(MODEL_U, worldMatrix, true);
 
 	//render the object
-	Render(shader);
+	if (mIsActive)
+	{
+		Render(shader);
 
-	//if the object has children then traverse them
-	if (mLeftChild != nullptr)
-		mLeftChild->Traverse(shader, worldMatrix);
-
-	//if not then reset the matrix back to what its parents was
-	else
-		worldMatrix = previousWorldMatrix;
+		//if the object has children then traverse them
+		if (mLeftChild != nullptr)
+			mLeftChild->Traverse(shader, worldMatrix);
+	}
+	//reset the matrix back to what its parents was
+	worldMatrix = previousWorldMatrix;
 
 	//if the object has siblings traverse them
 	if (mRightSibling != nullptr)

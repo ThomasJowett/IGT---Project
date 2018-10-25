@@ -21,9 +21,11 @@ void MainMenu::CreateWidgets()
 {
 	Image* image = new Image("Logo", { 0.5, 0.25 }, { 0,0 }, Texture2D::LoadTexture2D("Images/Logo.png"), { 90, 73 });
 	mWidgets.emplace_back(image);
+	AddChild(image);
 
 	image = new Image("A ButtonPrompt", { 1,1 }, { -65, 20 }, Texture2D::LoadTexture2D("Images/Button_A.png"), { 16,16 });
 	mWidgets.emplace_back(image);
+	AddChild(image);
 
 	GLuint ButtonTexture = Texture2D::LoadTexture2D("Images/ButtonsMenu.png");
 
@@ -31,16 +33,19 @@ void MainMenu::CreateWidgets()
 	button->mWidgetData.ID = PLAY;
 	button->AddObserver(this);
 	mWidgets.emplace_back(button);
+	AddChild(button);
 
 	button = new Button(ButtonTexture, { 0.5,0.6f }, { 0,0 }, { 100, 20 }, "Options");
 	button->mWidgetData.ID = OPTIONS;
 	button->AddObserver(this);
 	mWidgets.emplace_back(button);
+	AddChild(button);
 
 	button = new Button(ButtonTexture, { 0.5,0.6f }, { 0,-25 }, { 100, 20 }, "Quit");
 	button->mWidgetData.ID = QUIT;
 	button->AddObserver(this);
 	mWidgets.emplace_back(button);
+	AddChild(button);
 }
 
 void MainMenu::OnNotify(WidgetEvent event, WidgetEventData data)

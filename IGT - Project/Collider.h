@@ -43,8 +43,8 @@ public:
 
 	Vector2D GetCentre() 
 	{
-		Matrix4x4 translate = Matrix4x4::Translate(GetParent()->GetTransform()->mPosition);
-		Matrix4x4 rotation = Matrix4x4::RotateZ(GetParent()->GetTransform()->mRotation);
+		Matrix4x4 translate = Matrix4x4::Translate(GetParent()->GetWorldTransform()->mPosition);
+		Matrix4x4 rotation = Matrix4x4::RotateZ(GetParent()->GetWorldTransform()->mRotation);
 		return (translate * rotation * mOffset).ToVector2D();
 	}
 

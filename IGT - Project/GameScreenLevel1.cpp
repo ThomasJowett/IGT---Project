@@ -37,24 +37,28 @@ GameScreenLevel1::GameScreenLevel1()
 	transform = new Transform();
 	GameObject* cursor = new GameObject("Cursor", transform, false);
 	cursor->AddComponent<Sprite>(CursorTexture, 16, 16);
+	RootWidget->AddChild(cursor);
 
 	MainMenuPawn* menu = new MainMenuPawn(cursor);
 
+	GameObject* player1;
+
 	//player 1
-	transform = new Transform(Vector3D(200, -200, 0), 0, Vector2D(1, 1));
-	gameObject = new GameObject("Player 1", transform);
-	gameObject->AddComponent<Sprite>(goblinTexture, 48, 48, 4, 10);
-	gameObject->AddComponent<Sprite>(squareTexture, 20, 10, Vector2D(0, -20));
-	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
-	gameObject->GetComponent<TextRender>()->UpdateText("Player 1", { 0,0,0 }, 0, 20, CENTER);
-	gameObject->AddComponent<Box2D>(20, 10, Vector2D(0, -20));
-	gameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, physicsMaterial);
-	gameObject->AddComponent<AnimatorCharacter>();
-	mGameObjects.emplace_back(gameObject);
-	PlayerPawn* characterController = new PlayerPawn(gameObject, menu);
+	transform = new Transform(Vector3D(200, -200, 1), 0, Vector2D(1, 1));
+	player1 = new GameObject("Player 1", transform);
+	player1->AddComponent<Sprite>(goblinTexture, 48, 48, 4, 10);
+	player1->AddComponent<Sprite>(squareTexture, 20, 10, Vector2D(0, -20));
+	player1->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
+	player1->GetComponent<TextRender>()->UpdateText("Player 1", { 0,0,0 }, 0, 20, CENTER);
+	player1->AddComponent<Box2D>(20, 10, Vector2D(0, -20));
+	player1->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, physicsMaterial);
+	player1->AddComponent<AnimatorCharacter>();
+	mGameObjects.emplace_back(player1);
+	Root->AddChild(player1);
+	PlayerPawn* characterController = new PlayerPawn(player1, menu);
 
 	//player 2
-	transform = new Transform(Vector3D(100, -100, 0), 0, Vector2D(1, 1));
+	transform = new Transform(Vector3D(100, -100, 1), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Player 2", transform);
 	gameObject->AddComponent<Sprite>(goblinTexture, 48, 48, 4, 10);
 	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
@@ -63,6 +67,7 @@ GameScreenLevel1::GameScreenLevel1()
 	gameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, physicsMaterial);
 	gameObject->AddComponent<AnimatorCharacter>();
 	mGameObjects.emplace_back(gameObject);
+	Root->AddChild(gameObject);
 	PlayerPawn* character2Controller = new PlayerPawn(gameObject, menu);
 
 	//temporary spawning enemy
@@ -78,9 +83,11 @@ GameScreenLevel1::GameScreenLevel1()
 	//Pause Menu
 	UIMenu* pauseMenu = new PauseMenu(new Transform(), characterController);
 	mUIWidgets.emplace_back(pauseMenu);
+	RootWidget->AddChild(pauseMenu);
 	MenuManager::GetInstance()->AddMenu(pauseMenu);
 	
 	mUIWidgets.emplace_back(cursor);
+	
 
 	//PlayerControllers
 	PlayerController* playerController = new PlayerController(0, characterController);
@@ -96,12 +103,16 @@ GameScreenLevel1::GameScreenLevel1()
 	gameObject->AddComponent<Sprite>(circleTexture, 32, 32);
 	gameObject->AddComponent<Circle2D>(16, Vector2D());
 	mGameObjects.emplace_back(gameObject);
+	Root->AddChild(gameObject);
+	
 
 	transform = new Transform(Vector3D(-80, 0, 5), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Square", transform);
 	gameObject->AddComponent<Sprite>(squareTexture, 32, 32);
 	gameObject->AddComponent<Box2D>(32, 32, Vector2D());
 	mGameObjects.emplace_back(gameObject);
+	
+	Root->AddChild(gameObject);
 
 	transform = new Transform(Vector3D(0, -50, 5), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Ball", transform);
@@ -109,6 +120,7 @@ GameScreenLevel1::GameScreenLevel1()
 	gameObject->AddComponent<Circle2D>(8, Vector2D());
 	gameObject->AddComponent<RigidBody2D>(100, Vector2D(0, 0), 1, 0, physicsMaterialcircle);
 	mGameObjects.emplace_back(gameObject);
+	player1->AddChild(gameObject);
 
 	for (int i = 0; i < 10; i++)
 	{
@@ -116,6 +128,7 @@ GameScreenLevel1::GameScreenLevel1()
 		gameObject->GetTransform()->mPosition = Vector3D(800 * (float)rand() / (RAND_MAX)-400, 80 * (float)rand() / (RAND_MAX)+40, 5);
 		//gameObject->GetComponent<RigidBody2D>()->SetVelocity(Vector2D(80 * (float)rand() / (RAND_MAX)-40, 80 * (float)rand() / (RAND_MAX)-40));
 		mGameObjects.emplace_back(gameObject);
+		Root->AddChild(gameObject);
 	}
 
 	transform = new Transform(Vector3D(0, -50, 5), 0, Vector2D(1, 1));
@@ -124,9 +137,12 @@ GameScreenLevel1::GameScreenLevel1()
 	gameObject->AddComponent<Box2D>(16, 16, Vector2D());
 	gameObject->AddComponent<RigidBody2D>(100, Vector2D(0, 0), 1, 0, physicsMaterialcircle);
 	mGameObjects.emplace_back(gameObject);
+	//Root->AddChild(gameObject);
+	player1->AddChild(gameObject);
 
 	mTileMap = new TileMap("Maps/TestMapWithCollision.xml", "Maps/DungeonTileSet.png");
 	mGameObjects.emplace_back(mTileMap);
+	Root->AddChild(mTileMap);
 }
 
 GameScreenLevel1::~GameScreenLevel1()

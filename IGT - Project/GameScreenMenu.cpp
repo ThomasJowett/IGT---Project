@@ -30,33 +30,37 @@ GameScreenMenu::GameScreenMenu() : GameScreen()
 	
 	Transform* transform;
 	GameObject* gameObject;
+
+	//Cursor
+	transform = new Transform();
+	gameObject = new GameObject("Cursor", transform);
+	gameObject->AddComponent<Sprite>(CursorTexture, 16, 16);
+	mUIWidgets.emplace_back(gameObject);
+	RootWidget->AddChild(gameObject);
+
+	//Controllers
+	MainMenuPawn* menuController = new MainMenuPawn(gameObject);
+	PlayerController* playerController = new PlayerController(0, menuController);
+	mPlayerControllers.emplace_back(playerController);
 	
 	//Background Image
 	transform = new Transform(Vector3D(0, 0, -1), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Backgorund", transform);
 	gameObject->AddComponent<Sprite>(backgroundTexture, 600, 600);
 	mGameObjects.emplace_back(gameObject);
+	Root->AddChild(gameObject);
 
 	//Main Menu
 	UIMenu* mainMenu = new MainMenu(new Transform());
 	mUIWidgets.emplace_back(mainMenu);
+	RootWidget->AddChild(mainMenu);
 	MenuManager::GetInstance()->AddMenu(mainMenu);
 
 	//Options Menu
 	UIMenu* optionsMenu = new OptionsMenu(new Transform());
 	mUIWidgets.emplace_back(optionsMenu);
+	RootWidget->AddChild(optionsMenu);
 	MenuManager::GetInstance()->AddMenu(optionsMenu);
-	
-	//Cursor
-	transform = new Transform();
-	gameObject = new GameObject("Cursor", transform);
-	gameObject->AddComponent<Sprite>(CursorTexture, 16, 16);
-	mUIWidgets.emplace_back(gameObject);
-	
-	//Controllers
-	MainMenuPawn* menuController = new MainMenuPawn(gameObject);
-	PlayerController* playerController = new PlayerController(0, menuController);
-	mPlayerControllers.emplace_back(playerController);
 }
 
 GameScreenMenu::~GameScreenMenu()

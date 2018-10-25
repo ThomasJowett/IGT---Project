@@ -25,13 +25,16 @@ RigidBody2D::~RigidBody2D()
 
 void RigidBody2D::Update(float deltaTime)
 {
+	//cache transform
+	Transform* transform = GetParent()->GetTransform();
+
 	AddForce(mVelocity * -mPhysicsMaterial.drag);
 	Vector2D acceleration = mNetForce / mMass;
 
-	Vector2D position = Vector2D(GetParent()->GetTransform()->mPosition.x, GetParent()->GetTransform()->mPosition.y);
+	Vector2D position = Vector2D(transform->mPosition.x, transform->mPosition.y);
 	position += (mVelocity*deltaTime) + (acceleration*(deltaTime*deltaTime)) / 2;
 
-	GetParent()->GetTransform()->mPosition = Vector3D(position.x, position.y, GetParent()->GetTransform()->mPosition.z);
+	transform->mPosition = Vector3D(position.x, position.y, transform->mPosition.z);
 
 	mVelocity += acceleration * deltaTime;
 
@@ -45,7 +48,7 @@ void RigidBody2D::Update(float deltaTime)
 
 		mAngularVelocity += mAngularAcceleration * deltaTime;
 
-		GetParent()->GetTransform()->mRotation += mAngularVelocity;		
+		transform->mRotation += mAngularVelocity;
 	}
 
 	mNetTorque = 0.0f;
@@ -65,7 +68,8 @@ void RigidBody2D::AddForce(Vector2D force)
 
 void RigidBody2D::AddPointForce(Vector2D force, Vector2D position)
 {
-	Vector2D relativePosition = Vector2D(GetParent()->GetTransform()->mPosition.x + position.x, GetParent()->GetTransform()->mPosition.y + position.y);
+	Transform * parentTransform = GetParent()->GetWorldTransform();
+	Vector2D relativePosition = Vector2D(parentTransform->mPosition.x + position.x, parentTransform->mPosition.y + position.y);
 	float torque = Vector2D::Cross(Vector2D(force.x, force.y), Vector2D(relativePosition.x, relativePosition.y));
 	AddTorque(torque);
 	AddForce(force);

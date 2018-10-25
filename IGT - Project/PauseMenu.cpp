@@ -18,11 +18,13 @@ void PauseMenu::CreateWidgets()
 	button->mWidgetData.ID = 0;
 	button->AddObserver(this);
 	mWidgets.emplace_back(button);
+	AddChild(button);
 
 	button = new Button(ButtonTexture, { 0.5, 0.5 }, { 0, -25 }, { 100, 20 }, "Quit");
 	button->mWidgetData.ID = 1;
 	button->AddObserver(this);
 	mWidgets.emplace_back(button);
+	AddChild(button);
 }
 
 void PauseMenu::OnNotify(WidgetEvent event, WidgetEventData data)

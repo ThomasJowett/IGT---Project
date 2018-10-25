@@ -20,21 +20,13 @@ void UIMenu::Update(float deltaTime)
 {
 	GameObject::Update(deltaTime);
 	
-	for (UIWidget* widget : mWidgets)
+	if (GetActive())
 	{
-		if (widget->GetActive())
-			widget->Update(deltaTime);
-	}
-}
-
-void UIMenu::Render(Shader * shader)
-{
-	GameObject::Render(shader);
-
-	for (UIWidget* widget : mWidgets)
-	{
-		if(widget->GetActive())
-			widget->Render(shader);
+		for (UIWidget* widget : mWidgets)
+		{
+			if (widget->GetActive())
+				widget->Update(deltaTime);
+		}
 	}
 }
 

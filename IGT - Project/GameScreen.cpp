@@ -4,7 +4,8 @@
 
 GameScreen::GameScreen()
 {
-	//Root = new SceneNode();
+	Root = new SceneNode();
+	RootWidget = new SceneNode();
 	mShaderBasic = new BasicShader();
 	mShaderGUI = new GUIShader();
 
@@ -34,23 +35,27 @@ void GameScreen::Render()
 	mShaderBasic->Bind();
 	mCamera.UpdateView(mShaderBasic);
 
-	for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
-	{
-		if (it->get()->GetActive())
-			it->get()->Render(mShaderBasic);
-	}
+	//for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
+	//{
+	//	if (it->get()->GetActive())
+	//		it->get()->Render(mShaderBasic);
+	//}
 
-	//Root->Traverse();
+	Matrix4x4 identityMatrix;
+
+	Root->Traverse(mShaderBasic, identityMatrix);
 
 	mShaderGUI->Bind();
 	glDisable(GL_DEPTH_TEST);
 	mCamera.UpdateView(mShaderGUI);
 	
-	for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mUIWidgets.begin(); it != mUIWidgets.end(); ++it)
-	{
-		if (it->get()->GetActive())
-			it->get()->Render(mShaderGUI);
-	}
+	//for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mUIWidgets.begin(); it != mUIWidgets.end(); ++it)
+	//{
+	//	if (it->get()->GetActive())
+	//		it->get()->Render(mShaderGUI);
+	//}
+	identityMatrix = Matrix4x4();
+	RootWidget->Traverse(mShaderGUI, identityMatrix);
 
 	mFPS.Render(mShaderGUI);
 

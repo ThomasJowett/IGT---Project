@@ -6,14 +6,13 @@
 #include <algorithm>
 
 #include "SceneNode.h"
-#include "Transform.h"
 #include "iComponents.h"
 
 class Component;
 class iUpdateable;
 class iRenderable;
 
-class GameObject
+class GameObject :public SceneNode
 {
 public:
 	GameObject(const char* name, Transform* transform);
@@ -36,9 +35,6 @@ public:
 	template <typename ComponentType>
 	ComponentType* GetComponent() const;
 
-	bool GetActive() const {return mIsActive; }
-	void SetActive(bool isActive) { mIsActive = isActive; }
-
 	Transform* GetTransform() const { return mTransform; }
 
 	const char* GetName() { return mName; }
@@ -48,8 +44,7 @@ public:
 	void Clone(GameObject & clonedObject) const;
 private:
 	const char* mName;
-	Transform * mTransform;
-	bool mIsActive;
+
 	FACING mFacing;
 
 	std::vector < std::unique_ptr<Component>> mComponents;

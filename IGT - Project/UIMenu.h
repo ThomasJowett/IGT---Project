@@ -19,7 +19,6 @@ public:
 	virtual void OnNotify(WidgetEvent event, WidgetEventData data)override = 0;
 	
 	void Update(float deltaTime)override;
-	void Render(Shader* shader)override;
 
 	std::vector<UIWidget*> GetWidgets() { return mWidgets; }
 	UIWidget* GetCurrentWidget() { return mWidgets[mCurrentWidget]; }

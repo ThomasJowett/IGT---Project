@@ -259,12 +259,20 @@ Vector2D TileMap::TextureCoordinatesAtIndex(int index, int tile)
 			position.x = 1.0f;
 	}
 
+	//tiny shift in texture coordinates to prevent overscan
+	if(index == 0 || index == 3)
+		position.x += 0.0001f;
+	else
+		position.x -= 0.0001f;
+
 	return position;
 }
 
 //converts a position in the world to x and Y position on the tileMap
 bool TileMap::PositionToTileIndex(Vector2D position, unsigned int &X, unsigned int &Y)
 {
+	Transform * worldTransform = GetWorldTransform();
+	position -= Vector2D(worldTransform->mPosition.x, worldTransform->mPosition.y);
 
 	position.x = position.x / mTileWidth;
 	position.y = position.y / mTileHeight;
@@ -272,6 +280,5 @@ bool TileMap::PositionToTileIndex(Vector2D position, unsigned int &X, unsigned i
 	X = floor(position.x);
 	Y = floor(position.y * -1);
 
-	return (X < GetTransform()->mPosition.x + mTilesWide && Y < GetTransform()->mPosition.y + mTilesHigh
-		&& X >= GetTransform()->mPosition.x && Y >= GetTransform()->mPosition.y);
+	return (X < mTilesWide && Y < mTilesHigh);
 }

@@ -123,14 +123,14 @@ void Sprite::Render(Shader* shader)
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, mTextureID);
 
-	shader->UpdateMatrixUniform(MODEL_U, GetParent()->GetTransform()->GetWorldMatrix() * mOffset, true);
+	shader->UpdateMatrixUniform(MODEL_U, GetParent()->GetWorldMatrix() * mOffset, true);
 
 	mFrames[mCurrentFrame]->Draw();
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	shader->UpdateMatrixUniform(MODEL_U, GetParent()->GetTransform()->GetWorldMatrix(), true);
+	shader->UpdateMatrixUniform(MODEL_U, GetParent()->GetWorldMatrix(), true);
 }
 
 void Sprite::SetCurrentFrame(unsigned int frame)

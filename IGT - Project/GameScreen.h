@@ -23,7 +23,8 @@ public:
 	std::vector<PlayerController*> GetPlayerControllers() { return mPlayerControllers; }
 
 protected:
-	//SceneNode * Root;
+	SceneNode * Root;
+	SceneNode * RootWidget;
 	std::vector<std::unique_ptr<GameObject>>mGameObjects;
 	std::vector<std::unique_ptr<GameObject>>mUIWidgets;
 	std::vector<PlayerController*>mPlayerControllers;

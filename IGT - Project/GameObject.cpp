@@ -2,14 +2,15 @@
 
 
 GameObject::GameObject(const char* name, Transform* transform)
-	:mName(name), mTransform(transform)
+	:mName(name), SceneNode(transform)
 {
 	mIsActive = true;
 }
 
 GameObject::GameObject(const char * name, Transform * transform, bool active)
-	: mName(name), mTransform(transform), mIsActive(active)
+	: mName(name), SceneNode(transform)
 {
+	mIsActive = active;
 }
 
 GameObject::GameObject(const GameObject & prefab)
@@ -29,8 +30,6 @@ GameObject::GameObject()
 
 GameObject::~GameObject()
 {
-	if (mTransform) delete mTransform;
-
 	mRenderableComponents.clear();
 
 	mUpdateableComponents.clear();
@@ -41,23 +40,34 @@ GameObject::~GameObject()
 //Updates all the objects updateable components
 void GameObject::Update(float deltaTime)
 {
-	for (auto component : mUpdateableComponents)
+	if (mIsActive)
 	{
-		if(component->GetActive())
-			component->Update(deltaTime);
+		for (auto component : mUpdateableComponents)
+		{
+			if (component->GetActive())
+				component->Update(deltaTime);
+		}
 	}
 }
 
 //Displays all the objects renderable components on the screen
 void GameObject::Render(Shader* shader)
 {
-	mTransform->UpdateWorldMatrix();
-	shader->UpdateMatrixUniform(MODEL_U, mTransform->GetWorldMatrix(),true);
-	
-	for (auto component : mRenderableComponents)
+	if (mIsActive)
 	{
-		if(component->GetActive())
-			component->Render(shader);
+		if (mName == "Options Menu" && mIsActive)
+		{
+			float stop = 2 + 3;
+		}
+
+		//mTransform->UpdateWorldMatrix();
+		//shader->UpdateMatrixUniform(MODEL_U, mTransform->GetWorldMatrix(),true);
+
+		for (auto component : mRenderableComponents)
+		{
+			if (component->GetActive())
+				component->Render(shader);
+		}
 	}
 }
 

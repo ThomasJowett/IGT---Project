@@ -223,7 +223,14 @@ void Collision::ResolveCollision(Contact contact)
 		contact.A->GetTransform()->mPosition += Vector3D(firstTranslation.x, firstTranslation.y, 0);
 
 		//reflect the velocity
-		bodyA->SetVelocity(Vector2D::Reflect(bodyA->GetVelocity(), contact.normal) * bodyA->GetPhysicsMaterial().elasticity);
+		Vector2D velocity = Vector2D::Reflect(bodyA->GetVelocity(), contact.normal) * bodyA->GetPhysicsMaterial().elasticity;
+
+		if (velocity.SqrMagnitude() < 0.1f)
+		{
+			velocity = { 0.0f,0.0f };
+		}
+
+		bodyA->SetVelocity(velocity);
 
 		return;
 	}
@@ -234,7 +241,14 @@ void Collision::ResolveCollision(Contact contact)
 		contact.B->GetTransform()->mPosition += Vector3D(secondTranslation.x, secondTranslation.y, 0);
 
 		//reflect the velocity
-		bodyB->SetVelocity(Vector2D::Reflect(bodyB->GetVelocity(), contact.normal) * bodyB->GetPhysicsMaterial().elasticity);
+		Vector2D velocity = Vector2D::Reflect(bodyB->GetVelocity(), contact.normal) * bodyB->GetPhysicsMaterial().elasticity;
+
+		if (velocity.SqrMagnitude() < 0.1f)
+		{
+			velocity = { 0.0f,0.0f };
+		}
+
+		bodyB->SetVelocity(velocity);
 
 		return;
 	}

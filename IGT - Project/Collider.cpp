@@ -164,8 +164,8 @@ std::vector<Vector2D> Box2D::GetCorners()
 	float halfHeight = mHeight / 2;
 
 	std::vector<Vector2D> corners;
-	Matrix4x4 translateWorld = Matrix4x4::Translate(GetParent()->GetTransform()->mPosition);
-	Matrix4x4 rotation = Matrix4x4::RotateZ(GetParent()->GetTransform()->mRotation);
+	Matrix4x4 translateWorld = Matrix4x4::Translate(GetParent()->GetWorldTransform()->mPosition);
+	Matrix4x4 rotation = Matrix4x4::RotateZ(GetParent()->GetWorldTransform()->mRotation);
 
 	Matrix4x4 translateCorner = Matrix4x4::Translate(Vector3D(-halfWidth, -halfHeight, 0));
 	Matrix4x4 mPosition = translateWorld  * rotation * mOffset * translateCorner;
@@ -263,12 +263,11 @@ bool Circle2D::TestAxis(Vector2D axis, float offset)
 	ProjectCircleOnAxis(axis.Perpendicular(), *this, min, max);
 
 	return min > offset;
-
 }
 
 void Circle2D::GetBounds(float & Xmax, float & Xmin, float & Ymax, float & Ymin)
 {
-	Vector3D position = GetParent()->GetTransform()->mPosition;
+	Vector2D position = GetCentre();
 
 	Xmax = position.x + mRadius;
 	Xmin = position.x - mRadius;
