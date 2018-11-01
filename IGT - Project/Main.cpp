@@ -95,7 +95,7 @@ bool InitSDL()
 			return false;
 		}
 
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINES);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -192,7 +192,7 @@ bool Update()
 void Render()
 {
 	//Clear the Screen
-	glClearColor(0, 0.5, 0.1, 1);
+	//glClearColor(0, 0.5, 0.1, 1);
 
 	//Render the game
 	GameScreenManager::GetInstance()->Render();

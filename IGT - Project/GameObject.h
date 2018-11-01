@@ -12,6 +12,13 @@ class Component;
 class iUpdateable;
 class iRenderable;
 
+enum Layer
+{
+	SORTED,
+	FOREGROUND,
+	BACKGROUND
+};
+
 class GameObject :public SceneNode
 {
 public:
@@ -42,10 +49,15 @@ public:
 	void SetFacing(FACING facing);
 
 	void Clone(GameObject & clonedObject) const;
+
+	Layer GetLayer() const { return mLayer; }
+	void SetLayer(Layer layer) { mLayer = layer; }
 private:
 	const char* mName;
 
 	FACING mFacing;
+
+	Layer mLayer;
 
 	std::vector < std::unique_ptr<Component>> mComponents;
 

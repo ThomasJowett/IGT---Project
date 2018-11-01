@@ -16,9 +16,9 @@ TileMap::TileMap(const char* mapfilename, const char* pallettefilename)
 
 	mTextureID = Texture2D::LoadTexture2D(pallettefilename);
 
-	mTestSprite = new Sprite(this, Texture2D::LoadTexture2D("Images/Square.png"), 16, 16);
-
 	RedrawMap();
+
+	GameObject::SetLayer(BACKGROUND);
 }
 
 
@@ -27,9 +27,9 @@ TileMap::~TileMap()
 	//Delete all elements off the array
 	for (unsigned int i = 0; i < mTilesHigh; i++)
 	{
-		delete[] mTiles[i];
+		delete[] mBackgroundTiles[i];
 	}
-	delete[] mTiles;
+	delete[] mBackgroundTiles;
 }
 
 void TileMap::Update(float deltatime)
@@ -48,7 +48,8 @@ void TileMap::Render(Shader * shader)
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, mTextureID);
 
-	mMesh->Draw();
+	mBackGround->Draw();
+	mForeground->Draw();
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -68,16 +69,18 @@ bool TileMap::LoadMap(const char * filename)
 		mTilesHigh = atoi(pRoot->Attribute("tileshigh"));
 		mTileWidth = atoi(pRoot->Attribute("tilewidth"));
 		mTileHeight = atoi(pRoot->Attribute("tileheight"));
-		mPalletteWidth = atoi(pRoot->Attribute("pallettewidth"));
-		mPalletteHeight = atoi(pRoot->Attribute("palletteheight"));
+		mPaletteWidth = atoi(pRoot->Attribute("palettewidth"));
+		mPaletteHeight = atoi(pRoot->Attribute("paletteheight"));
 		
 
 		//Allocate the memory for the array
-		mTiles = new int*[mTilesWide];
+		mBackgroundTiles = new int*[mTilesWide];
 		mCollision = new bool*[mTilesWide];
+		mForegroundTiles = new int*[mTilesWide];
 		for (unsigned int i = 0; i < mTilesHigh; i++)
 		{
-			mTiles[i] = new int[mTilesWide];
+			mBackgroundTiles[i] = new int[mTilesWide];
+			mForegroundTiles[i] = new int[mTilesWide];
 			mCollision[i] = new bool[mTilesWide];
 		}
 
@@ -87,7 +90,7 @@ bool TileMap::LoadMap(const char * filename)
 		{
 			const char* name = pLayer->Attribute("name");
 
-			if (std::strcmp(name, "Terrain") == 0)
+			if (std::strcmp(name, "Background") == 0)
 			{
 				//load into tiles
 				tinyxml2::XMLElement* pTile;
@@ -95,8 +98,10 @@ bool TileMap::LoadMap(const char * filename)
 
 				while (pTile)
 				{
-					mTiles[atoi(pTile->Attribute("x"))][atoi(pTile->Attribute("y"))] = atoi(pTile->Attribute("tile"));
-
+					if (pTile->Attribute("tile") != "-1")
+					{
+						mBackgroundTiles[atoi(pTile->Attribute("x"))][atoi(pTile->Attribute("y"))] = atoi(pTile->Attribute("tile"));
+					}
 					pTile = pTile->NextSiblingElement("tile");
 				}
 
@@ -118,6 +123,20 @@ bool TileMap::LoadMap(const char * filename)
 					mCollision[atoi(pTile->Attribute("x"))][atoi(pTile->Attribute("y"))] = collision;
 
 
+					pTile = pTile->NextSiblingElement("tile");
+				}
+			}
+			else if (std::strcmp(name, "Foreground"))
+			{
+				tinyxml2::XMLElement* pTile;
+				pTile = pLayer->FirstChildElement("tile");
+
+				while (pTile)
+				{
+					if (pTile->Attribute("tile") != "-1")
+					{
+						mForegroundTiles[atoi(pTile->Attribute("x"))][atoi(pTile->Attribute("y"))] = atoi(pTile->Attribute("tile"));
+					}
 					pTile = pTile->NextSiblingElement("tile");
 				}
 			}
@@ -154,6 +173,10 @@ void TileMap::RedrawMap()
 
 	int indicesIndex = 0;
 
+	float backgroundDepth = Settings::GetInstance()->GetCamera()->GetTransform()->mPosition.z 
+		- Settings::GetInstance()->GetCamera()->GetFarDepth() + 0.1f;
+	float foregroundDepth = Settings::GetInstance()->GetCamera()->GetTransform()->mPosition.z - 0.1f;
+
 	//Vertices
 	for (int i = 0;  i < mTilesWide; i++)
 	{
@@ -163,20 +186,20 @@ void TileMap::RedrawMap()
 		{
 
 			float PosY = (j * -mTileHeight) -mTileHeight;
-			model.positions.push_back(Vector3D(PosX, PosY, 0));
-			model.texCoords.push_back(TextureCoordinatesAtIndex(0, mTiles[i][j]));
+			model.positions.push_back(Vector3D(PosX, PosY, backgroundDepth));
+			model.texCoords.push_back(TextureCoordinatesAtIndex(0, mBackgroundTiles[i][j]));
 
 			PosX += mTileWidth;
-			model.positions.push_back(Vector3D(PosX, PosY, 0));
-			model.texCoords.push_back(TextureCoordinatesAtIndex(1, mTiles[i][j]));
+			model.positions.push_back(Vector3D(PosX, PosY, backgroundDepth));
+			model.texCoords.push_back(TextureCoordinatesAtIndex(1, mBackgroundTiles[i][j]));
 
 			PosY += mTileHeight;
-			model.positions.push_back(Vector3D(PosX, PosY, 0));
-			model.texCoords.push_back(TextureCoordinatesAtIndex(2, mTiles[i][j]));
+			model.positions.push_back(Vector3D(PosX, PosY, backgroundDepth));
+			model.texCoords.push_back(TextureCoordinatesAtIndex(2, mBackgroundTiles[i][j]));
 
 			PosX -= mTileWidth;
-			model.positions.push_back(Vector3D(PosX, PosY, 0));
-			model.texCoords.push_back(TextureCoordinatesAtIndex(3, mTiles[i][j]));
+			model.positions.push_back(Vector3D(PosX, PosY, backgroundDepth));
+			model.texCoords.push_back(TextureCoordinatesAtIndex(3, mBackgroundTiles[i][j]));
 
 			model.indices.push_back(indicesIndex);
 			model.indices.push_back(indicesIndex + 1);
@@ -189,7 +212,48 @@ void TileMap::RedrawMap()
 		}
 	}
 
-	mMesh = new Mesh(model);
+	mBackGround = new Mesh(model);
+
+	IndexedModel modelForeground;
+	indicesIndex = 0;
+
+	for (int i = 0; i < mTilesWide; i++)
+	{
+		float PosX = i * mTileWidth;
+
+		for (int j = 0; j < mTilesHigh; ++j)
+		{
+			if (mForegroundTiles[i][j])
+			{
+				float PosY = (j * -mTileHeight) - mTileHeight;
+				modelForeground.positions.push_back(Vector3D(PosX, PosY, foregroundDepth));
+				modelForeground.texCoords.push_back(TextureCoordinatesAtIndex(0, mForegroundTiles[i][j]));
+
+				PosX += mTileWidth;
+				modelForeground.positions.push_back(Vector3D(PosX, PosY, foregroundDepth));
+				modelForeground.texCoords.push_back(TextureCoordinatesAtIndex(1, mForegroundTiles[i][j]));
+
+				PosY += mTileHeight;
+				modelForeground.positions.push_back(Vector3D(PosX, PosY, foregroundDepth));
+				modelForeground.texCoords.push_back(TextureCoordinatesAtIndex(2, mForegroundTiles[i][j]));
+
+				PosX -= mTileWidth;
+				modelForeground.positions.push_back(Vector3D(PosX, PosY, foregroundDepth));
+				modelForeground.texCoords.push_back(TextureCoordinatesAtIndex(3, mForegroundTiles[i][j]));
+
+				modelForeground.indices.push_back(indicesIndex);
+				modelForeground.indices.push_back(indicesIndex + 1);
+				modelForeground.indices.push_back(indicesIndex + 2);
+				modelForeground.indices.push_back(indicesIndex);
+				modelForeground.indices.push_back(indicesIndex + 2);
+				modelForeground.indices.push_back(indicesIndex + 3);
+
+				indicesIndex += 4;
+			}
+		}
+	}
+	
+	mForeground = new Mesh(modelForeground);
 }
 
 //returns the index of the tile set at the position
@@ -199,7 +263,7 @@ int TileMap::GetTileAt(Vector2D position)
 	unsigned int y;
 
 	if(PositionToTileIndex(position, x, y))
-		return mTiles[x][y];
+		return mBackgroundTiles[x][y];
 
 	return -1;
 }
@@ -225,7 +289,6 @@ void TileMap::SetColliderPosition(Vector2D position)
 		if (mCollision[x][y])
 		{
 			mCollider->SetOffset(Vector2D((x * mTileWidth) + (mTileWidth / 2), ((float)y * -mTileHeight) - (mTileWidth / 2)));
-			mTestSprite->SetOffset(Vector2D((x * mTileWidth) + (mTileWidth / 2), ((float)y * -mTileHeight) - (mTileWidth / 2)));
 		}
 	}
 }
@@ -238,8 +301,8 @@ Vector2D TileMap::TextureCoordinatesAtIndex(int index, int tile)
 
 	long double intpart;
 
-	float oneTileWide = 1 / (float)mPalletteWidth;
-	float oneTileHeigh = 1 / (float)mPalletteHeight;
+	float oneTileWide = 1 / (float)mPaletteWidth;
+	float oneTileHeigh = 1 / (float)mPaletteHeight;
 
 	position.x = modf(oneTileWide * tile, &intpart);
 
@@ -250,7 +313,7 @@ Vector2D TileMap::TextureCoordinatesAtIndex(int index, int tile)
 			position.x = 1.0f;
 	}
 
-	position.y = modf(oneTileHeigh * (tile / mPalletteWidth), &intpart);
+	position.y = modf(oneTileHeigh * (tile / mPaletteWidth), &intpart);
 
 	if (index == 0 || index == 1)
 	{

@@ -93,8 +93,8 @@ bool Collider::CircleCircle(Circle2D* circle1, Circle2D* circle2, Vector2D & nor
 
 	if ((sumOfBoundingRadii*sumOfBoundingRadii) > seperation.SqrMagnitude())
 	{
-		penetrationDepth = seperation.Magnitude() - sumOfBoundingRadii;
-		normal = seperation.GetNormalized();
+		penetrationDepth = sumOfBoundingRadii - seperation.Magnitude();
+		normal = -seperation.GetNormalized();
 		return true;
 	}
 
@@ -235,7 +235,7 @@ bool Circle2D::IntersectsCollider(Collider * otherCollider, Vector2D & normal, f
 		{
 			//because BoxCircle() tests from box to circle and we need circle to box the normal is flipped
 			normal = -normal;
-			penetrationDepth /= 100;//TODO : fix this properly
+			//penetrationDepth /= 100;//TODO : fix this properly
 			return true;
 		}
 		else

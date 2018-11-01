@@ -198,6 +198,9 @@ void PlayerController::Update(std::vector<SDL_Event> events)
 		if (currentKeyStates[SDL_SCANCODE_F]) { mPawn->YButtonDown(); }
 		if (currentKeyStates[SDL_SCANCODE_Q]) { mPawn->LeftBumper(); }
 		if (currentKeyStates[SDL_SCANCODE_E]) { mPawn->RightBumper(); }
+
+		if (currentKeyStates[SDL_SCANCODE_F1]) { glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); }
+		if (currentKeyStates[SDL_SCANCODE_F2]) { glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); }
 	}
 
 	//Deal with movement

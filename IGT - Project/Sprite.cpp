@@ -106,6 +106,84 @@ Sprite::Sprite(GameObject * parent, GLuint TextureID, float singleSpriteWidth, f
 	mOffset = Matrix4x4::Translate(Vector3D(offset.x, offset.y, 0));
 }
 
+Sprite::Sprite(GameObject * parent, GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight, int tilesWide, int tilesTall, Vector2D offset)
+	: mTextureID(TextureID), mSingleSpriteWidth(singleSpriteWidth), mSingleSpriteHeight(singleSpriteHeight),
+	mTilesTall(tilesTall), mTilesWide(tilesWide),
+	iRenderable(parent)
+{
+	unsigned int indices[] =
+	{
+		0,1,2,
+		0,2,3
+	};
+
+	float halfHeight = singleSpriteHeight / 2;
+	float halfWidth = singleSpriteWidth / 2;
+	float inverseTall = (float)1 / tilesTall;
+	float inverseWide = (float)1 / tilesWide;
+
+	for (int i = 0; i < tilesTall; i++)
+	{
+		for (int j = 0; j < tilesWide; j++)
+		{
+			Vertex vertices[] =
+			{
+
+				Vertex(Vector3D(-halfWidth,-halfHeight,0), Vector2D(j*inverseWide, (i + 1) * inverseTall)),
+				Vertex(Vector3D(halfWidth,-halfHeight,0), Vector2D((j + 1) * inverseWide, (i + 1) * inverseTall)),
+				Vertex(Vector3D(halfWidth,halfHeight,0), Vector2D((j + 1) * inverseWide,i * inverseTall)),
+				Vertex(Vector3D(-halfWidth,halfHeight,0), Vector2D(j*inverseWide,i * inverseTall))
+			};
+
+			Mesh* mesh = new Mesh(vertices, 4, indices, 6);
+			mFrames.push_back(mesh);
+		}
+	}
+
+	mCurrentFrame = 0;
+
+	mOffset = Matrix4x4::Translate(Vector3D(offset.x, offset.y, 0));
+}
+
+Sprite::Sprite(GameObject * parent, GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight, int tilesWide, int tilesTall, Matrix4x4 offset)
+	: mTextureID(TextureID), mSingleSpriteWidth(singleSpriteWidth), mSingleSpriteHeight(singleSpriteHeight),
+	mTilesTall(tilesTall), mTilesWide(tilesWide),
+	iRenderable(parent)
+{
+	unsigned int indices[] =
+	{
+		0,1,2,
+		0,2,3
+	};
+
+	float halfHeight = singleSpriteHeight / 2;
+	float halfWidth = singleSpriteWidth / 2;
+	float inverseTall = (float)1 / tilesTall;
+	float inverseWide = (float)1 / tilesWide;
+
+	for (int i = 0; i < tilesTall; i++)
+	{
+		for (int j = 0; j < tilesWide; j++)
+		{
+			Vertex vertices[] =
+			{
+
+				Vertex(Vector3D(-halfWidth,-halfHeight,0), Vector2D(j*inverseWide, (i + 1) * inverseTall)),
+				Vertex(Vector3D(halfWidth,-halfHeight,0), Vector2D((j + 1) * inverseWide, (i + 1) * inverseTall)),
+				Vertex(Vector3D(halfWidth,halfHeight,0), Vector2D((j + 1) * inverseWide,i * inverseTall)),
+				Vertex(Vector3D(-halfWidth,halfHeight,0), Vector2D(j*inverseWide,i * inverseTall))
+			};
+
+			Mesh* mesh = new Mesh(vertices, 4, indices, 6);
+			mFrames.push_back(mesh);
+		}
+	}
+
+	mCurrentFrame = 0;
+
+	mOffset = offset;
+}
+
 
 Sprite::~Sprite()
 {
@@ -147,7 +225,7 @@ void Sprite::SetCurrentFrame(unsigned int frame)
 
 Component * Sprite::Clone()
 {
-	return new Sprite(nullptr, mTextureID, mSingleSpriteWidth, mSingleSpriteHeight, mTilesWide, mTilesTall);
+	return new Sprite(nullptr, mTextureID, mSingleSpriteWidth, mSingleSpriteHeight, mTilesWide, mTilesTall, mOffset);
 }
 
 void Sprite::SetOffset(Vector2D offset)

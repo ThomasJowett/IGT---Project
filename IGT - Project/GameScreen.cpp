@@ -12,9 +12,6 @@ GameScreen::GameScreen()
 	Settings::GetInstance()->SetCamera(&mCamera);
 
 	Settings::GetInstance()->ApplySettings();
-
-	//mShaderBasic->UpdateMatrixUniform(PROJECTION_U, mCamera.GetProjection());
-	//mShaderGUI->UpdateMatrixUniform(PROJECTION_U, mCamera.GetProjection());
 }
 
 
@@ -32,28 +29,19 @@ GameScreen::~GameScreen()
 
 void GameScreen::Render()
 {
+	//Render Objects
 	mShaderBasic->Bind();
 	mCamera.UpdateView(mShaderBasic);
-
-	//for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
-	//{
-	//	if (it->get()->GetActive())
-	//		it->get()->Render(mShaderBasic);
-	//}
 
 	Matrix4x4 identityMatrix;
 
 	Root->Traverse(mShaderBasic, identityMatrix);
 
+	//Render UI Widgets
 	mShaderGUI->Bind();
 	glDisable(GL_DEPTH_TEST);
 	mCamera.UpdateView(mShaderGUI);
 	
-	//for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mUIWidgets.begin(); it != mUIWidgets.end(); ++it)
-	//{
-	//	if (it->get()->GetActive())
-	//		it->get()->Render(mShaderGUI);
-	//}
 	identityMatrix = Matrix4x4();
 	RootWidget->Traverse(mShaderGUI, identityMatrix);
 

@@ -13,5 +13,7 @@ public:
 
 private:
 	TileMap * mTileMap;
+
+	void SortObjectsDepth(GameObject* gameObject);
 };
 

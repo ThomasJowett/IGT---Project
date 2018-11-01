@@ -29,20 +29,22 @@ public:
 	int GetTileHeight() { return mTileHeight; }
 
 private:
-	int** mTiles;
+	int** mBackgroundTiles;
+	int** mForegroundTiles;
 
 	int mTilesWide, mTilesHigh;
 	int mTileWidth, mTileHeight;
 
-	int mPalletteWidth, mPalletteHeight;
+	int mPaletteWidth, mPaletteHeight;
 
 	bool** mCollision;
 
-	Mesh* mMesh;
+	Mesh* mBackGround;
+	Mesh* mForeground;
+
 	GLuint mTextureID;
 
 	Collider* mCollider;
-	Sprite* mTestSprite;
 
 	Vector2D TextureCoordinatesAtIndex(int index, int tile);
 	bool PositionToTileIndex(Vector2D position, unsigned int &X, unsigned int &Y);

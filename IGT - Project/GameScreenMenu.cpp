@@ -19,7 +19,7 @@
 
 GameScreenMenu::GameScreenMenu() : GameScreen()
 {
-	mCamera.GetTransform()->mPosition = Vector3D(0, 0, 100);
+	mCamera.GetTransform()->mPosition = Vector3D(0, 0, 0);
 
 	SoundManager::GetInstance()->PlayMusic("Music/Diesel.ogg");
 
@@ -44,7 +44,7 @@ GameScreenMenu::GameScreenMenu() : GameScreen()
 	mPlayerControllers.emplace_back(playerController);
 	
 	//Background Image
-	transform = new Transform(Vector3D(0, 0, -1), 0, Vector2D(1, 1));
+	transform = new Transform(Vector3D(0, 0, 0), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Backgorund", transform);
 	gameObject->AddComponent<Sprite>(backgroundTexture, 600, 600);
 	mGameObjects.emplace_back(gameObject);

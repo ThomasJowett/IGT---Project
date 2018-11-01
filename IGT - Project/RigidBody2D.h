@@ -20,7 +20,7 @@ public:
 
 	//Getters and Setters
 	Vector2D GetVelocity()const { return mVelocity; }
-	void SetVelocity(Vector2D velocity) { mVelocity = velocity; }
+	void SetVelocity(Vector2D velocity);
 
 	float GetMass()const { return mMass; }
 	float GetInverseMass()const { return mInverseMass; }
@@ -51,4 +51,6 @@ private:
 	float mNetTorque;
 
 	PhysicsMaterial mPhysicsMaterial;
+
+	bool mIsAsleep;
 };

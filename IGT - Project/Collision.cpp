@@ -1,4 +1,5 @@
 #include "Collision.h"
+#include <algorithm>    // std::max
 
 std::vector<Contact> Collision::DetectCollisions(std::vector<GameObject*> gameObjects)
 {
@@ -6,9 +7,10 @@ std::vector<Contact> Collision::DetectCollisions(std::vector<GameObject*> gameOb
 
 	for (int i = 0; i < (int)gameObjects.size() - 1; i++)
 	{
+		Collider* collider1 = gameObjects[i]->GetComponent<Collider>();
+
 		for (int j = i + 1; j < (int)gameObjects.size(); j++)
 		{
-			Collider* collider1 = gameObjects[i]->GetComponent<Collider>();
 			Collider* collider2 = gameObjects[j]->GetComponent<Collider>();
 	
 			if (collider1 != nullptr && collider2 != nullptr)
@@ -176,6 +178,9 @@ void Collision::ResolveCollision(Contact contact)
 	bool moveA = (bodyA != nullptr);
 	bool moveB = (bodyB != nullptr);
 
+	if(contact.penetrationDepth < 0.0f)
+		std::cout << contact.penetrationDepth << std::endl;
+
 
 	if (!moveA && !moveB)
 	{
@@ -193,11 +198,13 @@ void Collision::ResolveCollision(Contact contact)
 
 		float coeffiecientOfRestitution = (bodyA->GetPhysicsMaterial().elasticity + bodyB->GetPhysicsMaterial().elasticity) / 2;
 
+		float k_slop = 0.001f;
+
 		//resolve interpenetration
-		Vector2D firstTranslation = ((contact.normal * contact.penetrationDepth) * ((inverseMassB / inverseMassA + inverseMassB)));
-		Vector2D secondTranslation = ((contact.normal * -contact.penetrationDepth) * ((inverseMassA / inverseMassA + inverseMassB)));
-		contact.A->GetTransform()->mPosition += Vector3D(firstTranslation.x, firstTranslation.y, 0);
-		contact.B->GetTransform()->mPosition += Vector3D(secondTranslation.x, secondTranslation.y, 0);
+		Vector2D translationA = ((contact.normal * std::max(contact.penetrationDepth - k_slop, 0.0f)) * ((inverseMassB / inverseMassA + inverseMassB)));
+		Vector2D translationB = ((contact.normal * -std::max(contact.penetrationDepth - k_slop, 0.0f)) * ((inverseMassA / inverseMassA + inverseMassB)));
+		contact.A->GetTransform()->mPosition += Vector3D(translationA.x, translationA.y, 0);
+		contact.B->GetTransform()->mPosition += Vector3D(translationB.x, translationB.y, 0);
 
 		//relative velocity
 		Vector2D relativeVelocity = velocityB - velocityA;
@@ -219,7 +226,7 @@ void Collision::ResolveCollision(Contact contact)
 	else if (moveA && !moveB)//Object A has no physics so can't move
 	{
 		//resolve interpenetration
-		Vector2D firstTranslation = contact.normal * contact.penetrationDepth;
+		Vector2D firstTranslation = contact.normal * std::max(contact.penetrationDepth, 0.0f);
 		contact.A->GetTransform()->mPosition += Vector3D(firstTranslation.x, firstTranslation.y, 0);
 
 		//reflect the velocity
@@ -237,7 +244,7 @@ void Collision::ResolveCollision(Contact contact)
 	else if (!moveA && moveB) //Object B has no physics so can't move
 	{
 		//resolve interpenetration
-		Vector2D secondTranslation = contact.normal * -contact.penetrationDepth;
+		Vector2D secondTranslation = contact.normal * -(std::max(contact.penetrationDepth, 0.0f));
 		contact.B->GetTransform()->mPosition += Vector3D(secondTranslation.x, secondTranslation.y, 0);
 
 		//reflect the velocity

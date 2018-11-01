@@ -53,8 +53,8 @@ void Settings::LoadSettings()
 			{
 				mZoom = atoi(lineSplit[1].c_str());
 
-				mOrtho_Width = 480 * mZoom;
-				mOrtho_Height = 270 * mZoom;
+				//mOrtho_Width = mDefaultOrtho_Width * mZoom;
+				//mOrtho_Height = mDefaultOrtho_Height * mZoom;
 			}
 			else if (lineSplit[0] == "FULLSCREEN")
 			{
@@ -93,11 +93,11 @@ void Settings::ApplySettings()
 
 	SDL_SetWindowSize(gWindow, mScreen_Width, mScreen_Height);
 
-	mScreen_Scale = (float)(mScreen_Width + mScreen_Height) / (float)(mOrtho_Width + mOrtho_Height);
+	mScreen_Scale = (float)(mScreen_Width + mScreen_Height) / (float)((mDefaultOrtho_Width*mZoom) + mDefaultOrtho_Height * mZoom);
 
 	SetVsync(mVSYNC);
 
-	mCamera->Orthographic((mScreen_Width/mScreen_Scale), (mScreen_Height/mScreen_Scale), 0, 1000);
+	mCamera->Orthographic((mScreen_Width/mScreen_Scale), (mScreen_Height/mScreen_Scale), 0, 100);
 	glViewport(0, 0, mScreen_Width, mScreen_Height);
 
 	Notify(SettingsEvent::ON_RESOLUTION_CHANGE, Vector2D(mScreen_Width, mScreen_Height));

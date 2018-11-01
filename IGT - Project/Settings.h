@@ -47,6 +47,11 @@ private:
 	int mOrtho_Width;
 	int mOrtho_Height;
 
+	//int mDefaultOrtho_Width = 960;
+	//int mDefaultOrtho_Height = 540;
+	int mDefaultOrtho_Width = 480;
+	int mDefaultOrtho_Height = 270;
+
 	float mScreen_Scale;
 	float mZoom;
 

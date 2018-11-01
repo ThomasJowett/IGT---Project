@@ -1,7 +1,6 @@
 #include "RigidBody2D.h"
 
 
-
 RigidBody2D::RigidBody2D(GameObject* parent, float mass, Vector2D velocity, PhysicsMaterial physicsMaterial)
 	:mMass(mass), mVelocity(velocity), mPhysicsMaterial(physicsMaterial),
 	iUpdateable(parent)
@@ -25,6 +24,11 @@ RigidBody2D::~RigidBody2D()
 
 void RigidBody2D::Update(float deltaTime)
 {
+	if (mIsAsleep)
+	{
+		return;
+	}
+
 	//cache transform
 	Transform* transform = GetParent()->GetTransform();
 
@@ -52,6 +56,13 @@ void RigidBody2D::Update(float deltaTime)
 	}
 
 	mNetTorque = 0.0f;
+
+	if (mVelocity.SqrMagnitude() < 0.5f && mAngularVelocity < 0.001f)
+	{
+		mIsAsleep = true;
+		mVelocity = { 0,0 };
+		mAngularVelocity = 0.0f;
+	}
 }
 
 Component * RigidBody2D::Clone()
@@ -64,6 +75,8 @@ Component * RigidBody2D::Clone()
 void RigidBody2D::AddForce(Vector2D force)
 {
 	mNetForce += force;
+
+	mIsAsleep = false;
 }
 
 void RigidBody2D::AddPointForce(Vector2D force, Vector2D position)
@@ -73,6 +86,8 @@ void RigidBody2D::AddPointForce(Vector2D force, Vector2D position)
 	float torque = Vector2D::Cross(Vector2D(force.x, force.y), Vector2D(relativePosition.x, relativePosition.y));
 	AddTorque(torque);
 	AddForce(force);
+
+	mIsAsleep = false;
 }
 
 void RigidBody2D::AddRelativeForce(Vector2D force, Vector2D position)
@@ -81,14 +96,28 @@ void RigidBody2D::AddRelativeForce(Vector2D force, Vector2D position)
 
 	AddTorque(torque);
 	AddForce(force);
+
+	mIsAsleep = false;
 }
 
 void RigidBody2D::AddTorque(float torque)
 {
 	mNetTorque += torque;
+
+	mIsAsleep = false;
 }
 
 void RigidBody2D::ApplyImpulse(Vector2D impulse)
 {
 	mVelocity += mInverseMass * impulse;
+
+	mIsAsleep = false;
+}
+
+void RigidBody2D::SetVelocity(Vector2D velocity)
+{
+	mVelocity = velocity;
+
+	if (mVelocity.SqrMagnitude() > 0.0f || mVelocity.SqrMagnitude() < 0.0f)
+		mIsAsleep = false;
 }
