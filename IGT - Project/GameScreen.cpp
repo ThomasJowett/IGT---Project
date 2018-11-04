@@ -18,13 +18,18 @@ GameScreen::GameScreen()
 GameScreen::~GameScreen()
 {
 	mGameObjects.clear();
+	mUIWidgets.clear();
 	if (mShaderBasic) delete mShaderBasic;
+	if (mShaderGUI) delete mShaderGUI;
 
 	for (std::vector< PlayerController* >::iterator it = mPlayerControllers.begin(); it != mPlayerControllers.end(); ++it)
 	{
 		delete (*it);
 		*it = nullptr;
 	}
+
+	delete Root;
+	delete RootWidget;
 }
 
 void GameScreen::Render()
@@ -70,4 +75,27 @@ void GameScreen::Update(float deltaTime, std::vector<SDL_Event> events)
 	}
 
 	mFPS.Update(deltaTime);
+}
+
+std::vector<GameObject*> GameScreen::GetAllGameObjects()
+{
+	std::vector<GameObject*> returnObjects;
+
+	for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
+	{
+		returnObjects.push_back(it->get());
+	}
+	return returnObjects;
+}
+
+std::vector<GameObject*> GameScreen::GetAllGameObjectsWithTag(std::string tag)
+{
+	std::vector<GameObject*> returnObjects;
+
+	for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
+	{
+		if (it->get()->GetName() == tag)
+			returnObjects.push_back(it->get());
+	}
+	return returnObjects;
 }

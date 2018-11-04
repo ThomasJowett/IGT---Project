@@ -46,9 +46,9 @@ GameScreenLevel1::GameScreenLevel1()
 	MainMenuPawn* menu = new MainMenuPawn(cursor);
 
 	//player 1
-	transform = new Transform(Vector3D(250, -200, 1), 0, Vector2D(1, 1));
+	transform = new Transform(Vector3D(191.75, -1424, 1), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Player 1", transform);
-	gameObject->AddComponent<Sprite>(slimeTexture, 32, 32, 4, 10,Vector2D( 0, 16 ));
+	gameObject->AddComponent<Sprite>(goblinTexture, 48, 48, 4, 10,Vector2D( 0, 16 ));
 	//gameObject->AddComponent<Sprite>(squareTexture, 20, 10, Vector2D(0, -20));
 	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
 	gameObject->GetComponent<TextRender>()->UpdateText("Player 1", { 0,0,0 }, 0, 48, CENTER);
@@ -60,7 +60,7 @@ GameScreenLevel1::GameScreenLevel1()
 	PlayerPawn* characterController = new PlayerPawn(gameObject, menu);
 
 	//player 2
-	transform = new Transform(Vector3D(300, -200, 1), 0, Vector2D(1, 1));
+	transform = new Transform(Vector3D(256, -1424, 1), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Player 2", transform);
 	gameObject->AddComponent<Sprite>(goblinTexture, 48, 48, 4, 10, Vector2D(0,24 ));
 	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
@@ -97,22 +97,22 @@ GameScreenLevel1::GameScreenLevel1()
 	mPlayerControllers.push_back(playerController2);
 	
 	
-	transform = new Transform(Vector3D(0, 0, 5), 0, Vector2D(1, 1));
-	gameObject = new GameObject("Circle", transform);
-	gameObject->AddComponent<Sprite>(circleTexture, 32, 32);
-	gameObject->AddComponent<Circle2D>(16, Vector2D());
-	mGameObjects.emplace_back(gameObject);
-	Root->AddChild(gameObject);
-	
-
-	transform = new Transform(Vector3D(-80, 0, 5), 0, Vector2D(1, 1));
-	gameObject = new GameObject("Square", transform);
-	gameObject->AddComponent<Sprite>(squareTexture, 32, 32);
-	gameObject->AddComponent<Box2D>(32, 32, Vector2D());
-	mGameObjects.emplace_back(gameObject);
-	
-	Root->AddChild(gameObject);
-
+	//transform = new Transform(Vector3D(0, 0, 5), 0, Vector2D(1, 1));
+	//gameObject = new GameObject("Circle", transform);
+	//gameObject->AddComponent<Sprite>(circleTexture, 32, 32);
+	//gameObject->AddComponent<Circle2D>(16, Vector2D());
+	//mGameObjects.emplace_back(gameObject);
+	//Root->AddChild(gameObject);
+	//
+	//
+	//transform = new Transform(Vector3D(-80, 0, 5), 0, Vector2D(1, 1));
+	//gameObject = new GameObject("Square", transform);
+	//gameObject->AddComponent<Sprite>(squareTexture, 32, 32);
+	//gameObject->AddComponent<Box2D>(32, 32, Vector2D());
+	//mGameObjects.emplace_back(gameObject);
+	//
+	//Root->AddChild(gameObject);
+	//
 	transform = new Transform(Vector3D(0, -50, 5), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Ball", transform);
 	gameObject->AddComponent<Sprite>(BarrelTexture, 32, 32, Vector2D(0,8));
@@ -120,7 +120,7 @@ GameScreenLevel1::GameScreenLevel1()
 	gameObject->AddComponent<RigidBody2D>(100, Vector2D(0, 0), 1, 0, physicsMaterialcircle);
 	mGameObjects.emplace_back(gameObject);
 	Root->AddChild(gameObject);
-
+	
 	for (int i = 0; i < 10; i++)
 	{
 		gameObject = new GameObject(*gameObject);
@@ -129,22 +129,18 @@ GameScreenLevel1::GameScreenLevel1()
 		mGameObjects.emplace_back(gameObject);
 		Root->AddChild(gameObject);
 	}
+	//
+	//transform = new Transform(Vector3D(0, -50, 5), 0, Vector2D(1, 1));
+	//gameObject = new GameObject("little box", transform);
+	//gameObject->AddComponent<Sprite>(squareTexture, 16, 16);
+	//gameObject->AddComponent<Box2D>(16, 16, Vector2D());
+	//gameObject->AddComponent<RigidBody2D>(100, Vector2D(0, 0), 1, 0, physicsMaterialcircle);
+	//mGameObjects.emplace_back(gameObject);
+	//Root->AddChild(gameObject);
 
-	transform = new Transform(Vector3D(0, -50, 5), 0, Vector2D(1, 1));
-	gameObject = new GameObject("little box", transform);
-	gameObject->AddComponent<Sprite>(squareTexture, 16, 16);
-	gameObject->AddComponent<Box2D>(16, 16, Vector2D());
-	gameObject->AddComponent<RigidBody2D>(100, Vector2D(0, 0), 1, 0, physicsMaterialcircle);
-	mGameObjects.emplace_back(gameObject);
-	Root->AddChild(gameObject);
-
-	mTileMap = new TileMap("Maps/TestMap2.xml", "Maps/DungeonTileSet.png");
+	mTileMap = new TileMap("TestMap.tmx");
 	mGameObjects.emplace_back(mTileMap);
 	Root->AddChild(mTileMap);
-
-	float ortho1 = Settings::GetInstance()->GetOrthoHeight();
-	float ortho2 = Settings::GetInstance()->GetCamera()->GetOrthoHeight();
-
 }
 
 GameScreenLevel1::~GameScreenLevel1()
@@ -156,8 +152,6 @@ void GameScreenLevel1::Update(float deltaTime, std::vector<SDL_Event> events)
 {
 	GameScreen::Update(deltaTime, events);
 
-	
-
 	std::vector<GameObject*> collisionObejcts;
 
 	for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
@@ -165,8 +159,6 @@ void GameScreenLevel1::Update(float deltaTime, std::vector<SDL_Event> events)
 		if (it->get()->GetComponent<Collider>())
 		{
 			collisionObejcts.push_back(it->get());
-
-			
 		}
 
 		if(it->get()->GetLayer() == SORTED)

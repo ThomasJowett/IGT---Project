@@ -13,7 +13,8 @@ public:
 	Sprite(GameObject* parent, GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight);
 	Sprite(GameObject* parent, GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight, Vector2D offset);
 	Sprite(GameObject* parent, GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight, int tilesWide, int tilesTall, Vector2D offset);
-	Sprite(GameObject* parent, GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight, int tilesWide, int tilesTall, Matrix4x4 offset);
+	Sprite(GameObject* parent, GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight, int tilesWide, int tilesTall,
+		Matrix4x4 offset, Vector3D tint, float opacity);//for cloning
 	~Sprite();
 
 	void Render(Shader* shader) override;
@@ -26,6 +27,13 @@ public:
 	Component* Clone()override;
 
 	void SetOffset(Vector2D offset);
+
+	void SetTint(Vector3D tint) { mTint = tint; }
+	Vector3D GetTint() const { return mTint; }
+
+	void SetOpacity(float opacity) { mOpacity = opacity; }
+	float GetOpacity() const { return mOpacity; }
+
 private:
 	GLuint mTextureID;
 	std::vector<Mesh*> mFrames;
@@ -35,5 +43,8 @@ private:
 	int mTilesWide, mTilesTall;
 
 	Matrix4x4 mOffset;
+
+	Vector3D mTint = { 1.0f,1.0f,1.0f };
+	float mOpacity = 1.0f;
 };
 

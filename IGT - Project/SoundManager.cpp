@@ -3,11 +3,12 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include "Commons.h"
 
 SoundManager * SoundManager::instance = 0;
 const char* SoundManager::mCurrentMusicFilename = "";
 
-static inline std::vector<std::string> SplitString(const std::string &s, char delim);
+//static inline std::vector<std::string> SplitString(const std::string &s, char delim);
 
 void SoundManager::InitAudioDevice()
 {
@@ -177,7 +178,7 @@ void SoundManager::LoadSettings()
 		{
 			getline(file, line);
 
-			std::vector<std::string> lineSplit = SplitString(line, '=');
+			std::vector<std::string> lineSplit = Util::SplitString(line, '=');
 
 			if (lineSplit[0] == "MUSIC")
 			{
@@ -203,28 +204,28 @@ void SoundManager::SaveSettings()
 {
 }
 
-static inline std::vector<std::string> SplitString(const std::string &s, char delim)
-{
-	std::vector<std::string> elems;
-
-	const char* cstr = s.c_str();
-	unsigned int strLength = s.length();
-	unsigned int start = 0;
-	unsigned int end = 0;
-
-	while (end <= strLength)
-	{
-		while (end <= strLength)
-		{
-			if (cstr[end] == delim)
-				break;
-			end++;
-		}
-
-		elems.push_back(s.substr(start, end - start));
-		start = end + 1;
-		end = start;
-	}
-
-	return elems;
-}
+//static inline std::vector<std::string> SplitString(const std::string &s, char delim)
+//{
+//	std::vector<std::string> elems;
+//
+//	const char* cstr = s.c_str();
+//	unsigned int strLength = s.length();
+//	unsigned int start = 0;
+//	unsigned int end = 0;
+//
+//	while (end <= strLength)
+//	{
+//		while (end <= strLength)
+//		{
+//			if (cstr[end] == delim)
+//				break;
+//			end++;
+//		}
+//
+//		elems.push_back(s.substr(start, end - start));
+//		start = end + 1;
+//		end = start;
+//	}
+//
+//	return elems;
+//}

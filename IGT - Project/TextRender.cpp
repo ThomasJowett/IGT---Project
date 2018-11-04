@@ -50,6 +50,7 @@ void TextRender::Render(Shader * shader)
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, mTextureID);
 
+	shader->Updatefloat4(1.0f, 1.0f, 1.0f, 1.0f);
 	if(mMesh) mMesh->Draw();
 	
 	glActiveTexture(GL_TEXTURE0);

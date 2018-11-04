@@ -2,6 +2,7 @@
 
 #include "Camera.h"
 #include "Messaging.h"
+#include "Commons.h"
 #include <SDL.h>
 
 enum class SettingsEvent { ON_RESOLUTION_CHANGE};
@@ -30,8 +31,6 @@ public:
 	
 	int GetScreenWidth() { return mScreen_Width; }
 	int GetScreenHeight() { return mScreen_Height; }
-	int GetOrthoWidth() { return mOrtho_Width; }
-	int GetOrthoHeight() { return mOrtho_Height; }
 	float GetScreenScale() { return mScreen_Scale; }
 
 	bool GetIsFullScreen() { return mFullscreen; }
@@ -43,9 +42,6 @@ private:
 	
 	int mScreen_Width;
 	int mScreen_Height;
-
-	int mOrtho_Width;
-	int mOrtho_Height;
 
 	//int mDefaultOrtho_Width = 960;
 	//int mDefaultOrtho_Height = 540;

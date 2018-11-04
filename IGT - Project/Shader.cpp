@@ -5,6 +5,11 @@ void Shader::UpdateMatrixUniform(int uniform, const Matrix4x4 & matrix, bool tra
 	glUniformMatrix4fv(mUniforms[uniform], 1, transpose, &matrix.m[0][0]);
 }
 
+void Shader::Updatefloat4(float r, float g, float b, float a)
+{
+	glUniform4f(mUniforms[TINT_COLOUR_U], r, g, b, a);
+}
+
 BasicShader::BasicShader()
 {
 	mProgram = ShaderLoader::LoadShaderProgram("Shaders/BasicShader");
@@ -25,6 +30,9 @@ BasicShader::BasicShader()
 	//Texture Samplers
 	mUniforms[TEXTURE_U] = glGetUniformLocation(mProgram, "Texture");
 	glUniform1i(mUniforms[TEXTURE_U], 0);
+
+	mUniforms[TINT_COLOUR_U] = glGetUniformLocation(mProgram, "TintColour");
+	glUniform4f(mUniforms[TINT_COLOUR_U], 1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 GUIShader::GUIShader()

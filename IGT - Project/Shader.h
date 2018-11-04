@@ -12,6 +12,7 @@ enum
 	VIEW_U,
 	PROJECTION_U,
 	TEXTURE_U,
+	TINT_COLOUR_U,
 
 	NUM_UNIFORMS
 };
@@ -27,6 +28,7 @@ public:
 	void UnBind() { glUseProgram(0); }
 
 	void UpdateMatrixUniform(int uniform, const Matrix4x4& matrix, bool transpose);
+	void Updatefloat4(float r, float g, float b, float a);
 
 protected:
 	GLuint mProgram;

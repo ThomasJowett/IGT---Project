@@ -19,8 +19,10 @@ public:
 
 	virtual void Render();
 	virtual void Update(float deltaTime, std::vector<SDL_Event> events);
-	//std::vector<GameObject*> GetAllGameObjectsWithTag(std::string tag)const;
+	
 	std::vector<PlayerController*> GetPlayerControllers() { return mPlayerControllers; }
+	std::vector<GameObject*> GetAllGameObjects();
+	std::vector<GameObject*> GetAllGameObjectsWithTag(std::string tag);
 
 protected:
 	SceneNode * Root;

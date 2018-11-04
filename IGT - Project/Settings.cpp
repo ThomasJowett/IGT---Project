@@ -9,8 +9,6 @@ extern SDL_GLContext gGLContext;
 
 static Settings* instance = 0;
 
-static inline std::vector<std::string> SplitString(const std::string &s, char delim);
-
 Settings * Settings::GetInstance()
 {
 	if (instance == 0)
@@ -23,6 +21,7 @@ Settings * Settings::GetInstance()
 //writes the settings out to Settings.ini file
 void Settings::SaveSettings()
 {
+	//TODO
 }
 
 //Loads settings from Settings.ini
@@ -39,7 +38,7 @@ void Settings::LoadSettings()
 		{
 			getline(file, line);
 
-			std::vector<std::string> lineSplit = SplitString(line, '=');
+			std::vector<std::string> lineSplit = Util::SplitString(line, '=');
 
 			if (lineSplit[0] == "SCREEN_WIDTH")
 			{
@@ -52,9 +51,6 @@ void Settings::LoadSettings()
 			else if (lineSplit[0] == "ZOOM")
 			{
 				mZoom = atoi(lineSplit[1].c_str());
-
-				//mOrtho_Width = mDefaultOrtho_Width * mZoom;
-				//mOrtho_Height = mDefaultOrtho_Height * mZoom;
 			}
 			else if (lineSplit[0] == "FULLSCREEN")
 			{
@@ -93,7 +89,7 @@ void Settings::ApplySettings()
 
 	SDL_SetWindowSize(gWindow, mScreen_Width, mScreen_Height);
 
-	mScreen_Scale = (float)(mScreen_Width + mScreen_Height) / (float)((mDefaultOrtho_Width*mZoom) + mDefaultOrtho_Height * mZoom);
+	mScreen_Scale = (float)(mScreen_Width + mScreen_Height) / (float)((mDefaultOrtho_Width * mZoom) + mDefaultOrtho_Height * mZoom);
 
 	SetVsync(mVSYNC);
 
@@ -160,30 +156,4 @@ Settings::Settings()
 
 Settings::~Settings()
 {
-}
-
-static inline std::vector<std::string> SplitString(const std::string &s, char delim)
-{
-	std::vector<std::string> elems;
-
-	const char* cstr = s.c_str();
-	unsigned int strLength = s.length();
-	unsigned int start = 0;
-	unsigned int end = 0;
-
-	while (end <= strLength)
-	{
-		while (end <= strLength)
-		{
-			if (cstr[end] == delim)
-				break;
-			end++;
-		}
-
-		elems.push_back(s.substr(start, end - start));
-		start = end + 1;
-		end = start;
-	}
-
-	return elems;
 }

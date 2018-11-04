@@ -74,6 +74,7 @@ Sprite::Sprite(GameObject* parent, GLuint TextureID, float singleSpriteWidth, fl
 	mOffset = Matrix4x4();
 }
 
+//Single tile with an offset
 Sprite::Sprite(GameObject * parent, GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight, Vector2D offset)
 	: mTextureID(TextureID), mSingleSpriteWidth(singleSpriteWidth), mSingleSpriteHeight(singleSpriteHeight),
 	iRenderable(parent)
@@ -106,6 +107,7 @@ Sprite::Sprite(GameObject * parent, GLuint TextureID, float singleSpriteWidth, f
 	mOffset = Matrix4x4::Translate(Vector3D(offset.x, offset.y, 0));
 }
 
+//multiple tiles with offset
 Sprite::Sprite(GameObject * parent, GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight, int tilesWide, int tilesTall, Vector2D offset)
 	: mTextureID(TextureID), mSingleSpriteWidth(singleSpriteWidth), mSingleSpriteHeight(singleSpriteHeight),
 	mTilesTall(tilesTall), mTilesWide(tilesWide),
@@ -145,9 +147,11 @@ Sprite::Sprite(GameObject * parent, GLuint TextureID, float singleSpriteWidth, f
 	mOffset = Matrix4x4::Translate(Vector3D(offset.x, offset.y, 0));
 }
 
-Sprite::Sprite(GameObject * parent, GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight, int tilesWide, int tilesTall, Matrix4x4 offset)
+//for cloning
+Sprite::Sprite(GameObject * parent, GLuint TextureID, float singleSpriteWidth, float singleSpriteHeight, int tilesWide, int tilesTall, 
+	Matrix4x4 offset, Vector3D tint, float opacity)
 	: mTextureID(TextureID), mSingleSpriteWidth(singleSpriteWidth), mSingleSpriteHeight(singleSpriteHeight),
-	mTilesTall(tilesTall), mTilesWide(tilesWide),
+	mTilesTall(tilesTall), mTilesWide(tilesWide), mTint(tint), mOpacity(opacity),
 	iRenderable(parent)
 {
 	unsigned int indices[] =
@@ -202,6 +206,7 @@ void Sprite::Render(Shader* shader)
 	glBindTexture(GL_TEXTURE_2D, mTextureID);
 
 	shader->UpdateMatrixUniform(MODEL_U, GetParent()->GetWorldMatrix() * mOffset, true);
+	shader->Updatefloat4(mTint.x, mTint.y, mTint.z, mOpacity);
 
 	mFrames[mCurrentFrame]->Draw();
 
@@ -209,6 +214,7 @@ void Sprite::Render(Shader* shader)
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	shader->UpdateMatrixUniform(MODEL_U, GetParent()->GetWorldMatrix(), true);
+	
 }
 
 void Sprite::SetCurrentFrame(unsigned int frame)
@@ -225,7 +231,7 @@ void Sprite::SetCurrentFrame(unsigned int frame)
 
 Component * Sprite::Clone()
 {
-	return new Sprite(nullptr, mTextureID, mSingleSpriteWidth, mSingleSpriteHeight, mTilesWide, mTilesTall, mOffset);
+	return new Sprite(nullptr, mTextureID, mSingleSpriteWidth, mSingleSpriteHeight, mTilesWide, mTilesTall, mOffset, mTint, mOpacity);
 }
 
 void Sprite::SetOffset(Vector2D offset)
