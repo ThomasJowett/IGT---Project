@@ -23,10 +23,10 @@ GameScreenMenu::GameScreenMenu() : GameScreen()
 
 	SoundManager::GetInstance()->PlayMusic("Music/Diesel.ogg");
 
-	GLuint texture =			Texture2D::LoadTexture2D("SpriteSheets/GoblinSprites.png");
-	GLuint backgroundTexture =	Texture2D::LoadTexture2D("Images/BackGround.png");
-	GLuint ButtonTexture =		Texture2D::LoadTexture2D("Images/ButtonsMenu.png");
-	GLuint CursorTexture =		Texture2D::LoadTexture2D("Images/Cursor_Default.png");
+	GLuint texture =			Texture2D::GetTexture2D("SpriteSheets/GoblinSprites.png");
+	GLuint backgroundTexture =	Texture2D::GetTexture2D("Images/BackGround.png");
+	GLuint ButtonTexture =		Texture2D::GetTexture2D("Images/ButtonsMenu.png");
+	GLuint CursorTexture =		Texture2D::GetTexture2D("Images/Cursor_Default.png");
 	
 	Transform* transform;
 	GameObject* gameObject;
@@ -65,6 +65,6 @@ GameScreenMenu::GameScreenMenu() : GameScreen()
 
 GameScreenMenu::~GameScreenMenu()
 {
-	Texture2D::DeleteAllTextures();
+	//Texture2D::DeleteAllTextures();
 	MenuManager::GetInstance()->RemoveAllMenus();
 }

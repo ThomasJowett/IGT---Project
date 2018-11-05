@@ -30,12 +30,12 @@ OptionsMenu::~OptionsMenu()
 
 void OptionsMenu::CreateWidgets()
 {
-	GLuint ButtonTexture = Texture2D::LoadTexture2D("Images/ButtonsMenu.png");
-	GLuint ArrowRightTexture = Texture2D::LoadTexture2D("Images/Arrow_Right.png");
-	GLuint ArrowLeftTexture = Texture2D::LoadTexture2D("Images/Arrow_Left.png");
-	GLuint CheckBoxTexture = Texture2D::LoadTexture2D("Images/CheckBox.png");
-	GLuint SliderBarTexture = Texture2D::LoadTexture2D("Images/SliderBar.png");
-	GLuint SliderThumbTexture = Texture2D::LoadTexture2D("Images/SliderThumb.png");
+	GLuint ButtonTexture = Texture2D::GetTexture2D("Images/ButtonsMenu.png");
+	GLuint ArrowRightTexture = Texture2D::GetTexture2D("Images/Arrow_Right.png");
+	GLuint ArrowLeftTexture = Texture2D::GetTexture2D("Images/Arrow_Left.png");
+	GLuint CheckBoxTexture = Texture2D::GetTexture2D("Images/CheckBox.png");
+	GLuint SliderBarTexture = Texture2D::GetTexture2D("Images/SliderBar.png");
+	GLuint SliderThumbTexture = Texture2D::GetTexture2D("Images/SliderThumb.png");
 
 	UIWidget* widget = new Button(ButtonTexture, { 0.5,0.0 }, { -154,-20 }, { 100, 20 }, "Gameplay");
 	widget->mWidgetData.ID = GAMEPLAY;
@@ -65,12 +65,12 @@ void OptionsMenu::CreateWidgets()
 	mWidgets.emplace_back(widget);
 	AddChild(widget);
 
-	widget = new Image("RightBumber", { 0.5,0.0 }, { 214, -20 }, Texture2D::LoadTexture2D("Images/Button_RB.png"), { 16,16 });
+	widget = new Image("RightBumber", { 0.5,0.0 }, { 214, -20 }, Texture2D::GetTexture2D("Images/Button_RB.png"), { 16,16 });
 	widget->AddObserver(this);
 	mWidgets.emplace_back(widget);
 	AddChild(widget);
 
-	widget = new Image("LeftBumber", { 0.5,0.0 }, { -214, -20 }, Texture2D::LoadTexture2D("Images/Button_LB.png"), { 16,16 });
+	widget = new Image("LeftBumber", { 0.5,0.0 }, { -214, -20 }, Texture2D::GetTexture2D("Images/Button_LB.png"), { 16,16 });
 	widget->AddObserver(this);
 	mWidgets.emplace_back(widget);
 	AddChild(widget);
@@ -164,7 +164,7 @@ void OptionsMenu::CreateWidgets()
 	AddChild(widget);
 
 	//Controls------------------------------------------------------------------------------------------------------------
-	widget = new Image("Controller", { 0.25,0.5 }, { 0,0 }, Texture2D::LoadTexture2D("Images/Controller.png"), { 147, 108 });
+	widget = new Image("Controller", { 0.25,0.5 }, { 0,0 }, Texture2D::GetTexture2D("Images/Controller.png"), { 147, 108 });
 	mWidgets.emplace_back(widget);
 	widget->AddObserver(this);
 	mControlsButtons.push_back(widget);
@@ -176,25 +176,25 @@ void OptionsMenu::CreateWidgets()
 	mControlsButtons.push_back(widget);
 	AddChild(widget);
 
-	widget = new Image("W", { 0.75,0.5 }, { 28,50 }, Texture2D::LoadTexture2D("Images/Key_W.png"), { 16, 16 });
+	widget = new Image("W", { 0.75,0.5 }, { 28,50 }, Texture2D::GetTexture2D("Images/Key_W.png"), { 16, 16 });
 	mWidgets.emplace_back(widget);
 	widget->AddObserver(this);
 	mControlsButtons.push_back(widget);
 	AddChild(widget);
 
-	widget = new Image("A", { 0.75,0.5 }, { 44,50 }, Texture2D::LoadTexture2D("Images/Key_A.png"), { 16, 16 });
+	widget = new Image("A", { 0.75,0.5 }, { 44,50 }, Texture2D::GetTexture2D("Images/Key_A.png"), { 16, 16 });
 	mWidgets.emplace_back(widget);
 	widget->AddObserver(this);
 	mControlsButtons.push_back(widget);
 	AddChild(widget);
 
-	widget = new Image("S", { 0.75,0.5 }, { 60,50 }, Texture2D::LoadTexture2D("Images/Key_S.png"), { 16, 16 });
+	widget = new Image("S", { 0.75,0.5 }, { 60,50 }, Texture2D::GetTexture2D("Images/Key_S.png"), { 16, 16 });
 	mWidgets.emplace_back(widget);
 	widget->AddObserver(this);
 	mControlsButtons.push_back(widget);
 	AddChild(widget);
 
-	widget = new Image("D", { 0.75,0.5 }, { 76,50 }, Texture2D::LoadTexture2D("Images/Key_D.png"), { 16, 16 });
+	widget = new Image("D", { 0.75,0.5 }, { 76,50 }, Texture2D::GetTexture2D("Images/Key_D.png"), { 16, 16 });
 	mWidgets.emplace_back(widget);
 	widget->AddObserver(this);
 	mControlsButtons.push_back(widget);

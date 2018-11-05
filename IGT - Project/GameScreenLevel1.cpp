@@ -20,14 +20,14 @@ GameScreenLevel1::GameScreenLevel1()
 
 	mCamera.GetTransform()->mPosition = Vector3D(0, 0, 100);
 
-	GLuint goblinTexture = Texture2D::LoadTexture2D("SpriteSheets/GoblinSprites.png");
-	GLuint slimeTexture = Texture2D::LoadTexture2D("SpriteSheets/SlimeSprites.png");
-	GLuint batTexture = Texture2D::LoadTexture2D("SpriteSheets/rat and bat spritesheet calciumtrice.png");
-	GLuint SnakeTexture = Texture2D::LoadTexture2D("SpriteSheets/snake spritesheet calciumtrice.png");
-	GLuint circleTexture = Texture2D::LoadTexture2D("Images/Circle.png");
-	GLuint squareTexture = Texture2D::LoadTexture2D("Images/Square.png");
-	GLuint CursorTexture = Texture2D::LoadTexture2D("Images/Cursor_Default.png");
-	GLuint BarrelTexture = Texture2D::LoadTexture2D("Images/Barrel_Closed.png");
+	//GLuint goblinTexture = Texture2D::GetTexture2D("SpriteSheets/GoblinSprites.png");
+	GLuint slimeTexture = Texture2D::GetTexture2D("SpriteSheets/SlimeSprites.png");
+	GLuint batTexture = Texture2D::GetTexture2D("SpriteSheets/rat and bat spritesheet calciumtrice.png");
+	GLuint SnakeTexture = Texture2D::GetTexture2D("SpriteSheets/snake spritesheet calciumtrice.png");
+	GLuint circleTexture = Texture2D::GetTexture2D("Images/Circle.png");
+	GLuint squareTexture = Texture2D::GetTexture2D("Images/Square.png");
+	GLuint CursorTexture = Texture2D::GetTexture2D("Images/Cursor_Default.png");
+	GLuint BarrelTexture = Texture2D::GetTexture2D("Images/Barrel_Closed.png");
 
 
 	Transform* transform;
@@ -48,7 +48,7 @@ GameScreenLevel1::GameScreenLevel1()
 	//player 1
 	transform = new Transform(Vector3D(191.75, -1424, 1), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Player 1", transform);
-	gameObject->AddComponent<Sprite>(goblinTexture, 48, 48, 4, 10,Vector2D( 0, 16 ));
+	gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/GoblinSprites.png"), 48, 48, 4, 10,Vector2D( 0, 24 ));
 	//gameObject->AddComponent<Sprite>(squareTexture, 20, 10, Vector2D(0, -20));
 	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
 	gameObject->GetComponent<TextRender>()->UpdateText("Player 1", { 0,0,0 }, 0, 48, CENTER);
@@ -62,7 +62,7 @@ GameScreenLevel1::GameScreenLevel1()
 	//player 2
 	transform = new Transform(Vector3D(256, -1424, 1), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Player 2", transform);
-	gameObject->AddComponent<Sprite>(goblinTexture, 48, 48, 4, 10, Vector2D(0,24 ));
+	gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/GoblinSprites.png"), 48, 48, 4, 10, Vector2D(0,24 ));
 	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
 	gameObject->GetComponent<TextRender>()->UpdateText("Player 2", { 0,0,0 }, 0, 48, CENTER);
 	gameObject->AddComponent<Box2D>(20, 10, Vector2D(0, 0));

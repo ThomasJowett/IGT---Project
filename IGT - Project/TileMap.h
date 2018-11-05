@@ -18,9 +18,8 @@ public:
 	void Update(float deltatime)override;
 	void Render(Shader* shader)override;
 
-	bool LoadMap(const char* filename);
 
-	bool LoadMap2(std::string filename);
+	bool LoadMap(std::string filename);
 
 	bool LoadTileSet(const char* filename);
 

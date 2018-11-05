@@ -12,7 +12,7 @@ PauseMenu::PauseMenu(Transform* transform, iInput* playerPawn)
 
 void PauseMenu::CreateWidgets()
 {
-	GLuint ButtonTexture = Texture2D::LoadTexture2D("Images/ButtonsMenu.png");
+	GLuint ButtonTexture = Texture2D::GetTexture2D("Images/ButtonsMenu.png");
 
 	Button* button = new Button(ButtonTexture, { 0.5, 0.5 }, { 0,25 }, { 100, 20 }, "Resume");
 	button->mWidgetData.ID = 0;

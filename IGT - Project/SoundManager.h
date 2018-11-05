@@ -5,7 +5,6 @@
 #include <SDL_mixer.h>
 #include <map>
 
-#include "Commons.h"
 #include "Vector.h"
 
 class SoundManager
@@ -40,8 +39,6 @@ public:
 	int GetMasterVolume()const { return mMasterVolume; }
 
 private:
-	void LoadSettings();
-	void SaveSettings();
 	static const char* mCurrentMusicFilename;
 	Mix_Music* mMusic;
 
@@ -54,8 +51,8 @@ private:
 	SoundManager();
 
 	int mMusicVolume;
-	float mSoundEffectsVolume;
-	float mMasterVolume;
+	int mSoundEffectsVolume;
+	int mMasterVolume;
 };
 
 #endif

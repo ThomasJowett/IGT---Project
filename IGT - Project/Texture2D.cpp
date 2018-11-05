@@ -2,9 +2,7 @@
 #include <iostream>
 #include <fstream>
 
-using namespace::std;
-
-static std::vector<GLuint> mTextureIDs;
+static std::map<std::string, GLuint> mTextures;
 
 GLuint Texture2D::LoadTexture2D(const char* path)
 {	
@@ -40,7 +38,7 @@ GLuint Texture2D::LoadTexture2D(const char* path)
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	mTextureIDs.push_back(ID);
+	mTextures.insert(std::pair<std::string, GLuint>{path, ID});
 
 	return ID;
 }
@@ -50,19 +48,19 @@ GLuint Texture2D::LoadTexture2DRaw(const char * path, int width, int height)
 	GLuint ID;
 	char* tempTextureData;
 	int fileSize;
-	ifstream inFile;
-	inFile.open(path, ios::binary);
+	std::ifstream inFile;
+	inFile.open(path, std::ios::binary);
 
 	if (!inFile.good())
 	{
-		cerr << "Can't open texture file " << path << endl;
+		std::cerr << "Can't open texture file " << path << std::endl;
 		return LoadTexture2D("Images/NULL.png"); // make sure to have the null texture in the project directory
 	}
 
-	inFile.seekg(0, ios::end); // Seek to end of file
+	inFile.seekg(0, std::ios::end); // Seek to end of file
 	fileSize = (int)inFile.tellg(); //	Get current position in file - The End, this givesus the total file size
 	tempTextureData = new char[fileSize]; // Create a new array to store the data (of the correct size)
-	inFile.seekg(0, ios::beg); // Seek back to beginning of the file.
+	inFile.seekg(0, std::ios::beg); // Seek back to beginning of the file.
 	inFile.read(tempTextureData, fileSize); // Read in all the data.
 	inFile.close(); //Close the file.
 
@@ -79,27 +77,37 @@ GLuint Texture2D::LoadTexture2DRaw(const char * path, int width, int height)
 	delete[] tempTextureData; // Clear up the data - we don't need it anymore
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	mTextureIDs.push_back(ID);
+	mTextures.insert(std::pair<std::string, GLuint>{path, ID});
 
 	return ID;
 }
 
-void Texture2D::DeleteTexture(GLuint TexID)
+void Texture2D::DeleteTexture(const char* path)
 {
-	glDeleteTextures(1, &TexID);
-	for (int i = 0; i <  mTextureIDs.size(); i++)
-	{
-		if (mTextureIDs[i] = TexID)
-			mTextureIDs.erase(mTextureIDs.end() + i);
-	}
+	glDeleteTextures(1, &mTextures.at(path));
+	mTextures.erase(path);
 }
 
 void Texture2D::DeleteAllTextures()
 {
-	for (GLuint TexID : mTextureIDs)
+	std::map<std::string, GLuint>::iterator it = mTextures.begin();
+	while (it != mTextures.end())
 	{
-		glDeleteTextures(1, &TexID);
+		glDeleteTextures(1, &it->second);
+		it++;
 	}
 
-	mTextureIDs.clear();
+	mTextures.clear();
+}
+
+GLuint Texture2D::GetTexture2D(const char * path)
+{
+	if (mTextures.find(path) == mTextures.end())
+	{
+		return LoadTexture2D(path);
+	}
+	else
+	{
+		return mTextures.at(path);
+	}
 }

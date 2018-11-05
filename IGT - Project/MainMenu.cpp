@@ -19,15 +19,15 @@ MainMenu::~MainMenu()
 
 void MainMenu::CreateWidgets()
 {
-	Image* image = new Image("Logo", { 0.5, 0.25 }, { 0,0 }, Texture2D::LoadTexture2D("Images/Logo.png"), { 90, 73 });
+	Image* image = new Image("Logo", { 0.5, 0.25 }, { 0,0 }, Texture2D::GetTexture2D("Images/Logo.png"), { 90, 73 });
 	mWidgets.emplace_back(image);
 	AddChild(image);
 
-	image = new Image("A ButtonPrompt", { 1,1 }, { -65, 20 }, Texture2D::LoadTexture2D("Images/Button_A.png"), { 16,16 });
+	image = new Image("A ButtonPrompt", { 1,1 }, { -65, 20 }, Texture2D::GetTexture2D("Images/Button_A.png"), { 16,16 });
 	mWidgets.emplace_back(image);
 	AddChild(image);
 
-	GLuint ButtonTexture = Texture2D::LoadTexture2D("Images/ButtonsMenu.png");
+	GLuint ButtonTexture = Texture2D::GetTexture2D("Images/ButtonsMenu.png");
 
 	Button* button = new Button(ButtonTexture, { 0.5,0.6f }, { 0, 25 }, { 100, 20 }, "Play");
 	button->mWidgetData.ID = PLAY;

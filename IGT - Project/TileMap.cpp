@@ -13,9 +13,7 @@ TileMap::TileMap()
 TileMap::TileMap(const char* mapfilename)
 	:GameObject("TileMap", new Transform())
 {
-	//LoadMap(mapfilename);
-
-	mIsActive = LoadMap2(mapfilename);
+	mIsActive = LoadMap(mapfilename);
 
 	RedrawMap();
 
@@ -36,7 +34,7 @@ TileMap::TileMap(int ** backgroundTiles, int ** foregroundTiles, bool ** collisi
 
 	mTilesWide = sizeof(mBackgroundTiles[0]);
 
-	mTextureID = Texture2D::LoadTexture2D(paletteFilename);
+	mTextureID = Texture2D::GetTexture2D(paletteFilename);
 
 	RedrawMap();
 
@@ -61,8 +59,6 @@ TileMap::~TileMap()
 	delete mCollider;
 	delete mForeground;
 	delete mBackGround;
-
-	glDeleteTextures(1, &mTextureID);
 }
 
 void TileMap::Update(float deltatime)
@@ -92,118 +88,7 @@ void TileMap::Render(Shader * shader)
 	}
 }
 
-bool TileMap::LoadMap(const char * filename)
-{
-	tinyxml2::XMLDocument doc;
-
-	if (doc.LoadFile(filename) == 0)
-	{
-		tinyxml2::XMLElement* pRoot;
-		tinyxml2::XMLElement* pLayer;
-		pRoot = doc.FirstChildElement("tilemap");
-
-		mTilesWide = atoi(pRoot->Attribute("tileswide"));
-		mTilesHigh = atoi(pRoot->Attribute("tileshigh"));
-		mTileWidth = atoi(pRoot->Attribute("tilewidth"));
-		mTileHeight = atoi(pRoot->Attribute("tileheight"));
-		mPaletteWidth = atoi(pRoot->Attribute("palettewidth"));
-		mPaletteHeight = atoi(pRoot->Attribute("paletteheight"));
-		
-
-		//Allocate the memory for the array
-		mBackgroundTiles = new int*[mTilesWide];
-		mCollision = new bool*[mTilesWide];
-		mForegroundTiles = new int*[mTilesWide];
-		for (unsigned int i = 0; i < mTilesHigh; i++)
-		{
-			mBackgroundTiles[i] = new int[mTilesWide];
-			mForegroundTiles[i] = new int[mTilesWide];
-			mCollision[i] = new bool[mTilesWide];
-		}
-
-		pLayer = pRoot->FirstChildElement("layer");
-		
-		while (pLayer)
-		{
-			const char* name = pLayer->Attribute("name");
-
-			if (std::strcmp(name, "Background") == 0)
-			{
-				//load into tiles
-				tinyxml2::XMLElement* pTile;
-				pTile = pLayer->FirstChildElement("tile");
-
-				while (pTile)
-				{
-					if (pTile->Attribute("tile") != "-1")
-					{
-						mBackgroundTiles[atoi(pTile->Attribute("x"))][atoi(pTile->Attribute("y"))] = atoi(pTile->Attribute("tile"));
-					}
-					pTile = pTile->NextSiblingElement("tile");
-				}
-
-			}
-			else if (std::strcmp(name, "Collision") == 0)
-			{
-				//load into collision
-				tinyxml2::XMLElement* pTile;
-				pTile = pLayer->FirstChildElement("tile");
-
-				while (pTile)
-				{
-					bool collision;
-					if (atoi(pTile->Attribute("tile")) == -1)
-						collision = false;
-					else if (atoi(pTile->Attribute("tile")) == 1)
-						collision = true;
-
-					mCollision[atoi(pTile->Attribute("x"))][atoi(pTile->Attribute("y"))] = collision;
-
-
-					pTile = pTile->NextSiblingElement("tile");
-				}
-			}
-			else if (std::strcmp(name, "Foreground"))
-			{
-				tinyxml2::XMLElement* pTile;
-				pTile = pLayer->FirstChildElement("tile");
-
-				while (pTile)
-				{
-					if (pTile->Attribute("tile") != "-1")
-					{
-						mForegroundTiles[atoi(pTile->Attribute("x"))][atoi(pTile->Attribute("y"))] = atoi(pTile->Attribute("tile"));
-					}
-					pTile = pTile->NextSiblingElement("tile");
-				}
-			}
-			else if (std::strcmp(name, "Objects") == 0)
-			{
-				tinyxml2::XMLElement* pObject;
-				pObject = pLayer->FirstChildElement("SpawnLocation");
-
-
-				//load objects
-			}
-			else if (std::strcmp(name, "Events") == 0)
-			{
-				//load events
-			}
-
-			pLayer = pLayer->NextSiblingElement("layer");
-		}
-
-		mCollider = new Box2D(this, mTileWidth, mTileHeight, Vector2D(0, 0));
-		return true;
-	}
-	else
-	{
-		std::cerr << "ERROR loading " << filename << " Code: " << doc.LoadFile(filename);
-		return false;
-	}
-}
-
-bool TileMap::LoadMap2(std::string filename)
+bool TileMap::LoadMap(std::string filename)
 {
 	tinyxml2::XMLDocument doc;
 
@@ -345,8 +230,6 @@ bool TileMap::LoadTileSet(const char * filename)
 
 	std::string mapPrefix = "Maps/";
 
-
-
 	if (doc.LoadFile(filename) == 0)
 	{
 		tinyxml2::XMLElement* pRoot;
@@ -363,7 +246,7 @@ bool TileMap::LoadTileSet(const char * filename)
 
 		std::string imagefilepath = mapPrefix + pImage->Attribute("source");
 		
-		mTextureID = Texture2D::LoadTexture2D(imagefilepath.c_str());
+		mTextureID = Texture2D::GetTexture2D(imagefilepath.c_str());
 
 		return true;
 	}

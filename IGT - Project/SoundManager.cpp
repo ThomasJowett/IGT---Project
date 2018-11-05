@@ -1,14 +1,10 @@
 #include "SoundManager.h"
 
 #include <iostream>
-#include <fstream>
 #include <vector>
-#include "Commons.h"
 
 SoundManager * SoundManager::instance = 0;
 const char* SoundManager::mCurrentMusicFilename = "";
-
-//static inline std::vector<std::string> SplitString(const std::string &s, char delim);
 
 void SoundManager::InitAudioDevice()
 {
@@ -23,8 +19,6 @@ void SoundManager::InitAudioDevice()
 	{
 		std::cerr << "Error initializing SDL audio subsystem. Error: " << SDL_GetError();
 	}
-
-	instance->LoadSettings();
 }
 
 SoundManager::SoundManager()
@@ -106,6 +100,7 @@ bool SoundManager::PlaySoundEffect(const std::string filename, int channel, int 
 
 bool SoundManager::PlaySoundAtLocation(const std::string filename, int channel, int repeat, Vector2D location)
 {
+
 	return false;
 }
 
@@ -124,7 +119,6 @@ void SoundManager::LoadMusic(const char* filename)
 
 bool SoundManager::LoadSoundEffect(std::string filename)
 {
-	//TODO add channel to soundeffect structure
 	Mix_Chunk* sound = Mix_LoadWAV(filename.c_str());
 	if (sound == NULL)
 	{
@@ -140,7 +134,7 @@ bool SoundManager::LoadSoundEffect(std::string filename)
 
 void SoundManager::SetSoundEffectVolume(unsigned int volume)
 {
-	if (volume < SDL_MIX_MAXVOLUME)
+	if (volume <= SDL_MIX_MAXVOLUME)
 	{
 		mSoundEffectsVolume = volume;
 	}
@@ -148,7 +142,7 @@ void SoundManager::SetSoundEffectVolume(unsigned int volume)
 
 void SoundManager::SetMusicVolume(unsigned int volume)
 {
-	if (volume < SDL_MIX_MAXVOLUME)
+	if (volume <= SDL_MIX_MAXVOLUME)
 	{
 		mMusicVolume = volume;
 		Mix_VolumeMusic((int)(mMusicVolume * (mMasterVolume / SDL_MIX_MAXVOLUME)));
@@ -157,75 +151,10 @@ void SoundManager::SetMusicVolume(unsigned int volume)
 
 void SoundManager::SetMasterVolume(unsigned int volume)
 {
-	if (volume < SDL_MIX_MAXVOLUME)
+	if (volume <= SDL_MIX_MAXVOLUME)
 	{
 		mMasterVolume = volume;
 
 		Mix_VolumeMusic((int)(mMusicVolume * (mMasterVolume / SDL_MIX_MAXVOLUME)));
 	}
 }
-
-void SoundManager::LoadSettings()
-{
-	std::ifstream file;
-	file.open("Settings.ini");
-
-	std::string line;
-
-	if (file.is_open())
-	{
-		while (file.good())
-		{
-			getline(file, line);
-
-			std::vector<std::string> lineSplit = Util::SplitString(line, '=');
-
-			if (lineSplit[0] == "MUSIC")
-			{
-				mMusicVolume = atoi(lineSplit[1].c_str());
-			}
-			else if (lineSplit[0] == "SFX")
-			{
-				mSoundEffectsVolume = atoi(lineSplit[1].c_str());
-			}
-			else if (lineSplit[0] == "MASTER")
-			{
-				mMasterVolume = atoi(lineSplit[1].c_str());
-			}
-		}
-	}
-
-	file.close();
-
-	SetMusicVolume(mMusicVolume);
-}
-
-void SoundManager::SaveSettings()
-{
-}
-
-//static inline std::vector<std::string> SplitString(const std::string &s, char delim)
-//{
-//	std::vector<std::string> elems;
-//
-//	const char* cstr = s.c_str();
-//	unsigned int strLength = s.length();
-//	unsigned int start = 0;
-//	unsigned int end = 0;
-//
-//	while (end <= strLength)
-//	{
-//		while (end <= strLength)
-//		{
-//			if (cstr[end] == delim)
-//				break;
-//			end++;
-//		}
-//
-//		elems.push_back(s.substr(start, end - start));
-//		start = end + 1;
-//		end = start;
-//	}
-//
-//	return elems;
-//}

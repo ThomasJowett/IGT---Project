@@ -1,4 +1,5 @@
 #include "Settings.h"
+#include "SoundManager.h"
 #include <SDL.h>
 #include <iostream>
 #include <fstream>
@@ -21,7 +22,24 @@ Settings * Settings::GetInstance()
 //writes the settings out to Settings.ini file
 void Settings::SaveSettings()
 {
-	//TODO
+	std::ofstream file;
+	file.open("Settings.ini");
+
+	file << "[DISPLAY]" << std::endl;
+	file << "SCREEN_WIDTH=" << mScreen_Width << std::endl;
+	file << "SCREEN_HEIGHT=" << mScreen_Height << std::endl;
+	file << "ZOOM=" << mZoom << std::endl;
+	file << "FULLSCREEN=" << mFullscreen << std::endl;
+	file << "V-SYNC=" << mVSYNC << std::endl;
+
+	file << "[GAMEPLAY]" << std::endl;
+
+	file << "[AUDIO]" << std::endl;
+	file << "MUSIC=" << SoundManager::GetInstance()->GetMusicVolume() << std::endl;
+	file << "SFX=" << SoundManager::GetInstance()->GetSoundEffectVolume() << std::endl;
+	file << "MASTER=" << SoundManager::GetInstance()->GetMasterVolume() << std::endl;
+
+	file.close();
 }
 
 //Loads settings from Settings.ini
@@ -40,6 +58,7 @@ void Settings::LoadSettings()
 
 			std::vector<std::string> lineSplit = Util::SplitString(line, '=');
 
+			//Graphical Settings------------------------------------------------------------
 			if (lineSplit[0] == "SCREEN_WIDTH")
 			{
 				mScreen_Width = atoi(lineSplit[1].c_str());
@@ -50,7 +69,7 @@ void Settings::LoadSettings()
 			}
 			else if (lineSplit[0] == "ZOOM")
 			{
-				mZoom = atoi(lineSplit[1].c_str());
+				mZoom = (float)atof(lineSplit[1].c_str());
 			}
 			else if (lineSplit[0] == "FULLSCREEN")
 			{
@@ -59,6 +78,21 @@ void Settings::LoadSettings()
 			else if (lineSplit[0] == "V-SYNC")
 			{
 				mVSYNC = atoi(lineSplit[1].c_str());
+			}
+			//Gameplay Settings-------------------------------------------------------------
+
+			//Sound Settings----------------------------------------------------------------
+			else if (lineSplit[0] == "MUSIC")
+			{
+				SoundManager::GetInstance()->SetMusicVolume(atoi(lineSplit[1].c_str()));
+			}
+			else if (lineSplit[0] == "SFX")
+			{
+				SoundManager::GetInstance()->SetSoundEffectVolume(atoi(lineSplit[1].c_str()));
+			}
+			else if (lineSplit[0] == "MASTER")
+			{
+				SoundManager::GetInstance()->SetMasterVolume(atoi(lineSplit[1].c_str()));
 			}
 		}
 	}
@@ -96,7 +130,7 @@ void Settings::ApplySettings()
 	mCamera->Orthographic((mScreen_Width/mScreen_Scale), (mScreen_Height/mScreen_Scale), 0, 100);
 	glViewport(0, 0, mScreen_Width, mScreen_Height);
 
-	Notify(SettingsEvent::ON_RESOLUTION_CHANGE, Vector2D(mScreen_Width, mScreen_Height));
+	Notify(SettingsEvent::ON_RESOLUTION_CHANGE, Vector2D((float)mScreen_Width, (float)mScreen_Height));
 
 	SaveSettings();
 }
