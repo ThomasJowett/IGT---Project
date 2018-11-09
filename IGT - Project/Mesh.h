@@ -1,6 +1,5 @@
 #pragma once
 #include "Commons.h"
-#include <vector>
 
 struct IndexedModel
 {

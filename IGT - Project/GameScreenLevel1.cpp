@@ -33,8 +33,8 @@ GameScreenLevel1::GameScreenLevel1()
 	Transform* transform;
 	GameObject* gameObject;
 
-	PhysicsMaterial physicsMaterial = { 30, 0.8, 0.5, 10 };
-	PhysicsMaterial physicsMaterialcircle = { 3, 0.8, 0.5, 1 };
+	PhysicsMaterial physicsMaterial = { 30.0f, 0.8f, 0.5f, 10.0f };
+	PhysicsMaterial physicsMaterialcircle = { 3.0f, 0.8f, 0.5f, 1.0f };
 
 	//Cursor
 	transform = new Transform();

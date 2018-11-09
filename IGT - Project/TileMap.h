@@ -40,7 +40,7 @@ private:
 	int** mBackgroundTiles;
 	int** mForegroundTiles;
 
-	int mTilesWide, mTilesHigh;
+	unsigned int mTilesWide, mTilesHigh;
 	int mTileWidth, mTileHeight;
 
 	int mPaletteWidth, mPaletteHeight;

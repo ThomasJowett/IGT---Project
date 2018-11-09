@@ -141,6 +141,7 @@
     <ClCompile Include="GameScreenManager.cpp" />
     <ClCompile Include="GameScreenMenu.cpp" />
     <ClCompile Include="GameScreenLevel1.cpp" />
+    <ClCompile Include="GeometryGenerator.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="GameScreenManager.h" />
     <ClInclude Include="GameScreenMenu.h" />
     <ClInclude Include="GameScreenLevel1.h" />
+    <ClInclude Include="GeometryGenerator.h" />
     <ClInclude Include="iComponents.h" />
     <ClInclude Include="iInput.h" />
     <ClInclude Include="Image.h" />
@@ -209,6 +211,7 @@
     <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="PlayerController.h" />
     <ClInclude Include="PlayerPawn.h" />
+    <ClInclude Include="PostProcess.h" />
     <ClInclude Include="QuadTree.h" />
     <ClInclude Include="RandomGenerator.h" />
     <ClInclude Include="resource.h" />
@@ -237,8 +240,10 @@
     <None Include="ClassDiagram.cd" />
     <None Include="Shaders\BasicShader.frag" />
     <None Include="Shaders\BasicShader.vert" />
+    <None Include="Shaders\BlurShader.frag" />
     <None Include="Shaders\GUIShader.frag" />
     <None Include="Shaders\GUIShader.vert" />
+    <None Include="Shaders\PassThroughShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

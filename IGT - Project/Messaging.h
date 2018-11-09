@@ -23,7 +23,10 @@ public:
 	{
 		for (Observer<EventType, DataType>* observer : mObservers)
 		{
-			observer->OnNotify(event, data);
+			if (observer != nullptr)
+				observer->OnNotify(event, data);
+			else
+				RemoveObserver(observer);
 		}
 	}
 	void AddObserver(Observer<EventType, DataType>* observer)

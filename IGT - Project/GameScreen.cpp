@@ -1,6 +1,8 @@
 #include "GameScreen.h"
 #include <iostream>
 #include "Settings.h"
+#include "GeometryGenerator.h"
+#include "Texture2D.h"
 
 GameScreen::GameScreen()
 {
@@ -8,10 +10,15 @@ GameScreen::GameScreen()
 	RootWidget = new SceneNode();
 	mShaderBasic = new BasicShader();
 	mShaderGUI = new GUIShader();
+	mShaderBlur = new BlurShader();
 
 	Settings::GetInstance()->SetCamera(&mCamera);
 
 	Settings::GetInstance()->ApplySettings();
+
+	mFrameBuffer.GenerateFBO(Settings::GetInstance()->GetScreenWidth(), Settings::GetInstance()->GetScreenHeight());
+	Settings::GetInstance()->AddObserver(&mFrameBuffer);
+	mFullscreenQuad = Geometry::CreateFullscreenQuad();
 }
 
 
@@ -21,6 +28,7 @@ GameScreen::~GameScreen()
 	mUIWidgets.clear();
 	if (mShaderBasic) delete mShaderBasic;
 	if (mShaderGUI) delete mShaderGUI;
+	if (mShaderBlur) delete mShaderBlur;
 
 	for (std::vector< PlayerController* >::iterator it = mPlayerControllers.begin(); it != mPlayerControllers.end(); ++it)
 	{
@@ -30,6 +38,8 @@ GameScreen::~GameScreen()
 
 	delete Root;
 	delete RootWidget;
+
+	Settings::GetInstance()->RemoveObserver(&mFrameBuffer);
 }
 
 void GameScreen::Render()
@@ -38,10 +48,25 @@ void GameScreen::Render()
 	mShaderBasic->Bind();
 	mCamera.UpdateView(mShaderBasic);
 
+	mFrameBuffer.Bind();
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	Matrix4x4 identityMatrix;
 
 	Root->Traverse(mShaderBasic, identityMatrix);
+	mFrameBuffer.Unbind();
 
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	mShaderBlur->Bind();
+	mShaderBlur->UpdateInteger(SCREEN_HEIGHT_U, Settings::GetInstance()->GetScreenHeight());
+	mShaderBlur->UpdateInteger(SCREEN_WIDTH_U, Settings::GetInstance()->GetScreenWidth());
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mFrameBuffer.GetColourTexture());
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, mFrameBuffer.GetDepthTexture());
+	mFullscreenQuad->Draw();
+
+	glActiveTexture(GL_TEXTURE0);
 	//Render UI Widgets
 	mShaderGUI->Bind();
 	glDisable(GL_DEPTH_TEST);

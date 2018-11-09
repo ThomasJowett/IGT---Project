@@ -14,9 +14,9 @@ public:
 private:
 	void Advance();
 	Sprite* mSprite;
-	int mStartFrame;
-	int mFrameCount;
-	int mCurrentFrame;
+	unsigned int mStartFrame;
+	unsigned int mFrameCount;
+	unsigned int mCurrentFrame;
 	float mHoldTime;
 	float mCurrentFrameTime = 0.0f;
 };

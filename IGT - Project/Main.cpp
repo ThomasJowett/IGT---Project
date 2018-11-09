@@ -121,7 +121,7 @@ bool InitSDL()
 
 		SDL_ShowCursor(SDL_DISABLE);
 	}
-	glClearColor(0, 0.5, 0.1, 1);
+	glClearColor(0.0f, 0.5f, 0.1f, 1.0f);
 	return true;
 }
 

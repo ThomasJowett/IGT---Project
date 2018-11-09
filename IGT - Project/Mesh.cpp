@@ -5,9 +5,6 @@ Mesh::Mesh(Vertex * vertices, unsigned int numVertices, unsigned int * indices, 
 {
 	IndexedModel model;
 
-	glGenVertexArrays(1, &mVertexArrayObject);
-	glBindVertexArray(mVertexArrayObject);
-
 	std::vector<Vector3D>positions;
 	std::vector<Vector2D>texCoords;
 

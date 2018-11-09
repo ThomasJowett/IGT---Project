@@ -171,6 +171,9 @@
     <ClCompile Include="SceneNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeometryGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="SDL\SDL2.lib">
@@ -346,6 +349,12 @@
     <ClInclude Include="SceneNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PostProcess.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="IGT - Project.rc">
@@ -366,5 +375,11 @@
       <Filter>Shader Files</Filter>
     </None>
     <None Include="ClassDiagram.cd" />
+    <None Include="Shaders\PassThroughShader.vert">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="Shaders\BlurShader.frag">
+      <Filter>Shader Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

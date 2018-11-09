@@ -7,9 +7,9 @@ in VertexData{
 
 out vec4 FragColour;
 
-uniform sampler2D Texture;
+layout (location = 3) uniform sampler2D Texture;
 
-uniform vec4 TintColour;
+layout (location = 4) uniform vec4 TintColour;
 
 void main()
 {

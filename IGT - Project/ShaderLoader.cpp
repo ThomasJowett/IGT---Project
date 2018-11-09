@@ -24,6 +24,24 @@ GLuint ShaderLoader::LoadShaderProgram(const std::string filename)
 	return program;
 }
 
+GLuint ShaderLoader::LoadShaderProgram(const std::string vertexShaderFilename, const std::string fragmentShaderFilename)
+{
+	GLuint program = glCreateProgram();
+	GLuint vertexShader = CreateShader(LoadShader(vertexShaderFilename + ".vert"), GL_VERTEX_SHADER);
+	GLuint fragmentShader = CreateShader(LoadShader(fragmentShaderFilename + ".frag"), GL_FRAGMENT_SHADER);
+
+	glAttachShader(program, vertexShader);
+	glAttachShader(program, fragmentShader);
+
+	glLinkProgram(program);
+	CheckShaderError(program, GL_LINK_STATUS, true, "ERROR: Program linking failed: ");
+
+	glValidateProgram(program);
+	CheckShaderError(program, GL_VALIDATE_STATUS, true, "ERROR: Program is invalid: ");
+
+	return program;
+}
+
 void CheckShaderError(GLuint shader, GLuint flag, bool isProgram, const char* errorMessage)
 {
 	GLint success = 0;

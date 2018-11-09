@@ -12,7 +12,10 @@ enum
 	VIEW_U,
 	PROJECTION_U,
 	TEXTURE_U,
+	DEPTH_U,
 	TINT_COLOUR_U,
+	SCREEN_WIDTH_U,
+	SCREEN_HEIGHT_U,
 
 	NUM_UNIFORMS
 };
@@ -29,6 +32,9 @@ public:
 
 	void UpdateMatrixUniform(int uniform, const Matrix4x4& matrix, bool transpose);
 	void Updatefloat4(float r, float g, float b, float a);
+	void UpdateInteger(int uniform, int value);
+
+	GLuint GetTextureUnit(int uniform);
 
 protected:
 	GLuint mProgram;
@@ -50,5 +56,12 @@ public:
 	GUIShader();
 	~GUIShader() { }
 private:
+};
+
+class BlurShader : public Shader
+{
+public:
+	BlurShader();
+	~BlurShader() {}
 };
 #endif // !_SHADER_H

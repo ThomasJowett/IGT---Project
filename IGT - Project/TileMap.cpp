@@ -166,9 +166,9 @@ bool TileMap::LoadMap(std::string filename)
 
 					if (std::strcmp(name, "Background") == 0)
 					{
-						for (int i = 0; i < mTilesHigh; i++)
+						for (unsigned int i = 0; i < mTilesHigh; i++)
 						{
-							for (int j = 0; j < mTilesWide; j++)
+							for (unsigned int j = 0; j < mTilesWide; j++)
 							{
 								int Index = atoi(SeperatedData[(i*mTilesWide) + j].c_str());
 								mBackgroundTiles[j][i] = Index - 1;
@@ -177,20 +177,19 @@ bool TileMap::LoadMap(std::string filename)
 					}
 					else if (std::strcmp(name, "Collision") == 0)
 					{
-						for (int i = 0; i < mTilesHigh; i++)
+						for (unsigned int i = 0; i < mTilesHigh; i++)
 						{
-							for (int j = 0; j < mTilesWide; j++)
+							for (unsigned int j = 0; j < mTilesWide; j++)
 							{
-								if (atoi(SeperatedData[(i*mTilesWide) + j].c_str()) == 1);
 								mCollision[j][i] = atoi(SeperatedData[(i*mTilesWide) + j].c_str());
 							}
 						}
 					}
 					else if (std::strcmp(name, "Foreground") == 0)
 					{
-						for (int i = 0; i < mTilesHigh; i++)
+						for (unsigned int i = 0; i < mTilesHigh; i++)
 						{
-							for (int j = 0; j < mTilesWide; j++)
+							for (unsigned int j = 0; j < mTilesWide; j++)
 							{
 								int Index = atoi(SeperatedData[(i*mTilesWide) + j].c_str());
 								mForegroundTiles[j][i] = Index - 1;
@@ -214,7 +213,7 @@ bool TileMap::LoadMap(std::string filename)
 		//TODO load in objects
 
 		//create the collider----------------------------------------------------
-		mCollider = new Box2D(this, mTileWidth, mTileHeight, Vector2D(0, 0));
+		mCollider = new Box2D(this, (float)mTileWidth, (float)mTileHeight, Vector2D(0, 0));
 		return true;
 	}
 	else
@@ -268,13 +267,13 @@ void TileMap::RedrawMap()
 	//Vertices
 	for (int i = 0;  i < mTilesWide; i++)
 	{
-		float PosX = i * mTileWidth;
+		float PosX = (float)(i * mTileWidth);
 
 		for (int j = 0; j < mTilesHigh; ++j)
 		{
 			if (mBackgroundTiles[i][j] != -1)
 			{
-				float PosY = (j * -mTileHeight) - mTileHeight;
+				float PosY = (float)((j * -mTileHeight) - mTileHeight);
 				model.positions.push_back(Vector3D(PosX, PosY, backgroundDepth));
 				model.texCoords.push_back(TextureCoordinatesAtIndex(0, mBackgroundTiles[i][j]));
 
@@ -309,13 +308,13 @@ void TileMap::RedrawMap()
 
 	for (int i = 0; i < mTilesWide; i++)
 	{
-		float PosX = i * mTileWidth;
+		float PosX = (float)(i * mTileWidth);
 
 		for (int j = 0; j < mTilesHigh; ++j)
 		{
 			if (mForegroundTiles[i][j] != -1)
 			{
-				float PosY = (j * -mTileHeight) - mTileHeight;
+				float PosY = (float)((j * -mTileHeight) - mTileHeight);
 				modelForeground.positions.push_back(Vector3D(PosX, PosY, foregroundDepth));
 				modelForeground.texCoords.push_back(TextureCoordinatesAtIndex(0, mForegroundTiles[i][j]));
 
@@ -378,7 +377,7 @@ void TileMap::SetColliderPosition(Vector2D position)
 	{
 		if (mCollision[x][y])
 		{
-			mCollider->SetOffset(Vector2D((x * mTileWidth) + (mTileWidth / 2), ((float)y * -mTileHeight) - (mTileWidth / 2)));
+			mCollider->SetOffset(Vector2D(((float)x * mTileWidth) + (mTileWidth / 2), ((float)y * -mTileHeight) - (mTileWidth / 2)));
 		}
 	}
 }
@@ -394,7 +393,7 @@ Vector2D TileMap::TextureCoordinatesAtIndex(int index, int tile)
 	float oneTileWide = 1 / (float)mPaletteWidth;
 	float oneTileHeigh = 1 / (float)mPaletteHeight;
 
-	position.x = modf(oneTileWide * tile, &intpart);
+	position.x = (float)modf(oneTileWide * tile, &intpart);
 
 	if (index == 1 || index == 2)
 	{
@@ -403,7 +402,7 @@ Vector2D TileMap::TextureCoordinatesAtIndex(int index, int tile)
 			position.x = 1.0f;
 	}
 
-	position.y = modf(oneTileHeigh * (tile / mPaletteWidth), &intpart);
+	position.y = (float)modf(oneTileHeigh * (tile / mPaletteWidth), &intpart);
 
 	if (index == 0 || index == 1)
 	{
@@ -430,8 +429,8 @@ bool TileMap::PositionToTileIndex(Vector2D position, unsigned int &X, unsigned i
 	position.x = position.x / mTileWidth;
 	position.y = position.y / mTileHeight;
 
-	X = floor(position.x);
-	Y = floor(position.y * -1);
+	X = (unsigned int)floor(position.x);
+	Y = (unsigned int)floor(position.y * -1);
 
 	return (X < mTilesWide && Y < mTilesHigh);
 }
