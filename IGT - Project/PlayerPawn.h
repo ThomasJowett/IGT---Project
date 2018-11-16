@@ -48,5 +48,7 @@ private:
 	RigidBody2D* mRigidBody;
 
 	iInput* mMenuPawn;
+
+	void Attack();
 };
 

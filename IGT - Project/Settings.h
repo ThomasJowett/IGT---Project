@@ -40,8 +40,8 @@ private:
 	Settings();
 	~Settings();
 	
-	int mScreen_Width;
-	int mScreen_Height;
+	int mScreen_Width = 1920;
+	int mScreen_Height = 1080;
 
 	//int mDefaultOrtho_Width = 960;
 	//int mDefaultOrtho_Height = 540;
@@ -49,13 +49,13 @@ private:
 	int mDefaultOrtho_Height = 270;
 
 	float mScreen_Scale;
-	float mZoom;
+	float mZoom = 1;
 
 	SDL_DisplayMode mCurrentMode;
 
 	bool mFullscreen;
 
-	bool mVSYNC;
+	bool mVSYNC = true;
 
 	Camera* mCamera;
 };

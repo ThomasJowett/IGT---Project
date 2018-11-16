@@ -17,7 +17,7 @@ GameScreen::GameScreen()
 	Settings::GetInstance()->ApplySettings();
 
 	mFrameBuffer.GenerateFBO(Settings::GetInstance()->GetScreenWidth(), Settings::GetInstance()->GetScreenHeight());
-	Settings::GetInstance()->AddObserver(&mFrameBuffer);
+	
 	mFullscreenQuad = Geometry::CreateFullscreenQuad();
 }
 
@@ -38,8 +38,6 @@ GameScreen::~GameScreen()
 
 	delete Root;
 	delete RootWidget;
-
-	Settings::GetInstance()->RemoveObserver(&mFrameBuffer);
 }
 
 void GameScreen::Render()
@@ -48,22 +46,31 @@ void GameScreen::Render()
 	mShaderBasic->Bind();
 	mCamera.UpdateView(mShaderBasic);
 
+	//Bind the render target to the off screen render target
 	mFrameBuffer.Bind();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	Matrix4x4 identityMatrix;
 
+	//Traverse through the scene graph rendering each object starting at the root
 	Root->Traverse(mShaderBasic, identityMatrix);
 	mFrameBuffer.Unbind();
 
+	//Now render to the back buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	mShaderBlur->Bind();
+	mShaderBlur->UpdateInteger(TINT_COLOUR_U, 10);
 	mShaderBlur->UpdateInteger(SCREEN_HEIGHT_U, Settings::GetInstance()->GetScreenHeight());
 	mShaderBlur->UpdateInteger(SCREEN_WIDTH_U, Settings::GetInstance()->GetScreenWidth());
+
+	//Bind the render to texture as the texture to be drawn
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, mFrameBuffer.GetColourTexture());
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, mFrameBuffer.GetDepthTexture());
+
 	mFullscreenQuad->Draw();
 
 	glActiveTexture(GL_TEXTURE0);
@@ -72,6 +79,7 @@ void GameScreen::Render()
 	glDisable(GL_DEPTH_TEST);
 	mCamera.UpdateView(mShaderGUI);
 	
+	//Render the UI
 	identityMatrix = Matrix4x4();
 	RootWidget->Traverse(mShaderGUI, identityMatrix);
 

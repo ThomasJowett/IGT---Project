@@ -91,8 +91,8 @@ BlurShader::BlurShader()
 	mUniforms[DEPTH_U] = glGetUniformLocation(mProgram, "texture_depth");
 	glUniform1i(mUniforms[DEPTH_U], 1);
 
-	mUniforms[TINT_COLOUR_U] = glGetUniformLocation(mProgram, "c");
-	glUniform1i(mUniforms[TINT_COLOUR_U], 0);
+	mUniforms[TINT_COLOUR_U] = glGetUniformLocation(mProgram, "blur_intensity");
+	glUniform1i(mUniforms[TINT_COLOUR_U], 1);
 
 	//uniforms
 	mUniforms[SCREEN_WIDTH_U] = glGetUniformLocation(mProgram, "screen_width");

@@ -129,6 +129,7 @@
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="AnimatorCharacter.cpp" />
     <ClCompile Include="AnimatorSnake.cpp" />
+    <ClCompile Include="Attack.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CheckBox.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="Animator.h" />
     <ClInclude Include="AnimatorCharacter.h" />
     <ClInclude Include="AnimatorSnake.h" />
+    <ClInclude Include="Attack.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CheckBox.h" />

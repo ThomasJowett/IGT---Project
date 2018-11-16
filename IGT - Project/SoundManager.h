@@ -50,9 +50,9 @@ private:
 
 	SoundManager();
 
-	int mMusicVolume;
-	int mSoundEffectsVolume;
-	int mMasterVolume;
+	int mMusicVolume = 0;
+	int mSoundEffectsVolume = 128;
+	int mMasterVolume = 128;
 };
 
 #endif

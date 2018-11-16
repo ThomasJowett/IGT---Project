@@ -116,12 +116,21 @@ void AnimatorCharacter::Exit(CharacterAnimStates state)
 //Create all the animations
 void AnimatorCharacter::CreateAnimations()
 {
-	mAnimations.emplace_back(std::make_unique<Animation>(0, 4, 0.1, mSprite));//Forward
-	mAnimations.emplace_back(std::make_unique<Animation>(4, 4, 0.1, mSprite));//Left
-	mAnimations.emplace_back(std::make_unique<Animation>(8, 4, 0.1, mSprite));//Right
-	mAnimations.emplace_back(std::make_unique<Animation>(12, 4, 0.1, mSprite));//Back
-	mAnimations.emplace_back(std::make_unique<Animation>(16, 2, 0.1, mSprite));//idle forward
-	mAnimations.emplace_back(std::make_unique<Animation>(18, 2, 0.1, mSprite));//idle back
-	mAnimations.emplace_back(std::make_unique<Animation>(20, 4, 0.1, mSprite));//idle left
-	mAnimations.emplace_back(std::make_unique<Animation>(24, 4, 0.1, mSprite));//idle right
+	mAnimations.emplace_back(std::make_unique<Animation>(0, 5, 0.05, mSprite));//Forward
+	mAnimations.emplace_back(std::make_unique<Animation>(20, 10, 0.05, mSprite));//Left
+	mAnimations.emplace_back(std::make_unique<Animation>(10, 10, 0.05, mSprite));//Right
+	mAnimations.emplace_back(std::make_unique<Animation>(5, 5, 0.05, mSprite));//Back
+	mAnimations.emplace_back(std::make_unique<Animation>(40, 5, 0.1, mSprite));//idle forward
+	mAnimations.emplace_back(std::make_unique<Animation>(45, 5, 0.1, mSprite));//idle back
+	mAnimations.emplace_back(std::make_unique<Animation>(35, 5, 0.1, mSprite));//idle left
+	mAnimations.emplace_back(std::make_unique<Animation>(30, 5, 0.1, mSprite));//idle right
+
+	//mAnimations.emplace_back(std::make_unique<Animation>(0, 4, 0.1, mSprite));//Forward
+	//mAnimations.emplace_back(std::make_unique<Animation>(4, 4, 0.1, mSprite));//Left
+	//mAnimations.emplace_back(std::make_unique<Animation>(8, 4, 0.1, mSprite));//Right
+	//mAnimations.emplace_back(std::make_unique<Animation>(12, 4, 0.1, mSprite));//Back
+	//mAnimations.emplace_back(std::make_unique<Animation>(16, 2, 0.1, mSprite));//idle forward
+	//mAnimations.emplace_back(std::make_unique<Animation>(18, 2, 0.1, mSprite));//idle back
+	//mAnimations.emplace_back(std::make_unique<Animation>(20, 4, 0.1, mSprite));//idle left
+	//mAnimations.emplace_back(std::make_unique<Animation>(24, 4, 0.1, mSprite));//idle right
 }

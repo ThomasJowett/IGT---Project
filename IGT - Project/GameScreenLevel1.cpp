@@ -48,11 +48,12 @@ GameScreenLevel1::GameScreenLevel1()
 	//player 1
 	transform = new Transform(Vector3D(191.75, -1424, 1), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Player 1", transform);
-	gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/GoblinSprites.png"), 48, 48, 4, 10,Vector2D( 0, 24 ));
+	gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Barbarian.png"), 64, 64, 10, 10,Vector2D( 0, 32 ));
 	//gameObject->AddComponent<Sprite>(squareTexture, 20, 10, Vector2D(0, -20));
 	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
 	gameObject->GetComponent<TextRender>()->UpdateText("Player 1", { 0,0,0 }, 0, 48, CENTER);
-	gameObject->AddComponent<Box2D>(20, 10, Vector2D(0, 0));
+	gameObject->AddComponent<Circle2D>(10, Vector2D(0, 0));
+	//gameObject->AddComponent<Box2D>(20, 10, Vector2D(0, 0));
 	gameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, physicsMaterial);
 	gameObject->AddComponent<AnimatorCharacter>();
 	mGameObjects.emplace_back(gameObject);
@@ -62,10 +63,11 @@ GameScreenLevel1::GameScreenLevel1()
 	//player 2
 	transform = new Transform(Vector3D(256, -1424, 1), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Player 2", transform);
-	gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/GoblinSprites.png"), 48, 48, 4, 10, Vector2D(0,24 ));
+	gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Barbarian.png"), 64, 64, 10, 10, Vector2D(0,24 ));
 	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
 	gameObject->GetComponent<TextRender>()->UpdateText("Player 2", { 0,0,0 }, 0, 48, CENTER);
-	gameObject->AddComponent<Box2D>(20, 10, Vector2D(0, 0));
+	//gameObject->AddComponent<Box2D>(20, 10, Vector2D(0, 0));
+	gameObject->AddComponent<Circle2D>(10, Vector2D(0, 0));
 	gameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, physicsMaterial);
 	gameObject->AddComponent<AnimatorCharacter>();
 	mGameObjects.emplace_back(gameObject);
@@ -124,7 +126,7 @@ GameScreenLevel1::GameScreenLevel1()
 	for (int i = 0; i < 10; i++)
 	{
 		gameObject = new GameObject(*gameObject);
-		gameObject->GetTransform()->mPosition = Vector3D(200 * (float)rand() / (RAND_MAX)+250, 250 * (float)rand() / (RAND_MAX)-350, 5);
+		gameObject->GetTransform()->mPosition = Vector3D(200 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
 		//gameObject->GetComponent<RigidBody2D>()->SetVelocity(Vector2D(80 * (float)rand() / (RAND_MAX)-40, 80 * (float)rand() / (RAND_MAX)-40));
 		mGameObjects.emplace_back(gameObject);
 		Root->AddChild(gameObject);

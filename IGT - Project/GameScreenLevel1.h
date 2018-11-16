@@ -15,5 +15,10 @@ private:
 	TileMap * mTileMap;
 
 	void SortObjectsDepth(GameObject* gameObject);
-};
 
+	FrameBuffer Player1FBO;
+	FrameBuffer PLayer2FBO;
+
+	Camera Player1Camera;
+	Camera Player2Camera;
+};

@@ -5,7 +5,7 @@ layout(location = 0) out vec4 out_color;
 layout (location = 6) uniform sampler2D texture_colour;
 layout (location = 7) uniform sampler2D texture_depth;
 
-layout (location = 3) uniform int c;
+layout (location = 3) uniform int blur_intensity;
 
 layout (location = 4) uniform int screen_width;
 layout (location = 5) uniform int screen_height;
@@ -20,20 +20,17 @@ vec3 blur()
 
 	vec3 sum = vec3(0,0,0);
 
-	for(int i = -5; i < 5; i++)
-	for(int j = -5; j < 5; j++)
+	for(int i = -blur_intensity; i < blur_intensity; i++)
+	for(int j = -blur_intensity; j < blur_intensity; j++)
 		sum += texture(texture_colour, texCoord+vec2(i * dx, j* dy)).xyz;
-	return sum/100;
+	return sum/(blur_intensity*blur_intensity*4);
 }
 
 void main()
 {
-	//if(c==0) out_color = vec4(blur(), 1);
-	//else if(c==1) out_color = texture(texture_depth, texCoord);
-	//else if(c==2) out_color = texture(texture_colour, texCoord);
-
-	if(texCoord.y <0.5f)
-		out_color = texture(texture_depth, texCoord);
-	else
-		out_color = vec4(blur(), 1);
+	//if(texCoord.y <0.5f)
+	//	out_color = texture(texture_depth, texCoord);
+	//else
+	//	out_color = vec4(blur(), 1);
+	out_color = texture(texture_colour, texCoord);
 }

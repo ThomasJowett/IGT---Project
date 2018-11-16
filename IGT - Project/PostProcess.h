@@ -4,6 +4,8 @@
 #include "Messaging.h"
 #include "Settings.h"
 
+
+
 class FrameBuffer
 	:public Observer< SettingsEvent, Vector2D>
 {
@@ -14,10 +16,11 @@ private:
 	std::vector<GLenum> drawbuffer;
 
 public:
-	FrameBuffer() {}
+	FrameBuffer() { Settings::GetInstance()->AddObserver(this); }
 	~FrameBuffer() 
 	{
 		Destroy();
+		Settings::GetInstance()->RemoveObserver(this);
 	}
 
 private:

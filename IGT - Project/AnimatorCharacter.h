@@ -26,6 +26,8 @@ public:
 	virtual void Exit(CharacterAnimStates state);
 
 	void CreateAnimations()override;
+
+	void PlayAnimation()
 private:
 	RigidBody2D * mRigidbody;
 };
