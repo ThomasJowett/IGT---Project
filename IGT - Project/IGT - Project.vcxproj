@@ -129,6 +129,7 @@
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="AnimatorCharacter.cpp" />
     <ClCompile Include="AnimatorSnake.cpp" />
+    <ClCompile Include="Astar.cpp" />
     <ClCompile Include="Attack.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -143,6 +144,7 @@
     <ClCompile Include="GameScreenMenu.cpp" />
     <ClCompile Include="GameScreenLevel1.cpp" />
     <ClCompile Include="GeometryGenerator.cpp" />
+    <ClCompile Include="Health.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
@@ -184,6 +186,7 @@
     <ClInclude Include="Animator.h" />
     <ClInclude Include="AnimatorCharacter.h" />
     <ClInclude Include="AnimatorSnake.h" />
+    <ClInclude Include="Astar.h" />
     <ClInclude Include="Attack.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
@@ -199,6 +202,7 @@
     <ClInclude Include="GameScreenMenu.h" />
     <ClInclude Include="GameScreenLevel1.h" />
     <ClInclude Include="GeometryGenerator.h" />
+    <ClInclude Include="Health.h" />
     <ClInclude Include="iComponents.h" />
     <ClInclude Include="iInput.h" />
     <ClInclude Include="Image.h" />

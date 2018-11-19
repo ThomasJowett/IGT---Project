@@ -5,6 +5,9 @@
 #include "Commons.h"
 #include <SDL.h>
 
+constexpr int DEFAULT_ORTHO_WIDTH = 480;
+constexpr int DEFAULT_ORTHO_HEIGHT = 270;
+
 enum class SettingsEvent { ON_RESOLUTION_CHANGE};
 
 class Settings
@@ -42,11 +45,6 @@ private:
 	
 	int mScreen_Width = 1920;
 	int mScreen_Height = 1080;
-
-	//int mDefaultOrtho_Width = 960;
-	//int mDefaultOrtho_Height = 540;
-	int mDefaultOrtho_Width = 480;
-	int mDefaultOrtho_Height = 270;
 
 	float mScreen_Scale;
 	float mZoom = 1;

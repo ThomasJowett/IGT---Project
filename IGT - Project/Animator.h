@@ -3,8 +3,12 @@
 #include "Sprite.h"
 #include <vector>
 #include <memory>
+#include "Messaging.h"
+
+enum class AnimationNotify {ANIM_END};
 
 class Animation
+	:public Subject<AnimationNotify, int>
 {
 public:
 	Animation(int startFrame, int frameCount, float holdTime, Sprite* sprite);
@@ -23,7 +27,7 @@ private:
 
 template<typename T>
 class Animator
-	:public iUpdateable
+	:public iUpdateable, public Observer<AnimationNotify, int>
 {
 public:
 	Animator(GameObject* parent)
@@ -31,6 +35,7 @@ public:
 	{
 		if(GetParent())
 			mSprite = GetParent()->GetComponent<Sprite>();
+		mPreviousState = (T)0;
 	}
 	virtual ~Animator() 
 	{ 
@@ -40,6 +45,8 @@ public:
 	virtual void Enter(T state) = 0;
 	virtual void During(T state, float deltaTime) = 0;
 	virtual void Exit(T state) = 0;
+
+	virtual void OnNotify(AnimationNotify notify, int chanel) {}
 
 	void ChangeState(T state)
 	{

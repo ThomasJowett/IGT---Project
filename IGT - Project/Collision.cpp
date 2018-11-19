@@ -57,6 +57,9 @@ std::vector<Contact> Collision::DetectCollisions(TileMap * tileMap, std::vector<
 		Vector2D contactNormal;
 		float penetrationDepth;
 
+		std::vector<int> tilesCollided;
+		bool alreadyDetected = false;
+
 		//if collider is wider than a tile also test the midpoints
 		if (Xmax - Xmin > tileMap->GetTileWidth())
 		{
@@ -65,22 +68,52 @@ std::vector<Contact> Collision::DetectCollisions(TileMap * tileMap, std::vector<
 			
 			if (tileMap->GetCollisionAt(Vector2D(midPoint, Ymax)))
 			{
-				tileMap->SetColliderPosition(Vector2D(midPoint, Ymax));
-			
-				if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
+				int tile = tileMap->SetColliderPosition(Vector2D(midPoint, Ymax));
+				
+				for (int tileCollided : tilesCollided)
 				{
-					contacts.push_back({ tileMap, gameObjects[i], contactNormal, penetrationDepth });
+					if (tileCollided == tile)
+					{
+						alreadyDetected = true;
+						break;
+					}
 				}
+
+				if (!alreadyDetected)
+				{
+					tilesCollided.push_back(tile);
+
+					if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
+					{
+						contacts.push_back({ tileMap, gameObjects[i], contactNormal, penetrationDepth });
+					}
+				}
+			
+				alreadyDetected = false;
 			}
 			
 			if (tileMap->GetCollisionAt(Vector2D(midPoint, Ymin)))
 			{
-				tileMap->SetColliderPosition(Vector2D(midPoint, Ymin));
-			
-				if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
+				int tile = tileMap->SetColliderPosition(Vector2D(midPoint, Ymin));
+
+				for (int tileCollided : tilesCollided)
 				{
-					contacts.push_back({ tileMap, gameObjects[i], contactNormal, penetrationDepth });
+					if (tileCollided == tile)
+					{
+						alreadyDetected = true;
+						break;
+					}
 				}
+				if (!alreadyDetected)
+				{
+					tilesCollided.push_back(tile);
+					if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
+					{
+						contacts.push_back({ tileMap, gameObjects[i], contactNormal, penetrationDepth });
+					}
+				}
+
+				alreadyDetected = false;
 			}
 		}
 
@@ -92,22 +125,48 @@ std::vector<Contact> Collision::DetectCollisions(TileMap * tileMap, std::vector<
 			
 			if (tileMap->GetCollisionAt(Vector2D(Xmax, midPoint)))
 			{
-				tileMap->SetColliderPosition(Vector2D(Xmax, midPoint));
-			
-				if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
+				int tile = tileMap->SetColliderPosition(Vector2D(Xmax, midPoint));
+
+				for (int tileCollided : tilesCollided)
 				{
-					contacts.push_back({ tileMap, gameObjects[i], contactNormal, penetrationDepth });
+					if (tileCollided == tile)
+					{
+						alreadyDetected = true;
+						break;
+					}
 				}
+				if (!alreadyDetected)
+				{
+					tilesCollided.push_back(tile);
+					if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
+					{
+						contacts.push_back({ tileMap, gameObjects[i], contactNormal, penetrationDepth });
+					}
+				}
+				alreadyDetected = false;
 			}
 			
 			if (tileMap->GetCollisionAt(Vector2D(Xmin, midPoint)))
 			{
-				tileMap->SetColliderPosition(Vector2D(Xmin, midPoint));
-			
-				if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
+				int tile = tileMap->SetColliderPosition(Vector2D(Xmin, midPoint));
+
+				for (int tileCollided : tilesCollided)
 				{
-					contacts.push_back({ tileMap, gameObjects[i], contactNormal, penetrationDepth });
+					if (tileCollided == tile)
+					{
+						alreadyDetected = true;
+						break;
+					}
 				}
+				if (!alreadyDetected)
+				{
+					tilesCollided.push_back(tile);
+					if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
+					{
+						contacts.push_back({ tileMap, gameObjects[i], contactNormal, penetrationDepth });
+					}
+				}
+				alreadyDetected = false;
 			}
 		}
 
@@ -116,45 +175,101 @@ std::vector<Contact> Collision::DetectCollisions(TileMap * tileMap, std::vector<
 		//Top Right
 		if (tileMap->GetCollisionAt(Vector2D(Xmax, Ymax)))
 		{
-			tileMap->SetColliderPosition(Vector2D(Xmax - 1.0f, Ymax - 1.0f));
-		
-			if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
+			int tile = tileMap->SetColliderPosition(Vector2D(Xmax - 1.0f, Ymax - 1.0f));
+
+			for (int tileCollided : tilesCollided)
 			{
-				contacts.push_back({ tileMap, gameObjects[i], contactNormal, penetrationDepth });
+				if (tileCollided == tile)
+				{
+					alreadyDetected = true;
+					break;
+				}
 			}
+			if (!alreadyDetected)
+			{
+				tilesCollided.push_back(tile);
+				if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
+				{
+					contacts.push_back({ tileMap, gameObjects[i], contactNormal, penetrationDepth });
+
+				}
+			}
+			alreadyDetected = false;
 		}
 		
 		//Top Left
 		if (tileMap->GetCollisionAt(Vector2D(Xmin, Ymax)))
 		{
-			tileMap->SetColliderPosition(Vector2D(Xmin, Ymax));
-		
-			if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
+			int tile = tileMap->SetColliderPosition(Vector2D(Xmin, Ymax));
+
+			for (int tileCollided : tilesCollided)
 			{
-				contacts.push_back({ tileMap, gameObjects[i], contactNormal, penetrationDepth });
+				if (tileCollided == tile)
+				{
+					alreadyDetected = true;
+					break;
+				}
 			}
+			if (!alreadyDetected)
+			{
+				tilesCollided.push_back(tile);
+
+				if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
+				{
+					contacts.push_back({ tileMap, gameObjects[i], contactNormal, penetrationDepth });
+				}
+			}
+
+			alreadyDetected = false;
 		}
 		
 		//Bottom Left
 		if (tileMap->GetCollisionAt(Vector2D(Xmin, Ymin)))
 		{
-			tileMap->SetColliderPosition(Vector2D(Xmin, Ymin));
-		
-			if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
+			int tile = tileMap->SetColliderPosition(Vector2D(Xmin, Ymin));
+
+			for (int tileCollided : tilesCollided)
 			{
-				contacts.push_back({ tileMap, gameObjects[i], contactNormal, penetrationDepth });
+				if (tileCollided == tile)
+				{
+					alreadyDetected = true;
+					break;
+				}
 			}
+			if (!alreadyDetected)
+			{
+				tilesCollided.push_back(tile);
+
+				if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
+				{
+					contacts.push_back({ tileMap, gameObjects[i], contactNormal, penetrationDepth });
+				}
+			}
+			alreadyDetected = false;
 		}
 
 		//Bottom Right
 		if (tileMap->GetCollisionAt(Vector2D(Xmax, Ymin)))
 		{
-			tileMap->SetColliderPosition(Vector2D(Xmax, Ymin));
-		
-			if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
+			int tile = tileMap->SetColliderPosition(Vector2D(Xmax, Ymin));
+
+			for (int tileCollided : tilesCollided)
 			{
-				contacts.push_back({ tileMap, gameObjects[i], contactNormal, penetrationDepth });
+				if (tileCollided == tile)
+				{
+					alreadyDetected = true;
+					break;
+				}
 			}
+			if (!alreadyDetected)
+			{
+				tilesCollided.push_back(tile);
+				if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
+				{
+					contacts.push_back({ tileMap, gameObjects[i], contactNormal, penetrationDepth });
+				}
+			}
+			alreadyDetected = false;
 		}
 
 		for (Contact contact : contacts)

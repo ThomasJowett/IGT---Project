@@ -1,15 +1,29 @@
 #pragma once
 #include "iComponents.h"
+#include "Messaging.h"
 
+enum class AttackEvent {ON_ATTACK_BEGIN, ON_ATTACK_END};
 class Attack
-	:public iUpdateable
+	:public iUpdateable, public Subject<AttackEvent, int>
 {
 public:
-	Attack(GameObject* parent);
+	Attack(GameObject* parent, float damage, float cooldown);
 	~Attack() = default;
 
 	void Update(float deltaTime) override;
 
-	float mTimeBetweenAttack;
-	float mStartTimeBetweenAttack;
+	Attack* Clone()override;
+
+	void BeginAttack();
+	void StopAttack();
+
+	bool GetIsAttacking() const { return mIsAttacking; }
+	bool GetIsOnCoolDown() const { return mIsOnCoolDown; }
+
+private:
+	bool mIsAttacking;
+	bool mIsOnCoolDown;
+	float mDamage;
+	float mCurrentTime;
+	float mCoolDown;
 };

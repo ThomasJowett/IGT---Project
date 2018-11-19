@@ -368,7 +368,7 @@ bool TileMap::GetCollisionAt(Vector2D position)
 	return false;
 }
 
-void TileMap::SetColliderPosition(Vector2D position)
+int TileMap::SetColliderPosition(Vector2D position)
 {
 	unsigned int x;
 	unsigned int y;
@@ -380,6 +380,8 @@ void TileMap::SetColliderPosition(Vector2D position)
 			mCollider->SetOffset(Vector2D(((float)x * mTileWidth) + (mTileWidth / 2), ((float)y * -mTileHeight) - (mTileWidth / 2)));
 		}
 	}
+
+	return x * y;
 }
 
 //returns the texture coordinates of a tile index at the 4 corners of the quad

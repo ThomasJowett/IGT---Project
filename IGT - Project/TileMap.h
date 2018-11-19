@@ -29,7 +29,7 @@ public:
 	bool GetCollisionAt(Vector2D position);
 
 	Collider* GetCollider() { return mCollider; }
-	void SetColliderPosition(Vector2D position);
+	int SetColliderPosition(Vector2D position);
 
 	int GetTileWidth() { return mTileWidth; }
 	int GetTileHeight() { return mTileHeight; }

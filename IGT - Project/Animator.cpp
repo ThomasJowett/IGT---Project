@@ -46,6 +46,7 @@ void Animation::Advance()
 	if (++mCurrentFrame >= mStartFrame + mFrameCount)
 	{
 		mCurrentFrame = mStartFrame;
+		Notify(AnimationNotify::ANIM_END, 0);
 	}
 
 	mSprite->SetCurrentFrame(mCurrentFrame);

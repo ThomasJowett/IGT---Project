@@ -2,6 +2,8 @@
 #include "iInput.h"
 #include "GameObject.h"
 #include "RigidBody2D.h"
+#include "Attack.h"
+
 class PlayerPawn :
 	public iInput
 {
@@ -35,7 +37,7 @@ public:
 
 	void MousePosition(int x, int y) {}
 
-	virtual void MouseLeftClick()override {}
+	virtual void MouseLeftClick()override { mAttack->BeginAttack(); }
 	virtual void MouseLeftUnClick()override {}
 	virtual void MouseRightClick()override {}
 	virtual void MouseRightUnClick()override {}
@@ -46,9 +48,8 @@ private:
 	float mWalkSpeed;
 
 	RigidBody2D* mRigidBody;
+	Attack* mAttack;
 
 	iInput* mMenuPawn;
-
-	void Attack();
 };
 

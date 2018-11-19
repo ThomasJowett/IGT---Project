@@ -1,6 +1,7 @@
 #pragma once
 #include "Animator.h"
 #include "RigidBody2D.h"
+#include "Attack.h"
 
 enum CharacterAnimStates
 {
@@ -9,10 +10,11 @@ enum CharacterAnimStates
 	CHARACTER_RIGHT,
 	CHARACTER_BACK,
 	CHARACTER_IDLE,
+	CHARACTER_ATTACK
 };
 
 class AnimatorCharacter :
-	public Animator<CharacterAnimStates>
+	public Animator<CharacterAnimStates>, public Observer<AttackEvent, int>
 {
 public:
 	AnimatorCharacter(GameObject* parent);
@@ -27,7 +29,11 @@ public:
 
 	void CreateAnimations()override;
 
-	void PlayAnimation()
+	void OnNotify(AnimationNotify notify, int chanel) override;
+	void OnNotify(AttackEvent notify, int payload)override;
+
 private:
 	RigidBody2D * mRigidbody;
+	Attack* mAttack;
+	bool mIsAttacking;
 };

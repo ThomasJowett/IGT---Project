@@ -123,7 +123,7 @@ void Settings::ApplySettings()
 
 	SDL_SetWindowSize(gWindow, mScreen_Width, mScreen_Height);
 
-	mScreen_Scale = (float)(mScreen_Width + mScreen_Height) / (float)((mDefaultOrtho_Width * mZoom) + mDefaultOrtho_Height * mZoom);
+	mScreen_Scale = (float)(mScreen_Width + mScreen_Height) / (float)((mZoom * DEFAULT_ORTHO_WIDTH) + mZoom * DEFAULT_ORTHO_HEIGHT);
 
 	SetVsync(mVSYNC);
 

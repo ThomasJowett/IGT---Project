@@ -12,6 +12,8 @@
 #include "AnimatorCharacter.h"
 #include "AnimatorSnake.h"
 #include "PauseMenu.h"
+#include "Health.h"
+#include "Attack.h"
 
 
 GameScreenLevel1::GameScreenLevel1()
@@ -34,7 +36,7 @@ GameScreenLevel1::GameScreenLevel1()
 	GameObject* gameObject;
 
 	PhysicsMaterial physicsMaterial = { 30.0f, 0.8f, 0.5f, 10.0f };
-	PhysicsMaterial physicsMaterialcircle = { 3.0f, 0.8f, 0.5f, 1.0f };
+	PhysicsMaterial physicsMaterialcircle = { 300.0f, 0.8f, 0.5f, 1.0f };
 
 	//Cursor
 	transform = new Transform();
@@ -49,16 +51,19 @@ GameScreenLevel1::GameScreenLevel1()
 	transform = new Transform(Vector3D(191.75, -1424, 1), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Player 1", transform);
 	gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Barbarian.png"), 64, 64, 10, 10,Vector2D( 0, 32 ));
-	//gameObject->AddComponent<Sprite>(squareTexture, 20, 10, Vector2D(0, -20));
 	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
 	gameObject->GetComponent<TextRender>()->UpdateText("Player 1", { 0,0,0 }, 0, 48, CENTER);
-	gameObject->AddComponent<Circle2D>(10, Vector2D(0, 0));
-	//gameObject->AddComponent<Box2D>(20, 10, Vector2D(0, 0));
+	//gameObject->AddComponent<Circle2D>(10, Vector2D(0, 0));
+	gameObject->AddComponent<Box2D>(20, 10, Vector2D(0, 0));
 	gameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, physicsMaterial);
+	gameObject->AddComponent<Attack>(25.0f, 2.0f);
 	gameObject->AddComponent<AnimatorCharacter>();
+	gameObject->AddComponent<Health>(100.0f);
 	mGameObjects.emplace_back(gameObject);
 	Root->AddChild(gameObject);
 	PlayerPawn* characterController = new PlayerPawn(gameObject, menu);
+
+	gameObject->GetComponent<Health>()->AddDamageOverTime(-2, 10, 1);
 
 	//player 2
 	transform = new Transform(Vector3D(256, -1424, 1), 0, Vector2D(1, 1));
@@ -69,6 +74,7 @@ GameScreenLevel1::GameScreenLevel1()
 	//gameObject->AddComponent<Box2D>(20, 10, Vector2D(0, 0));
 	gameObject->AddComponent<Circle2D>(10, Vector2D(0, 0));
 	gameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, physicsMaterial);
+	gameObject->AddComponent<Attack>(25.0f, 2.0f);
 	gameObject->AddComponent<AnimatorCharacter>();
 	mGameObjects.emplace_back(gameObject);
 	Root->AddChild(gameObject);
