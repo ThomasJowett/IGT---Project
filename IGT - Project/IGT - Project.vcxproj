@@ -156,6 +156,7 @@
     <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="PlayerPawn.cpp" />
+    <ClCompile Include="Prefab.cpp" />
     <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="RigidBody2D.cpp" />
     <ClCompile Include="SceneNode.cpp" />
@@ -218,6 +219,7 @@
     <ClInclude Include="PlayerController.h" />
     <ClInclude Include="PlayerPawn.h" />
     <ClInclude Include="PostProcess.h" />
+    <ClInclude Include="Prefab.h" />
     <ClInclude Include="QuadTree.h" />
     <ClInclude Include="RandomGenerator.h" />
     <ClInclude Include="resource.h" />

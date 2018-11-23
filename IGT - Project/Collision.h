@@ -25,6 +25,8 @@ namespace Collision
 	std::vector<Contact> DetectCollisions(TileMap* tileMap, std::vector<GameObject*>gameObjects);
 	
 	void ResolveCollision(Contact contact);
+
+	QuadTree* GetQuadtree();
 };
 
 #endif // !_COLLISION_H

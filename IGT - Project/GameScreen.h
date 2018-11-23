@@ -25,6 +25,8 @@ public:
 	std::vector<GameObject*> GetAllGameObjects();
 	std::vector<GameObject*> GetAllGameObjectsWithTag(std::string tag);
 
+	void AddGameObjects(std::vector<GameObject*> gameObjects);
+
 protected:
 	SceneNode * Root;
 	SceneNode * RootWidget;

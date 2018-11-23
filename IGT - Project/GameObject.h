@@ -42,6 +42,9 @@ public:
 	template <typename ComponentType>
 	ComponentType* GetComponent() const;
 
+	template <typename ComponentType>
+	ComponentType* GetComponent(int number) const;
+
 	Transform* GetTransform() const { return mTransform; }
 
 	const char* GetName() { return mName; }
@@ -52,6 +55,8 @@ public:
 
 	Layer GetLayer() const { return mLayer; }
 	void SetLayer(Layer layer) { mLayer = layer; }
+
+	SceneNode* GetParent() const { return mParent; }
 private:
 	const char* mName;
 
@@ -132,5 +137,22 @@ inline ComponentType * GameObject::GetComponent() const
 	return nullptr;
 
 	//TODO: find better solution for getting a component that dosen't use dynamic_cast
+}
+template<typename ComponentType>
+inline ComponentType * GameObject::GetComponent(int number) const
+{
+	int counter = 0;
+	for (auto && component : mComponents)
+	{
+		if (ComponentType * returnComponent = dynamic_cast<ComponentType*>(component.get()))
+		{
+			counter++;
+			if (counter == number)
+			{
+				return returnComponent;
+			}
+		}
+	}
+	return nullptr;
 }
 #endif // !_GAMEOBJECT_H

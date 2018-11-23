@@ -1,6 +1,7 @@
 #pragma once
 #include "iComponents.h"
 #include "Messaging.h"
+#include "Collider.h"
 
 enum class AttackEvent {ON_ATTACK_BEGIN, ON_ATTACK_END};
 class Attack
@@ -26,4 +27,6 @@ private:
 	float mDamage;
 	float mCurrentTime;
 	float mCoolDown;
+
+	Collider* mCollider;
 };

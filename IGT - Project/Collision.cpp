@@ -1,28 +1,77 @@
 #include "Collision.h"
 #include <algorithm>    // std::max
 
+static QuadTree* quadtree = new QuadTree(new AABB(1600, 1600, 800, -800),0);
+
 std::vector<Contact> Collision::DetectCollisions(std::vector<GameObject*> gameObjects)
 {
+	quadtree->Clear();
 	std::vector<Contact> contacts;
+
+	//for (GameObject* gameObject : gameObjects)
+	//{
+	//	quadtree->Insert(gameObject);
+	//}
+	
+	//std::vector<std::pair<GameObject*, GameObject*>> testedPairs;
+	//
+	//for (GameObject* gameObject : gameObjects)
+	//{
+	//	std::vector<GameObject*>coarseList = std::vector<GameObject*>();
+	//
+	//	quadtree->Retrieve(coarseList, gameObject);
+	//
+	//	if (coarseList.size())
+	//	{
+	//		Collider* collider1 = gameObject->GetComponent<Collider>();
+	//
+	//		for (GameObject* otherObject : coarseList)
+	//		{
+	//			std::pair<GameObject*, GameObject*> thisPair(gameObject, otherObject);
+	//
+	//			if (std::find(testedPairs.begin(), testedPairs.end(), thisPair) == testedPairs.end())
+	//			{
+	//				testedPairs.push_back(std::pair<GameObject*, GameObject*>(otherObject, gameObject));
+	//
+	//				Collider* collider2 = otherObject->GetComponent<Collider>();
+	//
+	//				if (collider1 != nullptr && collider2 != nullptr)
+	//				{
+	//					Vector2D contactNormal;
+	//					float penetrationDepth;
+	//
+	//					if (collider1->IntersectsCollider(collider2, contactNormal, penetrationDepth))
+	//					{
+	//						collider1->Notify(OverlapEvent::BEGIN_OVERLAP, gameObject);
+	//						collider2->Notify(OverlapEvent::BEGIN_OVERLAP, otherObject);
+	//
+	//						contacts.push_back({ gameObject, otherObject, contactNormal, penetrationDepth });
+	//					}
+	//				}
+	//			}
+	//		}
+	//	}
+	//	coarseList.clear();
+	//}
 
 	for (int i = 0; i < (int)gameObjects.size() - 1; i++)
 	{
 		Collider* collider1 = gameObjects[i]->GetComponent<Collider>();
-
+	
 		for (int j = i + 1; j < (int)gameObjects.size(); j++)
 		{
 			Collider* collider2 = gameObjects[j]->GetComponent<Collider>();
-	
+
 			if (collider1 != nullptr && collider2 != nullptr)
 			{
 				Vector2D contactNormal;
 				float penetrationDepth;
-	
+
 				if (collider1->IntersectsCollider(collider2, contactNormal, penetrationDepth))
 				{
 					collider1->Notify(OverlapEvent::BEGIN_OVERLAP, gameObjects[j]);
 					collider2->Notify(OverlapEvent::BEGIN_OVERLAP, gameObjects[i]);
-					
+
 					contacts.push_back({ gameObjects[i], gameObjects[j], contactNormal, penetrationDepth });
 				}
 			}
@@ -50,7 +99,7 @@ std::vector<Contact> Collision::DetectCollisions(TileMap * tileMap, std::vector<
 
 		Ymin -= 1.0f;
 		Xmin -= 1.0f;
-
+		
 		Ymax += 1.0f;
 		Xmax += 1.0f;
 		
@@ -374,4 +423,9 @@ void Collision::ResolveCollision(Contact contact)
 
 		return;
 	}
+}
+
+QuadTree * Collision::GetQuadtree()
+{
+	return quadtree;
 }

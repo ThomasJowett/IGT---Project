@@ -1,6 +1,5 @@
 #pragma once
 #include "GameObject.h"
-
 class AABB
 {
 public:
@@ -30,6 +29,7 @@ public:
 	void Subdivide();
 	int GetIndex(GameObject* gameobject);
 	std::vector<GameObject*>Retrieve(std::vector<GameObject*> &returnObjects, GameObject* gameobject);
+	void Clear();
 private:
 
 	QuadTree * mNodes[4];

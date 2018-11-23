@@ -132,3 +132,15 @@ std::vector<GameObject*> GameScreen::GetAllGameObjectsWithTag(std::string tag)
 	}
 	return returnObjects;
 }
+
+void GameScreen::AddGameObjects(std::vector<GameObject*> gameObjects)
+{
+	for (GameObject* gameObject : gameObjects)
+	{
+		mGameObjects.emplace_back(gameObject);
+		if (gameObject->GetParent() == nullptr)
+		{
+			Root->AddChild(gameObject);
+		}
+	}
+}

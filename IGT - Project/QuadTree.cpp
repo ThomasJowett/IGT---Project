@@ -1,6 +1,6 @@
 #include "QuadTree.h"
 #include "Collider.h"
-
+#include "Texture2D.h"
 
 QuadTree::QuadTree(AABB* boundary, int level)
 	:mBoundary(boundary), mLevel(level)
@@ -11,12 +11,12 @@ QuadTree::QuadTree(AABB* boundary, int level)
 	mNodes[3] = nullptr;
 
 	mGameObjects = std::vector<GameObject*>();
-
 }
 
 
 QuadTree::~QuadTree()
 {
+	Clear();
 }
 
 void QuadTree::Insert(GameObject * gameobject)
@@ -80,30 +80,33 @@ int QuadTree::GetIndex(GameObject * gameobject)
 {
 	int index = -1;
 	Collider* collider = gameobject->GetComponent<Collider>();
-	bool topHalf = (collider->TestAxis(Vector2D(0, 1), mBoundary->GetPositionY())
-		&& collider->TestAxis(Vector2D(0, -1), (mBoundary->GetHeight()/2) + mBoundary->GetPositionY()));
-	bool bottomHalf = (collider->TestAxis(Vector2D(0, -1), mBoundary->GetPositionY())
-		&& collider->TestAxis(Vector2D(0, -1), mBoundary->GetPositionY() - (mBoundary->GetHeight()/2)));
+
+	float Xmax, Xmin, Ymax, Ymin;
+
+	collider->GetBounds(Xmax, Xmin, Ymax, Ymin);
+
+	bool topHalf = (Ymin > mBoundary->GetPositionY() && Ymax < (mBoundary->GetHeight()/2 + mBoundary->GetPositionY()));
+
+	bool bottomHalf = (Ymax < mBoundary->GetPositionY() && Ymin > (mBoundary->GetPositionY() - (mBoundary->GetHeight()/2)));
 
 	float boundary = mBoundary->GetHeight();
 
-	if (collider->TestAxis(Vector2D(1,0), mBoundary->GetPositionX())
-		&& collider->TestAxis(Vector2D(-1, 0), mBoundary->GetPositionX() + (mBoundary->GetWidth()/2)))
+	//right half
+	if (Xmin > mBoundary->GetPositionX() && Xmax < (mBoundary->GetPositionX() + (mBoundary->GetWidth()/2)))
 	{
 		if (topHalf)
 			index = 1;
 		else if (bottomHalf)
 			index = 3;
 	}
-	else if (collider->TestAxis(Vector2D(-1, 0), mBoundary->GetPositionX())
-		&& collider->TestAxis(Vector2D(1, 0), mBoundary->GetPositionX() - (mBoundary->GetWidth()/2)))
+	//left half
+	else if (Xmax < mBoundary->GetPositionX() && Xmin > (mBoundary->GetPositionX() - (mBoundary->GetWidth()/2)))
 	{
 		if (topHalf)
 			index = 0;
 		else if (bottomHalf)
 			index = 2;
 	}
-
 	return index;
 }
 
@@ -124,4 +127,18 @@ std::vector<GameObject*> QuadTree::Retrieve(std::vector<GameObject*>& returnObje
 			returnObjects.push_back(gameObject);
 	}
 	return returnObjects;
+}
+
+void QuadTree::Clear()
+{
+	mGameObjects.clear();
+
+	for (int i = 0; i < 4; i++)
+	{
+		if (mNodes[i] != nullptr)
+		{
+			mNodes[i]->Clear();
+			mNodes[i] = nullptr;
+		}
+	}
 }

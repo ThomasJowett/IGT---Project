@@ -15,6 +15,8 @@
 #include "Health.h"
 #include "Attack.h"
 
+#include "Prefab.h"
+
 
 GameScreenLevel1::GameScreenLevel1()
 {
@@ -55,6 +57,7 @@ GameScreenLevel1::GameScreenLevel1()
 	gameObject->GetComponent<TextRender>()->UpdateText("Player 1", { 0,0,0 }, 0, 48, CENTER);
 	//gameObject->AddComponent<Circle2D>(10, Vector2D(0, 0));
 	gameObject->AddComponent<Box2D>(20, 10, Vector2D(0, 0));
+	gameObject->AddComponent<Circle2D>(20, Vector2D(0, 0));
 	gameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, physicsMaterial);
 	gameObject->AddComponent<Attack>(25.0f, 2.0f);
 	gameObject->AddComponent<AnimatorCharacter>();
@@ -62,8 +65,6 @@ GameScreenLevel1::GameScreenLevel1()
 	mGameObjects.emplace_back(gameObject);
 	Root->AddChild(gameObject);
 	PlayerPawn* characterController = new PlayerPawn(gameObject, menu);
-
-	gameObject->GetComponent<Health>()->AddDamageOverTime(-2, 10, 1);
 
 	//player 2
 	transform = new Transform(Vector3D(256, -1424, 1), 0, Vector2D(1, 1));
@@ -76,6 +77,7 @@ GameScreenLevel1::GameScreenLevel1()
 	gameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, physicsMaterial);
 	gameObject->AddComponent<Attack>(25.0f, 2.0f);
 	gameObject->AddComponent<AnimatorCharacter>();
+	gameObject->AddComponent<Health>(100.0f);
 	mGameObjects.emplace_back(gameObject);
 	Root->AddChild(gameObject);
 	PlayerPawn* character2Controller = new PlayerPawn(gameObject, menu);
@@ -103,39 +105,23 @@ GameScreenLevel1::GameScreenLevel1()
 
 	PlayerController* playerController2 = new PlayerController(1, character2Controller);
 	mPlayerControllers.push_back(playerController2);
-	
-	
-	//transform = new Transform(Vector3D(0, 0, 5), 0, Vector2D(1, 1));
-	//gameObject = new GameObject("Circle", transform);
-	//gameObject->AddComponent<Sprite>(circleTexture, 32, 32);
-	//gameObject->AddComponent<Circle2D>(16, Vector2D());
-	//mGameObjects.emplace_back(gameObject);
-	//Root->AddChild(gameObject);
-	//
-	//
-	//transform = new Transform(Vector3D(-80, 0, 5), 0, Vector2D(1, 1));
-	//gameObject = new GameObject("Square", transform);
-	//gameObject->AddComponent<Sprite>(squareTexture, 32, 32);
-	//gameObject->AddComponent<Box2D>(32, 32, Vector2D());
-	//mGameObjects.emplace_back(gameObject);
-	//
-	//Root->AddChild(gameObject);
-	//
-	transform = new Transform(Vector3D(0, -50, 5), 0, Vector2D(1, 1));
-	gameObject = new GameObject("Ball", transform);
-	gameObject->AddComponent<Sprite>(BarrelTexture, 32, 32, Vector2D(0,8));
-	gameObject->AddComponent<Circle2D>(8, Vector2D());
-	gameObject->AddComponent<RigidBody2D>(100, Vector2D(0, 0), 1, 0, physicsMaterialcircle);
-	mGameObjects.emplace_back(gameObject);
-	Root->AddChild(gameObject);
+
+	AddGameObjects(MediumLootPrefab().GetPrefab());
+	mGameObjects.back()->GetTransform()->mPosition = Vector3D(245, -1424, 1);
 	
 	for (int i = 0; i < 10; i++)
 	{
-		gameObject = new GameObject(*gameObject);
-		gameObject->GetTransform()->mPosition = Vector3D(200 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
-		//gameObject->GetComponent<RigidBody2D>()->SetVelocity(Vector2D(80 * (float)rand() / (RAND_MAX)-40, 80 * (float)rand() / (RAND_MAX)-40));
-		mGameObjects.emplace_back(gameObject);
-		Root->AddChild(gameObject);
+		AddGameObjects(BarrelPrefab().GetPrefab());
+		mGameObjects.back()->GetTransform()->mPosition = Vector3D(400 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
+
+		AddGameObjects(ChestPrefab().GetPrefab());
+		mGameObjects.back()->GetTransform()->mPosition = Vector3D(400 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
+
+		AddGameObjects(LargeLootPrefab().GetPrefab());
+		mGameObjects.back()->GetTransform()->mPosition = Vector3D(400 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
+
+		AddGameObjects(MediumLootPrefab().GetPrefab());
+		mGameObjects.back()->GetTransform()->mPosition = Vector3D(400 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
 	}
 	//
 	//transform = new Transform(Vector3D(0, -50, 5), 0, Vector2D(1, 1));
@@ -164,7 +150,7 @@ void GameScreenLevel1::Update(float deltaTime, std::vector<SDL_Event> events)
 
 	for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
 	{
-		if (it->get()->GetComponent<Collider>())
+		if (it->get()->GetComponent<Collider>() && it->get()->GetActive())
 		{
 			collisionObejcts.push_back(it->get());
 		}
@@ -173,6 +159,7 @@ void GameScreenLevel1::Update(float deltaTime, std::vector<SDL_Event> events)
 			SortObjectsDepth(it->get());
 	}
 
+	mShaderBasic->Bind();
 	Collision::DetectCollisions(collisionObejcts);
 
 	Collision::DetectCollisions(mTileMap, collisionObejcts);

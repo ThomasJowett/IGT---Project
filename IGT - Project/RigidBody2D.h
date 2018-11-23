@@ -38,6 +38,8 @@ public:
 	PhysicsMaterial GetPhysicsMaterial()const { return mPhysicsMaterial; }
 	void SetPhysicsMaterial(PhysicsMaterial physicsMaterial) { mPhysicsMaterial = physicsMaterial; }
 
+	bool GetIsAsleep() const { return mIsAsleep; }
+
 private:
 	float mMass;
 	float mInverseMass;
