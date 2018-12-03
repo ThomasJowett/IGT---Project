@@ -68,6 +68,8 @@ private:
 
 	std::vector<iUpdateable*>mUpdateableComponents;
 	std::vector<iRenderable*>mRenderableComponents;
+
+	unsigned int mUniqueID;
 };
 
 //Add component by passing type and the parameters

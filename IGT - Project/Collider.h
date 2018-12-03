@@ -38,10 +38,10 @@ public:
 	virtual bool IntersectsCollider(Collider* otherCollider, Vector2D& normal, float& penetrationDepth) = 0;
 	virtual bool ContainsPoint(Vector2D point) = 0;
 	virtual bool TestAxis(Vector2D axis, float offset) = 0;
-	virtual void GetBounds(float& Xmax, float &Xmin, float &Ymax, float &Ymin) = 0;
+	virtual void GetBounds(float& Xmax, float &Xmin, float &Ymax, float &Ymin)const = 0;
 	
 
-	Vector2D GetCentre() 
+	Vector2D GetCentre() const
 	{
 		Matrix4x4 translate = Matrix4x4::Translate(GetParent()->GetWorldTransform()->mPosition);
 		Matrix4x4 rotation = Matrix4x4::RotateZ(GetParent()->GetWorldTransform()->mRotation);
@@ -58,8 +58,8 @@ protected:
 	bool mIsTrigger;
 
 	std::vector<Vector2D> GetAxis(std::vector<Vector2D> box1Corners, std::vector<Vector2D> box2Corners);
-	void ProjectCornersOnAxis(Vector2D axis, std::vector<Vector2D> corners, float & min, float & max);
-	void ProjectCircleOnAxis(Vector2D axis, Circle2D circle, float & min, float & max);
+	void ProjectCornersOnAxis(Vector2D axis, std::vector<Vector2D> corners, float & min, float & max) const;
+	void ProjectCircleOnAxis(Vector2D axis, Circle2D circle, float & min, float & max) const;
 	bool TestAxis(Vector2D axis, float minA, float maxA, float minB, float maxB, Vector2D & mtvAxis, float & mtvDistance);
 
 	bool BoxBox(Box2D* box1, Box2D* box2, Vector2D & normal, float& penetrationDepth);
@@ -77,9 +77,9 @@ public:
 	bool IntersectsCollider(Collider* otherCollider, Vector2D& normal, float& penetrationDepth)override;
 	bool ContainsPoint(Vector2D point)override;
 	bool TestAxis(Vector2D axis, float offset)override;
-	void GetBounds(float& Xmax, float &Xmin, float &Ymax, float &Ymin)override;
+	void GetBounds(float& Xmax, float &Xmin, float &Ymax, float &Ymin)const override;
 
-	std::vector<Vector2D> GetCorners();
+	std::vector<Vector2D> GetCorners() const;
 	
 	Component* Clone()override;
 private:
@@ -97,7 +97,7 @@ public:
 	bool IntersectsCollider(Collider* otherCollider, Vector2D& normal, float& penetrationDepth)override;
 	bool ContainsPoint(Vector2D point)override;
 	bool TestAxis(Vector2D axis, float offset)override;
-	void GetBounds(float& Xmax, float &Xmin, float &Ymax, float &Ymin)override;
+	void GetBounds(float& Xmax, float &Xmin, float &Ymax, float &Ymin)const override;
 	float GetRadius() const { return mRadius; }
 
 	Component* Clone()override;

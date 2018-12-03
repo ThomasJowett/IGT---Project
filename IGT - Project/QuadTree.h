@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+
 class AABB
 {
 public:
@@ -22,7 +23,7 @@ public:
 	QuadTree(AABB* boundary, int level);
 	~QuadTree();
 
-	int MAXOBJECTS = 10;
+	int MAXOBJECTS = 5;
 	int MAXLEVELS = 5;
 
 	void Insert(GameObject* gameobject);
@@ -30,6 +31,8 @@ public:
 	int GetIndex(GameObject* gameobject);
 	std::vector<GameObject*>Retrieve(std::vector<GameObject*> &returnObjects, GameObject* gameobject);
 	void Clear();
+
+	void Render(Shader* shader);
 private:
 
 	QuadTree * mNodes[4];

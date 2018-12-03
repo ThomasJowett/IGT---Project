@@ -3,6 +3,7 @@
 #include "Settings.h"
 #include "GeometryGenerator.h"
 #include "Texture2D.h"
+#include "Collision.h"
 
 GameScreen::GameScreen()
 {
@@ -55,6 +56,7 @@ void GameScreen::Render()
 
 	//Traverse through the scene graph rendering each object starting at the root
 	Root->Traverse(mShaderBasic, identityMatrix);
+	Collision::GetQuadtree()->Render(mShaderBasic);
 	mFrameBuffer.Unbind();
 
 	//Now render to the back buffer

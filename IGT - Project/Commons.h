@@ -1,9 +1,11 @@
-#pragma once
+#ifndef _COMMONS_H
+#define _COMMONS_H
 
 #include<glew.h>
 #include <string>
 #include <vector>
 #include"Vector.h"
+#include <windows.h>
 
 enum SCREENS
 {
@@ -69,4 +71,7 @@ namespace Util
 
 		return elems;
 	}
+
+
 };
+#endif // !_COMMONS_H

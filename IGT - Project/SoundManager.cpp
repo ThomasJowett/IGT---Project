@@ -107,7 +107,7 @@ bool SoundManager::PlaySoundAtLocation(const std::string filename, int channel, 
 void SoundManager::LoadMusic(const char* filename)
 {
 	mMusic = Mix_LoadMUS(filename);
-	if (mMusic == NULL)
+	if (mMusic == nullptr)
 	{
 		std::cerr << "Failed to load background music! Error: " << Mix_GetError() << std::endl;
 	}
@@ -120,7 +120,7 @@ void SoundManager::LoadMusic(const char* filename)
 bool SoundManager::LoadSoundEffect(std::string filename)
 {
 	Mix_Chunk* sound = Mix_LoadWAV(filename.c_str());
-	if (sound == NULL)
+	if (sound == nullptr)
 	{
 		std::cerr << "Failed to load Sound effect! Error: " << Mix_GetError() << std::endl;
 		return false;

@@ -18,7 +18,7 @@ PlayerController::~PlayerController()
 void PlayerController::Update(std::vector<SDL_Event> events)
 {
 	SDL_PumpEvents();
-	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+	const Uint8* currentKeyStates = SDL_GetKeyboardState(nullptr);
 
 	for (SDL_Event e : events)
 	{

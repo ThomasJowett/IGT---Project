@@ -1,6 +1,8 @@
 #include "QuadTree.h"
 #include "Collider.h"
 #include "Texture2D.h"
+#include "Sprite.h"
+#include "TextRender.h"
 
 QuadTree::QuadTree(AABB* boundary, int level)
 	:mBoundary(boundary), mLevel(level)
@@ -141,4 +143,20 @@ void QuadTree::Clear()
 			mNodes[i] = nullptr;
 		}
 	}
+}
+
+void QuadTree::Render(Shader* shader)
+{
+	Sprite* sprite = new Sprite(nullptr, Texture2D::GetTexture2D("Images/SelectionBox.png"), mBoundary->GetWidth(), mBoundary->GetHeight(), Vector2D(mBoundary->GetPositionX(), mBoundary->GetPositionY()));
+	sprite->Render(shader);
+
+	if (!mIsLeaf)
+	{
+		mNodes[0]->Render(shader);
+		mNodes[1]->Render(shader);
+		mNodes[2]->Render(shader);
+		mNodes[3]->Render(shader);
+	}
+
+	delete sprite;
 }

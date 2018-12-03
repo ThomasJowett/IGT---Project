@@ -1,5 +1,6 @@
 #include "Collider.h"
 #include <iostream>
+#include "Timer.h"
 
 //takes a min and max value for two colliders along an axis and returns if the ranges are overlapping
 bool Collider::TestAxis(Vector2D axis, float minA, float maxA, float minB, float maxB, Vector2D & mtvAxis, float & mtvDistance)
@@ -150,7 +151,7 @@ bool Box2D::TestAxis(Vector2D axis, float offset)
 	return min > offset;
 }
 
-void Box2D::GetBounds(float & Xmax, float & Xmin, float & Ymax, float & Ymin)
+void Box2D::GetBounds(float & Xmax, float & Xmin, float & Ymax, float & Ymin) const
 {
 	std::vector<Vector2D> corners = GetCorners();
 
@@ -158,7 +159,7 @@ void Box2D::GetBounds(float & Xmax, float & Xmin, float & Ymax, float & Ymin)
 	ProjectCornersOnAxis(Vector2D(0, 1), corners, Ymin, Ymax);
 }
 
-std::vector<Vector2D> Box2D::GetCorners()
+std::vector<Vector2D> Box2D::GetCorners() const
 {
 	float halfWidth = mWidth / 2;
 	float halfHeight = mHeight / 2;
@@ -198,7 +199,7 @@ std::vector<Vector2D> Collider::GetAxis(std::vector<Vector2D> box1Corners, std::
 	return axis;
 }
 
-void Collider::ProjectCornersOnAxis(Vector2D axis, std::vector<Vector2D> corners, float & min, float & max)
+void Collider::ProjectCornersOnAxis(Vector2D axis, std::vector<Vector2D> corners, float & min, float & max) const
 {
 	float dotProduct = Vector2D::Dot(axis, corners[0]);
 	min = dotProduct;
@@ -218,7 +219,7 @@ void Collider::ProjectCornersOnAxis(Vector2D axis, std::vector<Vector2D> corners
 	}
 }
 
-void Collider::ProjectCircleOnAxis(Vector2D axis, Circle2D circle, float & min, float & max)
+void Collider::ProjectCircleOnAxis(Vector2D axis, Circle2D circle, float & min, float & max) const
 {
 	float dotProduct = Vector2D::Dot(axis, circle.GetCentre());
 
@@ -235,7 +236,6 @@ bool Circle2D::IntersectsCollider(Collider * otherCollider, Vector2D & normal, f
 		{
 			//because BoxCircle() tests from box to circle and we need circle to box the normal is flipped
 			normal = -normal;
-			//penetrationDepth /= 100;//TODO : fix this properly
 			return true;
 		}
 		else
@@ -244,10 +244,8 @@ bool Circle2D::IntersectsCollider(Collider * otherCollider, Vector2D & normal, f
 	else if(otherCollider->mType == CIRCLE2D)
 	{
 		Circle2D * otherCircle = dynamic_cast<Circle2D*>(otherCollider);
-		
 		return CircleCircle(this, otherCircle, normal, penetrationDepth);
 	}
-
 	return false;
 }
 
@@ -265,7 +263,7 @@ bool Circle2D::TestAxis(Vector2D axis, float offset)
 	return min > offset;
 }
 
-void Circle2D::GetBounds(float & Xmax, float & Xmin, float & Ymax, float & Ymin)
+void Circle2D::GetBounds(float & Xmax, float & Xmin, float & Ymax, float & Ymin) const
 {
 	Vector2D position = GetCentre();
 

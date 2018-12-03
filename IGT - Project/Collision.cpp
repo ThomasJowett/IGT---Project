@@ -1,5 +1,6 @@
 #include "Collision.h"
-#include <algorithm>    // std::max
+//#include "Timer.h"
+#include "BinaryTree.h"
 
 static QuadTree* quadtree = new QuadTree(new AABB(1600, 1600, 800, -800),0);
 
@@ -8,75 +9,86 @@ std::vector<Contact> Collision::DetectCollisions(std::vector<GameObject*> gameOb
 	quadtree->Clear();
 	std::vector<Contact> contacts;
 
-	//for (GameObject* gameObject : gameObjects)
-	//{
-	//	quadtree->Insert(gameObject);
-	//}
 	
-	//std::vector<std::pair<GameObject*, GameObject*>> testedPairs;
-	//
-	//for (GameObject* gameObject : gameObjects)
-	//{
-	//	std::vector<GameObject*>coarseList = std::vector<GameObject*>();
-	//
-	//	quadtree->Retrieve(coarseList, gameObject);
-	//
-	//	if (coarseList.size())
-	//	{
-	//		Collider* collider1 = gameObject->GetComponent<Collider>();
-	//
-	//		for (GameObject* otherObject : coarseList)
-	//		{
-	//			std::pair<GameObject*, GameObject*> thisPair(gameObject, otherObject);
-	//
-	//			if (std::find(testedPairs.begin(), testedPairs.end(), thisPair) == testedPairs.end())
-	//			{
-	//				testedPairs.push_back(std::pair<GameObject*, GameObject*>(otherObject, gameObject));
-	//
-	//				Collider* collider2 = otherObject->GetComponent<Collider>();
-	//
-	//				if (collider1 != nullptr && collider2 != nullptr)
-	//				{
-	//					Vector2D contactNormal;
-	//					float penetrationDepth;
-	//
-	//					if (collider1->IntersectsCollider(collider2, contactNormal, penetrationDepth))
-	//					{
-	//						collider1->Notify(OverlapEvent::BEGIN_OVERLAP, gameObject);
-	//						collider2->Notify(OverlapEvent::BEGIN_OVERLAP, otherObject);
-	//
-	//						contacts.push_back({ gameObject, otherObject, contactNormal, penetrationDepth });
-	//					}
-	//				}
-	//			}
-	//		}
-	//	}
-	//	coarseList.clear();
-	//}
-
-	for (int i = 0; i < (int)gameObjects.size() - 1; i++)
+	for (GameObject* gameObject : gameObjects)
 	{
-		Collider* collider1 = gameObjects[i]->GetComponent<Collider>();
+		quadtree->Insert(gameObject);
+	}
 	
-		for (int j = i + 1; j < (int)gameObjects.size(); j++)
+	
+	
+	std::vector<std::pair<GameObject*, GameObject*>> testedPairs;
+	
+	for (GameObject* gameObject : gameObjects)
+	{
+		std::vector<GameObject*>coarseList = std::vector<GameObject*>();
+		//long long start = Util::Nanoseconds_now();
+		quadtree->Retrieve(coarseList, gameObject);
+		//long long end = Util::Nanoseconds_now();
+		//
+		//long long delta = end - start;
+		//std::cout << delta << std::endl;
+	
+		if (coarseList.size())
 		{
-			Collider* collider2 = gameObjects[j]->GetComponent<Collider>();
-
-			if (collider1 != nullptr && collider2 != nullptr)
+			Collider* collider1 = gameObject->GetComponent<Collider>();
+	
+			for (GameObject* otherObject : coarseList)
 			{
-				Vector2D contactNormal;
-				float penetrationDepth;
-
-				if (collider1->IntersectsCollider(collider2, contactNormal, penetrationDepth))
+				std::pair<GameObject*, GameObject*> thisPair(gameObject, otherObject);
+	
+				bool found = std::find(testedPairs.begin(), testedPairs.end(), thisPair) == testedPairs.end();
+	
+				if (found)
 				{
-					collider1->Notify(OverlapEvent::BEGIN_OVERLAP, gameObjects[j]);
-					collider2->Notify(OverlapEvent::BEGIN_OVERLAP, gameObjects[i]);
-
-					contacts.push_back({ gameObjects[i], gameObjects[j], contactNormal, penetrationDepth });
+					testedPairs.push_back(std::pair<GameObject*, GameObject*>(otherObject, gameObject));
+	
+					Collider* collider2 = otherObject->GetComponent<Collider>();
+	
+					if (collider1 != nullptr && collider2 != nullptr)
+					{
+						Vector2D contactNormal;
+						float penetrationDepth;
+						
+						if (collider1->IntersectsCollider(collider2, contactNormal, penetrationDepth))
+						{
+							collider1->Notify(OverlapEvent::BEGIN_OVERLAP, gameObject);
+							collider2->Notify(OverlapEvent::BEGIN_OVERLAP, otherObject);
+	
+							contacts.push_back({ gameObject, otherObject, contactNormal, penetrationDepth });
+						}
+						
+	
+					}
 				}
 			}
 		}
+		
+		coarseList.clear();
 	}
+	//for (int i = 0; i < (int)gameObjects.size() - 1; i++)
+	//{
+	//	Collider* collider1 = gameObjects[i]->GetComponent<Collider>();
+	//
+	//	for (int j = i + 1; j < (int)gameObjects.size(); j++)
+	//	{
+	//		Collider* collider2 = gameObjects[j]->GetComponent<Collider>();
+	//
+	//		if (collider1 != nullptr && collider2 != nullptr)
+	//		{
+	//			Vector2D contactNormal;
+	//			float penetrationDepth;
+	//
+	//			if (collider1->IntersectsCollider(collider2, contactNormal, penetrationDepth))
+	//			{
+	//				collider1->Notify(OverlapEvent::BEGIN_OVERLAP, gameObjects[j]);
+	//				collider2->Notify(OverlapEvent::BEGIN_OVERLAP, gameObjects[i]);
+	//
+	//				contacts.push_back({ gameObjects[i], gameObjects[j], contactNormal, penetrationDepth });
+	//			}
+	//		}
+	//	}
+	//}
 	for (Contact contact : contacts)
 	{
 		Collision::ResolveCollision(contact);
@@ -362,11 +374,13 @@ void Collision::ResolveCollision(Contact contact)
 
 		float coeffiecientOfRestitution = (bodyA->GetPhysicsMaterial().elasticity + bodyB->GetPhysicsMaterial().elasticity) / 2;
 
-		float k_slop = 0.001f;
+		float k_slop = 0.000f;
+
+		float sumMasses = bodyA->GetMass() + bodyB->GetMass();
 
 		//resolve interpenetration
-		Vector2D translationA = ((contact.normal * std::max(contact.penetrationDepth - k_slop, 0.0f)) * ((inverseMassB / inverseMassA + inverseMassB)));
-		Vector2D translationB = ((contact.normal * -std::max(contact.penetrationDepth - k_slop, 0.0f)) * ((inverseMassA / inverseMassA + inverseMassB)));
+		Vector2D translationA = ((contact.normal * contact.penetrationDepth) * ((bodyB->GetMass() / sumMasses)));
+		Vector2D translationB = ((contact.normal * -contact.penetrationDepth) * ((bodyA->GetMass() / sumMasses)));
 		contact.A->GetTransform()->mPosition += Vector3D(translationA.x, translationA.y, 0);
 		contact.B->GetTransform()->mPosition += Vector3D(translationB.x, translationB.y, 0);
 
@@ -390,7 +404,7 @@ void Collision::ResolveCollision(Contact contact)
 	else if (moveA && !moveB)//Object A has no physics so can't move
 	{
 		//resolve interpenetration
-		Vector2D firstTranslation = contact.normal * std::max(contact.penetrationDepth, 0.0f);
+		Vector2D firstTranslation = contact.normal * max(contact.penetrationDepth, 0.0f);
 		contact.A->GetTransform()->mPosition += Vector3D(firstTranslation.x, firstTranslation.y, 0);
 
 		//reflect the velocity
@@ -408,7 +422,7 @@ void Collision::ResolveCollision(Contact contact)
 	else if (!moveA && moveB) //Object B has no physics so can't move
 	{
 		//resolve interpenetration
-		Vector2D secondTranslation = contact.normal * -(std::max(contact.penetrationDepth, 0.0f));
+		Vector2D secondTranslation = contact.normal * -(max(contact.penetrationDepth, 0.0f));
 		contact.B->GetTransform()->mPosition += Vector3D(secondTranslation.x, secondTranslation.y, 0);
 
 		//reflect the velocity

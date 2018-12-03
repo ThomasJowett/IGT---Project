@@ -186,6 +186,12 @@
     <ClCompile Include="Prefab.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ProgressBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HUD.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="SDL\SDL2.lib">
@@ -292,9 +298,6 @@
     <ClInclude Include="PlayerPawn.h">
       <Filter>PlayerControllers</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameScreenLevel1.h">
       <Filter>GameScreens</Filter>
     </ClInclude>
@@ -330,12 +333,6 @@
     </ClInclude>
     <ClInclude Include="PauseMenu.h">
       <Filter>Menus</Filter>
-    </ClInclude>
-    <ClInclude Include="CheckBox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UIWidget.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Slider.h">
       <Filter>UIWidgets</Filter>
@@ -378,6 +375,27 @@
     </ClInclude>
     <ClInclude Include="Prefab.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressBar.h">
+      <Filter>UIWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>UIWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="CheckBox.h">
+      <Filter>UIWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="UIWidget.h">
+      <Filter>UIWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD.h">
+      <Filter>Menus</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

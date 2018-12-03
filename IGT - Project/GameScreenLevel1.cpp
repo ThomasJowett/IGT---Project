@@ -14,6 +14,7 @@
 #include "PauseMenu.h"
 #include "Health.h"
 #include "Attack.h"
+#include "HUD.h"
 
 #include "Prefab.h"
 
@@ -48,6 +49,21 @@ GameScreenLevel1::GameScreenLevel1()
 	mUIWidgets.emplace_back(cursor);
 
 	MainMenuPawn* menu = new MainMenuPawn(cursor);
+
+	for (int i = 0; i < 10; i++)
+	{
+		AddGameObjects(BarrelPrefab().GetPrefab());
+		mGameObjects.back()->GetTransform()->mPosition = Vector3D(400 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
+
+		AddGameObjects(ChestPrefab().GetPrefab());
+		mGameObjects.back()->GetTransform()->mPosition = Vector3D(400 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
+
+		AddGameObjects(LargeLootPrefab().GetPrefab());
+		mGameObjects.back()->GetTransform()->mPosition = Vector3D(400 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
+
+		AddGameObjects(MediumLootPrefab().GetPrefab());
+		mGameObjects.back()->GetTransform()->mPosition = Vector3D(400 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
+	}
 
 	//player 1
 	transform = new Transform(Vector3D(191.75, -1424, 1), 0, Vector2D(1, 1));
@@ -97,6 +113,11 @@ GameScreenLevel1::GameScreenLevel1()
 	mUIWidgets.emplace_back(pauseMenu);
 	RootWidget->AddChild(pauseMenu);
 	MenuManager::GetInstance()->AddMenu(pauseMenu);
+
+	pauseMenu = new HUD();
+	mUIWidgets.emplace_back(pauseMenu);
+	RootWidget->AddChild(pauseMenu);
+	MenuManager::GetInstance()->AddMenu(pauseMenu);
 	
 
 	//PlayerControllers
@@ -109,20 +130,7 @@ GameScreenLevel1::GameScreenLevel1()
 	AddGameObjects(MediumLootPrefab().GetPrefab());
 	mGameObjects.back()->GetTransform()->mPosition = Vector3D(245, -1424, 1);
 	
-	for (int i = 0; i < 10; i++)
-	{
-		AddGameObjects(BarrelPrefab().GetPrefab());
-		mGameObjects.back()->GetTransform()->mPosition = Vector3D(400 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
-
-		AddGameObjects(ChestPrefab().GetPrefab());
-		mGameObjects.back()->GetTransform()->mPosition = Vector3D(400 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
-
-		AddGameObjects(LargeLootPrefab().GetPrefab());
-		mGameObjects.back()->GetTransform()->mPosition = Vector3D(400 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
-
-		AddGameObjects(MediumLootPrefab().GetPrefab());
-		mGameObjects.back()->GetTransform()->mPosition = Vector3D(400 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
-	}
+	
 	//
 	//transform = new Transform(Vector3D(0, -50, 5), 0, Vector2D(1, 1));
 	//gameObject = new GameObject("little box", transform);
@@ -164,8 +172,8 @@ void GameScreenLevel1::Update(float deltaTime, std::vector<SDL_Event> events)
 
 	Collision::DetectCollisions(mTileMap, collisionObejcts);
 
-	mCamera.GetTransform()->mPosition.x = mGameObjects[0]->GetTransform()->mPosition.x;
-	mCamera.GetTransform()->mPosition.y = mGameObjects[0]->GetTransform()->mPosition.y;
+	mCamera.GetTransform()->mPosition.x = mGameObjects[40]->GetTransform()->mPosition.x;
+	mCamera.GetTransform()->mPosition.y = mGameObjects[40]->GetTransform()->mPosition.y;
 }
 
 void GameScreenLevel1::SortObjectsDepth(GameObject* gameObject)

@@ -39,7 +39,7 @@ void TextRender::LoadFont(const char * path, int pointSize)
 	mPointSize = pointSize;
 
 	mFont = TTF_OpenFont(path, pointSize);
-	if (mFont == NULL)
+	if (mFont == nullptr)
 	{
 		std::cerr << "TTF_OpenFont()Failed: " << TTF_GetError() << std::endl;
 	}
@@ -66,7 +66,7 @@ bool TextRender::UpdateText()
 	{
 		SDL_Surface* surface = TTF_RenderText_Blended(mFont, mText, mTextColour);
 
-		if (surface == NULL)
+		if (surface == nullptr)
 		{
 			std::cerr << "Could not create surface from text ERROR: " << TTF_GetError() << std::endl;
 			return false;

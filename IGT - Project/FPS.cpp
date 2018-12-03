@@ -51,7 +51,7 @@ void FPS::Update(float deltaTime)
 {
 
 	mFrameCount++;
-	mFinalTime = time(NULL);
+	mFinalTime = time(nullptr);
 
 	if (mFinalTime - mInitialTime >= 1)
 	{

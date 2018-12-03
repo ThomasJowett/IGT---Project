@@ -89,7 +89,14 @@ void Sprite::Render(Shader* shader)
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, mTextureID);
 
-	shader->UpdateMatrixUniform(MODEL_U, GetParent()->GetWorldMatrix() * mOffset, true);
+	if (GetParent())
+	{
+		shader->UpdateMatrixUniform(MODEL_U, GetParent()->GetWorldMatrix() * mOffset, true);
+	}
+	else
+	{
+		shader->UpdateMatrixUniform(MODEL_U, Matrix4x4::Translate(Vector3D(0.0f,0.0f, 100.0f)) * mOffset, true);
+	}
 	shader->Updatefloat4(mTint.x, mTint.y, mTint.z, mOpacity);
 
 	mFrames[mCurrentFrame]->Draw();
@@ -97,7 +104,10 @@ void Sprite::Render(Shader* shader)
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	shader->UpdateMatrixUniform(MODEL_U, GetParent()->GetWorldMatrix(), true);
+	if (GetParent())
+	{
+		shader->UpdateMatrixUniform(MODEL_U, GetParent()->GetWorldMatrix(), true);
+	}
 	
 }
 

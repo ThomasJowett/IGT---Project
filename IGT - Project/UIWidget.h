@@ -43,6 +43,8 @@ public:
 	Box2D* SetCollisionBox(Box2D* box) { mCollisionBox = box; }
 
 	void OnNotify(SettingsEvent event, Vector2D data)override;
+
+	Vector2D GetOffset() const { return mOffset; };
 protected:
 	Box2D * mCollisionBox;
 private:

@@ -13,7 +13,7 @@ GLuint Texture2D::LoadTexture2D(const char* path)
 	if (surface == NULL)
 	{
 		std::cerr << "Unable to create Image. Error: " << SDL_GetError() << std::endl;
-		surface = IMG_Load("Images/NULL.png"); // make sure to have the null texture in the project directory
+		surface = IMG_Load("Images/NULL.png"); // make sure to have the nullptr texture in the project directory
 	}
 
 	SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 0, 0xFF, 0xFF));
@@ -54,7 +54,7 @@ GLuint Texture2D::LoadTexture2DRaw(const char * path, int width, int height)
 	if (!inFile.good())
 	{
 		std::cerr << "Can't open texture file " << path << std::endl;
-		return LoadTexture2D("Images/NULL.png"); // make sure to have the null texture in the project directory
+		return LoadTexture2D("Images/nullptr.png"); // make sure to have the nullptr texture in the project directory
 	}
 
 	inFile.seekg(0, std::ios::end); // Seek to end of file

@@ -164,15 +164,6 @@ void AnimatorCharacter::CreateAnimations()
 	mAnimations.back()->AddObserver(this);
 	mAnimations.emplace_back(std::make_unique<Animation>(80, 10, 0.05, mSprite));//attack right
 	mAnimations.back()->AddObserver(this);
-
-	//mAnimations.emplace_back(std::make_unique<Animation>(0, 4, 0.1, mSprite));//Forward
-	//mAnimations.emplace_back(std::make_unique<Animation>(4, 4, 0.1, mSprite));//Left
-	//mAnimations.emplace_back(std::make_unique<Animation>(8, 4, 0.1, mSprite));//Right
-	//mAnimations.emplace_back(std::make_unique<Animation>(12, 4, 0.1, mSprite));//Back
-	//mAnimations.emplace_back(std::make_unique<Animation>(16, 2, 0.1, mSprite));//idle forward
-	//mAnimations.emplace_back(std::make_unique<Animation>(18, 2, 0.1, mSprite));//idle back
-	//mAnimations.emplace_back(std::make_unique<Animation>(20, 4, 0.1, mSprite));//idle left
-	//mAnimations.emplace_back(std::make_unique<Animation>(24, 4, 0.1, mSprite));//idle right
 }
 
 void AnimatorCharacter::OnNotify(AnimationNotify notify, int chanel)

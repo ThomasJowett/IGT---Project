@@ -1,16 +1,23 @@
 #include "GameObject.h"
 
+static unsigned int currentID = 0;
 
 GameObject::GameObject(const char* name, Transform* transform)
 	:mName(name), SceneNode(transform)
 {
 	mIsActive = true;
+
+	mUniqueID = currentID;
+	currentID++;
 }
 
 GameObject::GameObject(const char * name, Transform * transform, bool active)
 	: mName(name), SceneNode(transform)
 {
 	mIsActive = active;
+
+	mUniqueID = currentID;
+	currentID++;
 }
 
 GameObject::GameObject(const GameObject & prefab)
@@ -26,6 +33,9 @@ GameObject::GameObject()
 	mName = "Uninitialised";
 	mTransform = new Transform();
 	mIsActive = false;
+
+	mUniqueID = currentID;
+	currentID++;
 }
 
 GameObject::~GameObject()
@@ -55,14 +65,6 @@ void GameObject::Render(Shader* shader)
 {
 	if (mIsActive)
 	{
-		if (mName == "Options Menu" && mIsActive)
-		{
-			float stop = 2 + 3;
-		}
-
-		//mTransform->UpdateWorldMatrix();
-		//shader->UpdateMatrixUniform(MODEL_U, mTransform->GetWorldMatrix(),true);
-
 		for (auto component : mRenderableComponents)
 		{
 			if (component->GetActive())

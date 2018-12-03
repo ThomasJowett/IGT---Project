@@ -8,7 +8,7 @@ static GameScreenManager* instance = 0;
 GameScreenManager::GameScreenManager(SCREENS startScreen)
 {
 	instance = this;
-	mCurrentScreen = NULL;
+	mCurrentScreen = nullptr;
 
 	//Ensure the first screen is set up.
 	ChangeScreen(startScreen);

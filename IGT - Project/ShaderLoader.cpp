@@ -56,10 +56,10 @@ void CheckShaderError(GLuint shader, GLuint flag, bool isProgram, const char* er
 	{
 		if (isProgram)
 		{
-			glGetProgramInfoLog(shader, sizeof(error), NULL, error);
+			glGetProgramInfoLog(shader, sizeof(error), nullptr, error);
 		}
 		else
-			glGetShaderInfoLog(shader, sizeof(error), NULL, error);
+			glGetShaderInfoLog(shader, sizeof(error), nullptr, error);
 
 		std::cerr << errorMessage << ": " << error << " " << std::endl;
 	}

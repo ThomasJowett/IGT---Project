@@ -8,9 +8,11 @@ class Slider :
 public:
 	Slider(const char* name, Vector2D anchorPoint, Vector2D offset, Vector2D barSize, GLuint barTexture, Vector2D thumbSize, GLuint thumbTexture, int initialvalue, int maxValue);
 	virtual ~Slider();
+
 	void OnDragged(Vector2D mousePosition)override;
 	bool OnHovered()override;
 	bool OnUnHovered()override;
+
 	void SetValue(int value);
 
 private:
