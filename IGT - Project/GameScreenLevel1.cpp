@@ -50,25 +50,10 @@ GameScreenLevel1::GameScreenLevel1()
 
 	MainMenuPawn* menu = new MainMenuPawn(cursor);
 
-	for (int i = 0; i < 10; i++)
-	{
-		AddGameObjects(BarrelPrefab().GetPrefab());
-		mGameObjects.back()->GetTransform()->mPosition = Vector3D(400 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
-
-		AddGameObjects(ChestPrefab().GetPrefab());
-		mGameObjects.back()->GetTransform()->mPosition = Vector3D(400 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
-
-		AddGameObjects(LargeLootPrefab().GetPrefab());
-		mGameObjects.back()->GetTransform()->mPosition = Vector3D(400 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
-
-		AddGameObjects(MediumLootPrefab().GetPrefab());
-		mGameObjects.back()->GetTransform()->mPosition = Vector3D(400 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
-	}
-
 	//player 1
 	transform = new Transform(Vector3D(191.75, -1424, 1), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Player 1", transform);
-	gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Barbarian.png"), 64, 64, 10, 10,Vector2D( 0, 32 ));
+	gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Barbarian.png"), 64, 64, 10, 10, Vector2D(0, 32));
 	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
 	gameObject->GetComponent<TextRender>()->UpdateText("Player 1", { 0,0,0 }, 0, 48, CENTER);
 	//gameObject->AddComponent<Circle2D>(10, Vector2D(0, 0));
@@ -85,7 +70,7 @@ GameScreenLevel1::GameScreenLevel1()
 	//player 2
 	transform = new Transform(Vector3D(256, -1424, 1), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Player 2", transform);
-	gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Barbarian.png"), 64, 64, 10, 10, Vector2D(0,24 ));
+	gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Barbarian.png"), 64, 64, 10, 10, Vector2D(0, 24));
 	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
 	gameObject->GetComponent<TextRender>()->UpdateText("Player 2", { 0,0,0 }, 0, 48, CENTER);
 	//gameObject->AddComponent<Box2D>(20, 10, Vector2D(0, 0));
@@ -97,6 +82,23 @@ GameScreenLevel1::GameScreenLevel1()
 	mGameObjects.emplace_back(gameObject);
 	Root->AddChild(gameObject);
 	PlayerPawn* character2Controller = new PlayerPawn(gameObject, menu);
+
+	for (int i = 0; i < 5; i++)
+	{
+		AddGameObjects(BarrelPrefab().GetPrefab());
+		mGameObjects.back()->GetTransform()->mPosition = Vector3D(400 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
+
+		AddGameObjects(ChestPrefab().GetPrefab());
+		mGameObjects.back()->GetTransform()->mPosition = Vector3D(400 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
+
+		AddGameObjects(LargeLootPrefab().GetPrefab());
+		mGameObjects.back()->GetTransform()->mPosition = Vector3D(400 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
+
+		AddGameObjects(MediumLootPrefab().GetPrefab());
+		mGameObjects.back()->GetTransform()->mPosition = Vector3D(400 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
+	}
+
+	
 
 	//temporary spawning enemy
 	//transform = new Transform(Vector3D(-10, 0, 0), 0, Vector2D(1, 1));
@@ -143,6 +145,8 @@ GameScreenLevel1::GameScreenLevel1()
 	mTileMap = new TileMap("TestMap.tmx");
 	mGameObjects.emplace_back(mTileMap);
 	Root->AddChild(mTileMap);
+
+	std::cout<<mGameObjects.size() <<std::endl;
 }
 
 GameScreenLevel1::~GameScreenLevel1()
@@ -158,8 +162,10 @@ void GameScreenLevel1::Update(float deltaTime, std::vector<SDL_Event> events)
 
 	for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
 	{
-		if (it->get()->GetComponent<Collider>() && it->get()->GetActive())
+		Collider* collider = it->get()->GetComponent<Collider>();
+		if (collider && it->get()->GetActive())
 		{
+			collider->ClearTestedCollisionWith();
 			collisionObejcts.push_back(it->get());
 		}
 
@@ -172,8 +178,8 @@ void GameScreenLevel1::Update(float deltaTime, std::vector<SDL_Event> events)
 
 	Collision::DetectCollisions(mTileMap, collisionObejcts);
 
-	mCamera.GetTransform()->mPosition.x = mGameObjects[40]->GetTransform()->mPosition.x;
-	mCamera.GetTransform()->mPosition.y = mGameObjects[40]->GetTransform()->mPosition.y;
+	mCamera.GetTransform()->mPosition.x = mGameObjects[0]->GetTransform()->mPosition.x;
+	mCamera.GetTransform()->mPosition.y = mGameObjects[0]->GetTransform()->mPosition.y;
 }
 
 void GameScreenLevel1::SortObjectsDepth(GameObject* gameObject)

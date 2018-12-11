@@ -15,41 +15,27 @@ std::vector<Contact> Collision::DetectCollisions(std::vector<GameObject*> gameOb
 		quadtree->Insert(gameObject);
 	}
 	
-	
-	
-	std::vector<std::pair<GameObject*, GameObject*>> testedPairs;
-	
 	for (GameObject* gameObject : gameObjects)
 	{
 		std::vector<GameObject*>coarseList = std::vector<GameObject*>();
-		//long long start = Util::Nanoseconds_now();
+	
 		quadtree->Retrieve(coarseList, gameObject);
-		//long long end = Util::Nanoseconds_now();
-		//
-		//long long delta = end - start;
-		//std::cout << delta << std::endl;
 	
 		if (coarseList.size())
 		{
 			Collider* collider1 = gameObject->GetComponent<Collider>();
 	
 			for (GameObject* otherObject : coarseList)
-			{
-				std::pair<GameObject*, GameObject*> thisPair(gameObject, otherObject);
+			{	
+				Collider* collider2 = otherObject->GetComponent<Collider>();
 	
-				bool found = std::find(testedPairs.begin(), testedPairs.end(), thisPair) == testedPairs.end();
-	
-				if (found)
+				if (collider1 != nullptr && collider2 != nullptr)
 				{
-					testedPairs.push_back(std::pair<GameObject*, GameObject*>(otherObject, gameObject));
-	
-					Collider* collider2 = otherObject->GetComponent<Collider>();
-	
-					if (collider1 != nullptr && collider2 != nullptr)
+					if (!collider1->HasTestedCollisionWith(collider2))
 					{
 						Vector2D contactNormal;
 						float penetrationDepth;
-						
+	
 						if (collider1->IntersectsCollider(collider2, contactNormal, penetrationDepth))
 						{
 							collider1->Notify(OverlapEvent::BEGIN_OVERLAP, gameObject);
@@ -57,13 +43,13 @@ std::vector<Contact> Collision::DetectCollisions(std::vector<GameObject*> gameOb
 	
 							contacts.push_back({ gameObject, otherObject, contactNormal, penetrationDepth });
 						}
-						
 	
+						collider1->AddTestedCollisionWith(collider2);
+						collider2->AddTestedCollisionWith(collider1);
 					}
 				}
 			}
 		}
-		
 		coarseList.clear();
 	}
 	//for (int i = 0; i < (int)gameObjects.size() - 1; i++)
@@ -93,7 +79,6 @@ std::vector<Contact> Collision::DetectCollisions(std::vector<GameObject*> gameOb
 	{
 		Collision::ResolveCollision(contact);
 	}
-
 	return contacts;
 }
 

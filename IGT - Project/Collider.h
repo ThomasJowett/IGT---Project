@@ -23,14 +23,19 @@ public:
 		: mType(type), Component(parent) 
 	{
 		mOffset = Matrix4x4::Translate(Vector3D(offset.x, offset.y, 0));
+		mCollisionTestedWith = std::vector<Collider*>();
 	}
 	Collider(GameObject* parent, ColliderType type, Vector2D offset, bool isTrigger)
 		: mType(type), mIsTrigger(isTrigger), Component(parent)
 	{
 		mOffset = Matrix4x4::Translate(Vector3D(offset.x, offset.y, 0));
+		mCollisionTestedWith = std::vector<Collider*>();
 	}
 	Collider(GameObject* parent, ColliderType type, Matrix4x4 offset)
-		: mType(type), mOffset(offset), Component(parent) {}
+		: mType(type), mOffset(offset), Component(parent) 
+	{
+		mCollisionTestedWith = std::vector<Collider*>();
+	}
 	virtual ~Collider() {}
 
 	virtual Component* Clone() override = 0;
@@ -51,7 +56,12 @@ public:
 	void SetOffset(Vector2D offset) { mOffset = Matrix4x4::Translate(Vector3D(offset.x, offset.y, 0)); }
 
 	ColliderType mType;
+
+	void AddTestedCollisionWith(Collider* collider) { mCollisionTestedWith.push_back(collider); }
+	void ClearTestedCollisionWith() { mCollisionTestedWith.clear(); }
+	bool HasTestedCollisionWith(Collider* collider);
 protected:
+	std::vector<Collider*> mCollisionTestedWith;
 	bool mCollided; //TODO: have a list of colliders that this is colliding with
 	Matrix4x4 mOffset;
 

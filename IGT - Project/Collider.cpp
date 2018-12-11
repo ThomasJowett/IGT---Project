@@ -189,6 +189,11 @@ Component * Box2D::Clone()
 	return new Box2D(nullptr, mWidth, mHeight, mOffset);
 }
 
+bool Collider::HasTestedCollisionWith(Collider * collider)
+{
+	return std::find(mCollisionTestedWith.begin(), mCollisionTestedWith.end(), collider) != mCollisionTestedWith.end();
+}
+
 std::vector<Vector2D> Collider::GetAxis(std::vector<Vector2D> box1Corners, std::vector<Vector2D> box2Corners)
 {
 	std::vector<Vector2D> axis;

@@ -61,6 +61,8 @@ GameScreenMenu::GameScreenMenu() : GameScreen()
 	mUIWidgets.emplace_back(optionsMenu);
 	RootWidget->AddChild(optionsMenu);
 	MenuManager::GetInstance()->AddMenu(optionsMenu);
+
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 GameScreenMenu::~GameScreenMenu()
