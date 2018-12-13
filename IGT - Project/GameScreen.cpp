@@ -146,3 +146,12 @@ void GameScreen::AddGameObjects(std::vector<GameObject*> gameObjects)
 		}
 	}
 }
+
+void GameScreen::AddGameObject(GameObject * gameObject)
+{
+	mGameObjects.emplace_back(gameObject);
+	if (gameObject->GetParent() == nullptr)
+	{
+		Root->AddChild(gameObject);
+	}
+}

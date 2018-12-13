@@ -15,6 +15,7 @@
 #include "Health.h"
 #include "Attack.h"
 #include "HUD.h"
+#include "AIController.h"
 
 #include "Prefab.h"
 
@@ -101,14 +102,14 @@ GameScreenLevel1::GameScreenLevel1()
 	
 
 	//temporary spawning enemy
-	//transform = new Transform(Vector3D(-10, 0, 0), 0, Vector2D(1, 1));
-	//gameObject = new GameObject("Snake", transform);
-	//gameObject->AddComponent<RigidBody2D>(10, Vector2D(0, 0), 10, 0, physicsMaterial);
-	//gameObject->AddComponent<Circle2D>(8, Vector2D());
-	//gameObject->AddComponent<Sprite>(SnakeTexture, 32, 32, 10, 5);
-	//gameObject->AddComponent<AnimatorSnake>();
-	//
-	//mGameObjects.emplace_back(gameObject);
+	transform = new Transform(Vector3D(240, -1424, 0), 0, Vector2D(1, 1));
+	gameObject = new GameObject("Snake", transform);
+	gameObject->AddComponent<RigidBody2D>(10, Vector2D(0, 0), 10, 0, physicsMaterial);
+	gameObject->AddComponent<Circle2D>(8, Vector2D());
+	gameObject->AddComponent<Sprite>(SnakeTexture, 32, 32, 10, 5);
+	gameObject->AddComponent<AnimatorSnake>();
+	gameObject->AddComponent<AIController>();
+	AddGameObject(gameObject);
 
 	//Pause Menu
 	UIMenu* pauseMenu = new PauseMenu(new Transform(), characterController);

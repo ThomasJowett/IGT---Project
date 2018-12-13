@@ -43,6 +43,9 @@
     <Filter Include="UIWidgets">
       <UniqueIdentifier>{10b3376f-0511-4065-bec9-7c754d9b0302}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{c26ab77a-0411-40d8-902a-f7e2d858ff38}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -190,6 +193,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HUD.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AIController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -396,6 +402,18 @@
     </ClInclude>
     <ClInclude Include="HUD.h">
       <Filter>Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="BrainTree.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Tasks.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AIController.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Decorators.h">
+      <Filter>AI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

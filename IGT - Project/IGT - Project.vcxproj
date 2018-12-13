@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{77E692FE-83D3-4319-8F64-D8C5A8C7F98E}</ProjectGuid>
     <RootNamespace>IGTProject</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -126,6 +126,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AIController.cpp" />
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="AnimatorCharacter.cpp" />
     <ClCompile Include="AnimatorSnake.cpp" />
@@ -186,18 +187,21 @@
     <Library Include="SDL\SDL2_ttf.lib" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AIController.h" />
     <ClInclude Include="Animator.h" />
     <ClInclude Include="AnimatorCharacter.h" />
     <ClInclude Include="AnimatorSnake.h" />
     <ClInclude Include="Astar.h" />
     <ClInclude Include="Attack.h" />
     <ClInclude Include="BinaryTree.h" />
+    <ClInclude Include="BrainTree.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CheckBox.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Commons.h" />
+    <ClInclude Include="Decorators.h" />
     <ClInclude Include="DungeonManager.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameObject.h" />
@@ -236,6 +240,7 @@
     <ClInclude Include="Slider.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Tasks.h" />
     <ClInclude Include="TextBox.h" />
     <ClInclude Include="TextRender.h" />
     <ClInclude Include="Texture2D.h" />
