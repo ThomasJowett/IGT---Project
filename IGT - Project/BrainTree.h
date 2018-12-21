@@ -77,6 +77,7 @@ protected:
 class Decorator : public Node
 {
 public:
+	Decorator(Blackboard::Ptr blackboard) : blackboard(blackboard){}
     virtual ~Decorator() {}
 
     void setChild(Node::Ptr node) { child = node; }
@@ -84,6 +85,7 @@ public:
     
 protected:
     Node::Ptr child = nullptr;
+	Blackboard::Ptr blackboard = nullptr;
 };
 
 class Blackboard

@@ -4,6 +4,7 @@
 #include "iComponents.h"
 #include "Tasks.h"
 #include "Attack.h"
+#include "Decorators.h"
 
 class AIController
 	:public iUpdateable

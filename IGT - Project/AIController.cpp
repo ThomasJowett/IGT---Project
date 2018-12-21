@@ -26,29 +26,31 @@ void AIController::BuildBehaviourTree()
 	
 	auto sequence = std::make_shared<BrainTree::Sequence>();
 
-	auto decorator = std::make_shared<isinrangedecorator>//TODO make the decorator
-	selector->addChild(sequence);
+	auto decorator = std::make_shared<BlackboardBool>(mBehaviourTree.getBlackboard(), "IsInAttackRange", true);
+
+	selector->addChild(decorator);
+	decorator->setChild(sequence);
 	selector->addChild(std::make_shared<MoveTo>(mBehaviourTree.getBlackboard(), 10.0f, "MoveToLocation"));
 	sequence->addChild(std::make_shared<AttackTask>(GetParent()));
 	sequence->addChild(std::make_shared<Wait>(0.4f));
 	mBehaviourTree.setRoot(selector);
 
 	/*
-					Root
-					 |
-					 |
-				  Selector
-			    /          \
-			   /            \
-			  /              \
-Is in attack range      Is not in attack range
-==================      ======================
-	Sequence			      MoveTo(player)
-	/           \
-   /             \
-  /               \
- Attack			Wait(0.4)
-*/
+						Root
+						 |
+						 |
+					  Selector
+				    /          \
+				   /            \
+				  /              \
+	Is in attack range      Is not in attack range
+	==================      ======================
+		Sequence			      MoveTo(player)
+		/           \
+	   /             \
+	  /               \
+	 Attack			Wait(0.4)
+	*/
 }
 
 void AIController::SetupBlackBoard()
