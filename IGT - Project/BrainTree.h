@@ -74,19 +74,7 @@ protected:
     std::vector<Node::Ptr>::iterator it;
 };
 
-class Decorator : public Node
-{
-public:
-	Decorator(Blackboard::Ptr blackboard) : blackboard(blackboard){}
-    virtual ~Decorator() {}
 
-    void setChild(Node::Ptr node) { child = node; }
-    bool hasChild() const { return child != nullptr; }
-    
-protected:
-    Node::Ptr child = nullptr;
-	Blackboard::Ptr blackboard = nullptr;
-};
 
 class Blackboard
 {
@@ -178,6 +166,21 @@ protected:
     std::unordered_map<std::string, std::string> strings;
 	std::unordered_map<std::string, Vector2D> vector2Ds;
 	std::unordered_map<std::string, Vector3D> vector3Ds;
+};
+
+class Decorator : public Node
+{
+public:
+	Decorator(Blackboard::Ptr blackboard) : blackboard(blackboard) {}
+	Decorator() {}
+	virtual ~Decorator() {}
+
+	void setChild(Node::Ptr node) { child = node; }
+	bool hasChild() const { return child != nullptr; }
+
+protected:
+	Node::Ptr child = nullptr;
+	Blackboard::Ptr blackboard = nullptr;
 };
 
 class Leaf : public Node
@@ -550,7 +553,7 @@ public:
 class Repeater : public Decorator
 {
 public:
-    Repeater(int limit = 0) : limit(limit) {}
+    Repeater(int limit = 0) : limit(limit){}
 
     void initialize() override
     {

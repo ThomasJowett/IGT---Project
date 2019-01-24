@@ -184,6 +184,8 @@ public:
 
 	Vector2D(float x, float y) :x(x), y(y) {}
 
+	Vector2D(Vector3D vector3d) :x(vector3d.x), y(vector3d.y) {}
+
 	float const Magnitude() 
 	{ 
 		return sqrt(SqrMagnitude());
@@ -339,5 +341,4 @@ inline Vector2D operator/(float scaler, const Vector2D& v)
 {
 	return Vector2D(scaler / v.x, scaler / v.y);
 }
-
 #endif // !_VECTOR_H

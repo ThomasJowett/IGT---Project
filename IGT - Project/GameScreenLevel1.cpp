@@ -106,7 +106,7 @@ GameScreenLevel1::GameScreenLevel1()
 	gameObject = new GameObject("Snake", transform);
 	gameObject->AddComponent<RigidBody2D>(10, Vector2D(0, 0), 10, 0, physicsMaterial);
 	gameObject->AddComponent<Circle2D>(8, Vector2D());
-	gameObject->AddComponent<Sprite>(SnakeTexture, 32, 32, 10, 5);
+	gameObject->AddComponent<Sprite>(SnakeTexture, 32, 32, 10, 5, Vector2D(0,16));
 	gameObject->AddComponent<AnimatorSnake>();
 	gameObject->AddComponent<AIController>();
 	AddGameObject(gameObject);
@@ -146,6 +146,8 @@ GameScreenLevel1::GameScreenLevel1()
 	mTileMap = new TileMap("TestMap.tmx");
 	mGameObjects.emplace_back(mTileMap);
 	Root->AddChild(mTileMap);
+
+	Astar::Generator::GetInstance()->SetTileMap(mTileMap);
 
 	std::cout<<mGameObjects.size() <<std::endl;
 }

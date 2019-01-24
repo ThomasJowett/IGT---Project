@@ -434,12 +434,12 @@
     <None Include="Shaders\GUIShader.vert">
       <Filter>Shader Files</Filter>
     </None>
-    <None Include="ClassDiagram.cd" />
     <None Include="Shaders\PassThroughShader.vert">
       <Filter>Shader Files</Filter>
     </None>
     <None Include="Shaders\BlurShader.frag">
       <Filter>Shader Files</Filter>
     </None>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

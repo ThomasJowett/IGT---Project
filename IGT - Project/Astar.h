@@ -2,59 +2,62 @@
 
 #include <math.h>
 #include <vector>
+#include <functional>
+#include <set>
 #include "Vector.h"
 #include "GameObject.h"
+#include "TileMap.h"
 
-#define WORLD_SIZE 64
-
-struct SearchCell
+namespace Astar
 {
-public:
-	int mX, mY;
-	int mID;
-	SearchCell * mParent;
-	float G;
-	float H;
+	using HeuristicFunction = std::function<unsigned int(int2, int2)>;
 
-	SearchCell() : mParent(0) {}
-	SearchCell(int x, int y, SearchCell * parent = 0)
-		: mX(x), mY(y), mParent(parent), mID(y * WORLD_SIZE + y), G(0), H(0) {};
+struct Node
+{
+	unsigned int G, H;
+	int2 mCoordinates;
+	Node * mParent;
 
-	float GetF() { return G + H; }
-	float ManhattanDistance(SearchCell * nodeEnd)
-	{
-		float x = (float)(fabs(this->mX - nodeEnd->mX));
-		float y = (float)(fabs(this->mY - nodeEnd->mY));
+	Node(int2 coordinates, Node * parent = nullptr);
 
-		return x + y;
-	}
+	unsigned int GetScore();
 };
 
-class PathFinding
+using NodeSet = std::set<Node*>;
+
+class Generator
 {
+	Generator();
+	bool DetectCollision(int2 coordinates);
+	Node* FindNodeOnList(NodeSet& nodes, int2 coordinates);
+	void ReleaseNodes(NodeSet& nodes);
+
 public:
-	PathFinding(void);
-	~PathFinding(void);
+	static Generator* GetInstance();
 
-	void FindPath(Vector2D currentPos, Vector2D targetPos);
-	Vector2D NextPathPos(GameObject* gameObject);
-	void ClearOpenList() { mOpenList.clear(); }
-	void ClearClosedList() { mClosedList.clear(); }
-	void ClearPathToGoal() { mPathToGoal.clear(); }
-
-	bool mInitialzedStartGoal;
-	bool mFoundGoal;
+	void SetTileMap(TileMap* tilemap);
+	void SetDiagonalMovement(bool enable);
+	void SetHeuristic(HeuristicFunction function);
+	std::vector<Vector2D> FindPath(Vector2D source, Vector2D target);
+	void AddCollision(Vector2D coordinates);
+	void RemoveCollision(Vector2D coordinates);
+	void ClearCollisions();
 
 private:
-	void SetStartAndGoal(SearchCell start, SearchCell goal);
-	void PathOpened(int x, int y, float newCost, SearchCell * parent);
-	SearchCell * GetNextCell();
-	void ContinuePath();
-
-	SearchCell* mStartCell;
-	SearchCell * mGoalCell;
-
-	std::vector<SearchCell*> mOpenList;
-	std::vector<SearchCell*> mClosedList;
-	std::vector<Vector2D*> mPathToGoal;
+	HeuristicFunction mHeuristic;
+	std::vector<int2> mDirection, mCollisions;
+	TileMap* mTileMap = nullptr;
+	unsigned int mDirections;
 };
+
+class Heuristic
+{
+	static int2 GetDelta(int2 source, int2 target);
+
+public:
+	static unsigned int Manhattan(int2 source, int2 target);
+	static unsigned int Euclidean(int2 source, int2 target);
+	static unsigned int Octagonal(int2 source, int2 target);
+};
+
+}

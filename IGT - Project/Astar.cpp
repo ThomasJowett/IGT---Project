@@ -1,214 +1,163 @@
 #include "Astar.h"
 
-PathFinding::PathFinding(void)
+static Astar::Generator* instance = 0;
+
+Astar::Node::Node(int2 coordinates, Node * parent)
+	:mParent(parent), mCoordinates(coordinates)
 {
-	mInitialzedStartGoal = false;
-	mFoundGoal = false;
+	G = H = 0;
 }
 
-PathFinding::~PathFinding(void)
+unsigned int Astar::Node::GetScore()
 {
+	return G + H;
 }
 
-void PathFinding::FindPath(Vector2D currentPos, Vector2D targetPos)
+Astar::Generator::Generator()
 {
-	if (!mInitialzedStartGoal)
-	{
-		for (int i = 0; i < mOpenList.size(); i++)
-		{
-			delete mOpenList[1];
-		}
-		mOpenList.clear();
+	SetDiagonalMovement(true);
+	SetHeuristic(&Heuristic::Manhattan);
 
-		for (int i = 0; i < mClosedList.size(); i++)
-		{
-			delete mClosedList[i];
-		}
-		mClosedList.clear();
-
-		for (int i = 0; mPathToGoal.size(); i++)
-		{
-			delete mPathToGoal[i];
-		}
-		mPathToGoal.clear();
-
-		SearchCell start;
-		start.mX = currentPos.x;
-		start.mY = currentPos.y;
-
-		//initialze goal
-		SearchCell goal;
-		goal.mX = targetPos.x;
-		goal.mY = targetPos.y;
-
-		SetStartAndGoal(start, goal);
-		mInitialzedStartGoal = true;
-	}
-
-	if (mInitialzedStartGoal)
-	{
-		ContinuePath();
-	}
+	mDirection = {
+		{ 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 },
+		{ -1, -1 }, { 1, 1 }, { -1, 1 }, { 1, -1 }
+	};
 }
 
-Vector2D PathFinding::NextPathPos(GameObject* gameObject)
+bool Astar::Generator::DetectCollision(int2 coordinates)
 {
-	int index = 1;
+	//TODO : look through the local list of collisions as well
+	return (mTileMap->GetCollisionAt(coordinates.x, coordinates.y));
+}
 
-	Vector2D nextPos;
-	nextPos.x = mPathToGoal[mPathToGoal.size() - index]->x;
-	nextPos.y = mPathToGoal[mPathToGoal.size() - index]->y;
-
-	Vector2D distance = nextPos - Vector2D(gameObject->GetWorldTransform()->mPosition.x, gameObject->GetWorldTransform()->mPosition.y);
-
-	if (index < mPathToGoal.size())
+Astar::Node * Astar::Generator::FindNodeOnList(NodeSet & nodes, int2 coordinates)
+{
+	for (Node* node : nodes)
 	{
-		//if distance to next position is small enough
-		if (distance.Magnitude() < 1.0f)
+		if (node->mCoordinates == coordinates)
 		{
-			mPathToGoal.erase(mPathToGoal.end() - index);
+			return node;
 		}
 	}
-
-	return nextPos;
+	return nullptr;
 }
 
-void PathFinding::SetStartAndGoal(SearchCell start, SearchCell goal)
+void Astar::Generator::ReleaseNodes(NodeSet & nodes)
 {
-	mStartCell = new SearchCell(start.mX, start.mY, 0);
-	mGoalCell = new SearchCell(goal.mX, goal.mY, &goal);
-
-	mStartCell->G = 0;
-	mStartCell->H = mStartCell->ManhattanDistance(mGoalCell);
-	mStartCell->mParent = 0;
-
-	mOpenList.push_back(mStartCell);
-}
-
-void PathFinding::PathOpened(int x, int y, float newCost, SearchCell * parent)
-{
-	//if(tilemap->getCollisionAt(x,y))
-	//{
-	//	return;
-	//}
-
-	int id = y * WORLD_SIZE + x;
-
-	for (int i = 0; i < mClosedList.size(); i++)
+	for (auto it = nodes.begin(); it != nodes.end();)
 	{
-		if (id == mClosedList[i]->mID)
-		{
-			return;
-		}
+		delete *it;
+		it = nodes.erase(it);
 	}
+}
 
-	SearchCell * newChild = new SearchCell(x, y, parent);
-	newChild->G = newCost;
-	newChild->H = parent->ManhattanDistance(mGoalCell);
-
-	for (int i = 0; i < mOpenList.size(); i++)
+Astar::Generator * Astar::Generator::GetInstance()
+{
+	if (instance == 0)
 	{
-		if (id == mOpenList[i]->mID)
-		{
-			float newF = newChild->G + newCost + mOpenList[i]->H;
+		instance = new Generator();
+	}
+	return instance;
+}
 
-			if (mOpenList[i]->GetF() > newF)
+void Astar::Generator::SetTileMap(TileMap * tilemap)
+{
+	mTileMap = tilemap;
+}
+
+void Astar::Generator::SetDiagonalMovement(bool enable)
+{
+	mDirections = (enable ? 8 : 4);
+}
+
+void Astar::Generator::SetHeuristic(HeuristicFunction function)
+{
+	mHeuristic = std::bind(function, std::placeholders::_1, std::placeholders::_2);
+}
+
+std::vector<Vector2D> Astar::Generator::FindPath(Vector2D source, Vector2D target)
+{
+	/*Convert the positions to coordinates on the grid*/
+	unsigned int x,y;
+
+	mTileMap->PositionToTileIndex(source, x, y);
+	int2 sourceCoords = { x,y };
+
+	mTileMap->PositionToTileIndex(target, x, y);
+	int2 targetCoords = { x,y };
+
+	Node* current = nullptr;
+	NodeSet openSet, closedSet;
+	openSet.insert(new Node(sourceCoords));
+
+	while (!openSet.empty())
+	{
+		current = *openSet.begin();
+		for (Node* node : openSet)
+		{
+			if (node->GetScore() <= current->GetScore())
 			{
-				mOpenList[i]->G = newChild->G + newCost;
-				mOpenList[i]->mParent = newChild;
-			}
-			else
-			{
-				delete newChild;
-				return;
+				current = node;
 			}
 		}
-	}
 
-	mOpenList.push_back(newChild);
-}
-
-SearchCell * PathFinding::GetNextCell()
-{
-	float bestF = FLT_MAX;
-	int cellIndex = -1;
-	SearchCell* nextCell = NULL;
-
-	for (int i = 0; i < mOpenList.size(); i++)
-	{
-		if (mOpenList[i]->GetF() < bestF)
+		if (current->mCoordinates == targetCoords)
 		{
-			bestF = mOpenList[i]->GetF();
-			cellIndex = i;
-		}
-	}
-
-	if (cellIndex > 0)
-	{
-		nextCell = mOpenList[cellIndex];
-		mClosedList.push_back(nextCell);
-		mOpenList.erase(mOpenList.begin() + cellIndex);
-	}
-
-	return nextCell;
-}
-
-void PathFinding::ContinuePath()
-{
-	if (mOpenList.empty())
-	{
-		return;
-	}
-
-	SearchCell* currentCell = GetNextCell();
-
-	if (currentCell->mID == mGoalCell->mID)
-	{
-		mGoalCell->mParent = currentCell->mParent;
-
-		SearchCell* getPath;
-
-		for (getPath = mGoalCell; getPath != NULL; getPath = getPath->mParent)
-		{
-			mPathToGoal.push_back(new Vector2D(getPath->mX, getPath->mY));
+			break;
 		}
 
-		mFoundGoal = true;
-		return;
-	}
-	else
-	{
-		//Right
-		PathOpened(currentCell->mX +1, currentCell->mY, currentCell->G +1.0f, currentCell);
+		closedSet.insert(current);
+		openSet.erase(std::find(openSet.begin(), openSet.end(), current));
 
-		//Left
-		PathOpened(currentCell->mX - 1, currentCell->mY, currentCell->G + 1.0f, currentCell);
-
-		//Top
-		PathOpened(currentCell->mX, currentCell->mY + 1, currentCell->G + 1.0f, currentCell);
-
-		//Bottom
-		PathOpened(currentCell->mX, currentCell->mY - 1, currentCell->G + 1.0f, currentCell);
-
-		//diagonals cost is square root 2
-		//Top Right
-		PathOpened(currentCell->mX + 1, currentCell->mY + 1, currentCell->G + 1.414f, currentCell);
-
-		//Top Left
-		PathOpened(currentCell->mX - 1, currentCell->mY + 1, currentCell->G + 1.414f, currentCell);
-
-		//Bottom Right
-		PathOpened(currentCell->mX + 1, currentCell->mY - 1, currentCell->G + 1.414f, currentCell);
-
-		//Bottom Left
-		PathOpened(currentCell->mX - 1, currentCell->mY - 1, currentCell->G + 1.414f, currentCell);
-
-		for (int i = 0; i < mOpenList.size(); i++)
+		for (unsigned int i = 0; i < mDirections; ++i)
 		{
-			if (currentCell->mID == mOpenList[i]->mID)
+			int2 newCoordinates(current->mCoordinates + mDirection[i]);
+
+			if (DetectCollision(newCoordinates) || FindNodeOnList(closedSet, newCoordinates))
 			{
-				mOpenList.erase(mOpenList.begin() + i);
+				continue;
+			}
+
+			unsigned int totalcost = current->G + ((i < 4) ? 10 : 14);
+
+			Node * successor = FindNodeOnList(openSet, newCoordinates);
+			if (successor == nullptr)
+			{
+				successor = new Node(newCoordinates, current);
+				successor->G = totalcost;
+				successor->H = mHeuristic(successor->mCoordinates, targetCoords);
+				openSet.insert(successor);
+			}
+			else if (totalcost < successor->G)
+			{
+				successor->mParent = current;
+				successor->G = totalcost;
 			}
 		}
 	}
+
+	std::vector<Vector2D> path;
+	while (current != nullptr)
+	{
+		/*convert coordinates back to world positions*/
+		Vector2D position;
+		mTileMap->TileIndexToPosition(current->mCoordinates.x, current->mCoordinates.y, position);
+		path.push_back(position);
+		current = current->mParent;
+	}
+
+	ReleaseNodes(openSet);
+	ReleaseNodes(closedSet);
+	return path;
+}
+
+int2 Astar::Heuristic::GetDelta(int2 source, int2 target)
+{
+	return { abs(source.x - target.x), abs(source.y - target.y) };
+}
+
+unsigned int Astar::Heuristic::Manhattan(int2 source, int2 target)
+{
+	auto delta = std::move(GetDelta(source, target));
+	return static_cast<unsigned int>(10 * (delta.x + delta.y));
 }

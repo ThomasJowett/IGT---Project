@@ -368,6 +368,18 @@ bool TileMap::GetCollisionAt(Vector2D position)
 	return false;
 }
 
+bool TileMap::GetCollisionAt(int X, int Y)
+{
+	if (X >= 0 && Y >= 0 && X <= mTilesWide && mTilesHigh)
+	{
+		return mCollision[X][Y];
+	}
+	else
+	{
+		return false;
+	}
+}
+
 int TileMap::SetColliderPosition(Vector2D position)
 {
 	unsigned int x;
@@ -433,6 +445,14 @@ bool TileMap::PositionToTileIndex(Vector2D position, unsigned int &X, unsigned i
 
 	X = (unsigned int)floor(position.x);
 	Y = (unsigned int)floor(position.y * -1);
+
+	return (X < mTilesWide && Y < mTilesHigh);
+}
+
+bool TileMap::TileIndexToPosition(unsigned int X, unsigned int Y, Vector2D& position)
+{
+	position.x = X * mTileWidth + (mTileWidth / 2);
+	position.x = X * mTileHeight + (mTileHeight / 2);
 
 	return (X < mTilesWide && Y < mTilesHigh);
 }

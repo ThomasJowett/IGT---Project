@@ -44,6 +44,26 @@ struct PhysicsMaterial
 	float angularDrag;
 };
 
+struct int2
+{
+	int x, y;
+
+	bool operator == (const int2& other) 
+	{ 
+		return (x == other.x && y == other.y);
+	}
+
+	int2 operator + (const int2& other)
+	{
+		return { x + other.x, y + other.y };
+	}
+
+	int2 operator - (const int2& other)
+	{
+		return { x - other.x, y - other.y };
+	}
+};
+
 namespace Util
 {
 	static std::vector<std::string> SplitString(const std::string &s, char delim)

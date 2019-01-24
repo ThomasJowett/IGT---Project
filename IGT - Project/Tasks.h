@@ -2,22 +2,29 @@
 #include "BrainTree.h"
 #include "Attack.h"
 #include <iostream> //TODO : remove
+#include "Astar.h"
 
 //Move AI Pawn to a location
 class MoveTo : public BrainTree::Leaf
 {
 public:
-	MoveTo(BrainTree::Blackboard::Ptr blackboard, float acceptableRadius, std::string blackboardKey)
-		:mAcceptableRadius(acceptableRadius), mBlackboardKey(blackboardKey),
+	MoveTo(BrainTree::Blackboard::Ptr blackboard, float acceptableRadius, std::string blackboardKey, GameObject* controlledPawn)
+		:mAcceptableRadius(acceptableRadius), mBlackboardKey(blackboardKey), mControlledPawn(controlledPawn),
 		Leaf(blackboard)
 	{
-
 	}
 	void initialize()
 	{
 		Vector2D goal = blackboard->getVector2D(mBlackboardKey);
 		//Get path
 		std::cout << "Getting path to" << goal.to_string() << std::endl;
+
+		mPath = Astar::Generator::GetInstance()->FindPath(mControlledPawn->GetTransform()->mPosition, goal);
+
+		for (auto point : mPath)
+		{
+			std::cout << point.to_string() << std::endl;
+		}
 	}
 
 	Status update(float deltaTime) override
@@ -35,6 +42,8 @@ private:
 	float mAcceptableRadius;
 	std::string mBlackboardKey;
 
+	GameObject* mControlledPawn;
+	std::vector<Vector2D> mPath;
 };
 
 //Wait for the specified time when executed
@@ -83,6 +92,11 @@ public:
 		mPawn->BeginAttack();
 	}
 
+	Status update(float deltaTime)
+	{
+		return Node::Status::Success;
+	}
+
 private:
-	Attack* mPawn
+	Attack* mPawn;
 };

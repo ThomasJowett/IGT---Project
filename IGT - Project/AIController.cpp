@@ -30,7 +30,7 @@ void AIController::BuildBehaviourTree()
 
 	selector->addChild(decorator);
 	decorator->setChild(sequence);
-	selector->addChild(std::make_shared<MoveTo>(mBehaviourTree.getBlackboard(), 10.0f, "MoveToLocation"));
+	selector->addChild(std::make_shared<MoveTo>(mBehaviourTree.getBlackboard(), 10.0f, "MoveToLocation", GetParent()));
 	sequence->addChild(std::make_shared<AttackTask>(GetParent()));
 	sequence->addChild(std::make_shared<Wait>(0.4f));
 	mBehaviourTree.setRoot(selector);

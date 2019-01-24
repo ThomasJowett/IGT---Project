@@ -27,6 +27,7 @@ public:
 
 	int GetTileAt(Vector2D position);
 	bool GetCollisionAt(Vector2D position);
+	bool GetCollisionAt(int X, int Y);
 
 	Collider* GetCollider() { return mCollider; }
 	int SetColliderPosition(Vector2D position);
@@ -35,6 +36,9 @@ public:
 	int GetTileHeight() { return mTileHeight; }
 
 	Vector2D GetPlayerStart(int ID) { return mPlayerStarts[ID]; }
+
+	bool PositionToTileIndex(Vector2D position, unsigned int &X, unsigned int &Y);
+	bool TileIndexToPosition(unsigned int X, unsigned int Y, Vector2D& position);
 
 private:
 	int** mBackgroundTiles;
@@ -57,5 +61,5 @@ private:
 	std::vector<Vector2D> mPlayerStarts;
 
 	Vector2D TextureCoordinatesAtIndex(int index, int tile);
-	bool PositionToTileIndex(Vector2D position, unsigned int &X, unsigned int &Y);
+	
 };
