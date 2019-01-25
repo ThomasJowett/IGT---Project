@@ -451,6 +451,7 @@ bool TileMap::PositionToTileIndex(Vector2D position, unsigned int &X, unsigned i
 
 bool TileMap::TileIndexToPosition(unsigned int X, unsigned int Y, Vector2D& position)
 {
+	//TODO: fix this so that the y value is inverted and position is transformed by the tilemap location
 	position.x = X * mTileWidth + (mTileWidth / 2);
 	position.x = X * mTileHeight + (mTileHeight / 2);
 

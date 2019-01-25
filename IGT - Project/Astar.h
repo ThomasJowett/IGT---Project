@@ -8,6 +8,10 @@
 #include "GameObject.h"
 #include "TileMap.h"
 
+#ifndef min
+#define min(a,b)            (((a) < (b)) ? (a) : (b))
+#endif
+
 namespace Astar
 {
 	using HeuristicFunction = std::function<unsigned int(int2, int2)>;

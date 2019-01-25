@@ -161,3 +161,15 @@ unsigned int Astar::Heuristic::Manhattan(int2 source, int2 target)
 	auto delta = std::move(GetDelta(source, target));
 	return static_cast<unsigned int>(10 * (delta.x + delta.y));
 }
+
+unsigned int Astar::Heuristic::Euclidean(int2 source, int2 target)
+{
+	auto delta = std::move(GetDelta(source, target));
+	return static_cast<unsigned int>(10*(delta.x + delta.y));
+}
+
+unsigned int Astar::Heuristic::Octagonal(int2 source, int2 target)
+{
+	auto delta = std::move(GetDelta(source, target));
+	return 10 * (delta.x + delta.y) + (-6) * min(delta.x, delta.y);
+}
