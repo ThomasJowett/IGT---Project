@@ -104,7 +104,7 @@ GameScreenLevel1::GameScreenLevel1()
 	//temporary spawning enemy
 	transform = new Transform(Vector3D(240, -1424, 0), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Snake", transform);
-	gameObject->AddComponent<RigidBody2D>(10, Vector2D(0, 0), 10, 0, physicsMaterial);
+	gameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, physicsMaterial);
 	gameObject->AddComponent<Circle2D>(8, Vector2D());
 	gameObject->AddComponent<Sprite>(SnakeTexture, 32, 32, 10, 5, Vector2D(0,16));
 	gameObject->AddComponent<AnimatorSnake>();

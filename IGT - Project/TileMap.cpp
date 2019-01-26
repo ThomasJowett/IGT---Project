@@ -88,6 +88,7 @@ void TileMap::Render(Shader * shader)
 	}
 }
 
+//Loads a map from a .tmx file
 bool TileMap::LoadMap(std::string filename)
 {
 	tinyxml2::XMLDocument doc;
@@ -223,6 +224,7 @@ bool TileMap::LoadMap(std::string filename)
 	}
 }
 
+//Loads the tileset from a .tsx file
 bool TileMap::LoadTileSet(const char * filename)
 {
 	tinyxml2::XMLDocument doc;
@@ -357,6 +359,7 @@ int TileMap::GetTileAt(Vector2D position)
 	return -1;
 }
 
+//returns if the position has collision on it
 bool TileMap::GetCollisionAt(Vector2D position)
 {
 	unsigned int x;
@@ -368,6 +371,7 @@ bool TileMap::GetCollisionAt(Vector2D position)
 	return false;
 }
 
+//return if the tile has collision on it
 bool TileMap::GetCollisionAt(int X, int Y)
 {
 	if (X >= 0 && Y >= 0 && X <= mTilesWide && mTilesHigh)
@@ -380,6 +384,7 @@ bool TileMap::GetCollisionAt(int X, int Y)
 	}
 }
 
+//Sets the collision  box to the tile the position is on
 int TileMap::SetColliderPosition(Vector2D position)
 {
 	unsigned int x;
@@ -449,11 +454,14 @@ bool TileMap::PositionToTileIndex(Vector2D position, unsigned int &X, unsigned i
 	return (X < mTilesWide && Y < mTilesHigh);
 }
 
+//converts a tile map index to a position in the centre of that tile
 bool TileMap::TileIndexToPosition(unsigned int X, unsigned int Y, Vector2D& position)
 {
-	//TODO: fix this so that the y value is inverted and position is transformed by the tilemap location
-	position.x = X * mTileWidth + (mTileWidth / 2);
-	position.x = X * mTileHeight + (mTileHeight / 2);
+	position.x = (float)(X * mTileWidth + (mTileWidth / 2));
+	position.y = (float)(((int)Y * mTileHeight + (float)(mTileHeight / 2)) * -1);
+
+	Transform * worldTransform = GetWorldTransform();
+	position += Vector2D(worldTransform->mPosition.x, worldTransform->mPosition.y);
 
 	return (X < mTilesWide && Y < mTilesHigh);
 }

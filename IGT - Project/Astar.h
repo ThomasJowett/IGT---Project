@@ -49,7 +49,7 @@ public:
 
 private:
 	HeuristicFunction mHeuristic;
-	std::vector<int2> mDirection, mCollisions;
+	std::vector<int2> mDirection, mCollisions;//list of moveable collision objects locations
 	TileMap* mTileMap = nullptr;
 	unsigned int mDirections;
 };

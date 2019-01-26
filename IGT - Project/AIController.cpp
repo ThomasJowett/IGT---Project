@@ -55,6 +55,8 @@ void AIController::BuildBehaviourTree()
 
 void AIController::SetupBlackBoard()
 {
-	mBehaviourTree.getBlackboard()->setVector2D("MoveToLocation", Vector2D());
+	//Set the initial move to location to the position it is currently at
+	//mBehaviourTree.getBlackboard()->setVector2D("MoveToLocation", GetParent()->GetTransform()->mPosition);
+	mBehaviourTree.getBlackboard()->setVector2D("MoveToLocation", { 1380, -127 });
 	mBehaviourTree.getBlackboard()->setBool("IsInAttackRange", false);
 }

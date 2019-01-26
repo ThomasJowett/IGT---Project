@@ -26,8 +26,12 @@ Astar::Generator::Generator()
 
 bool Astar::Generator::DetectCollision(int2 coordinates)
 {
-	//TODO : look through the local list of collisions as well
-	return (mTileMap->GetCollisionAt(coordinates.x, coordinates.y));
+	if (std::find(mCollisions.begin(), mCollisions.end(), coordinates) == mCollisions.end())
+	{
+		return (mTileMap->GetCollisionAt(coordinates.x, coordinates.y));
+	}
+	else
+		return true;
 }
 
 Astar::Node * Astar::Generator::FindNodeOnList(NodeSet & nodes, int2 coordinates)
@@ -77,13 +81,17 @@ void Astar::Generator::SetHeuristic(HeuristicFunction function)
 
 std::vector<Vector2D> Astar::Generator::FindPath(Vector2D source, Vector2D target)
 {
+	std::vector<Vector2D> path;
+
 	/*Convert the positions to coordinates on the grid*/
 	unsigned int x,y;
 
-	mTileMap->PositionToTileIndex(source, x, y);
+	if (!mTileMap->PositionToTileIndex(source, x, y))
+		return path;//if source is not on tile map then return no path
 	int2 sourceCoords = { x,y };
 
-	mTileMap->PositionToTileIndex(target, x, y);
+	if (!mTileMap->PositionToTileIndex(target, x, y))
+		return path;//if target is not on tile map then return no path
 	int2 targetCoords = { x,y };
 
 	Node* current = nullptr;
@@ -103,7 +111,7 @@ std::vector<Vector2D> Astar::Generator::FindPath(Vector2D source, Vector2D targe
 
 		if (current->mCoordinates == targetCoords)
 		{
-			break;
+			break;//found the target so exit
 		}
 
 		closedSet.insert(current);
@@ -136,7 +144,7 @@ std::vector<Vector2D> Astar::Generator::FindPath(Vector2D source, Vector2D targe
 		}
 	}
 
-	std::vector<Vector2D> path;
+	
 	while (current != nullptr)
 	{
 		/*convert coordinates back to world positions*/
@@ -149,6 +157,31 @@ std::vector<Vector2D> Astar::Generator::FindPath(Vector2D source, Vector2D targe
 	ReleaseNodes(openSet);
 	ReleaseNodes(closedSet);
 	return path;
+}
+
+void Astar::Generator::AddCollision(Vector2D coordinates)
+{
+	unsigned int x, y;
+	mTileMap->PositionToTileIndex(coordinates, x, y);
+	mCollisions.push_back({ (int)x, (int)y});
+}
+
+void Astar::Generator::RemoveCollision(Vector2D coordinates)
+{
+	unsigned int x, y;
+	mTileMap->PositionToTileIndex(coordinates, x, y);
+
+	int2 coords = { x,y };
+	std::vector<int2>::iterator it = std::find(mCollisions.begin(), mCollisions.end(), coords);
+	if (it != mCollisions.end())
+	{
+		mCollisions.erase(it);
+	}
+}
+
+void Astar::Generator::ClearCollisions()
+{
+	mCollisions.clear();
 }
 
 int2 Astar::Heuristic::GetDelta(int2 source, int2 target)
@@ -165,7 +198,7 @@ unsigned int Astar::Heuristic::Manhattan(int2 source, int2 target)
 unsigned int Astar::Heuristic::Euclidean(int2 source, int2 target)
 {
 	auto delta = std::move(GetDelta(source, target));
-	return static_cast<unsigned int>(10*(delta.x + delta.y));
+	return static_cast<unsigned int>(10 * sqrt(pow(delta.x, 2) + pow(delta.y, 2)));
 }
 
 unsigned int Astar::Heuristic::Octagonal(int2 source, int2 target)
