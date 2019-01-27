@@ -9,6 +9,7 @@
 
 #include "GameScreenManager.h"
 #include "Settings.h"
+#include "Debug.h"
 
 
 //Globals------------------------------------------------------------------------------------
@@ -50,7 +51,8 @@ bool InitSDL()
 	//Setup SDL.
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
-		std::cerr << "SDL did not initialise. ERROR: " << SDL_GetError();
+		DBG_OUTPUT("SDL did not initialise. ERROR: ", SDL_GetError(), "\n");
+		std::cerr << "SDL did not initialise. ERROR: " << SDL_GetError() << std::endl;
 		return false;
 	}
 	else
@@ -58,6 +60,7 @@ bool InitSDL()
 		//Attempt to set texture filtering to linear.
 		if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
 		{
+			DBG_OUTPUT("Warning: Linear texture filtering not available \n");
 			std::cerr << "Warning: Linear texture filtering not available";
 		}
 
@@ -82,7 +85,8 @@ bool InitSDL()
 
 		if (gWindow == NULL)
 		{
-			std::cerr << "Window was not created. Error: " << SDL_GetError();
+			DBG_OUTPUT("Window was not created. Error: ", SDL_GetError(), "\n");
+			std::cerr << "Window was not created. Error: " << SDL_GetError() << std::endl;
 			return false;
 		}
 
@@ -91,6 +95,7 @@ bool InitSDL()
 		GLint GlewInitResult = glewInit();
 		if (GLEW_OK != GlewInitResult)
 		{
+			DBG_OUTPUT("Glew Setup failed. ERROR: ", glewGetErrorString(GlewInitResult), "\n");
 			std::cerr << "Glew Setup failed. ERROR: " << glewGetErrorString(GlewInitResult) << std::endl;
 			return false;
 		}
@@ -103,7 +108,7 @@ bool InitSDL()
 		//Setup Controllers---------------------------------------------------------------------
 		if (SDL_NumJoysticks() < 1)
 		{
-			std::cerr << "Warning: No Controllers connected!\n";
+			DBG_OUTPUT("Warning: No controllers Connected!\n");
 		}
 		else
 		{
@@ -113,7 +118,8 @@ bool InitSDL()
 				gGameControllers[i] = SDL_GameControllerOpen(i);
 				if (gGameControllers[i] == NULL)
 				{
-					std::cerr << "Warning: Unable to open game controller! SDL Error: " << SDL_GetError();
+					DBG_OUTPUT("Warning: Unable to open game controller! SDL Error: ", SDL_GetError(), "\n");
+					std::cerr << "Warning: Unable to open game controller! SDL Error: " << SDL_GetError() << std::endl;
 				}
 			}
 			
@@ -209,9 +215,12 @@ void Render()
 bool AnotherInstance()
 {
 	HANDLE ourMutex;
-	ourMutex = CreateMutex(NULL, true, "Use_a_different_string_here_for_each_program_48161-XYZZY");
+	ourMutex = CreateMutex(NULL, true, L"Use_a_different_string_here_for_each_program_48161-XYZZY");
 	if (GetLastError() == ERROR_ALREADY_EXISTS)
+	{
+		DBG_OUTPUT("Error: Application Already Open\n");
 		return true;
+	}
 
 	return false;
 }

@@ -1,18 +1,15 @@
 #include "Prefab.h"
-#include "TinyXML2.h"
 
-std::vector<GameObject*> Prefab::LoadPrefab(std::string filename)
-{
-	std::vector<GameObject*> returnObjects;
+Factory<Prefab>::map_type * Factory<Prefab>::gLookUpTable = NULL;
 
-	tinyxml2::XMLDocument doc;
+DerivedRegister<BarrelPrefab> BarrelPrefab::reg("Barrel");
 
-	std::string prefix = "Prefabs/";
+DerivedRegister<ChestPrefab> ChestPrefab::reg("Chest");
 
-	if (doc.LoadFile((prefix + filename).c_str()) == 0)
-	{
+DerivedRegister<CoinsPrefab> CoinsPrefab::reg("Coins");
 
-	}
+DerivedRegister<LargeLootPrefab> LargeLootPrefab::reg("LargeLoot");
 
-	return returnObjects;
-}
+DerivedRegister<MediumLootPrefab> MediumLootPrefab::reg("MediumLoot");
+
+DerivedRegister<SmallLootPrefab> SmallLootPrefab::reg("SmallLoot");

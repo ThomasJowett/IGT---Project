@@ -186,17 +186,17 @@ public:
 
 	Vector2D(Vector3D vector3d) :x(vector3d.x), y(vector3d.y) {}
 
-	float const Magnitude() 
-	{ 
+	float const Magnitude()
+	{
 		return sqrt(SqrMagnitude());
 	}
 
-	float const SqrMagnitude() 
+	float const SqrMagnitude()
 	{
 		return ((x*x) + (y*y));
 	}
 
-	Vector2D const GetNormalized() 
+	Vector2D const GetNormalized()
 	{
 		float magnitude = Magnitude();
 		return Vector2D(x / magnitude, y / magnitude);
@@ -218,6 +218,11 @@ public:
 	std::string to_string()
 	{
 		return "x: " + std::to_string(x) + " y: " + std::to_string(y);
+	}
+
+	Vector3D to_Vector3D()
+	{
+		return Vector3D(x, y, 0);
 	}
 
 	//Static----------------------------------------------------------------

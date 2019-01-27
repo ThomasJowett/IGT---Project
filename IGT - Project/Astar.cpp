@@ -83,6 +83,9 @@ std::vector<Vector2D> Astar::Generator::FindPath(Vector2D source, Vector2D targe
 {
 	std::vector<Vector2D> path;
 
+	if (!mTileMap->GetActive())
+		return path;
+
 	/*Convert the positions to coordinates on the grid*/
 	unsigned int x,y;
 

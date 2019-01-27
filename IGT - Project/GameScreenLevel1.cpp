@@ -51,14 +51,20 @@ GameScreenLevel1::GameScreenLevel1()
 
 	MainMenuPawn* menu = new MainMenuPawn(cursor);
 
+	mTileMap = new TileMap("TestMap.tmx");
+	mGameObjects.emplace_back(mTileMap);
+	Root->AddChild(mTileMap);
+
+	Astar::Generator::GetInstance()->SetTileMap(mTileMap);
+
 	//player 1
-	transform = new Transform(Vector3D(191.75, -1424, 1), 0, Vector2D(1, 1));
+	transform = new Transform(mTileMap->GetPlayerStart(0).to_Vector3D(), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Player 1", transform);
 	gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Barbarian.png"), 64, 64, 10, 10, Vector2D(0, 32));
 	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
 	gameObject->GetComponent<TextRender>()->UpdateText("Player 1", { 0,0,0 }, 0, 48, CENTER);
-	//gameObject->AddComponent<Circle2D>(10, Vector2D(0, 0));
-	gameObject->AddComponent<Box2D>(20, 10, Vector2D(0, 0));
+	gameObject->AddComponent<Circle2D>(10, Vector2D(0, 0));
+	//gameObject->AddComponent<Box2D>(20, 10, Vector2D(0, 0));
 	gameObject->AddComponent<Circle2D>(20, Vector2D(0, 0));
 	gameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, physicsMaterial);
 	gameObject->AddComponent<Attack>(25.0f, 2.0f);
@@ -69,9 +75,9 @@ GameScreenLevel1::GameScreenLevel1()
 	PlayerPawn* characterController = new PlayerPawn(gameObject, menu);
 
 	//player 2
-	transform = new Transform(Vector3D(256, -1424, 1), 0, Vector2D(1, 1));
+	transform = new Transform(mTileMap->GetPlayerStart(1).to_Vector3D(), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Player 2", transform);
-	gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Barbarian.png"), 64, 64, 10, 10, Vector2D(0, 24));
+	gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Barbarian.png"), 64, 64, 10, 10, Vector2D(0, 32));
 	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
 	gameObject->GetComponent<TextRender>()->UpdateText("Player 2", { 0,0,0 }, 0, 48, CENTER);
 	//gameObject->AddComponent<Box2D>(20, 10, Vector2D(0, 0));
@@ -143,11 +149,7 @@ GameScreenLevel1::GameScreenLevel1()
 	//mGameObjects.emplace_back(gameObject);
 	//Root->AddChild(gameObject);
 
-	mTileMap = new TileMap("TestMap.tmx");
-	mGameObjects.emplace_back(mTileMap);
-	Root->AddChild(mTileMap);
-
-	Astar::Generator::GetInstance()->SetTileMap(mTileMap);
+	
 
 	std::cout<<mGameObjects.size() <<std::endl;
 }
@@ -181,8 +183,8 @@ void GameScreenLevel1::Update(float deltaTime, std::vector<SDL_Event> events)
 
 	Collision::DetectCollisions(mTileMap, collisionObejcts);
 
-	mCamera.GetTransform()->mPosition.x = mGameObjects[0]->GetTransform()->mPosition.x;
-	mCamera.GetTransform()->mPosition.y = mGameObjects[0]->GetTransform()->mPosition.y;
+	mCamera.GetTransform()->mPosition.x = mGameObjects[1]->GetTransform()->mPosition.x;
+	mCamera.GetTransform()->mPosition.y = mGameObjects[1]->GetTransform()->mPosition.y;
 }
 
 void GameScreenLevel1::SortObjectsDepth(GameObject* gameObject)

@@ -15,12 +15,13 @@ TileMap::TileMap(const char* mapfilename)
 {
 	mIsActive = LoadMap(mapfilename);
 
-	RedrawMap();
+	if(mIsActive)
+		RedrawMap();
 
 	GameObject::SetLayer(BACKGROUND);
 }
 
-TileMap::TileMap(int ** backgroundTiles, int ** foregroundTiles, bool ** collision, int tileHeight, int tileWidth, int paletteWidth, int paletteHeight, const char * paletteFilename)
+TileMap::TileMap(int ** backgroundTiles, int ** foregroundTiles, bool ** collision, int tileHeight, int tileWidth, const char* tileSetName)
 {
 	mBackgroundTiles = backgroundTiles;
 	mForegroundTiles = foregroundTiles;
@@ -29,12 +30,9 @@ TileMap::TileMap(int ** backgroundTiles, int ** foregroundTiles, bool ** collisi
 	mTileHeight = tileHeight;
 	mTileWidth = tileWidth;
 
-	mPaletteWidth = paletteWidth;
-	mPaletteHeight = paletteHeight;
+	mTileSet = new TileSet(tileSetName);
 
 	mTilesWide = sizeof(mBackgroundTiles[0]);
-
-	mTextureID = Texture2D::GetTexture2D(paletteFilename);
 
 	RedrawMap();
 
@@ -47,18 +45,20 @@ TileMap::~TileMap()
 	//Delete all elements off the array
 	for (unsigned int i = 0; i < mTilesHigh; i++)
 	{
-		delete[] mBackgroundTiles[i];
-		delete[] mForegroundTiles[i];
-		delete[] mCollision[i];
+		if (mBackgroundTiles) delete[] mBackgroundTiles[i];
+		if (mForegroundTiles) delete[] mForegroundTiles[i];
+		if (mCollision) delete[] mCollision[i];
 	
 	}
-	delete[] mBackgroundTiles;
-	delete[] mForegroundTiles;
-	delete[] mCollision;
+	if (mBackgroundTiles) delete[] mBackgroundTiles;
+	if (mForegroundTiles) delete[] mForegroundTiles;
+	if (mCollision) delete[] mCollision;
 
 	delete mCollider;
 	delete mForeground;
 	delete mBackGround;
+
+	if (mTileSet) delete mTileSet;
 }
 
 void TileMap::Update(float deltatime)
@@ -77,7 +77,7 @@ void TileMap::Render(Shader * shader)
 	if (mIsActive)
 	{
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, mTextureID);
+		glBindTexture(GL_TEXTURE_2D, mTileSet->GetTextureID());
 
 		shader->Updatefloat4(1.0f, 1.0f, 1.0f, 1.0f);
 		mBackGround->Draw();
@@ -125,7 +125,9 @@ bool TileMap::LoadMap(std::string filename)
 		pLayer = pRoot->FirstChildElement("tileset");
 		std::string tsxPath = pLayer->Attribute("source");
 
-		if (!LoadTileSet((mapPrefix + tsxPath).c_str()))
+		mTileSet = new TileSet((mapPrefix + tsxPath).c_str());
+
+		if (mTileSet->GetPalatteHeight() == -1)
 		{
 			return false;
 		}
@@ -211,7 +213,64 @@ bool TileMap::LoadMap(std::string filename)
 		//objects----------------------------------------------------------------
 		pLayer = pRoot->FirstChildElement("objectgroup");
 
-		//TODO load in objects
+		while (pLayer)
+		{
+			const char* name = pLayer->Attribute("name");
+
+			tinyxml2::XMLElement* pObject;
+
+			pObject = pLayer->FirstChildElement("object");
+
+			while (pObject)
+			{
+				const char* type = pObject->Attribute("type");
+
+				if (type)
+				{
+					//Player Starts -----------------------------------------------
+					if (std::strcmp(type, "Player Start") == 0)
+					{
+						Vector2D spawnPoint = { (float)atof(pObject->Attribute("x")), (float)atof(pObject->Attribute("y")) };
+
+						spawnPoint.y *= -1;
+
+						mPlayerStarts.push_back(spawnPoint);
+					}
+
+					//SpawnRooms -------------------------------------------------
+					else if (std::strcmp(type, "SpawnRoom") == 0)
+					{
+						Vector2D position = { (float)atof(pObject->Attribute("x")), (float)atof(pObject->Attribute("y")) };
+						float width = (float)atof(pObject->Attribute("width"));
+						float height = (float)atof(pObject->Attribute("height"));
+
+						tinyxml2::XMLElement* pProperty = pObject->FirstChildElement("properties")->FirstChildElement("property");
+						
+						std::unordered_map<Prefab*, int> prefabList;
+						
+						while (pProperty)
+						{
+							const char* name = pProperty->Attribute("name");
+						
+							int value = atoi(pProperty->Attribute("value"));
+						
+							Prefab* prefab = Factory<Prefab>::CreateInstance(name);
+						
+							if(prefab)
+								prefabList[prefab] = value;
+						
+							pProperty = pProperty->NextSiblingElement("property");
+						}
+
+						SpawnRoom room = { position,width, height, prefabList};
+					}
+				}
+
+				pObject = pObject->NextSiblingElement("object");
+			}
+
+			pLayer = pLayer->NextSiblingElement("objectgroup");
+		}
 
 		//create the collider----------------------------------------------------
 		mCollider = new Box2D(this, (float)mTileWidth, (float)mTileHeight, Vector2D(0, 0));
@@ -222,37 +281,6 @@ bool TileMap::LoadMap(std::string filename)
 		std::cerr << "ERROR loading " << filename << " Code: " << doc.LoadFile((mapPrefix + filename).c_str());
 		return false;
 	}
-}
-
-//Loads the tileset from a .tsx file
-bool TileMap::LoadTileSet(const char * filename)
-{
-	tinyxml2::XMLDocument doc;
-
-	std::string mapPrefix = "Maps/";
-
-	if (doc.LoadFile(filename) == 0)
-	{
-		tinyxml2::XMLElement* pRoot;
-
-		pRoot = doc.FirstChildElement("tileset");
-
-		mPaletteWidth = atoi(pRoot->Attribute("columns"));
-
-		mPaletteHeight = atoi(pRoot->Attribute("tilecount")) / mPaletteWidth;
-
-		tinyxml2::XMLElement* pImage;
-		
-		pImage = pRoot->FirstChildElement("image");
-
-		std::string imagefilepath = mapPrefix + pImage->Attribute("source");
-		
-		mTextureID = Texture2D::GetTexture2D(imagefilepath.c_str());
-
-		return true;
-	}
-
-	return false;
 }
 
 //Creates a grid mesh with the map correctly laid out on it
@@ -409,8 +437,8 @@ Vector2D TileMap::TextureCoordinatesAtIndex(int index, int tile)
 
 	long double intpart;
 
-	float oneTileWide = 1 / (float)mPaletteWidth;
-	float oneTileHeigh = 1 / (float)mPaletteHeight;
+	float oneTileWide = 1 / (float)mTileSet->GetPaletteWidth();
+	float oneTileHeigh = 1 / (float)mTileSet->GetPalatteHeight();
 
 	position.x = (float)modf(oneTileWide * tile, &intpart);
 
@@ -421,7 +449,7 @@ Vector2D TileMap::TextureCoordinatesAtIndex(int index, int tile)
 			position.x = 1.0f;
 	}
 
-	position.y = (float)modf(oneTileHeigh * (tile / mPaletteWidth), &intpart);
+	position.y = (float)modf(oneTileHeigh * (tile / mTileSet->GetPaletteWidth()), &intpart);
 
 	if (index == 0 || index == 1)
 	{
@@ -464,4 +492,42 @@ bool TileMap::TileIndexToPosition(unsigned int X, unsigned int Y, Vector2D& posi
 	position += Vector2D(worldTransform->mPosition.x, worldTransform->mPosition.y);
 
 	return (X < mTilesWide && Y < mTilesHigh);
+}
+
+TileSet::TileSet(const char * filename)
+{
+	//Loads the tileset from a .tsx file
+	tinyxml2::XMLDocument doc;
+
+	std::string mapPrefix = "Maps/";
+
+	if (doc.LoadFile(filename) == 0)
+	{
+		tinyxml2::XMLElement* pRoot;
+
+		pRoot = doc.FirstChildElement("tileset");
+
+		mPaletteWidth = atoi(pRoot->Attribute("columns"));
+
+		mPaletteHeight = atoi(pRoot->Attribute("tilecount")) / mPaletteWidth;
+
+		tinyxml2::XMLElement* pImage;
+
+		pImage = pRoot->FirstChildElement("image");
+
+		std::string imagefilepath = mapPrefix + pImage->Attribute("source");
+
+		mTextureID = Texture2D::GetTexture2D(imagefilepath.c_str());
+	}
+	else
+	{
+		mPaletteWidth = -1;
+		mPaletteHeight = -1;
+
+		mTextureID = Texture2D::GetTexture2D("Images/NULL.png");
+	}
+}
+
+TileSet::~TileSet()
+{
 }

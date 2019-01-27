@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#000000" nextlayerid="10" nextobjectid="29">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#000000" nextlayerid="10" nextobjectid="29">
  <tileset firstgid="1" source="TopDownDungeon.tsx"/>
- <tileset firstgid="133" source="Banner.tsx"/>
  <layer id="5" name="Background" width="100" height="100">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -107,29 +106,35 @@
 </data>
  </layer>
  <objectgroup id="4" name="Objects">
-  <object id="5" name="Player1" type="Player Start" x="191.75" y="1424">
+  <object id="5" name="Player1" type="Player Start" x="192" y="1424.83">
    <properties>
     <property name="ID" type="int" value="1"/>
    </properties>
    <point/>
   </object>
-  <object id="6" name="Player2" type="Player Start" x="256" y="1424">
+  <object id="6" name="Player2" type="Player Start" x="256" y="1425">
    <properties>
     <property name="ID" type="int" value="2"/>
    </properties>
    <point/>
   </object>
-  <object id="24" name="BossSpawnRoom" type="EnemySpawn" x="305.333" y="446.667" width="430.667" height="342.667">
+  <object id="24" name="BossSpawnRoom" type="SpawnRoom" x="305.333" y="446.667" width="430.667" height="342.667">
    <properties>
-    <property name="Prefab" value="Boss"/>
+    <property name="Barrel" type="int" value="24"/>
    </properties>
   </object>
-  <object id="25" name="EnemySpawnRoom1" type="EnemySpawn" x="434.667" y="1137.33" width="205.333" height="165.333">
+  <object id="25" name="EnemySpawnRoom1" type="SpawnRoom" x="434.667" y="1137.33" width="205.333" height="165.333">
    <properties>
-    <property name="Prefab" value="Slime"/>
+    <property name="Barrel" type="int" value="10"/>
+    <property name="Chest" type="int" value="15"/>
+    <property name="Slime" type="int" value="12"/>
    </properties>
   </object>
-  <object id="26" name="LootRoom" type="Loot" x="898.667" y="1346.67" width="94.6667" height="88"/>
+  <object id="26" name="LootRoom" type="SpawnRoom" x="898.667" y="1346.67" width="94.6667" height="88">
+   <properties>
+    <property name="MediumLoot" type="int" value="12"/>
+   </properties>
+  </object>
  </objectgroup>
  <layer id="6" name="Foreground" width="100" height="100">
   <data encoding="csv">

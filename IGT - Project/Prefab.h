@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <map>
 #include "GameObject.h"
 #include "Texture2D.h"
 #include "Sprite.h"
@@ -9,13 +10,47 @@
 class Prefab
 {
 public:
-
-	static std::vector<GameObject*> LoadPrefab(std::string filename);
-
 	std::vector<GameObject*> GetPrefab() const { return mGameObjects; }
 
 protected:
 	std::vector<GameObject*> mGameObjects;
+};
+
+
+
+template<typename T>
+struct Factory
+{
+	typedef std::map<std::string, T*(*)()>map_type;
+
+	static T* CreateInstance(std::string const& name)
+	{
+		typename map_type::iterator it  = getMap()->find(name);
+
+		return (it == getMap()->end() ? nullptr : it->second());
+	}
+protected:
+	static map_type *getMap()
+	{
+		if (!gLookUpTable) 
+		{ 
+			gLookUpTable = new map_type;
+		}
+		return gLookUpTable;
+	}
+private:
+	static map_type * gLookUpTable;
+};
+
+template<typename T> Prefab * CreateT() { return new T; }
+
+template<typename T>
+struct DerivedRegister : Factory<Prefab>
+{
+	DerivedRegister(std::string const& name)
+	{
+		getMap()->insert(std::make_pair(name, &CreateT<T>));
+	}
 };
 
 class BarrelPrefab :public Prefab
@@ -30,6 +65,9 @@ public:
 
 		mGameObjects.push_back(gameObject);
 	}
+
+private:
+	static DerivedRegister<BarrelPrefab> reg;
 };
 
 class ChestPrefab : public Prefab
@@ -44,6 +82,8 @@ public:
 
 		mGameObjects.push_back(gameObject);
 	}
+private:
+	static DerivedRegister<ChestPrefab> reg;
 };
 
 class CoinsPrefab : public Prefab
@@ -53,6 +93,9 @@ public:
 	{
 
 	}
+
+private:
+	static DerivedRegister<CoinsPrefab> reg;
 };
 
 class LargeLootPrefab : public Prefab
@@ -67,6 +110,8 @@ public:
 
 		mGameObjects.push_back(gameObject);
 	}
+private:
+	static DerivedRegister<LargeLootPrefab> reg;
 };
 
 class MediumLootPrefab : public Prefab
@@ -81,6 +126,8 @@ public:
 
 		mGameObjects.push_back(gameObject);
 	}
+private:
+	static DerivedRegister<MediumLootPrefab> reg;
 };
 
 class SmallLootPrefab : public Prefab
@@ -95,4 +142,6 @@ public:
 
 		mGameObjects.push_back(gameObject);
 	}
+private:
+	static DerivedRegister<SmallLootPrefab> reg;
 };

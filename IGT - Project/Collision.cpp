@@ -86,6 +86,9 @@ std::vector<Contact> Collision::DetectCollisions(TileMap * tileMap, std::vector<
 {
 	std::vector<Contact> contacts;
 
+	if (!tileMap->GetActive())
+		return contacts;
+
 	for (int i = 0; i < (int)gameObjects.size(); i++)
 	{
 		float Xmax, Xmin, Ymax, Ymin;

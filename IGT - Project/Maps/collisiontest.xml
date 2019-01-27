@@ -1,5 +1,0 @@
-<tileset tileswide="12" tileshigh="11" tilewidth="16" tileheight="16">
-  <layer number="1" name="Terrain">
-    <tile x="0" y="0" collision="0" />
-  </layer>
-</tileset>

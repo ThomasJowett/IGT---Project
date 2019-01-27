@@ -4,6 +4,32 @@
 #include "Mesh.h"
 #include "Collider.h"
 #include <string>
+#include <unordered_map>
+#include "Prefab.h"
+
+struct SpawnRoom
+{
+	Vector2D position;
+	float width, height;
+
+	std::unordered_map<Prefab*, int> prefabs;
+};
+
+class TileSet
+{
+public:
+	TileSet(const char * filename);
+	~TileSet();
+
+	int GetPaletteWidth() { return mPaletteWidth; }
+	int GetPalatteHeight() { return mPaletteHeight; }
+
+	GLuint GetTextureID() { return mTextureID; }
+private:
+	int mPaletteWidth, mPaletteHeight;
+
+	GLuint mTextureID;
+};
 
 class TileMap
 	:public GameObject
@@ -12,7 +38,7 @@ public:
 	TileMap();
 	TileMap(const char* mapfilename);
 	TileMap(int ** backgroundTiles, int ** foregroundTiles, bool ** collision,
-		int tileHeight, int tileWidth, int paletteWidth, int paletteHeight, const char* paletteFilename);
+		int tileHeight, int tileWidth, const char* tileSetName);
 	~TileMap();
 
 	void Update(float deltatime)override;
@@ -20,8 +46,6 @@ public:
 
 
 	bool LoadMap(std::string filename);
-
-	bool LoadTileSet(const char* filename);
 
 	void RedrawMap();
 
@@ -41,25 +65,27 @@ public:
 	bool TileIndexToPosition(unsigned int X, unsigned int Y, Vector2D& position);
 
 private:
+	//Tile indexes
 	int** mBackgroundTiles;
 	int** mForegroundTiles;
 
+	//Tilemap dimensions
 	unsigned int mTilesWide, mTilesHigh;
 	int mTileWidth, mTileHeight;
 
-	int mPaletteWidth, mPaletteHeight;
+	//The appearance of the tilemap
+	TileSet* mTileSet;
 
 	bool** mCollision;
 
 	Mesh* mBackGround;
 	Mesh* mForeground;
 
-	GLuint mTextureID;
-
 	Collider* mCollider;
 
 	std::vector<Vector2D> mPlayerStarts;
 
+	std::unordered_map<std::string, SpawnRoom> mSpawnRooms;
+
 	Vector2D TextureCoordinatesAtIndex(int index, int tile);
-	
 };

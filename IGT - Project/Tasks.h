@@ -18,60 +18,47 @@ public:
 	{
 		mGoal = blackboard->getVector2D(mBlackboardKey);
 		//Get path
-		std::cout << "Getting path from " << mControlledPawn->GetTransform()->mPosition.to_string() << " to " << mGoal.to_string() << std::endl;
+		//std::cout << "Getting path from " << mControlledPawn->GetTransform()->mPosition.to_string() << " to " << mGoal.to_string() << std::endl;
 
 		mPath = Astar::Generator::GetInstance()->FindPath(mControlledPawn->GetTransform()->mPosition, mGoal);
-
-		for (auto point : mPath)
-		{
-			std::cout << point.to_string() << std::endl;
-		}
+		mCurrentWaypoint = mPath.size() - 1;
 	}
 
 	Status update(float deltaTime) override
 	{
-		if (Vector2D::Distance(mControlledPawn->GetWorldTransform()->mPosition, mGoal) < mAcceptableRadius)
+		//Has pawn reached goal
+		if (Vector2D::Distance(mControlledPawn->GetWorldTransform()->mPosition, mGoal) < mAcceptableRadius || mPath.size() == 0)
 		{
 			return Node::Status::Success;
 		}
 
+		//Has the goal moved
 		if (Vector2D::Distance(mGoal, blackboard->getVector2D(mBlackboardKey)) > mAcceptableRadius)
 		{
 			mGoal = blackboard->getVector2D(mBlackboardKey);
 			mPath = Astar::Generator::GetInstance()->FindPath(mControlledPawn->GetTransform()->mPosition, mGoal);
 		}
-		if (Vector2D::Distance(mPath.back(), mControlledPawn->GetWorldTransform()->mPosition) < mAcceptableRadius)
+
+
+		if (Vector2D::Distance(mPath[mCurrentWaypoint], mControlledPawn->GetWorldTransform()->mPosition) < mAcceptableRadius)
 		{
-			std::cout << "waypoint reached\n";
-			mPath.pop_back();
-			if(mPath.size() == 0)
-				return Node::Status::Success;
+			//std::cout << "waypoint reached\n";
+			mCurrentWaypoint--;
+			if (mCurrentWaypoint < 0)
+			{
+				mCurrentWaypoint = 0;
+			}
+		}
+		else if(Vector2D::Distance(mPath[mCurrentWaypoint], mControlledPawn->GetWorldTransform()->mPosition) < mAcceptableRadius)
+		{
+
 		}
 
-		Vector2D force = (mPath.back() - (Vector2D(mControlledPawn->GetWorldTransform()->mPosition)));
+		Vector2D force = (mPath[mCurrentWaypoint] - (Vector2D(mControlledPawn->GetWorldTransform()->mPosition)));
 		force.Normalize();
 		force = force * 1000.0f;
 		mControlledPawn->GetComponent<RigidBody2D>()->AddForce(force);
 
-		//Vector3D Position = mControlledPawn->GetTransform()->mPosition;
-		//
-		//Position.x = mPath.back().x;
-		//Position.y = mPath.back().y;
-		//
-		//mControlledPawn->GetTransform()->mPosition = Position;
-
-		//std::cout << force.to_string() << std::endl;
-
-		
-
-		
-		//move pawn towards next location in path
-		//if(pawn location is within acceptable raduis of goal)
-		//return Node::Status::Success;
-		//else
-		//return Node::Status::Running;
-
-		//std::cout << "Moveing" << std::endl;
 		return Node::Status::Running;
 	}
 private:
@@ -82,6 +69,7 @@ private:
 
 	GameObject* mControlledPawn;
 	std::vector<Vector2D> mPath;
+	int mCurrentWaypoint;
 };
 
 //Wait for the specified time when executed
