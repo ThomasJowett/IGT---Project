@@ -134,6 +134,7 @@
     <ClCompile Include="Attack.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraFollow.cpp" />
     <ClCompile Include="CheckBox.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Collision.cpp" />
@@ -197,6 +198,7 @@
     <ClInclude Include="BrainTree.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraFollow.h" />
     <ClInclude Include="CheckBox.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Collision.h" />

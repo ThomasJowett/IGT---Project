@@ -16,6 +16,7 @@
 #include "Attack.h"
 #include "HUD.h"
 #include "AIController.h"
+#include "CameraFollow.h"
 
 #include "Prefab.h"
 
@@ -24,7 +25,7 @@ GameScreenLevel1::GameScreenLevel1()
 {
 	mShaderBasic = new BasicShader();
 
-	mCamera.GetTransform()->mPosition = Vector3D(0, 0, 100);
+	
 
 	//GLuint goblinTexture = Texture2D::GetTexture2D("SpriteSheets/GoblinSprites.png");
 	GLuint slimeTexture = Texture2D::GetTexture2D("SpriteSheets/SlimeSprites.png");
@@ -57,6 +58,9 @@ GameScreenLevel1::GameScreenLevel1()
 
 	Astar::Generator::GetInstance()->SetTileMap(mTileMap);
 
+	mCamera.GetTransform()->mPosition = mTileMap->GetPlayerStart(0).to_Vector3D();
+	//mCamera.GetTransform()->mPosition += Vector3D(0, 0, 100);
+
 	//player 1
 	transform = new Transform(mTileMap->GetPlayerStart(0).to_Vector3D(), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Player 1", transform);
@@ -70,6 +74,7 @@ GameScreenLevel1::GameScreenLevel1()
 	gameObject->AddComponent<Attack>(25.0f, 2.0f);
 	gameObject->AddComponent<AnimatorCharacter>();
 	gameObject->AddComponent<Health>(100.0f);
+	gameObject->AddComponent<CameraFollow>(&mCamera);
 	mGameObjects.emplace_back(gameObject);
 	Root->AddChild(gameObject);
 	PlayerPawn* characterController = new PlayerPawn(gameObject, menu);
@@ -135,9 +140,6 @@ GameScreenLevel1::GameScreenLevel1()
 
 	PlayerController* playerController2 = new PlayerController(1, character2Controller);
 	mPlayerControllers.push_back(playerController2);
-
-	AddGameObjects(MediumLootPrefab().GetPrefab());
-	mGameObjects.back()->GetTransform()->mPosition = Vector3D(245, -1424, 1);
 	
 	
 	//
@@ -148,10 +150,6 @@ GameScreenLevel1::GameScreenLevel1()
 	//gameObject->AddComponent<RigidBody2D>(100, Vector2D(0, 0), 1, 0, physicsMaterialcircle);
 	//mGameObjects.emplace_back(gameObject);
 	//Root->AddChild(gameObject);
-
-	
-
-	std::cout<<mGameObjects.size() <<std::endl;
 }
 
 GameScreenLevel1::~GameScreenLevel1()
@@ -182,9 +180,6 @@ void GameScreenLevel1::Update(float deltaTime, std::vector<SDL_Event> events)
 	Collision::DetectCollisions(collisionObejcts);
 
 	Collision::DetectCollisions(mTileMap, collisionObejcts);
-
-	mCamera.GetTransform()->mPosition.x = mGameObjects[1]->GetTransform()->mPosition.x;
-	mCamera.GetTransform()->mPosition.y = mGameObjects[1]->GetTransform()->mPosition.y;
 }
 
 void GameScreenLevel1::SortObjectsDepth(GameObject* gameObject)

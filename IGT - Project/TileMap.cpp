@@ -263,6 +263,8 @@ bool TileMap::LoadMap(std::string filename)
 						}
 
 						SpawnRoom room = { position,width, height, prefabList};
+
+						//TODO: add to list of spawn rooms and use spawn rooms to spawn items
 					}
 				}
 
