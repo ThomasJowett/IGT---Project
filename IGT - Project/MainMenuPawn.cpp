@@ -1,42 +1,42 @@
 #include "MainMenuPawn.h"
 
 #include <iostream>
+#include <SDL.h>
+#include "Cursor.h"
 
-MainMenuPawn::MainMenuPawn(GameObject* cursor)
-	:mCursor(cursor)
+MainMenuPawn::MainMenuPawn()
 {
 }
 
 
 MainMenuPawn::~MainMenuPawn()
 {
-	if (mCursor) delete mCursor;
 }
 
 void MainMenuPawn::Up()
 {
-	mCursor->SetActive(false);
+	SDL_ShowCursor(SDL_DISABLE);
 
 	MenuManager::GetInstance()->GetCurrentMenu()->Up();
 }
 
 void MainMenuPawn::Down()
 {
-	mCursor->SetActive(false);
+	SDL_ShowCursor(SDL_DISABLE);
 
 	MenuManager::GetInstance()->GetCurrentMenu()->Down();
 }
 
 void MainMenuPawn::Left()
 {
-	mCursor->SetActive(false);
+	SDL_ShowCursor(SDL_DISABLE);
 
 	MenuManager::GetInstance()->GetCurrentMenu()->Left();
 }
 
 void MainMenuPawn::Right()
 {
-	mCursor->SetActive(false);
+	SDL_ShowCursor(SDL_DISABLE);
 
 	MenuManager::GetInstance()->GetCurrentMenu()->Right();
 }
@@ -53,7 +53,7 @@ void MainMenuPawn::Select()
 
 void MainMenuPawn::AButtonDown()
 {
-	mCursor->SetActive(false);
+	SDL_ShowCursor(SDL_DISABLE);
 	MenuManager::GetInstance()->GetCurrentWidget()->OnPressed();
 }
 
@@ -64,7 +64,7 @@ void MainMenuPawn::AButtonUp()
 
 void MainMenuPawn::BButtonDown()
 {
-	mCursor->SetActive(false);
+	SDL_ShowCursor(SDL_DISABLE);
 }
 
 void MainMenuPawn::BButtonUp()
@@ -111,8 +111,7 @@ void MainMenuPawn::MousePosition(float x, float y)
 		}
 	}
 
-	mCursor->SetActive(true);
-	mCursor->GetTransform()->mPosition = Vector3D(x + 8, y - 8, 0);
+	SDL_ShowCursor(SDL_ENABLE);
 }
 
 void MainMenuPawn::MouseLeftClick()
@@ -131,11 +130,15 @@ void MainMenuPawn::MouseLeftUnClick()
 
 void MainMenuPawn::OnPossessed(int controllerID)
 {
-	mCursor->SetActive(true);
+	iInput::OnPossessed(controllerID);
+	SDL_ShowCursor(SDL_ENABLE);
+	Cursor::CustomCursorType("Cursor_Arrow");
 }
 
 void MainMenuPawn::OnUnPossesed()
 {
-	mCursor->SetActive(false);
+	iInput::OnUnPossesed();
+	//SDL_ShowCursor(SDL_DISABLE);
+	Cursor::CustomCursorType("Cursor_Crosshairs");
 }
 

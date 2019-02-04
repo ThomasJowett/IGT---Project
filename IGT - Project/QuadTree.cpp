@@ -147,7 +147,8 @@ void QuadTree::Clear()
 
 void QuadTree::Render(Shader* shader)
 {
-	Sprite* sprite = new Sprite(nullptr, Texture2D::GetTexture2D("Images/SelectionBox.png"), mBoundary->GetWidth(), mBoundary->GetHeight(), Vector2D(mBoundary->GetPositionX(), mBoundary->GetPositionY()));
+	Sprite* sprite = new Sprite(nullptr, Texture2D::GetTexture2D("Images/SelectionBox.png"), 
+		mBoundary->GetWidth(), mBoundary->GetHeight(), Vector2D(mBoundary->GetPositionX(), mBoundary->GetPositionY()));
 	sprite->Render(shader);
 
 	if (!mIsLeaf)

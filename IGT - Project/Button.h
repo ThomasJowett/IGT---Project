@@ -27,6 +27,6 @@ private:
 	Sprite * mSprite;
 	
 	SDL_Colour mNormalColour = { 65, 172, 223 };
-	SDL_Colour mHoveredColour = { 255, 255, 255 };
-	SDL_Colour mPressedColour = { 0, 0, 255 };
+	SDL_Colour mHoveredColour = { 183, 227, 247 };
+	SDL_Colour mPressedColour = { 10, 10, 255 };
 };

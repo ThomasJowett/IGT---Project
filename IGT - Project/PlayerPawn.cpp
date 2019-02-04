@@ -2,6 +2,7 @@
 #include <iostream>
 #include "MenuManager.h"
 #include "GameScreenManager.h"
+#include "Cursor.h"
 
 PlayerPawn::PlayerPawn(GameObject* character, iInput* menuPawn)
 	:mCharacter(character),mMenuPawn(menuPawn)
@@ -30,6 +31,9 @@ void PlayerPawn::MoveRight(float scale)
 void PlayerPawn::Start()
 {
 	MenuManager::GetInstance()->ShowCurrentMenu(true);
+
 	GameScreenManager::GetInstance()->GetCurrentScreen()->GetPlayerControllers()[0]->PossesPawn(mMenuPawn);
+
+	Cursor::CustomCursorType("Cursor_Arrow");
 }
 

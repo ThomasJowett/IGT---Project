@@ -32,6 +32,7 @@ public:
 	std::vector<GameObject*>Retrieve(std::vector<GameObject*> &returnObjects, GameObject* gameobject);
 	void Clear();
 
+	//For Debugging
 	void Render(Shader* shader);
 private:
 

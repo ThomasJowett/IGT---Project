@@ -16,29 +16,32 @@ public:
 	}
 	void initialize()
 	{
-		mGoal = blackboard->getVector2D(mBlackboardKey);
+		//mGoal = blackboard->getVector2D(mBlackboardKey);
 		//Get path
 		//std::cout << "Getting path from " << mControlledPawn->GetTransform()->mPosition.to_string() << " to " << mGoal.to_string() << std::endl;
 
-		mPath = Astar::Generator::GetInstance()->FindPath(mControlledPawn->GetTransform()->mPosition, mGoal);
-		mCurrentWaypoint = mPath.size() - 1;
+		//mPath = Astar::Generator::GetInstance()->FindPath(mControlledPawn->GetTransform()->mPosition, mGoal);
+		//mCurrentWaypoint = mPath.size() - 1;
 	}
 
 	Status update(float deltaTime) override
 	{
-		//Has pawn reached goal
-		if (Vector2D::Distance(mControlledPawn->GetWorldTransform()->mPosition, mGoal) < mAcceptableRadius || mPath.size() == 0)
-		{
-			return Node::Status::Success;
-		}
-
 		//Has the goal moved
 		if (Vector2D::Distance(mGoal, blackboard->getVector2D(mBlackboardKey)) > mAcceptableRadius)
 		{
 			mGoal = blackboard->getVector2D(mBlackboardKey);
 			mPath = Astar::Generator::GetInstance()->FindPath(mControlledPawn->GetTransform()->mPosition, mGoal);
+			mCurrentWaypoint = mPath.size() - 1;
+
+			//return so that it does not move on the same update as the finding path takes place
+			return Node::Status::Running;
 		}
 
+		//Has pawn reached goal
+		if (Vector2D::Distance(mControlledPawn->GetWorldTransform()->mPosition, mGoal) < mAcceptableRadius || mPath.size() == 0)
+		{
+			return Node::Status::Success;
+		}
 
 		if (Vector2D::Distance(mPath[mCurrentWaypoint], mControlledPawn->GetWorldTransform()->mPosition) < mAcceptableRadius)
 		{

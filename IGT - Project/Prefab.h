@@ -29,6 +29,8 @@ struct Factory
 
 		return (it == getMap()->end() ? nullptr : it->second());
 	}
+
+	
 protected:
 	static map_type *getMap()
 	{
@@ -91,7 +93,7 @@ class CoinsPrefab : public Prefab
 public:
 	CoinsPrefab()
 	{
-
+		//TODO: coins prefab
 	}
 
 private:
@@ -144,4 +146,19 @@ public:
 	}
 private:
 	static DerivedRegister<SmallLootPrefab> reg;
+};
+
+class SlimePrefab : public Prefab
+{
+public:
+	SlimePrefab()
+	{
+		GameObject* gameObject = new GameObject("Slime", new Transform());
+
+		//TODO: slime prefab
+
+		mGameObjects.push_back(gameObject);
+	}
+private:
+	static DerivedRegister<SlimePrefab> reg;
 };

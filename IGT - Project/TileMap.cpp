@@ -292,9 +292,9 @@ void TileMap::RedrawMap()
 
 	int indicesIndex = 0;
 
-	float backgroundDepth = Settings::GetInstance()->GetCamera()->GetTransform()->mPosition.z 
-		- Settings::GetInstance()->GetCamera()->GetFarDepth() + 0.1f;
-	float foregroundDepth = Settings::GetInstance()->GetCamera()->GetTransform()->mPosition.z - 0.1f;
+	float backgroundDepth = - Settings::GetInstance()->GetCamera()->GetFarDepth() + 0.1f;
+
+	float foregroundDepth = -0.1f;
 
 	//Vertices
 	for (int i = 0;  i < mTilesWide; i++)

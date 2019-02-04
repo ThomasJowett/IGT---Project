@@ -16,7 +16,7 @@ unsigned int Astar::Node::GetScore()
 Astar::Generator::Generator()
 {
 	SetDiagonalMovement(true);
-	SetHeuristic(&Heuristic::Manhattan);
+	SetHeuristic(&Heuristic::Octagonal);
 
 	mDirection = {
 		{ 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 },

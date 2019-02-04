@@ -26,20 +26,12 @@ GameScreenMenu::GameScreenMenu() : GameScreen()
 	GLuint texture =			Texture2D::GetTexture2D("SpriteSheets/GoblinSprites.png");
 	GLuint backgroundTexture =	Texture2D::GetTexture2D("Images/BackGround.png");
 	GLuint ButtonTexture =		Texture2D::GetTexture2D("Images/ButtonsMenu.png");
-	GLuint CursorTexture =		Texture2D::GetTexture2D("Images/Cursor_Default.png");
 	
 	Transform* transform;
 	GameObject* gameObject;
 
-	//Cursor
-	transform = new Transform();
-	gameObject = new GameObject("Cursor", transform);
-	gameObject->AddComponent<Sprite>(CursorTexture, 16, 16);
-	mUIWidgets.emplace_back(gameObject);
-	RootWidget->AddChild(gameObject);
-
 	//Controllers
-	MainMenuPawn* menuController = new MainMenuPawn(gameObject);
+	MainMenuPawn* menuController = new MainMenuPawn();
 	PlayerController* playerController = new PlayerController(0, menuController);
 	mPlayerControllers.emplace_back(playerController);
 	

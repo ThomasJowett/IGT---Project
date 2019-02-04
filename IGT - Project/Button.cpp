@@ -1,5 +1,5 @@
 #include "Button.h"
-
+#include "Cursor.h"
 
 
 Button::Button(GLuint texture, Vector2D anchorPoint, Vector2D offset, Vector2D size, const char* text)
@@ -64,6 +64,7 @@ bool Button::OnHovered()
 {
 	if (UIWidget::OnHovered())
 	{
+		Cursor::CustomCursorType("Cursor_Pointer");
 		mSprite->SetCurrentFrame(HOVERED);
 		if (mText)
 			mText->UpdateText(mHoveredColour);
@@ -77,6 +78,7 @@ bool Button::OnUnHovered()
 {
 	if (UIWidget::OnUnHovered())
 	{
+		Cursor::CustomCursorType("Cursor_Arrow");
 		mSprite->SetCurrentFrame(NORMAL);
 		if (mText)
 			mText->UpdateText(mNormalColour);

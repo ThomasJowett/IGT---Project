@@ -5,7 +5,8 @@
 PlayerController::PlayerController(int controllerID, iInput* pawn)
 	:mControllerID(controllerID), mPawn(pawn)
 {
-	mPawn->OnPossessed(mControllerID);
+	if (mPawn)
+		mPawn->OnPossessed(mControllerID);
 }
 
 
@@ -17,6 +18,9 @@ PlayerController::~PlayerController()
 
 void PlayerController::Update(std::vector<SDL_Event> events)
 {
+	if (!mPawn)
+		return;
+
 	SDL_PumpEvents();
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(nullptr);
 
@@ -70,6 +74,8 @@ void PlayerController::Update(std::vector<SDL_Event> events)
 					break;
 				case SDL_CONTROLLER_BUTTON_START:
 					mPawn->Start();
+					if (!mPawn)
+						return;
 					break;
 				case SDL_CONTROLLER_BUTTON_BACK:
 					mPawn->Select();
@@ -122,6 +128,8 @@ void PlayerController::Update(std::vector<SDL_Event> events)
 					break;
 				case SDLK_ESCAPE:
 					mPawn->Start();
+					if (!mPawn)
+						return;
 					break;
 				case SDLK_TAB:
 					mPawn->Select();
@@ -184,7 +192,7 @@ void PlayerController::Update(std::vector<SDL_Event> events)
 	}
 
 	if (mControllerID == 0)
-	{	
+	{
 		if (currentKeyStates[SDL_SCANCODE_A]) { mPawn->MoveRight(-1.0f); }
 		if (currentKeyStates[SDL_SCANCODE_D]) { mPawn->MoveRight(1.0f); }
 		if (currentKeyStates[SDL_SCANCODE_W]) { mPawn->MoveUp(1.0f); }
@@ -224,7 +232,7 @@ void PlayerController::Update(std::vector<SDL_Event> events)
 
 void PlayerController::PossesPawn(iInput * pawn)
 {
-	if (pawn != mPawn)
+	if (pawn != mPawn && mPawn)
 	{
 		mPawn->OnUnPossesed();
 		mPawn = pawn;

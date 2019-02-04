@@ -1,5 +1,4 @@
 
-
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <SDL_image.h>
@@ -10,6 +9,7 @@
 #include "GameScreenManager.h"
 #include "Settings.h"
 #include "Debug.h"
+#include "Cursor.h"
 
 
 //Globals------------------------------------------------------------------------------------
@@ -125,7 +125,14 @@ bool InitSDL()
 			
 		}
 
-		SDL_ShowCursor(SDL_DISABLE);
+		//Setup Custom Cursors-----------------------------------------------------------------
+		//Cursor::CreateCustomCursor(SDL_SYSTEM_CURSOR_ARROW, "Images/Cursor_Arrow.png", 0, 0);
+		//Cursor::CreateCustomCursor(SDL_SYSTEM_CURSOR_CROSSHAIR, "Images/Cursor_Crosshairs.png", 32, 32);
+		//Cursor::CreateCustomCursor(SDL_SYSTEM_CURSOR_HAND, "Images/Cursor_Pointer.png", 0, 0);
+
+		Cursor::LoadCursors();
+
+		Cursor::CustomCursorType("Cursor_Arrow");
 	}
 	glClearColor(0.0f, 0.5f, 0.1f, 1.0f);
 	return true;
@@ -149,6 +156,9 @@ void CloseSDL()
 	//Release the renderer
 	SDL_GL_DeleteContext(gGLContext);
 	gGLContext = NULL;
+
+	//release cursors
+	Cursor::ReleaseCursors();
 
 	//Quit SDL subsystems
 	IMG_Quit();

@@ -13,3 +13,5 @@ DerivedRegister<LargeLootPrefab> LargeLootPrefab::reg("LargeLoot");
 DerivedRegister<MediumLootPrefab> MediumLootPrefab::reg("MediumLoot");
 
 DerivedRegister<SmallLootPrefab> SmallLootPrefab::reg("SmallLoot");
+
+DerivedRegister<SlimePrefab> SlimePrefab::reg("Slime");

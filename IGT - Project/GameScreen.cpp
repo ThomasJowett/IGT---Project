@@ -56,7 +56,7 @@ void GameScreen::Render()
 
 	//Traverse through the scene graph rendering each object starting at the root
 	Root->Traverse(mShaderBasic, identityMatrix);
-	Collision::GetQuadtree()->Render(mShaderBasic);
+	//Collision::GetQuadtree()->Render(mShaderBasic);
 	mFrameBuffer.Unbind();
 
 	//Now render to the back buffer

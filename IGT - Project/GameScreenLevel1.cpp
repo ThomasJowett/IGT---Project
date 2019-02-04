@@ -33,7 +33,6 @@ GameScreenLevel1::GameScreenLevel1()
 	GLuint SnakeTexture = Texture2D::GetTexture2D("SpriteSheets/snake spritesheet calciumtrice.png");
 	GLuint circleTexture = Texture2D::GetTexture2D("Images/Circle.png");
 	GLuint squareTexture = Texture2D::GetTexture2D("Images/Square.png");
-	GLuint CursorTexture = Texture2D::GetTexture2D("Images/Cursor_Default.png");
 	GLuint BarrelTexture = Texture2D::GetTexture2D("Images/Barrel_Closed.png");
 
 
@@ -43,23 +42,17 @@ GameScreenLevel1::GameScreenLevel1()
 	PhysicsMaterial physicsMaterial = { 30.0f, 0.8f, 0.5f, 10.0f };
 	PhysicsMaterial physicsMaterialcircle = { 300.0f, 0.8f, 0.5f, 1.0f };
 
-	//Cursor
-	transform = new Transform();
-	GameObject* cursor = new GameObject("Cursor", transform, false);
-	cursor->AddComponent<Sprite>(CursorTexture, 16, 16);
-	RootWidget->AddChild(cursor);
-	mUIWidgets.emplace_back(cursor);
+	MainMenuPawn* menu = new MainMenuPawn();
 
-	MainMenuPawn* menu = new MainMenuPawn(cursor);
+	//mCamera.GetTransform()->mPosition += Vector3D(0, 0, 100);
 
 	mTileMap = new TileMap("TestMap.tmx");
 	mGameObjects.emplace_back(mTileMap);
 	Root->AddChild(mTileMap);
 
-	Astar::Generator::GetInstance()->SetTileMap(mTileMap);
-
 	mCamera.GetTransform()->mPosition = mTileMap->GetPlayerStart(0).to_Vector3D();
-	//mCamera.GetTransform()->mPosition += Vector3D(0, 0, 100);
+
+	Astar::Generator::GetInstance()->SetTileMap(mTileMap);
 
 	//player 1
 	transform = new Transform(mTileMap->GetPlayerStart(0).to_Vector3D(), 0, Vector2D(1, 1));
@@ -77,7 +70,7 @@ GameScreenLevel1::GameScreenLevel1()
 	gameObject->AddComponent<CameraFollow>(&mCamera);
 	mGameObjects.emplace_back(gameObject);
 	Root->AddChild(gameObject);
-	PlayerPawn* characterController = new PlayerPawn(gameObject, menu);
+	PlayerPawn* character1 = new PlayerPawn(gameObject, menu);
 
 	//player 2
 	transform = new Transform(mTileMap->GetPlayerStart(1).to_Vector3D(), 0, Vector2D(1, 1));
@@ -93,7 +86,7 @@ GameScreenLevel1::GameScreenLevel1()
 	gameObject->AddComponent<Health>(100.0f);
 	mGameObjects.emplace_back(gameObject);
 	Root->AddChild(gameObject);
-	PlayerPawn* character2Controller = new PlayerPawn(gameObject, menu);
+	PlayerPawn* character2 = new PlayerPawn(gameObject, menu);
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -123,7 +116,7 @@ GameScreenLevel1::GameScreenLevel1()
 	AddGameObject(gameObject);
 
 	//Pause Menu
-	UIMenu* pauseMenu = new PauseMenu(new Transform(), characterController);
+	UIMenu* pauseMenu = new PauseMenu(new Transform(), character1);
 	mUIWidgets.emplace_back(pauseMenu);
 	RootWidget->AddChild(pauseMenu);
 	MenuManager::GetInstance()->AddMenu(pauseMenu);
@@ -135,10 +128,10 @@ GameScreenLevel1::GameScreenLevel1()
 	
 
 	//PlayerControllers
-	PlayerController* playerController = new PlayerController(0, characterController);
+	PlayerController* playerController = new PlayerController(0, character1);
 	mPlayerControllers.push_back(playerController);
 
-	PlayerController* playerController2 = new PlayerController(1, character2Controller);
+	PlayerController* playerController2 = new PlayerController(1, character2);
 	mPlayerControllers.push_back(playerController2);
 	
 	

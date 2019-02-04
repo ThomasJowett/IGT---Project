@@ -138,6 +138,7 @@
     <ClCompile Include="CheckBox.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="Cursor.cpp" />
     <ClCompile Include="DungeonManager.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Commons.h" />
+    <ClInclude Include="Cursor.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Decorators.h" />
     <ClInclude Include="DungeonManager.h" />

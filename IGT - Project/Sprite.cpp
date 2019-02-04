@@ -95,7 +95,7 @@ void Sprite::Render(Shader* shader)
 	}
 	else
 	{
-		shader->UpdateMatrixUniform(MODEL_U, Matrix4x4::Translate(Vector3D(0.0f,0.0f, 100.0f)) * mOffset, true);
+		shader->UpdateMatrixUniform(MODEL_U, Matrix4x4::Translate(Vector3D(0.0f,0.0f, 0.0f)) * mOffset, true);
 	}
 	shader->Updatefloat4(mTint.x, mTint.y, mTint.z, mOpacity);
 

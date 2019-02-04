@@ -1,6 +1,7 @@
 #include "PauseMenu.h"
 #include "Texture2D.h"
 #include "GameScreenManager.h"
+#include "Cursor.h"
 
 PauseMenu::PauseMenu(Transform* transform, iInput* playerPawn)
 	:UIMenu("Pause Menu", transform), mPlayerPawn(playerPawn)
@@ -48,6 +49,7 @@ void PauseMenu::OnNotify(WidgetEvent event, WidgetEventData data)
 		case 0:
 			MenuManager::GetInstance()->ShowCurrentMenu(false);
 			GameScreenManager::GetInstance()->GetCurrentScreen()->GetPlayerControllers()[0]->PossesPawn(mPlayerPawn);
+			Cursor::CustomCursorType("Cursor_Crosshairs");
 			return;
 		case 1:
 			GameScreenManager::GetInstance()->ChangeScreen(SCREEN_MENU);
@@ -65,4 +67,6 @@ void PauseMenu::Back()
 {
 	MenuManager::GetInstance()->ShowCurrentMenu(false);
 	GameScreenManager::GetInstance()->GetCurrentScreen()->GetPlayerControllers()[0]->PossesPawn(mPlayerPawn);
+	Cursor::CustomCursorType("Cursor_Crosshairs");
+	SDL_ShowCursor(SDL_ENABLE);
 }

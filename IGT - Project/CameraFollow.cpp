@@ -24,4 +24,6 @@ void CameraFollow::Update(float deltaTime)
 
 	mCameraRef->GetTransform()->mPosition.x = smoothedPosition.x;
 	mCameraRef->GetTransform()->mPosition.y = smoothedPosition.y;
+
+	//mCameraRef->GetTransform()->mPosition = smoothedPosition;
 }

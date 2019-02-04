@@ -11,7 +11,7 @@ class MainMenuPawn :
 	public iInput
 {
 public:
-	MainMenuPawn(GameObject* cursor);
+	MainMenuPawn();
 	virtual ~MainMenuPawn();
 
 	void Up()override;
@@ -37,12 +37,10 @@ public:
 	virtual void MouseRightClick()override {}
 	virtual void MouseRightUnClick()override {}
 
-	void OnPossessed(int controllerID)override;
-	void OnUnPossesed()override;
+	virtual void OnPossessed(int controllerID)override;
+	virtual void OnUnPossesed()override;
 
 private:
-	GameObject* mCursor;
-
 
 	bool mLeftMouseDown = false;
 	Vector2D mMousePosition;
