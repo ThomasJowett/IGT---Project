@@ -184,6 +184,8 @@ bool Update()
 		events.push_back(e);
 	}
 
+	//GameScreenManager::GetInstance()->PauseGame();
+
 	GameScreenManager::GetInstance()->Update((float)(newTime - gOldTime) / 1000.0f, events);
 
 	//Handle quiting.

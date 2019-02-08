@@ -2,6 +2,8 @@
 #define _MATRIX_H
 
 #include "Vector.h"
+#include "Plane.h"
+#include <string>
 
 class Matrix4x4
 {
@@ -20,13 +22,18 @@ public:
 	static Matrix4x4 Orthographic(float left, float right, float bottom, float top, float nearDepth, float farDepth);
 	static Matrix4x4 LookAt(Vector3D eyePosition, Vector3D lookAtPosition, Vector3D up);
 
+	static void FrustumPlanes(Plane planes[6], Matrix4x4 M);
+
 	static Vector2D MulVec2(Matrix4x4 matrix, Vector2D vector);
 	static Vector3D MulVec3(Matrix4x4 matrix, Vector3D vector);
 
 	Vector2D ToVector2D() const;
 	Vector3D ToVector3D() const;
 
+	std::string to_string()const;
+
 	Matrix4x4 operator*(Matrix4x4 other);
+	float operator()(size_t row, size_t column);
 };
 
 #endif // !_MATRIX_H

@@ -158,6 +158,7 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="OptionsMenu.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
+    <ClCompile Include="Plane.cpp" />
     <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="PlayerPawn.cpp" />
     <ClCompile Include="Prefab.cpp" />
@@ -229,6 +230,7 @@
     <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="OptionsMenu.h" />
     <ClInclude Include="PauseMenu.h" />
+    <ClInclude Include="Plane.h" />
     <ClInclude Include="PlayerController.h" />
     <ClInclude Include="PlayerPawn.h" />
     <ClInclude Include="PostProcess.h" />

@@ -166,20 +166,64 @@ Matrix4x4 Matrix4x4::LookAt(Vector3D eyePosition, Vector3D lookAtPosition, Vecto
 	return result;
 }
 
+void Matrix4x4::FrustumPlanes(Plane planes[6], Matrix4x4 matrix)
+{
+	//left
+	planes[0].a = matrix(0,3) + matrix(0,0);
+	planes[0].b = matrix.m[1][3] + matrix.m[1][0];
+	planes[0].c = matrix.m[2][3] + matrix.m[2][0];
+	planes[0].d = matrix.m[3][3] + matrix.m[3][0];
+
+	//right
+	planes[1].a = matrix.m[0][3] - matrix.m[0][0];
+	planes[1].b = matrix.m[1][3] - matrix.m[1][0];
+	planes[1].c = matrix.m[2][3] - matrix.m[2][0];
+	planes[1].d = matrix.m[3][3] - matrix.m[3][0];
+
+	//Bottom
+	planes[2].a = matrix.m[0][3] + matrix.m[0][1];
+	planes[2].b = matrix.m[1][3] + matrix.m[1][1];
+	planes[2].c = matrix.m[2][3] + matrix.m[2][1];
+	planes[2].d = matrix.m[3][3] + matrix.m[3][1];
+
+	//Top
+	planes[3].a = matrix.m[0][3] - matrix.m[0][1];
+	planes[3].b = matrix.m[1][3] - matrix.m[1][1];
+	planes[3].c = matrix.m[2][3] - matrix.m[2][1];
+	planes[3].d = matrix.m[3][3] - matrix.m[3][1];
+
+	//Near
+	planes[4].a = matrix.m[0][2];
+	planes[4].b = matrix.m[1][2];
+	planes[4].c = matrix.m[2][2];
+	planes[4].d = matrix.m[3][2];
+
+	//Far
+	planes[5].a = matrix.m[0][3] - matrix.m[0][2];
+	planes[5].b = matrix.m[1][3] - matrix.m[1][2];
+	planes[5].c = matrix.m[2][3] - matrix.m[2][2];
+	planes[5].d = matrix.m[3][3] - matrix.m[3][2];
+
+	for (int i = 0; i < 6; ++i)
+	{
+		planes[i].Normalize();
+	}
+}
+
 Vector2D Matrix4x4::MulVec2(Matrix4x4 matrix, Vector2D vector)
 {
 	Vector2D result;
-	result.x = (matrix.m[0][0] * vector.x) + (matrix.m[0][1] * vector.x) + (matrix.m[0][3] * vector.x);
-	result.y = (matrix.m[1][0] * vector.y) + (matrix.m[1][1] * vector.y) + (matrix.m[1][3] * vector.y);
+	result.x = (matrix(0,0) * vector.x) + (matrix(0,1) * vector.x) + (matrix(0,3) * vector.x);
+	result.y = (matrix(1,0) * vector.y) + (matrix(1,1) * vector.y) + (matrix(1,3) * vector.y);
 	return result;
 }
 
 Vector3D Matrix4x4::MulVec3(Matrix4x4 matrix, Vector3D vector)
 {
 	Vector3D result;
-	result.x = (matrix.m[0][0] * vector.x) + (matrix.m[0][1] * vector.x) + (matrix.m[0][2] * vector.x) + (matrix.m[0][3] * vector.x);
-	result.y = (matrix.m[1][0] * vector.y) + (matrix.m[1][1] * vector.y) + (matrix.m[1][2] * vector.y) + (matrix.m[1][3] * vector.y);
-	result.z = (matrix.m[2][0] * vector.z) + (matrix.m[2][1] * vector.z) + (matrix.m[2][2] * vector.z) + (matrix.m[2][3] * vector.z);
+	result.x = (matrix(0,0) * vector.x) + (matrix(0,1) * vector.x) + (matrix(0,2) * vector.x) + (matrix(0,3) * vector.x);
+	result.y = (matrix(1,0) * vector.y) + (matrix(1,1) * vector.y) + (matrix(1,2) * vector.y) + (matrix(1,3) * vector.y);
+	result.z = (matrix(2,0) * vector.z) + (matrix(2,1) * vector.z) + (matrix(2,2) * vector.z) + (matrix(2,3) * vector.z);
 	return result;
 }
 
@@ -198,6 +242,31 @@ Vector3D Matrix4x4::ToVector3D() const
 	result.y = m[1][0] + m[1][1] + m[1][2] + m[1][3];
 	result.z = m[2][0] + m[2][1] + m[2][2] + m[2][3];
 	return Vector3D();
+}
+
+std::string Matrix4x4::to_string() const
+{
+	std::string result;
+
+	for (unsigned int i = 0; i < 4; i++)
+	{
+		for (unsigned int j = 0; j < 4; j++)
+		{
+
+			result += std::to_string(m[i][j]);
+			if (j != 3)
+			{
+				result += ", ";
+			}
+
+		}
+		if (i != 3)
+		{
+			result += "\n";
+		}
+	}
+
+	return result;
 }
 
 Matrix4x4 Matrix4x4::operator*(Matrix4x4 other)
@@ -239,4 +308,9 @@ Matrix4x4 Matrix4x4::operator*(Matrix4x4 other)
 	result.m[3][2] = (other.m[0][2] * x) + (other.m[1][2] * y) + (other.m[2][2] * z) + (other.m[3][2] * w);
 	result.m[3][3] = (other.m[0][3] * x) + (other.m[1][3] * y) + (other.m[2][3] * z) + (other.m[3][3] * w);
 	return result;
+}
+
+float Matrix4x4::operator()(size_t row, size_t column)
+{
+	return m[row][column];
 }

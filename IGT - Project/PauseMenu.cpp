@@ -50,6 +50,7 @@ void PauseMenu::OnNotify(WidgetEvent event, WidgetEventData data)
 			MenuManager::GetInstance()->ShowCurrentMenu(false);
 			GameScreenManager::GetInstance()->GetCurrentScreen()->GetPlayerControllers()[0]->PossesPawn(mPlayerPawn);
 			Cursor::CustomCursorType("Cursor_Crosshairs");
+			GameScreenManager::GetInstance()->ResumeGame();
 			return;
 		case 1:
 			GameScreenManager::GetInstance()->ChangeScreen(SCREEN_MENU);
@@ -69,4 +70,5 @@ void PauseMenu::Back()
 	GameScreenManager::GetInstance()->GetCurrentScreen()->GetPlayerControllers()[0]->PossesPawn(mPlayerPawn);
 	Cursor::CustomCursorType("Cursor_Crosshairs");
 	SDL_ShowCursor(SDL_ENABLE);
+	GameScreenManager::GetInstance()->ResumeGame();
 }

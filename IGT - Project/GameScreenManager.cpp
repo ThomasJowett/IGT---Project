@@ -47,6 +47,9 @@ void GameScreenManager::Render()
 
 void GameScreenManager::Update(float deltaTime, std::vector<SDL_Event> events)
 {
+	if (mPaused)
+		deltaTime = 0.0f;
+
 	mCurrentScreen->Update(deltaTime, events);
 
 	//Screen is finished updateing so can be deleted
