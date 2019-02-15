@@ -155,3 +155,16 @@ void GameScreen::AddGameObject(GameObject * gameObject)
 		Root->AddChild(gameObject);
 	}
 }
+
+void GameScreen::RemoveGameOject(GameObject * gameObject)
+{
+	for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
+	{
+		if (it->get() == gameObject)
+		{
+			gameObject->RemoveSelf();
+			delete gameObject;
+			mGameObjects.erase(it);
+		}
+	}
+}

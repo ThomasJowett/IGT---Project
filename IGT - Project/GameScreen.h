@@ -28,6 +28,8 @@ public:
 	void AddGameObjects(std::vector<GameObject*> gameObjects);
 	void AddGameObject(GameObject* gameObject);
 
+	void RemoveGameOject(GameObject* gameObject);
+
 protected:
 	SceneNode * Root;
 	SceneNode * RootWidget;

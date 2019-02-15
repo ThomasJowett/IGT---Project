@@ -1,6 +1,6 @@
 #include "AnimatorSnake.h"
 
-
+#include "GameScreenManager.h"
 
 AnimatorSnake::AnimatorSnake(GameObject* parent)
 	:Animator(parent)
@@ -24,7 +24,7 @@ AnimatorSnake::~AnimatorSnake()
 
 void AnimatorSnake::Update(float deltaTime)
 {
-	if (!mIsAttacking)
+	if (!mIsAttacking && GetState() != SNAKE_DEATH)
 	{
 		if (!mRigidbody)
 			mRigidbody = GetParent()->GetComponent<RigidBody2D>();
@@ -118,6 +118,7 @@ void AnimatorSnake::CreateAnimations()
 	mAnimations.emplace_back(std::make_unique<Animation>(20, 10, 0.1, mSprite));//left
 	mAnimations.emplace_back(std::make_unique<Animation>(30, 10, 0.1, mSprite));//attack
 	mAnimations.emplace_back(std::make_unique<Animation>(40, 10, 0.1, mSprite));//death
+	mAnimations.back()->AddObserver(this);
 }
 
 void AnimatorSnake::OnNotify(AnimationNotify notify, int chanel)
@@ -125,9 +126,7 @@ void AnimatorSnake::OnNotify(AnimationNotify notify, int chanel)
 	switch (notify)
 	{
 	case AnimationNotify::ANIM_END:
-		RevertToPreviousState();
-		mIsAttacking = false;
-		mAttack->StopAttack();
+		GameScreenManager::GetInstance()->GetCurrentScreen()->RemoveGameOject(GetParent());
 		break;
 	default:
 		break;

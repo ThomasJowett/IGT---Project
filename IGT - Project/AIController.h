@@ -28,5 +28,5 @@ private:
 	Attack* mAttackRef;
 
 	float mAttackRange;
-	bool mIsDead;
+	bool mIsDead = false;
 };

@@ -7,11 +7,13 @@ AIController::AIController(GameObject* parent)
 	SetupBlackBoard();
 
 	mAttackRef = GetParent()->GetComponent<Attack>();
+	GetParent()->GetComponent<Health>()->AddObserver(this);
 }
 
 void AIController::Update(float deltaTime)
 {
-	mBehaviourTree.update(deltaTime);
+	if(!mIsDead)
+		mBehaviourTree.update(deltaTime);
 }
 
 void AIController::BuildBehaviourTree()
@@ -63,5 +65,13 @@ void AIController::SetupBlackBoard()
 
 void AIController::OnNotify(HealthEvent notify, GameObject * gameObject)
 {
+	switch (notify)
+	{
+	case HealthEvent::ON_DEATH:
+		mIsDead = true;
+		break;
 
+	default:
+		break;
+	}
 }
