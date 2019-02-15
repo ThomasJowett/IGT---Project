@@ -5,8 +5,16 @@
 AnimatorSnake::AnimatorSnake(GameObject* parent)
 	:Animator(parent)
 {
-	if(GetParent())
+	if (GetParent())
+	{
 		CreateAnimations();
+
+		mRigidbody = GetParent()->GetComponent<RigidBody2D>();
+		mAttack = GetParent()->GetComponent<Attack>();
+		mAttack->AddObserver(this);
+
+		GetParent()->GetComponent<Health>()->AddObserver(this);
+	}
 }
 
 
@@ -16,6 +24,21 @@ AnimatorSnake::~AnimatorSnake()
 
 void AnimatorSnake::Update(float deltaTime)
 {
+	if (!mIsAttacking)
+	{
+		if (!mRigidbody)
+			mRigidbody = GetParent()->GetComponent<RigidBody2D>();
+
+		Vector2D velocity = mRigidbody->GetVelocity();
+
+		if (velocity.x > 5.0f)
+			ChangeState(SNAKE_RIGHT);
+		else if (velocity.x < -5.0f)
+			ChangeState(SNAKE_LEFT);
+		else
+			ChangeState(SNAKE_IDLE);
+
+	}
 	Animator::Update(deltaTime);
 }
 
@@ -95,4 +118,46 @@ void AnimatorSnake::CreateAnimations()
 	mAnimations.emplace_back(std::make_unique<Animation>(20, 10, 0.1, mSprite));//left
 	mAnimations.emplace_back(std::make_unique<Animation>(30, 10, 0.1, mSprite));//attack
 	mAnimations.emplace_back(std::make_unique<Animation>(40, 10, 0.1, mSprite));//death
+}
+
+void AnimatorSnake::OnNotify(AnimationNotify notify, int chanel)
+{
+	switch (notify)
+	{
+	case AnimationNotify::ANIM_END:
+		RevertToPreviousState();
+		mIsAttacking = false;
+		mAttack->StopAttack();
+		break;
+	default:
+		break;
+	}
+}
+
+void AnimatorSnake::OnNotify(AttackEvent notify, int payload)
+{
+	switch (notify)
+	{
+	case AttackEvent::ON_ATTACK_BEGIN:
+		ChangeState(SNAKE_ATTACK);
+		mIsAttacking = true;
+		break;
+	case AttackEvent::ON_ATTACK_END:
+		break;
+	default:
+		break;
+	}
+}
+
+void AnimatorSnake::OnNotify(HealthEvent notify, GameObject * gameObject)
+{
+	switch (notify)
+	{
+	case HealthEvent::ON_DEATH:
+		ChangeState(SNAKE_DEATH);
+		mIsAttacking = false;
+		break;
+	default:
+		break;
+	}
 }

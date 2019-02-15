@@ -189,16 +189,7 @@
     <ClCompile Include="Prefab.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ProgressBar.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HUD.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AIController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraFollow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Cursor.cpp">
@@ -206,6 +197,15 @@
     </ClCompile>
     <ClCompile Include="Plane.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraFollow.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="HUD.cpp">
+      <Filter>Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgressBar.cpp">
+      <Filter>UIWidgets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

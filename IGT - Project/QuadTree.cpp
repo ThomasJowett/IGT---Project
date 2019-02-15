@@ -140,9 +140,13 @@ void QuadTree::Clear()
 		if (mNodes[i] != nullptr)
 		{
 			mNodes[i]->Clear();
+			delete mNodes[i]->mBoundary;
+			delete mNodes[i];
 			mNodes[i] = nullptr;
 		}
 	}
+
+	mIsLeaf = true;
 }
 
 void QuadTree::Render(Shader* shader)

@@ -60,3 +60,8 @@ void AIController::SetupBlackBoard()
 	mBehaviourTree.getBlackboard()->setVector2D("MoveToLocation", { 1380, -127 });
 	mBehaviourTree.getBlackboard()->setBool("IsInAttackRange", false);
 }
+
+void AIController::OnNotify(HealthEvent notify, GameObject * gameObject)
+{
+
+}

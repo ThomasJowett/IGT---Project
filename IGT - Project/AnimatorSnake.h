@@ -1,5 +1,8 @@
 #pragma once
 #include "Animator.h"
+#include "RigidBody2D.h"
+#include "Attack.h"
+#include "Health.h"
 
 enum SnakeAnimstates
 {
@@ -12,7 +15,7 @@ enum SnakeAnimstates
 	SNAKE_DEATH
 };
 class AnimatorSnake :
-	public Animator<SnakeAnimstates>
+	public Animator<SnakeAnimstates>, public Observer<AttackEvent, int>, public Observer<HealthEvent, GameObject*>
 {
 public:
 	AnimatorSnake(GameObject* parent);
@@ -26,4 +29,13 @@ public:
 	void Exit(SnakeAnimstates state)override;
 
 	void CreateAnimations()override;
+
+	void OnNotify(AnimationNotify notify, int chanel) override;
+	void OnNotify(AttackEvent notify, int payload)override;
+	void OnNotify(HealthEvent notify, GameObject* gameObject)override;
+
+private:
+	RigidBody2D * mRigidbody;
+	Attack * mAttack;
+	bool mIsAttacking;
 };

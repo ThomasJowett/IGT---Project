@@ -144,9 +144,8 @@ bool Box2D::ContainsPoint(Vector2D point)
 
 bool Box2D::TestAxis(Vector2D axis, float offset)
 {
-	std::vector<Vector2D> corners = GetCorners();
 	float min, max;
-	ProjectCornersOnAxis(axis, corners, min, max);
+	ProjectCornersOnAxis(axis, GetCorners(), min, max);
 
 	return min > offset;
 }
@@ -165,21 +164,23 @@ std::vector<Vector2D> Box2D::GetCorners() const
 	float halfHeight = mHeight / 2;
 
 	std::vector<Vector2D> corners;
+	corners.resize(4);
+	
 	Matrix4x4 translateWorld = Matrix4x4::Translate(GetParent()->GetWorldTransform()->mPosition);
 	Matrix4x4 rotation = Matrix4x4::RotateZ(GetParent()->GetWorldTransform()->mRotation);
-
+	
 	Matrix4x4 translateCorner = Matrix4x4::Translate(Vector3D(-halfWidth, -halfHeight, 0));
 	Matrix4x4 mPosition = translateWorld  * rotation * mOffset * translateCorner;
-	corners.push_back((translateWorld*rotation*mOffset*translateCorner).ToVector2D());
-
+	corners[0] = ((translateWorld*rotation*mOffset*translateCorner).ToVector2D());
+	
 	translateCorner = Matrix4x4::Translate(Vector3D(halfWidth, -halfHeight, 0));
-	corners.push_back((translateWorld*rotation*mOffset*translateCorner).ToVector2D());
-
+	corners[1] = ((translateWorld*rotation*mOffset*translateCorner).ToVector2D());
+	
 	translateCorner = Matrix4x4::Translate(Vector3D(halfWidth, halfHeight, 0));
-	corners.push_back((translateWorld*rotation*mOffset*translateCorner).ToVector2D());
-
+	corners[2] = ((translateWorld*rotation*mOffset*translateCorner).ToVector2D());
+	
 	translateCorner = Matrix4x4::Translate(Vector3D(-halfWidth, halfHeight, 0));
-	corners.push_back((translateWorld*rotation*mOffset*translateCorner).ToVector2D());
+	corners[3] = ((translateWorld*rotation*mOffset*translateCorner).ToVector2D());
 
 	return corners;
 }
@@ -197,10 +198,12 @@ bool Collider::HasTestedCollisionWith(Collider * collider)
 std::vector<Vector2D> Collider::GetAxis(std::vector<Vector2D> box1Corners, std::vector<Vector2D> box2Corners)
 {
 	std::vector<Vector2D> axis;
-	axis.push_back((box1Corners[1] - box1Corners[0]).GetNormalized());
-	axis.push_back((box1Corners[3] - box1Corners[0]).GetNormalized());
-	axis.push_back((box2Corners[1] - box2Corners[0]).GetNormalized());
-	axis.push_back((box2Corners[3] - box2Corners[0]).GetNormalized());
+	axis.resize(4);
+	
+	axis[0] = (box1Corners[1] - box1Corners[0]).GetNormalized();
+	axis[1] = (box1Corners[3] - box1Corners[0]).GetNormalized();
+	axis[2] = (box2Corners[1] - box2Corners[0]).GetNormalized();
+	axis[3] = (box2Corners[3] - box2Corners[0]).GetNormalized();
 	return axis;
 }
 
@@ -210,7 +213,7 @@ void Collider::ProjectCornersOnAxis(Vector2D axis, std::vector<Vector2D> corners
 	min = dotProduct;
 	max = dotProduct;
 
-	for (int i = 1; i < corners.size(); i++)
+	for (int i = 1; i < 4; i++)
 	{
 		dotProduct = Vector2D::Dot(axis, corners[i]);
 		if (dotProduct < min)

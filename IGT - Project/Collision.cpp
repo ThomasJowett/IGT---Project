@@ -8,7 +8,6 @@ std::vector<Contact> Collision::DetectCollisions(std::vector<GameObject*> gameOb
 {
 	quadtree->Clear();
 	std::vector<Contact> contacts;
-
 	
 	for (GameObject* gameObject : gameObjects)
 	{

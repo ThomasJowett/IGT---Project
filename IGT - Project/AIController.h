@@ -5,9 +5,10 @@
 #include "Tasks.h"
 #include "Attack.h"
 #include "Decorators.h"
+#include "Health.h"
 
 class AIController
-	:public iUpdateable
+	:public iUpdateable, public Observer<HealthEvent,GameObject*>
 {
 public:
 	AIController(GameObject* parent);
@@ -19,10 +20,13 @@ public:
 	virtual void BuildBehaviourTree();
 	virtual void SetupBlackBoard();
 
+	void OnNotify(HealthEvent notify, GameObject* gameObject)override;
+
 private:
 	BrainTree::BehaviorTree mBehaviourTree;
 
 	Attack* mAttackRef;
 
 	float mAttackRange;
+	bool mIsDead;
 };
