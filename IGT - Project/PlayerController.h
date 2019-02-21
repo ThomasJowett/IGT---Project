@@ -16,6 +16,8 @@ public:
 
 	void PossesPawn(iInput* pawn);
 	void UnPossesPawn();
+
+	iInput* GetPossessedPawn() { return mPawn; }
 private:
 	iInput * mPawn;
 	int mControllerID;

@@ -23,17 +23,13 @@
 
 GameScreenLevel1::GameScreenLevel1()
 {
-	mShaderBasic = new BasicShader();
+	//Setup the blur on pause post process
+	mShaderBlur = new BlurShader();
+	mNoPostProcess = new NoPostProcessShader();
 
-	
+	mPostProcessShader = mNoPostProcess;
 
-	//GLuint goblinTexture = Texture2D::GetTexture2D("SpriteSheets/GoblinSprites.png");
-	GLuint slimeTexture = Texture2D::GetTexture2D("SpriteSheets/SlimeSprites.png");
-	GLuint batTexture = Texture2D::GetTexture2D("SpriteSheets/rat and bat spritesheet calciumtrice.png");
 	GLuint SnakeTexture = Texture2D::GetTexture2D("SpriteSheets/snake spritesheet calciumtrice.png");
-	GLuint circleTexture = Texture2D::GetTexture2D("Images/Circle.png");
-	GLuint squareTexture = Texture2D::GetTexture2D("Images/Square.png");
-	GLuint BarrelTexture = Texture2D::GetTexture2D("Images/Barrel_Closed.png");
 
 
 	Transform* transform;
@@ -44,8 +40,6 @@ GameScreenLevel1::GameScreenLevel1()
 
 	MainMenuPawn* menu = new MainMenuPawn();
 
-	//mCamera.GetTransform()->mPosition += Vector3D(0, 0, 100);
-
 	mTileMap = new TileMap("TestMap.tmx");
 	mGameObjects.emplace_back(mTileMap);
 	Root->AddChild(mTileMap);
@@ -55,37 +49,15 @@ GameScreenLevel1::GameScreenLevel1()
 	Astar::Generator::GetInstance()->SetTileMap(mTileMap);
 
 	//player 1
-	transform = new Transform(mTileMap->GetPlayerStart(0).to_Vector3D(), 0, Vector2D(1, 1));
-	gameObject = new GameObject("Player 1", transform);
-	gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Barbarian.png"), 64, 64, 10, 10, Vector2D(0, 32));
-	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
-	gameObject->GetComponent<TextRender>()->UpdateText("Player 1", { 0,0,0 }, 0, 48, CENTER);
-	//gameObject->AddComponent<Circle2D>(10, Vector2D(0, 0));
-	gameObject->AddComponent<Box2D>(20, 10, Vector2D(0, 0));
-	gameObject->AddComponent<Circle2D>(20, Vector2D(0, 0));
-	gameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, physicsMaterial);
-	gameObject->AddComponent<Attack>(25.0f, 2.0f);
-	gameObject->AddComponent<AnimatorCharacter>();
-	gameObject->AddComponent<Health>(100.0f);
-	gameObject->AddComponent<CameraFollow>(&mCamera);
-	mGameObjects.emplace_back(gameObject);
-	Root->AddChild(gameObject);
+	gameObject = BarbarianCharacterPrefab().GetPrefab()[0];
+	gameObject->GetTransform()->mPosition = mTileMap->GetPlayerStart(0).to_Vector3D();
+	AddGameObject(gameObject);
 	PlayerPawn* character1 = new PlayerPawn(gameObject, menu);
 
-	//player 2
-	transform = new Transform(mTileMap->GetPlayerStart(1).to_Vector3D(), 0, Vector2D(1, 1));
-	gameObject = new GameObject("Player 2", transform);
-	gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Barbarian.png"), 64, 64, 10, 10, Vector2D(0, 32));
-	gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
-	gameObject->GetComponent<TextRender>()->UpdateText("Player 2", { 0,0,0 }, 0, 48, CENTER);
-	//gameObject->AddComponent<Box2D>(20, 10, Vector2D(0, 0));
-	gameObject->AddComponent<Circle2D>(10, Vector2D(0, 0));
-	gameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, physicsMaterial);
-	gameObject->AddComponent<Attack>(25.0f, 2.0f);
-	gameObject->AddComponent<AnimatorCharacter>();
-	gameObject->AddComponent<Health>(100.0f);
-	mGameObjects.emplace_back(gameObject);
-	Root->AddChild(gameObject);
+	////player 2
+	gameObject = BarbarianCharacterPrefab().GetPrefab()[0];
+	gameObject->GetTransform()->mPosition = mTileMap->GetPlayerStart(1).to_Vector3D();
+	AddGameObject(gameObject);
 	PlayerPawn* character2 = new PlayerPawn(gameObject, menu);
 
 	for (int i = 0; i < 5; i++)
@@ -145,11 +117,16 @@ GameScreenLevel1::GameScreenLevel1()
 	//gameObject->AddComponent<RigidBody2D>(100, Vector2D(0, 0), 1, 0, physicsMaterialcircle);
 	//mGameObjects.emplace_back(gameObject);
 	//Root->AddChild(gameObject);
+
+	SetUpCameras();
 }
 
 GameScreenLevel1::~GameScreenLevel1()
 {
 	MenuManager::GetInstance()->RemoveAllMenus();
+
+	if (mShaderBlur) delete mShaderBlur;
+	if (mNoPostProcess) delete mNoPostProcess;
 }
 
 void GameScreenLevel1::Update(float deltaTime, std::vector<SDL_Event> events)
@@ -166,9 +143,6 @@ void GameScreenLevel1::Update(float deltaTime, std::vector<SDL_Event> events)
 			collider->ClearTestedCollisionWith();
 			collisionObejcts.push_back(it->get());
 		}
-
-		if(it->get()->GetLayer() == SORTED)
-			SortObjectsDepth(it->get());
 	}
 
 	mShaderBasic->Bind();
@@ -177,23 +151,7 @@ void GameScreenLevel1::Update(float deltaTime, std::vector<SDL_Event> events)
 	Collision::DetectCollisions(mTileMap, collisionObejcts);
 }
 
-void GameScreenLevel1::SortObjectsDepth(GameObject* gameObject)
+void GameScreenLevel1::GameIsPaused(bool isGamePaused)
 {
-	Vector3D position = gameObject->GetTransform()->mPosition;
-
-	Camera* camera = Settings::GetInstance()->GetCamera();
-
-	float topOfScreen = camera->GetTransform()->mPosition.y + (camera->GetOrthoHeight() / 2);
-	float bottomofScreen = camera->GetTransform()->mPosition.y - (camera->GetOrthoHeight() / 2);
-
-	if (position.y < topOfScreen && position.y > bottomofScreen)
-	{
-		float alpha = (position.y - camera->GetTransform()->mPosition.y + (camera->GetOrthoHeight() / 2)) / camera->GetOrthoHeight();
-		float neardepth = camera->GetTransform()->mPosition.z - camera->GetNearDepth() - 1.0f;
-		float fardepth =  camera->GetTransform()->mPosition.z - camera->GetFarDepth() + 1.0f;
-
-		float objectDepth = neardepth + alpha * (fardepth - neardepth);
-
-		gameObject->GetTransform()->mPosition.z = objectDepth;
-	}
+	mPostProcessShader = (isGamePaused) ? mShaderBlur : mNoPostProcess;
 }

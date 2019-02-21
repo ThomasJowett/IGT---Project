@@ -35,5 +35,7 @@ void PlayerPawn::Start()
 	GameScreenManager::GetInstance()->GetCurrentScreen()->GetPlayerControllers()[0]->PossesPawn(mMenuPawn);
 
 	Cursor::CustomCursorType("Cursor_Arrow");
+
+	GameScreenManager::GetInstance()->PauseGame();
 }
 

@@ -11,14 +11,11 @@ public:
 
 	void Update(float deltaTime, std::vector<SDL_Event> events)override;
 
+	void GameIsPaused(bool isGamePaused)override;
+
 private:
 	TileMap * mTileMap;
 
-	void SortObjectsDepth(GameObject* gameObject);
-
-	FrameBuffer Player1FBO;
-	FrameBuffer PLayer2FBO;
-
-	Camera Player1Camera;
-	Camera Player2Camera;
+	Shader* mShaderBlur;
+	Shader* mNoPostProcess;
 };

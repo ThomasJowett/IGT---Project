@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.2" tiledversion="1.2.0" name="TopDownDungeon" tilewidth="16" tileheight="16" tilecount="132" columns="12" backgroundcolor="#000000">
+<tileset version="1.2" tiledversion="1.2.2" name="TopDownDungeon" tilewidth="16" tileheight="16" tilecount="132" columns="12" backgroundcolor="#000000">
  <image source="DungeonTileSet.png" width="192" height="176"/>
  <tile id="0" probability="0.5"/>
  <tile id="1" probability="0.5"/>

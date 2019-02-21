@@ -1,9 +1,10 @@
 #pragma once
 
-#include "Camera.h"
+//#include "Camera.h"
 #include "Messaging.h"
 #include "Commons.h"
 #include <SDL.h>
+#include <vector>
 
 constexpr int DEFAULT_ORTHO_WIDTH = 480;
 constexpr int DEFAULT_ORTHO_HEIGHT = 270;
@@ -28,12 +29,13 @@ public:
 	void SetFullScreen(bool isFullscreen);
 	void SetDisplayMode(SDL_DisplayMode mode);
 	void SetVsync(bool isVsyncEnabled);
-
-	void SetCamera(Camera* camera) { mCamera = camera; }
-	Camera* GetCamera() { return mCamera; }
 	
 	int GetScreenWidth() { return mScreen_Width; }
 	int GetScreenHeight() { return mScreen_Height; }
+
+	float GetScreenOrthoWidth() { return mScreenOrthoWidth; }
+	float GetScreenOrthoHeight() { return mScreenOrthoHeight; }
+
 	float GetScreenScale() { return mScreen_Scale; }
 
 	bool GetIsFullScreen() { return mFullscreen; }
@@ -46,6 +48,9 @@ private:
 	int mScreen_Width = 1920;
 	int mScreen_Height = 1080;
 
+	float mScreenOrthoWidth;
+	float mScreenOrthoHeight;
+
 	float mScreen_Scale;
 	float mZoom = 1;
 
@@ -55,5 +60,5 @@ private:
 
 	bool mVSYNC = true;
 
-	Camera* mCamera;
+	//Camera* mCamera;
 };

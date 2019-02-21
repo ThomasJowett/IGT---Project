@@ -1,3 +1,0 @@
-<Object name="Barrel">
-	<Component type="Sprite" args="Barrel_Cloased , 32, 32, Vector2D(0,8))">
-	<

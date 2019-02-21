@@ -68,6 +68,7 @@ void MainMenu::OnNotify(WidgetEvent event, WidgetEventData data)
 		{
 		case PLAY:
 			GameScreenManager::GetInstance()->ChangeScreen(SCREEN_LEVEL_1);
+			GameScreenManager::GetInstance()->ResumeGame();
 			return;
 		case OPTIONS:
 			MenuManager::GetInstance()->ChangeToMenu(1);

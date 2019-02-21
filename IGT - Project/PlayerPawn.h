@@ -42,6 +42,8 @@ public:
 	virtual void MouseRightClick()override {}
 	virtual void MouseRightUnClick()override {}
 
+	GameObject* GetPossessedCharacter() { return mCharacter; }
+
 private:
 	GameObject* mCharacter;
 

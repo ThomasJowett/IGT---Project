@@ -17,7 +17,7 @@ private:
 
 public:
 	FrameBuffer() { Settings::GetInstance()->AddObserver(this); }
-	~FrameBuffer() 
+	~FrameBuffer()
 	{
 		Destroy();
 		Settings::GetInstance()->RemoveObserver(this);

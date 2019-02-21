@@ -1,15 +1,17 @@
 #include "Camera.h"
 
-#include "Settings.h"
+
 
 Camera::Camera()
 {
 	mTransform = new Transform();
+	Settings::GetInstance()->AddObserver(this);
 }
 
 
 Camera::~Camera()
 {
+	Settings::GetInstance()->RemoveObserver(this);
 }
 
 void Camera::Orthographic(float OrthoWidth, float OrthoHeight, float nearDepth, float farDepth)
@@ -38,4 +40,29 @@ void Camera::UpdateView(Shader * shader)
 	mView = Matrix4x4::LookAt(mTransform->mPosition, mTransform->mPosition + Vector3D(0, 0, -1), Vector3D(0, 1, 0));
 	shader->UpdateMatrixUniform(VIEW_U, mView,false);
 	shader->UpdateMatrixUniform(PROJECTION_U, mProjectionMatrix,false);
+}
+
+void Camera::OnNotify(SettingsEvent event, Vector2D data)
+{
+	float scale = Settings::GetInstance()->GetScreenScale();
+
+	switch (event)
+	{
+	case SettingsEvent::ON_RESOLUTION_CHANGE:
+		switch (mProjectionMethod)
+		{
+		case Camera::PERSPECTIVE:
+			//Perspective()
+			break;
+		case Camera::ORTHOGRAPHIC:
+			
+			Orthographic(data.x / scale, data.y / scale, mNearDepth, mFarDepth);
+			break;
+		default:
+			break;
+		}
+		break;
+	default:
+		break;
+	}
 }

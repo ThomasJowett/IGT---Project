@@ -125,9 +125,11 @@ void Settings::ApplySettings()
 
 	mScreen_Scale = (float)(mScreen_Width + mScreen_Height) / (float)((mZoom * DEFAULT_ORTHO_WIDTH) + mZoom * DEFAULT_ORTHO_HEIGHT);
 
+	mScreenOrthoWidth = mScreen_Width / mScreen_Scale;
+	mScreenOrthoHeight = mScreen_Height / mScreen_Scale;
+
 	SetVsync(mVSYNC);
 
-	mCamera->Orthographic((mScreen_Width/mScreen_Scale), (mScreen_Height/mScreen_Scale), 0, 100);
 	glViewport(0, 0, mScreen_Width, mScreen_Height);
 
 	Notify(SettingsEvent::ON_RESOLUTION_CHANGE, Vector2D((float)mScreen_Width, (float)mScreen_Height));

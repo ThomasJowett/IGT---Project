@@ -17,10 +17,17 @@ void Shader::UpdateInteger(int uniform, int value)
 	glUniform1i(mUniforms[uniform], value);
 }
 
+void Shader::UpdateVector2(int uniform, Vector2D vector)
+{
+	glUniform2f(mUniforms[uniform], vector.x, vector.y);
+}
+
 GLuint Shader::GetTextureUnit(int uniform)
 {
 	return mUniforms[uniform];
 }
+
+
 
 BasicShader::BasicShader()
 {
@@ -100,5 +107,57 @@ BlurShader::BlurShader()
 
 	mUniforms[SCREEN_HEIGHT_U] = glGetUniformLocation(mProgram, "screen_height");
 	glUniform1i(mUniforms[SCREEN_HEIGHT_U], Settings::GetInstance()->GetScreenHeight());
+	UnBind();
+}
+
+NoPostProcessShader::NoPostProcessShader()
+{
+	mProgram = ShaderLoader::LoadShaderProgram("Shaders/PassThroughShader", "Shaders/NoPostProcess");
+
+	Bind();
+
+	//Position
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3D), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	//TexCoord
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vector2D), (void*)0);
+	glEnableVertexAttribArray(1);
+
+	//Texture Samplers
+	mUniforms[TEXTURE_U] = glGetUniformLocation(mProgram, "texture_colour");
+	glUniform1i(mUniforms[TEXTURE_U], 0);
+
+	UnBind();
+}
+
+SplitScreenShader::SplitScreenShader()
+{
+	mProgram = ShaderLoader::LoadShaderProgram("Shaders/PassThroughShader", "Shaders/SplitScreen");
+
+	Bind();
+
+	//Position
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3D), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	//TexCoord
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vector2D), (void*)0);
+	glEnableVertexAttribArray(1);
+
+	//Texture Samplers
+	mUniforms[TEXTURE_U] = glGetUniformLocation(mProgram, "player1_camera");
+	glUniform1i(mUniforms[TEXTURE_U], 0);
+
+	mUniforms[4] = glGetUniformLocation(mProgram, "player2_camera");
+	glUniform1i(mUniforms[4], 1);
+	
+	//Camera locations
+	mUniforms[6] = glGetUniformLocation(mProgram, "player1_location");
+	glUniform2f(mUniforms[6], 0.0f, 0.0f);
+	
+	mUniforms[7] = glGetUniformLocation(mProgram, "player2_location");
+	glUniform2f(mUniforms[7], 0.0f, 0.0f);
+
 	UnBind();
 }

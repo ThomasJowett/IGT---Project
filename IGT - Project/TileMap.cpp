@@ -65,7 +65,7 @@ void TileMap::Update(float deltatime)
 {
 	GameObject::Update(deltatime);
 
-	Vector2D vector = Vector2D(Settings::GetInstance()->GetCamera()->GetTransform()->mPosition.x, Settings::GetInstance()->GetCamera()->GetTransform()->mPosition.y);
+	//Vector2D vector = Vector2D(Settings::GetInstance()->GetCamera()->GetTransform()->mPosition.x, Settings::GetInstance()->GetCamera()->GetTransform()->mPosition.y);
 
 	//TODO: if camera distance from the center is too far from the center re draw the map
 }
@@ -292,7 +292,7 @@ void TileMap::RedrawMap()
 
 	int indicesIndex = 0;
 
-	float backgroundDepth = - Settings::GetInstance()->GetCamera()->GetFarDepth() + 0.1f;
+	float backgroundDepth = -99.9f;
 
 	float foregroundDepth = -0.1f;
 

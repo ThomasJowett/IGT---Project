@@ -4,8 +4,9 @@
 #include "Transform.h"
 #include "Matrix.h"
 #include "Shader.h"
+#include "Settings.h"
 
-class Camera
+class Camera:public Observer<SettingsEvent, Vector2D>
 {
 public:
 	Camera();
@@ -34,6 +35,8 @@ public:
 
 	Projection GetProjectionMethod() const { return mProjectionMethod; }
 
+	void OnNotify(SettingsEvent event, Vector2D data)override;
+
 private:
 
 	Transform * mTransform;
@@ -43,10 +46,10 @@ private:
 	int mOrthoWidth;
 	int mOrthoHeight;
 
-	Projection mProjectionMethod;
+	Projection mProjectionMethod = ORTHOGRAPHIC;
 
-	float mNearDepth;
-	float mFarDepth;
+	float mNearDepth = 0.0f;
+	float mFarDepth = 100.0f;
 };
 
 #endif //_CAMERA_H

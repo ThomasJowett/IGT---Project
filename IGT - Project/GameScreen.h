@@ -30,6 +30,14 @@ public:
 
 	void RemoveGameOject(GameObject* gameObject);
 
+	virtual void GameIsPaused(bool isGamePaused) {}
+
+	void SortObjectsDepth(Camera* camera);
+
+	bool ManageCameras();
+
+	void SetUpCameras();
+
 protected:
 	SceneNode * Root;
 	SceneNode * RootWidget;
@@ -40,13 +48,23 @@ protected:
 	
 	Shader* mShaderBasic;
 	Shader* mShaderGUI;
-	Shader* mShaderBlur;
+	Shader* mPostProcessShader;
+	Shader* mSplitScreenShader;
 
 	FrameBuffer mFrameBuffer;
+	FrameBuffer mCamera1FrameBuffer;
+	FrameBuffer mCamera2FrameBuffer;
 
 	Mesh* mFullscreenQuad;
 
 	Camera mCamera;
+	Camera mCamera1;
+	Camera mCamera2;
+
+private:
+	GameObject* mCameraTarget1;
+	GameObject* mCameraTarget2;
+
 
 	FPS mFPS;
 };

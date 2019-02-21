@@ -3,7 +3,7 @@
 CameraFollow::CameraFollow(GameObject * parent, Camera * camera)
 	:iUpdateable(parent), mCameraRef(camera)
 {
-	mSmoothSpeed = 40.0f;
+	mSmoothSpeed = 1.0f;
 	mOffset = Vector3D(0,0,0);
 }
 

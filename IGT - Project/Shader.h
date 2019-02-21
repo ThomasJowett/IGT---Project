@@ -33,6 +33,7 @@ public:
 	void UpdateMatrixUniform(int uniform, const Matrix4x4& matrix, bool transpose);
 	void Updatefloat4(float r, float g, float b, float a);
 	void UpdateInteger(int uniform, int value);
+	void UpdateVector2(int uniform, Vector2D vector);
 
 	GLuint GetTextureUnit(int uniform);
 
@@ -63,5 +64,19 @@ class BlurShader : public Shader
 public:
 	BlurShader();
 	~BlurShader() {}
+};
+
+class NoPostProcessShader : public Shader
+{
+public:
+	NoPostProcessShader();
+	~NoPostProcessShader() {}
+};
+
+class SplitScreenShader : public Shader
+{
+public:
+	SplitScreenShader();
+	~SplitScreenShader() {}
 };
 #endif // !_SHADER_H

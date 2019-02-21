@@ -23,10 +23,10 @@ public:
 
 	GameScreen* GetCurrentScreen()const { return mCurrentScreen; }
 
-	void PauseGame() { mPaused = true; }
-	void ResumeGame() { mPaused = false; }
+	void PauseGame() { mPaused = true; GetCurrentScreen()->GameIsPaused(mPaused);}
+	void ResumeGame() { mPaused = false; GetCurrentScreen()->GameIsPaused(mPaused);}
 
-	bool TogglePause() { mPaused = !mPaused; return mPaused; }
+	bool TogglePause() { mPaused = !mPaused; GetCurrentScreen()->GameIsPaused(mPaused); return mPaused; }
 
 	bool IsGamePaused() { return mPaused; }
 
@@ -42,6 +42,8 @@ private:
 	void DelayedScreenChange(SCREENS newScreen);
 
 	bool mPaused = false;
+
+	int mNumPlayers = 1;
 };
 
 #endif //_GAMESCREENMANAGER_H
