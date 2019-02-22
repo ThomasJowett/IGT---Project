@@ -207,6 +207,9 @@
     <ClCompile Include="ProgressBar.cpp">
       <Filter>UIWidgets</Filter>
     </ClCompile>
+    <ClCompile Include="SpawnManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="SDL\SDL2.lib">
@@ -438,6 +441,9 @@
     </ClInclude>
     <ClInclude Include="CameraManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpawnManager.h">
+      <Filter>Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

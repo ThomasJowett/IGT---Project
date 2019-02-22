@@ -111,4 +111,6 @@ void GameObject::Clone(GameObject & clonedObject) const
 	{
 		clonedObject.AddComponent(component.get()->Clone());
 	}
+
+	Get
 }

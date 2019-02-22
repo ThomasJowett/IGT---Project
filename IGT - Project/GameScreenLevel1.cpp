@@ -17,6 +17,8 @@
 #include "HUD.h"
 #include "AIController.h"
 #include "CameraFollow.h"
+#include "RandomGenerator.h"
+#include "SpawnManager.h"
 
 #include "Prefab.h"
 
@@ -60,21 +62,26 @@ GameScreenLevel1::GameScreenLevel1()
 	AddGameObject(gameObject);
 	PlayerPawn* character2 = new PlayerPawn(gameObject, menu);
 
+
+
 	for (int i = 0; i < 5; i++)
 	{
-		AddGameObjects(BarrelPrefab().GetPrefab());
-		mGameObjects.back()->GetTransform()->mPosition = Vector3D(400 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
+		//AddGameObjects(BarrelPrefab().GetPrefab());
+		//mGameObjects.back()->GetTransform()->mPosition = Vector3D(Random::FloatInRange(300, 700), Random::FloatInRange(-450, -800), 0);
+		//
+		//AddGameObjects(ChestPrefab().GetPrefab());
+		//mGameObjects.back()->GetTransform()->mPosition = Vector3D(Random::FloatInRange(300, 700), Random::FloatInRange(-450, -800), 0);
+		//
+		//AddGameObjects(LargeLootPrefab().GetPrefab());
+		//mGameObjects.back()->GetTransform()->mPosition = Vector3D(Random::FloatInRange(300, 700), Random::FloatInRange(-450, -800), 0);
+		//
+		//AddGameObjects(MediumLootPrefab().GetPrefab());
+		//mGameObjects.back()->GetTransform()->mPosition = Vector3D(Random::FloatInRange(300, 700), Random::FloatInRange(-450, -800), 0);
 
-		AddGameObjects(ChestPrefab().GetPrefab());
-		mGameObjects.back()->GetTransform()->mPosition = Vector3D(400 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
-
-		AddGameObjects(LargeLootPrefab().GetPrefab());
-		mGameObjects.back()->GetTransform()->mPosition = Vector3D(400 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
-
-		AddGameObjects(MediumLootPrefab().GetPrefab());
-		mGameObjects.back()->GetTransform()->mPosition = Vector3D(400 * (float)rand() / (RAND_MAX)+300, 250 * (float)rand() / (RAND_MAX)-750, 5);
+		
 	}
 
+	SpawnManager::SpawnGameObjects(mTileMap->GetSpawnRooms(), this);
 	
 
 	//temporary spawning enemy

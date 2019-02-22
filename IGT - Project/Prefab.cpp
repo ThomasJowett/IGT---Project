@@ -15,3 +15,7 @@ DerivedRegister<MediumLootPrefab> MediumLootPrefab::reg("MediumLoot");
 DerivedRegister<SmallLootPrefab> SmallLootPrefab::reg("SmallLoot");
 
 DerivedRegister<SlimePrefab> SlimePrefab::reg("Slime");
+
+DerivedRegister<BarbarianCharacterPrefab> BarbarianCharacterPrefab::reg("BarbarianCharacter");
+
+DerivedRegister<ArcherCharacterPrefab> ArcherCharacterPrefab::reg("ArcherCharacter");

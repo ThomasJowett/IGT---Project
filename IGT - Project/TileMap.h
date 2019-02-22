@@ -64,6 +64,8 @@ public:
 	bool PositionToTileIndex(Vector2D position, unsigned int &X, unsigned int &Y);
 	bool TileIndexToPosition(unsigned int X, unsigned int Y, Vector2D& position);
 
+	std::unordered_map<std::string, SpawnRoom> GetSpawnRooms() { return mSpawnRooms; }
+
 private:
 	//Tile indexes
 	int** mBackgroundTiles;

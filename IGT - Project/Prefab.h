@@ -185,6 +185,8 @@ public:
 		gameObject->AddComponent<Health>(100.0f);
 		mGameObjects.push_back(gameObject);
 	}
+private:
+	static DerivedRegister<BarbarianCharacterPrefab> reg;
 };
 
 class ArcherCharacterPrefab : public Prefab
@@ -203,4 +205,6 @@ public:
 		gameObject->AddComponent<Health>(100.0f);
 		mGameObjects.push_back(gameObject);
 	}
+private:
+	static DerivedRegister<ArcherCharacterPrefab> reg;
 };

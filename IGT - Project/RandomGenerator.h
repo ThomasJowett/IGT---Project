@@ -17,4 +17,14 @@ namespace Random
 		hash *= 0x63288691;
 		return (int)((hash % (max - min))+min);
 	}
+
+	static float FloatInRange(float min, float max)
+	{
+		return (max - min) * (float)rand() / (RAND_MAX) + min;
+	}
+
+	static int IntInRange(int min, int max)
+	{
+		return (max - min) * rand() / (RAND_MAX) + min;
+	}
 }
