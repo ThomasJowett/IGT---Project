@@ -176,7 +176,25 @@ public:
 	{
 		GameObject* gameObject = new GameObject("BarbarianCharacter", new Transform());
 		gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Barbarian.png"), 64, 64, 10, 10, Vector2D(0, 32));
-		gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
+		//gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
+		gameObject->AddComponent<Box2D>(20, 10, Vector2D(0, 0));
+		gameObject->AddComponent<Circle2D>(20, Vector2D(0, 0));
+		gameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, PhysicsMaterial{ 30.0f, 0.8f, 0.5f, 10.0f });
+		gameObject->AddComponent<Attack>(25.0f, 2.0f);
+		gameObject->AddComponent<AnimatorCharacter>();
+		gameObject->AddComponent<Health>(100.0f);
+		mGameObjects.push_back(gameObject);
+	}
+};
+
+class ArcherCharacterPrefab : public Prefab
+{
+public:
+	ArcherCharacterPrefab()
+	{
+		GameObject* gameObject = new GameObject("ArcherCharacter", new Transform());
+		gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Archer.png"), 64, 64, 10, 10, Vector2D(0, 32));
+		//gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
 		gameObject->AddComponent<Box2D>(20, 10, Vector2D(0, 0));
 		gameObject->AddComponent<Circle2D>(20, Vector2D(0, 0));
 		gameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, PhysicsMaterial{ 30.0f, 0.8f, 0.5f, 10.0f });

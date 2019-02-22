@@ -55,7 +55,7 @@ GameScreenLevel1::GameScreenLevel1()
 	PlayerPawn* character1 = new PlayerPawn(gameObject, menu);
 
 	////player 2
-	gameObject = BarbarianCharacterPrefab().GetPrefab()[0];
+	gameObject = ArcherCharacterPrefab().GetPrefab()[0];
 	gameObject->GetTransform()->mPosition = mTileMap->GetPlayerStart(1).to_Vector3D();
 	AddGameObject(gameObject);
 	PlayerPawn* character2 = new PlayerPawn(gameObject, menu);
