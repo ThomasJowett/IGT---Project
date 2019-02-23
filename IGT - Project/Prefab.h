@@ -16,13 +16,11 @@
 class Prefab
 {
 public:
-	std::vector<GameObject*> GetPrefab() const { return mGameObjects; }
+	GameObject* GetPrefab() const { return mGameObject; }
 
 protected:
-	std::vector<GameObject*> mGameObjects;
+	GameObject* mGameObject;
 };
-
-
 
 template<typename T>
 struct Factory
@@ -66,12 +64,10 @@ class BarrelPrefab :public Prefab
 public:
 	BarrelPrefab()
 	{
-		GameObject* gameObject = new GameObject("Barrel", new Transform());
-		gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("Images/Barrel_Closed.png"), 32, 32, Vector2D(0, 8));
-		gameObject->AddComponent<Circle2D>(8, Vector2D());
-		gameObject->AddComponent<RigidBody2D>(100, Vector2D(0, 0), 1, 0, PhysicsMaterial{ 300.0f, 0.8f, 0.5f, 1.0f });
-
-		mGameObjects.push_back(gameObject);
+		mGameObject = new GameObject("Barrel", new Transform());
+		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("Images/Barrel_Closed.png"), 32, 32, Vector2D(0, 8));
+		mGameObject->AddComponent<Circle2D>(8, Vector2D());
+		mGameObject->AddComponent<RigidBody2D>(100, Vector2D(0, 0), 1, 0, PhysicsMaterial{ 300.0f, 0.8f, 0.5f, 1.0f });
 	}
 
 private:
@@ -83,12 +79,10 @@ class ChestPrefab : public Prefab
 public:
 	ChestPrefab()
 	{
-		GameObject* gameObject = new GameObject("Chest", new Transform());
-		gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("Images/Chest_Closed.png"), 16, 16, Vector2D(0, 8));
-		gameObject->AddComponent<Box2D>(16, 10, Vector2D(0, 6));
-		gameObject->AddComponent<RigidBody2D>(200, Vector2D(0, 0), 1, 0, PhysicsMaterial{ 600.0f, 0.8f, 0.5f, 1.0f });
-
-		mGameObjects.push_back(gameObject);
+		mGameObject = new GameObject("Chest", new Transform());
+		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("Images/Chest_Closed.png"), 16, 16, Vector2D(0, 8));
+		mGameObject->AddComponent<Box2D>(16, 10, Vector2D(0, 6));
+		mGameObject->AddComponent<RigidBody2D>(200, Vector2D(0, 0), 1, 0, PhysicsMaterial{ 600.0f, 0.8f, 0.5f, 1.0f });
 	}
 private:
 	static DerivedRegister<ChestPrefab> reg;
@@ -111,12 +105,10 @@ class LargeLootPrefab : public Prefab
 public:
 	LargeLootPrefab()
 	{
-		GameObject* gameObject = new GameObject("LargeLootBag", new Transform());
-		gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("Images/LootBag_Large.png"), 16, 16, Vector2D(0, 8));
-		gameObject->AddComponent<Circle2D>(6, Vector2D(0,3));
-		gameObject->AddComponent<RigidBody2D>(100, Vector2D(0, 0), 1, 0, PhysicsMaterial{ 300.0f, 0.8f, 0.5f, 1.0f });
-
-		mGameObjects.push_back(gameObject);
+		mGameObject = new GameObject("LargeLootBag", new Transform());
+		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("Images/LootBag_Large.png"), 16, 16, Vector2D(0, 8));
+		mGameObject->AddComponent<Circle2D>(6, Vector2D(0,3));
+		mGameObject->AddComponent<RigidBody2D>(100, Vector2D(0, 0), 1, 0, PhysicsMaterial{ 300.0f, 0.8f, 0.5f, 1.0f });
 	}
 private:
 	static DerivedRegister<LargeLootPrefab> reg;
@@ -127,12 +119,10 @@ class MediumLootPrefab : public Prefab
 public:
 	MediumLootPrefab()
 	{
-		GameObject* gameObject = new GameObject("MediumLootBag", new Transform());
-		gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("Images/LootBag_Medium.png"), 16, 16, Vector2D(0, 8));
-		gameObject->AddComponent<Circle2D>(6, Vector2D(0, 3));
-		gameObject->AddComponent<RigidBody2D>(100, Vector2D(0, 0), 1, 0, PhysicsMaterial{ 300.0f, 0.8f, 0.5f, 1.0f });
-
-		mGameObjects.push_back(gameObject);
+		mGameObject = new GameObject("MediumLootBag", new Transform());
+		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("Images/LootBag_Medium.png"), 16, 16, Vector2D(0, 8));
+		mGameObject->AddComponent<Circle2D>(6, Vector2D(0, 3));
+		mGameObject->AddComponent<RigidBody2D>(100, Vector2D(0, 0), 1, 0, PhysicsMaterial{ 300.0f, 0.8f, 0.5f, 1.0f });
 	}
 private:
 	static DerivedRegister<MediumLootPrefab> reg;
@@ -143,12 +133,10 @@ class SmallLootPrefab : public Prefab
 public:
 	SmallLootPrefab()
 	{
-		GameObject* gameObject = new GameObject("SmallLootBag", new Transform());
-		gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("Images/LootBag_Small.png"), 16, 16, Vector2D(0, 8));
-		gameObject->AddComponent<Circle2D>(6, Vector2D(0, 3));
-		gameObject->AddComponent<RigidBody2D>(100, Vector2D(0, 0), 1, 0, PhysicsMaterial{ 300.0f, 0.8f, 0.5f, 1.0f });
-
-		mGameObjects.push_back(gameObject);
+		mGameObject = new GameObject("SmallLootBag", new Transform());
+		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("Images/LootBag_Small.png"), 16, 16, Vector2D(0, 8));
+		mGameObject->AddComponent<Circle2D>(6, Vector2D(0, 3));
+		mGameObject->AddComponent<RigidBody2D>(100, Vector2D(0, 0), 1, 0, PhysicsMaterial{ 300.0f, 0.8f, 0.5f, 1.0f });
 	}
 private:
 	static DerivedRegister<SmallLootPrefab> reg;
@@ -159,11 +147,9 @@ class SlimePrefab : public Prefab
 public:
 	SlimePrefab()
 	{
-		GameObject* gameObject = new GameObject("Slime", new Transform());
+		mGameObject = new GameObject("Slime", new Transform());
 
 		//TODO: slime prefab
-
-		mGameObjects.push_back(gameObject);
 	}
 private:
 	static DerivedRegister<SlimePrefab> reg;
@@ -174,16 +160,15 @@ class BarbarianCharacterPrefab : public Prefab
 public:
 	BarbarianCharacterPrefab()
 	{
-		GameObject* gameObject = new GameObject("BarbarianCharacter", new Transform());
-		gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Barbarian.png"), 64, 64, 10, 10, Vector2D(0, 32));
+		mGameObject = new GameObject("BarbarianCharacter", new Transform());
+		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Barbarian.png"), 64, 64, 10, 10, Vector2D(0, 32));
 		//gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
-		gameObject->AddComponent<Box2D>(20, 10, Vector2D(0, 0));
-		gameObject->AddComponent<Circle2D>(20, Vector2D(0, 0));
-		gameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, PhysicsMaterial{ 30.0f, 0.8f, 0.5f, 10.0f });
-		gameObject->AddComponent<Attack>(25.0f, 2.0f);
-		gameObject->AddComponent<AnimatorCharacter>();
-		gameObject->AddComponent<Health>(100.0f);
-		mGameObjects.push_back(gameObject);
+		mGameObject->AddComponent<Box2D>(20, 10, Vector2D(0, 0));
+		mGameObject->AddComponent<Circle2D>(20, Vector2D(0, 0));
+		mGameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, PhysicsMaterial{ 30.0f, 0.8f, 0.5f, 10.0f });
+		mGameObject->AddComponent<Attack>(25.0f, 2.0f);
+		mGameObject->AddComponent<AnimatorCharacter>();
+		mGameObject->AddComponent<Health>(100.0f);
 	}
 private:
 	static DerivedRegister<BarbarianCharacterPrefab> reg;
@@ -194,16 +179,15 @@ class ArcherCharacterPrefab : public Prefab
 public:
 	ArcherCharacterPrefab()
 	{
-		GameObject* gameObject = new GameObject("ArcherCharacter", new Transform());
-		gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Archer.png"), 64, 64, 10, 10, Vector2D(0, 32));
+		mGameObject = new GameObject("ArcherCharacter", new Transform());
+		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Archer.png"), 64, 64, 10, 10, Vector2D(0, 32));
 		//gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
-		gameObject->AddComponent<Box2D>(20, 10, Vector2D(0, 0));
-		gameObject->AddComponent<Circle2D>(20, Vector2D(0, 0));
-		gameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, PhysicsMaterial{ 30.0f, 0.8f, 0.5f, 10.0f });
-		gameObject->AddComponent<Attack>(25.0f, 2.0f);
-		gameObject->AddComponent<AnimatorCharacter>();
-		gameObject->AddComponent<Health>(100.0f);
-		mGameObjects.push_back(gameObject);
+		mGameObject->AddComponent<Box2D>(20, 10, Vector2D(0, 0));
+		mGameObject->AddComponent<Circle2D>(20, Vector2D(0, 0));
+		mGameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, PhysicsMaterial{ 30.0f, 0.8f, 0.5f, 10.0f });
+		mGameObject->AddComponent<Attack>(25.0f, 2.0f);
+		mGameObject->AddComponent<AnimatorCharacter>();
+		mGameObject->AddComponent<Health>(100.0f);
 	}
 private:
 	static DerivedRegister<ArcherCharacterPrefab> reg;

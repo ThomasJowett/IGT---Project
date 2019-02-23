@@ -29,7 +29,7 @@ void Slider::OnDragged(Vector2D mousePosition)
 
 	float mouseRelativePosition = (mousePosition.x - GetTransform()->mPosition.x) + (mBarWidth / 2);
 	
-	SetValue((mouseRelativePosition/mBarWidth) * mMaxValue);
+	SetValue((int)(mouseRelativePosition/mBarWidth) * mMaxValue);
 }
 
 bool Slider::OnHovered()

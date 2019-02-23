@@ -11,13 +11,13 @@ Mesh::Mesh(Vertex * vertices, unsigned int numVertices, unsigned int * indices, 
 	positions.reserve(numVertices);
 	texCoords.reserve(numVertices);
 
-	for (int i = 0; i < numVertices; i++)
+	for (unsigned int i = 0; i < numVertices; i++)
 	{
 		model.positions.push_back(vertices[i].mPosition);
 		model.texCoords.push_back(vertices[i].mTexCoord);
 	}
 
-	for (int i = 0; i < numIndices; i++)
+	for (unsigned int i = 0; i < numIndices; i++)
 	{
 		model.indices.push_back(indices[i]);
 	}

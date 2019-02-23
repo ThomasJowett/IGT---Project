@@ -15,14 +15,14 @@ void SpawnManager::SpawnGameObjects(std::unordered_map<std::string, SpawnRoom> s
 		minY = maxY - spawnRoom.second.height;
 		
 
-		for (auto prefab : spawnRoom.second.prefabs)
+		for (std::pair<Prefab * const, int> prefab : spawnRoom.second.prefabs)
 		{
 			for (int i = 0; i < prefab.second; i++)
 			{
-				GameObject* gameObject;
-				screen->AddGameObjects(prefab.first->GetPrefab()[0]->Clone(*gameObject));
-				screen->GetAllGameObjects().back()->GetTransform()->mPosition
-					= Vector3D(Random::FloatInRange(minX, maxX), Random::FloatInRange(minY, maxY), 0);
+				GameObject* gameObject = new GameObject(*prefab.first->GetPrefab());
+
+				screen->AddGameObject(gameObject);
+				gameObject->GetTransform()->mPosition = Vector3D(Random::FloatInRange(minX, maxX), Random::FloatInRange(minY, maxY), 0);
 			}
 		}
 	}

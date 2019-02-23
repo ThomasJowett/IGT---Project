@@ -43,21 +43,20 @@ GameScreenLevel1::GameScreenLevel1()
 	MainMenuPawn* menu = new MainMenuPawn();
 
 	mTileMap = new TileMap("TestMap.tmx");
-	mGameObjects.emplace_back(mTileMap);
-	Root->AddChild(mTileMap);
+	AddGameObject(mTileMap);
 
 	mCamera.GetTransform()->mPosition = mTileMap->GetPlayerStart(0).to_Vector3D();
 
 	Astar::Generator::GetInstance()->SetTileMap(mTileMap);
 
 	//player 1
-	gameObject = BarbarianCharacterPrefab().GetPrefab()[0];
+	gameObject = BarbarianCharacterPrefab().GetPrefab();
 	gameObject->GetTransform()->mPosition = mTileMap->GetPlayerStart(0).to_Vector3D();
 	AddGameObject(gameObject);
 	PlayerPawn* character1 = new PlayerPawn(gameObject, menu);
 
 	////player 2
-	gameObject = ArcherCharacterPrefab().GetPrefab()[0];
+	gameObject = ArcherCharacterPrefab().GetPrefab();
 	gameObject->GetTransform()->mPosition = mTileMap->GetPlayerStart(1).to_Vector3D();
 	AddGameObject(gameObject);
 	PlayerPawn* character2 = new PlayerPawn(gameObject, menu);

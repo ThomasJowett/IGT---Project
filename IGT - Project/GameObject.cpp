@@ -20,12 +20,19 @@ GameObject::GameObject(const char * name, Transform * transform, bool active)
 	currentID++;
 }
 
+//Deep Copy Constructor
+//takes the object passed by reference and sets all its members to be equal to this gameobject
 GameObject::GameObject(const GameObject & prefab)
+	:SceneNode(prefab)
 {
-	mName = "Uninitialised";
-	mTransform = new Transform();
-	
-	prefab.Clone(*this);
+	mName = prefab.GetName();
+
+	mFacing = prefab.mFacing;
+
+	for (auto && component : prefab.mComponents)
+	{
+		AddComponent(component.get()->Clone());
+	}
 }
 
 GameObject::GameObject()
@@ -94,23 +101,4 @@ void GameObject::SetFacing(FACING facing)
 		GetTransform()->mScale.x *= -1.0f;
 		mFacing = facing;
 	}
-}
-
-//takes the object passed by reference and sets all its members to be equal to this gameobject
-void GameObject::Clone(GameObject & clonedObject) const
-{
-	clonedObject.GetTransform()->mPosition = mTransform->mPosition;
-	clonedObject.GetTransform()->mRotation = mTransform->mRotation;
-	clonedObject.GetTransform()->mScale = mTransform->mScale;
-
-	clonedObject.mName = mName;
-	clonedObject.mIsActive = mIsActive;
-	clonedObject.mFacing = mFacing;
-
-	for (auto && component : mComponents)
-	{
-		clonedObject.AddComponent(component.get()->Clone());
-	}
-
-	Get
 }

@@ -120,19 +120,21 @@
   </object>
   <object id="24" name="BossSpawnRoom" type="SpawnRoom" x="305.333" y="446.667" width="430.667" height="342.667">
    <properties>
-    <property name="Barrel" type="int" value="24"/>
+    <property name="Barrel" type="int" value="5"/>
    </properties>
   </object>
   <object id="25" name="EnemySpawnRoom1" type="SpawnRoom" x="434.667" y="1137.33" width="205.333" height="165.333">
    <properties>
-    <property name="Barrel" type="int" value="10"/>
-    <property name="Chest" type="int" value="15"/>
-    <property name="Slime" type="int" value="12"/>
+    <property name="Barrel" type="int" value="5"/>
+    <property name="Chest" type="int" value="5"/>
+    <property name="Slime" type="int" value="0"/>
    </properties>
   </object>
   <object id="26" name="LootRoom" type="SpawnRoom" x="898.667" y="1346.67" width="94.6667" height="88">
    <properties>
-    <property name="MediumLoot" type="int" value="12"/>
+    <property name="LargeLoot" type="int" value="1"/>
+    <property name="MediumLoot" type="int" value="3"/>
+    <property name="SmallLoot" type="int" value="5"/>
    </properties>
   </object>
  </objectgroup>

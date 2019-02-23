@@ -160,8 +160,8 @@ void PlayerController::Update(std::vector<SDL_Event> events)
 				mPawn->MousePosition((float)(e.motion.x / Settings::GetInstance()->GetScreenScale() - ((Settings::GetInstance()->GetScreenWidth() / Settings::GetInstance()->GetScreenScale()) / 2)),
 					(float)(Settings::GetInstance()->GetScreenHeight() / Settings::GetInstance()->GetScreenScale() - (e.motion.y / Settings::GetInstance()->GetScreenScale() + (Settings::GetInstance()->GetScreenHeight() / (float)Settings::GetInstance()->GetScreenScale() / 2))));
 
-				mPawn->LookRight(e.motion.xrel);
-				mPawn->LookUp(e.motion.yrel);
+				mPawn->LookRight((float)e.motion.xrel);
+				mPawn->LookUp((float)e.motion.yrel);
 			}
 
 			else if (e.type == SDL_MOUSEBUTTONDOWN)

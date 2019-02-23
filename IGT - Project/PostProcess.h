@@ -83,7 +83,7 @@ public:
 		if (event == SettingsEvent::ON_RESOLUTION_CHANGE)
 		{
 			Destroy();
-			GenerateFBO(data.x, data.y);
+			GenerateFBO((unsigned int)data.x, (unsigned int)data.y);
 		}
 	}
 

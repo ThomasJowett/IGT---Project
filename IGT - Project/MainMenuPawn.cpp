@@ -85,7 +85,7 @@ void MainMenuPawn::LeftBumper()
 void MainMenuPawn::MousePosition(float x, float y)
 {
 	mMousePosition = Vector2D(x, y);
-	for (int i = 0; i < MenuManager::GetInstance()->GetCurrentMenu()->GetWidgets().size(); i++)
+	for (unsigned int i = 0; i < MenuManager::GetInstance()->GetCurrentMenu()->GetWidgets().size(); i++)
 	{
 		UIWidget* widget = MenuManager::GetInstance()->GetCurrentMenu()->GetWidgets()[i];
 

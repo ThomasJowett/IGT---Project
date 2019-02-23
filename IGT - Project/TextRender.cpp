@@ -161,8 +161,8 @@ bool TextRender::UpdateText(int x, int y)
 {
 	if (x != mOffset.x || y != mOffset.y)
 	{
-		mOffset.x = x;
-		mOffset.y = y;
+		mOffset.x = (float)x;
+		mOffset.y = (float)y;
 		return UpdateText();
 	}
 	else
@@ -185,7 +185,7 @@ bool TextRender::UpdateText(ALIGNMENT alignment)
 Component * TextRender::Clone()
 {
 	TextRender* newText = new TextRender(nullptr, mPath, mPointSize);
-	newText->UpdateText(mText, mTextColour, mOffset.x, mOffset.y, mAlignment);
+	newText->UpdateText(mText, mTextColour, (int)mOffset.x, (int)mOffset.y, mAlignment);
 	return newText;
 }
 
@@ -200,7 +200,7 @@ bool TextRender::UpdateText(const char * text, SDL_Colour textColour, int x, int
 	{
 		mText = text;
 		mTextColour = textColour;
-		mOffset = Vector2D(x, y);
+		mOffset = Vector2D((float)x, (float)y);
 		mAlignment = alignment;
 		return UpdateText();
 	}

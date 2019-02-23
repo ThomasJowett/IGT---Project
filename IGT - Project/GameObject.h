@@ -28,8 +28,8 @@ public:
 	GameObject();
 	virtual ~GameObject();
 
-	virtual void Update(float deltaTime);
-	virtual void Render(Shader* shader);
+	virtual void Update(float deltaTime) override;
+	virtual void Render(Shader* shader) override;
 
 	template<class ComponentType, typename ... Args>
 	void AddComponent(Args&& ... params);
@@ -47,11 +47,9 @@ public:
 
 	Transform* GetTransform() const { return mTransform; }
 
-	const char* GetName() { return mName; }
+	const char* GetName() const { return mName; }
 
 	void SetFacing(FACING facing);
-
-	void Clone(GameObject & clonedObject) const;
 
 	Layer GetLayer() const { return mLayer; }
 	void SetLayer(Layer layer) { mLayer = layer; }

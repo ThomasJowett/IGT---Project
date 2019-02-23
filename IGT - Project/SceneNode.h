@@ -8,12 +8,17 @@ class SceneNode
 public:
 	SceneNode();
 	SceneNode(Transform * transform);
+	SceneNode(const SceneNode&);
 	virtual ~SceneNode();
 
 	void AddChild(SceneNode * child);
 	void RemoveSelf();
+
 	virtual void Render(Shader * shader) {}
+	virtual void Update(float deltaTime) {}
+
 	void Traverse(Shader* shader, Matrix4x4 & worldMatrix);
+	void Traverse(float deltaTime);
 
 	Transform* GetLocalTransform() const { return mTransform; };
 	Transform* GetWorldTransform() const;

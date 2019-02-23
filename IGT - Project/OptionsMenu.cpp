@@ -598,7 +598,7 @@ void OptionsMenu::GetCurrentResolution()
 
 void OptionsMenu::ResolutionSelector(int resolutionIndex)
 {
-	if (resolutionIndex > (mResolutions.size() -1) && resolutionIndex != -1)
+	if (resolutionIndex > (int)(mResolutions.size() -1) && resolutionIndex != -1)
 	{
 		mCurrentResolution = 0;
 	}

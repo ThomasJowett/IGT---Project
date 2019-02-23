@@ -142,17 +142,21 @@ void GameScreen::Update(float deltaTime, std::vector<SDL_Event> events)
 		playerController->Update(events);
 	}
 	
-	for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
-	{
-		if (it->get()->GetActive())
-			it->get()->Update(deltaTime);
-	}
+	//for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
+	//{
+	//	if (it->get()->GetActive())
+	//		it->get()->Update(deltaTime);
+	//}
 
-	for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mUIWidgets.begin(); it != mUIWidgets.end(); ++it)
-	{
-		if (it->get()->GetActive())
-			it->get()->Update(deltaTime);
-	}
+	Root->Traverse(deltaTime);
+
+	RootWidget->Traverse(deltaTime);
+
+	//for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mUIWidgets.begin(); it != mUIWidgets.end(); ++it)
+	//{
+	//	if (it->get()->GetActive())
+	//		it->get()->Update(deltaTime);
+	//}
 
 	mFPS.Update(deltaTime);
 }
@@ -180,18 +184,16 @@ std::vector<GameObject*> GameScreen::GetAllGameObjectsWithTag(std::string tag)
 	return returnObjects;
 }
 
+//Add a list of game objects to the scene
 void GameScreen::AddGameObjects(std::vector<GameObject*> gameObjects)
 {
 	for (GameObject* gameObject : gameObjects)
 	{
-		mGameObjects.emplace_back(gameObject);
-		if (gameObject->GetParent() == nullptr)
-		{
-			Root->AddChild(gameObject);
-		}
+		AddGameObject(gameObject);
 	}
 }
 
+//Add a single game object to the scene
 void GameScreen::AddGameObject(GameObject * gameObject)
 {
 	mGameObjects.emplace_back(gameObject);
@@ -222,8 +224,6 @@ void GameScreen::SortObjectsDepth(Camera* camera)
 		{
 			Vector3D position = it->get()->GetTransform()->mPosition;
 
-			//Camera* camera = Settings::GetInstance()->GetCamera();
-
 			float topOfScreen = camera->GetTransform()->mPosition.y + (camera->GetOrthoHeight() / 2);
 			float bottomofScreen = camera->GetTransform()->mPosition.y - (camera->GetOrthoHeight() / 2);
 
@@ -252,8 +252,8 @@ bool GameScreen::ManageCameras()
 
 	Vector2D MidPointLocation = (player1Location + player2Location) / 2;
 
-	float screenwidth = Settings::GetInstance()->GetScreenWidth() / 14;
-	float screenHeight = Settings::GetInstance()->GetScreenHeight() / 10;
+	float screenwidth = Settings::GetInstance()->GetScreenWidth() / 14.0f;
+	float screenHeight = Settings::GetInstance()->GetScreenHeight() / 10.0f;
 
 	float offset = 10.0f;
 

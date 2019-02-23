@@ -43,8 +43,8 @@ private:
 	Matrix4x4 mProjectionMatrix;
 	Matrix4x4 mView;
 
-	int mOrthoWidth;
-	int mOrthoHeight;
+	float mOrthoWidth;
+	float mOrthoHeight;
 
 	Projection mProjectionMethod = ORTHOGRAPHIC;
 

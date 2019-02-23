@@ -23,8 +23,33 @@ SceneNode::SceneNode(Transform * transform)
 	mIsActive = true;
 }
 
+//Deep Copy Constructor
+SceneNode::SceneNode(const SceneNode & prefab)
+{
+	mIsActive = prefab.mIsActive;
+	mTransform = new Transform(prefab.GetLocalTransform()->mPosition, prefab.GetLocalTransform()->mRotation, prefab.GetLocalTransform()->mScale);
+
+	if (prefab.mLeftChild)
+	{
+		mLeftChild = new SceneNode(*prefab.mLeftChild);
+		mLeftChild->mParent = this;
+	}
+
+	if (prefab.mRightSibling)
+		mRightSibling = new SceneNode(*prefab.mRightSibling);
+
+	if (prefab.mLeftSibling)
+		mLeftSibling = new SceneNode(*prefab.mLeftSibling);
+}
+
 SceneNode::~SceneNode()
 {
+	if (mLeftChild)
+		if (mLeftChild->mRightSibling)
+			delete mRightSibling;
+
+	if(mLeftChild) delete mLeftChild;
+
 	RemoveSelf();
 
 	if (mTransform) delete mTransform;
@@ -64,8 +89,31 @@ void SceneNode::AddChild(SceneNode * child)
 	mLeftChild = child;
 }
 
+
 void SceneNode::RemoveSelf()
 {
+	//Deal with parents and siblings
+	if (mParent != nullptr)
+	{
+		if (mParent->mLeftChild == this)
+		{
+			mParent->mLeftChild = mRightSibling;
+		}
+
+		if (mLeftSibling != nullptr)
+		{
+			mLeftSibling->mRightSibling = mRightSibling;
+
+			if (mRightSibling != nullptr)
+			{
+				mRightSibling->mLeftSibling = mLeftSibling;
+			}
+		}
+	}
+
+	mParent = nullptr;
+	mRightSibling = nullptr;
+	mLeftSibling = nullptr;
 }
 
 void SceneNode::Traverse(Shader * shader, Matrix4x4 & worldMatrix)
@@ -99,6 +147,20 @@ void SceneNode::Traverse(Shader * shader, Matrix4x4 & worldMatrix)
 	//if the object has siblings traverse them
 	if (mRightSibling != nullptr)
 		mRightSibling->Traverse(shader, worldMatrix);
+}
+
+void SceneNode::Traverse(float deltaTime)
+{
+	if (mIsActive)
+	{
+		Update(deltaTime);
+
+		if (mLeftChild)
+			mLeftChild->Traverse(deltaTime);
+	}
+
+	if (mRightSibling)
+		mRightSibling->Traverse(deltaTime);
 }
 
 Transform * SceneNode::GetWorldTransform() const

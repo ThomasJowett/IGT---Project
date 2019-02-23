@@ -174,7 +174,7 @@ void Astar::Generator::RemoveCollision(Vector2D coordinates)
 	unsigned int x, y;
 	mTileMap->PositionToTileIndex(coordinates, x, y);
 
-	int2 coords = { x,y };
+	int2 coords = { (int)x,(int)y };
 	std::vector<int2>::iterator it = std::find(mCollisions.begin(), mCollisions.end(), coords);
 	if (it != mCollisions.end())
 	{
