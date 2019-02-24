@@ -32,6 +32,8 @@ public:
 	void OnNotify(AnimationNotify notify, int chanel) override;
 	void OnNotify(AttackEvent notify, int payload)override;
 
+	void SetParent(GameObject* parent)override;
+
 private:
 	RigidBody2D * mRigidbody;
 	Attack* mAttack;

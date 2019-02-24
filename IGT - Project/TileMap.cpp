@@ -244,27 +244,30 @@ bool TileMap::LoadMap(std::string filename)
 						float width = (float)atof(pObject->Attribute("width"));
 						float height = (float)atof(pObject->Attribute("height"));
 
-						tinyxml2::XMLElement* pProperty = pObject->FirstChildElement("properties")->FirstChildElement("property");
-						
-						std::unordered_map<Prefab*, int> prefabList;
-						
-						while (pProperty)
+						if (pObject->FirstChildElement("properties"))
 						{
-							const char* name = pProperty->Attribute("name");
-						
-							int value = atoi(pProperty->Attribute("value"));
-						
-							Prefab* prefab = Factory<Prefab>::CreateInstance(name);
-						
-							if(prefab)
-								prefabList[prefab] = value;
-						
-							pProperty = pProperty->NextSiblingElement("property");
+							tinyxml2::XMLElement* pProperty = pObject->FirstChildElement("properties")->FirstChildElement("property");
+
+							std::unordered_map<Prefab*, int> prefabList;
+
+							while (pProperty)
+							{
+								const char* name = pProperty->Attribute("name");
+
+								int value = atoi(pProperty->Attribute("value"));
+
+								Prefab* prefab = Factory<Prefab>::CreateInstance(name);
+
+								if (prefab)
+									prefabList[prefab] = value;
+
+								pProperty = pProperty->NextSiblingElement("property");
+							}
+
+							SpawnRoom room = { position,width, height, prefabList };
+
+							mSpawnRooms[pObject->Attribute("name")] = room;
 						}
-
-						SpawnRoom room = { position,width, height, prefabList};
-
-						mSpawnRooms[pObject->Attribute("name")] = room;
 					}
 				}
 

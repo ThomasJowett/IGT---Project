@@ -8,7 +8,8 @@ Attack::Attack(GameObject * parent, float damage, float cooldown)
 {
 	mIsAttacking = false;
 
-	mCollider = GetParent()->GetComponent<Collider>(2);
+	if(GetParent())
+		mCollider = GetParent()->GetComponent<Collider>(2);
 }
 
 void Attack::Update(float deltaTime)
@@ -70,4 +71,12 @@ void Attack::BeginAttack()
 void Attack::StopAttack()
 {
 	mIsAttacking = false;
+}
+
+void Attack::SetParent(GameObject * parent)
+{
+	Component::SetParent(parent);
+
+	if(GetParent())
+		mCollider = GetParent()->GetComponent<Collider>(2);
 }

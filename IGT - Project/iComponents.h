@@ -16,7 +16,7 @@ public:
 
 	virtual Component* Clone() = 0;
 
-	void SetParent(GameObject* parent) { mParent = parent; }
+	virtual void SetParent(GameObject* parent) { mParent = parent; }
 	GameObject* GetParent() const { return mParent; }
 
 	bool GetActive() const { return mIsActive; }

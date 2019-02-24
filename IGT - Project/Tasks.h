@@ -1,7 +1,6 @@
 #pragma once
 #include "BrainTree.h"
 #include "Attack.h"
-#include <iostream> //TODO : remove
 #include "Astar.h"
 #include "RigidBody2D.h"
 

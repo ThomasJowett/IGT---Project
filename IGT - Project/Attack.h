@@ -21,6 +21,8 @@ public:
 	bool GetIsAttacking() const { return mIsAttacking; }
 	bool GetIsOnCoolDown() const { return mIsOnCoolDown; }
 
+	void SetParent(GameObject* parent)override;
+
 private:
 	bool mIsAttacking;
 	bool mIsOnCoolDown;

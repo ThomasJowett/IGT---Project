@@ -34,6 +34,8 @@ public:
 	void OnNotify(AttackEvent notify, int payload)override;
 	void OnNotify(HealthEvent notify, GameObject* gameObject)override;
 
+	void SetParent(GameObject* gameObject)override;
+
 private:
 	RigidBody2D * mRigidbody;
 	Attack * mAttack;

@@ -194,3 +194,17 @@ void AnimatorCharacter::OnNotify(AttackEvent notify, int payload)
 		break;
 	}
 }
+
+void AnimatorCharacter::SetParent(GameObject * parent)
+{
+	Animator::SetParent(parent);
+
+	if (GetParent())
+	{
+		mRigidbody = GetParent()->GetComponent<RigidBody2D>();
+		mAttack = GetParent()->GetComponent<Attack>();
+		mAttack->AddObserver(this);
+
+		CreateAnimations();
+	}
+}

@@ -1,10 +1,9 @@
 #pragma once
 
 #include "BrainTree.h"
-#include "iComponents.h"
-#include "Tasks.h"
+
 #include "Attack.h"
-#include "Decorators.h"
+//#include "Decorators.h"
 #include "Health.h"
 
 class AIController
@@ -21,6 +20,8 @@ public:
 	virtual void SetupBlackBoard();
 
 	void OnNotify(HealthEvent notify, GameObject* gameObject)override;
+
+	void SetParent(GameObject* parent)override;
 
 private:
 	BrainTree::BehaviorTree mBehaviourTree;

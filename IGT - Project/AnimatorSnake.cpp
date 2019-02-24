@@ -126,7 +126,8 @@ void AnimatorSnake::OnNotify(AnimationNotify notify, int chanel)
 	switch (notify)
 	{
 	case AnimationNotify::ANIM_END:
-		GameScreenManager::GetInstance()->GetCurrentScreen()->RemoveGameOject(GetParent());
+		//GameScreenManager::GetInstance()->GetCurrentScreen()->RemoveGameOject(GetParent());
+		//TODO: destroy 
 		break;
 	default:
 		break;
@@ -158,5 +159,21 @@ void AnimatorSnake::OnNotify(HealthEvent notify, GameObject * gameObject)
 		break;
 	default:
 		break;
+	}
+}
+
+void AnimatorSnake::SetParent(GameObject * parent)
+{
+	Animator::SetParent(parent);
+
+	if (GetParent())
+	{
+		CreateAnimations();
+
+		mRigidbody = GetParent()->GetComponent<RigidBody2D>();
+		mAttack = GetParent()->GetComponent<Attack>();
+		mAttack->AddObserver(this);
+
+		GetParent()->GetComponent<Health>()->AddObserver(this);
 	}
 }

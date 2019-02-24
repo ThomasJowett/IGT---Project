@@ -1,13 +1,17 @@
 #include "AIController.h"
+#include "Tasks.h"
+#include "Decorators.h"
 
 AIController::AIController(GameObject* parent)
 	:iUpdateable(parent)
 {
-	BuildBehaviourTree();
-	SetupBlackBoard();
-
-	mAttackRef = GetParent()->GetComponent<Attack>();
-	GetParent()->GetComponent<Health>()->AddObserver(this);
+	if (GetParent())
+	{
+		BuildBehaviourTree();
+		SetupBlackBoard();
+		mAttackRef = GetParent()->GetComponent<Attack>();
+		GetParent()->GetComponent<Health>()->AddObserver(this);
+	}
 }
 
 void AIController::Update(float deltaTime)
@@ -73,5 +77,17 @@ void AIController::OnNotify(HealthEvent notify, GameObject * gameObject)
 
 	default:
 		break;
+	}
+}
+
+void AIController::SetParent(GameObject * parent)
+{
+	Component::SetParent(parent);
+	if (GetParent())
+	{
+		BuildBehaviourTree();
+		SetupBlackBoard();
+		mAttackRef = GetParent()->GetComponent<Attack>();
+		GetParent()->GetComponent<Health>()->AddObserver(this);
 	}
 }

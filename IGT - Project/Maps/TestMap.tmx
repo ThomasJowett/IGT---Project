@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#000000" nextlayerid="10" nextobjectid="29">
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#000000" nextlayerid="10" nextobjectid="41">
  <tileset firstgid="1" source="TopDownDungeon.tsx"/>
  <layer id="5" name="Background" width="100" height="100">
   <data encoding="csv">
@@ -121,22 +121,47 @@
   <object id="24" name="BossSpawnRoom" type="SpawnRoom" x="305.333" y="446.667" width="430.667" height="342.667">
    <properties>
     <property name="Barrel" type="int" value="5"/>
+    <property name="Snake" type="int" value="5"/>
    </properties>
   </object>
-  <object id="25" name="EnemySpawnRoom1" type="SpawnRoom" x="434.667" y="1137.33" width="205.333" height="165.333">
+  <object id="25" name="EnemyRoom1" type="SpawnRoom" x="434.667" y="1137.33" width="205.333" height="165.333">
    <properties>
     <property name="Barrel" type="int" value="5"/>
     <property name="Chest" type="int" value="5"/>
-    <property name="Slime" type="int" value="0"/>
+    <property name="Slime" type="int" value="3"/>
    </properties>
   </object>
-  <object id="26" name="LootRoom" type="SpawnRoom" x="898.667" y="1346.67" width="94.6667" height="88">
+  <object id="26" name="LootRoom1" type="SpawnRoom" x="898.667" y="1346.67" width="94.6667" height="88">
    <properties>
+    <property name="Bat" type="int" value="2"/>
     <property name="LargeLoot" type="int" value="1"/>
     <property name="MediumLoot" type="int" value="3"/>
     <property name="SmallLoot" type="int" value="5"/>
    </properties>
   </object>
+  <object id="29" name="LootRoom2" type="SpawnRoom" x="498" y="912.667" width="193.333" height="92">
+   <properties>
+    <property name="Rat" type="int" value="3"/>
+    <property name="SmallLoot" type="int" value="5"/>
+   </properties>
+  </object>
+  <object id="30" name="LootRoom3" type="SpawnRoom" x="1302" y="1430" width="131.333" height="72.6667">
+   <properties>
+    <property name="LargeLoot" type="int" value="2"/>
+    <property name="MediumLoot" type="int" value="3"/>
+    <property name="SmallLoot" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="31" name="EnemyRoom2" type="SpawnRoom" x="1141.33" y="1189.33" width="150" height="123.333"/>
+  <object id="32" name="EnemyRoom3" type="SpawnRoom" x="805.333" y="916" width="212" height="222"/>
+  <object id="33" name="LootRoom4" type="SpawnRoom" x="1333.33" y="725.333" width="134" height="126"/>
+  <object id="34" name="EnemyRoom6" type="SpawnRoom" x="1060.67" y="325.333" width="327.333" height="170"/>
+  <object id="35" name="PuzzleRoom" x="854.667" y="502" width="148" height="137.333"/>
+  <object id="36" name="EnemyRoom4" type="SpawnRoom" x="759.333" y="134.667" width="194" height="184"/>
+  <object id="37" name="EnemyRoom5" type="SpawnRoom" x="374.667" y="85.3333" width="147.333" height="120"/>
+  <object id="38" name="EndRoom" x="101.333" y="261.333" width="116.667" height="169.333"/>
+  <object id="39" name="LootRoom5" x="1269.33" y="69.3333" width="200" height="154"/>
+  <object id="40" name="ShopRoom" x="118.667" y="965.333" width="164" height="138"/>
  </objectgroup>
  <layer id="6" name="Foreground" width="100" height="100">
   <data encoding="csv">

@@ -92,6 +92,14 @@ public:
 
 	virtual void CreateAnimations() {};
 
+	virtual void SetParent(GameObject* parent)
+	{
+		Component::SetParent(parent);
+
+		if (GetParent())
+			mSprite = GetParent()->GetComponent<Sprite>();
+	}
+
 private:
 	T mCurrentState;
 	T mPreviousState;

@@ -9,9 +9,10 @@
 #include "Camera.h"
 #include "TextRender.h"
 #include "AnimatorCharacter.h"
+#include "AnimatorSnake.h"
 #include "Health.h"
 #include "Attack.h"
-#include "CameraFollow.h"
+#include "AIController.h"
 
 class Prefab
 {
@@ -148,11 +149,68 @@ public:
 	SlimePrefab()
 	{
 		mGameObject = new GameObject("Slime", new Transform());
-
+		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/SlimeSprites.png"), 32, 32, 4, 10, Vector2D(0, 16));
 		//TODO: slime prefab
 	}
 private:
 	static DerivedRegister<SlimePrefab> reg;
+};
+
+class SnakePrefab : public Prefab
+{
+public:
+	SnakePrefab()
+	{
+		mGameObject = new GameObject("Snake", new Transform());
+		mGameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, PhysicsMaterial{ 30.0f, 0.8f, 0.5f, 10.0f });
+		mGameObject->AddComponent<Circle2D>(8, Vector2D());
+		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/snake spritesheet calciumtrice.png"), 32, 32, 10, 5, Vector2D(0, 16));
+		mGameObject->AddComponent<Circle2D>(8, Vector2D());
+		mGameObject->AddComponent<Attack>(25.0f, 2.0f);
+		mGameObject->AddComponent<Health>(20.0f);
+		mGameObject->AddComponent<AnimatorSnake>();
+		mGameObject->AddComponent<AIController>();
+	}
+private:
+	static DerivedRegister<SnakePrefab> reg;
+};
+
+class BatPrefab : public Prefab
+{
+public:
+	BatPrefab()
+	{
+		mGameObject = new GameObject("Bat", new Transform());
+		mGameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, PhysicsMaterial{ 30.0f, 0.8f, 0.5f, 10.0f });
+		mGameObject->AddComponent<Circle2D>(8, Vector2D());
+		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Bat.png"), 32, 32, 10, 5, Vector2D(0, 16));
+		mGameObject->AddComponent<Circle2D>(8, Vector2D());
+		mGameObject->AddComponent<Attack>(25.0f, 2.0f);
+		mGameObject->AddComponent<Health>(20.0f);
+		mGameObject->AddComponent<AnimatorSnake>();
+		mGameObject->AddComponent<AIController>();
+	}
+private:
+	static DerivedRegister<BatPrefab> reg;
+};
+
+class RatPrefab : public Prefab
+{
+public:
+	RatPrefab()
+	{
+		mGameObject = new GameObject("Bat", new Transform());
+		mGameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, PhysicsMaterial{ 30.0f, 0.8f, 0.5f, 10.0f });
+		mGameObject->AddComponent<Circle2D>(8, Vector2D());
+		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Rat.png"), 32, 32, 10, 5, Vector2D(0, 16));
+		mGameObject->AddComponent<Circle2D>(8, Vector2D());
+		mGameObject->AddComponent<Attack>(25.0f, 2.0f);
+		mGameObject->AddComponent<Health>(20.0f);
+		mGameObject->AddComponent<AnimatorSnake>();
+		mGameObject->AddComponent<AIController>();
+	}
+private:
+	static DerivedRegister<RatPrefab> reg;
 };
 
 class BarbarianCharacterPrefab : public Prefab
