@@ -141,22 +141,10 @@ void GameScreen::Update(float deltaTime, std::vector<SDL_Event> events)
 	{
 		playerController->Update(events);
 	}
-	
-	//for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
-	//{
-	//	if (it->get()->GetActive())
-	//		it->get()->Update(deltaTime);
-	//}
 
 	Root->Traverse(deltaTime);
 
 	RootWidget->Traverse(deltaTime);
-
-	//for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mUIWidgets.begin(); it != mUIWidgets.end(); ++it)
-	//{
-	//	if (it->get()->GetActive())
-	//		it->get()->Update(deltaTime);
-	//}
 
 	mFPS.Update(deltaTime);
 }
@@ -197,6 +185,13 @@ void GameScreen::AddGameObjects(std::vector<GameObject*> gameObjects)
 void GameScreen::AddGameObject(GameObject * gameObject)
 {
 	mGameObjects.emplace_back(gameObject);
+
+	Collider* collider = gameObject->GetComponent<Collider>();
+	if (collider)
+	{
+		mCollisionObejcts.push_back(collider);
+	}
+
 	if (gameObject->GetParent() == nullptr)
 	{
 		Root->AddChild(gameObject);
@@ -209,7 +204,6 @@ void GameScreen::RemoveGameOject(GameObject * gameObject)
 	{
 		if (it->get() == gameObject)
 		{
-			gameObject->RemoveSelf();
 			delete gameObject;
 			mGameObjects.erase(it);
 		}

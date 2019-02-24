@@ -20,9 +20,9 @@ struct Contact
 
 namespace Collision
 {
-	std::vector<Contact> DetectCollisions(std::vector<GameObject*>gameObjects);
+	std::vector<Contact> DetectCollisions(std::vector<Collider*> colliders);
 
-	std::vector<Contact> DetectCollisions(TileMap* tileMap, std::vector<GameObject*>gameObjects);
+	std::vector<Contact> DetectCollisions(TileMap * tileMap, std::vector<Collider*>colliders);
 	
 	void ResolveCollision(Contact contact);
 

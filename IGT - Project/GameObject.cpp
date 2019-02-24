@@ -102,3 +102,8 @@ void GameObject::SetFacing(FACING facing)
 		mFacing = facing;
 	}
 }
+
+void GameObject::GetAllChildren(std::vector<GameObject*> allGameObjects)
+{
+
+}

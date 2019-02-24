@@ -45,6 +45,7 @@ protected:
 	std::vector<std::unique_ptr<GameObject>>mUIWidgets;
 	std::vector<PlayerController*>mPlayerControllers;
 
+	std::vector<Collider*> mCollisionObejcts;
 	
 	Shader* mShaderBasic;
 	Shader* mShaderGUI;

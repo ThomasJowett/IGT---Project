@@ -26,7 +26,7 @@ void PlayerController::Update(std::vector<SDL_Event> events)
 
 	for (SDL_Event e : events)
 	{
-		if (e.adevice.which == mControllerID -1)
+		if (e.adevice.which == mControllerID)
 		{
 			if (e.type == SDL_CONTROLLERAXISMOTION)
 			{

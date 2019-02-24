@@ -55,6 +55,8 @@ public:
 	void SetLayer(Layer layer) { mLayer = layer; }
 
 	SceneNode* GetParent() const { return mParent; }
+
+	void GetAllChildren(std::vector<GameObject*> allGameObjects);
 private:
 	const char* mName;
 

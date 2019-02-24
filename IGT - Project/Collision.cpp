@@ -1,50 +1,45 @@
 #include "Collision.h"
-//#include "Timer.h"
-#include "BinaryTree.h"
 
+//TODO: make quadtree the size of the tilemap
 static QuadTree* quadtree = new QuadTree(new AABB(1600, 1600, 800, -800),0);
 
-std::vector<Contact> Collision::DetectCollisions(std::vector<GameObject*> gameObjects)
+std::vector<Contact> Collision::DetectCollisions(std::vector<Collider*> colliders)
 {
 	quadtree->Clear();
 	std::vector<Contact> contacts;
 	
-	for (GameObject* gameObject : gameObjects)
+	for (Collider* collider : colliders)
 	{
-		quadtree->Insert(gameObject);
+		quadtree->Insert(collider);
 	}
 	
-	for (GameObject* gameObject : gameObjects)
+	for (Collider* collider : colliders)
 	{
-		std::vector<GameObject*>coarseList = std::vector<GameObject*>();
+		std::vector<Collider*>coarseList = std::vector<Collider*>();
 	
-		quadtree->Retrieve(coarseList, gameObject);
+		quadtree->Retrieve(coarseList, collider);
 	
 		if (coarseList.size())
-		{
-			Collider* collider1 = gameObject->GetComponent<Collider>();
-	
-			for (GameObject* otherObject : coarseList)
+		{	
+			for (Collider* otherCollider : coarseList)
 			{	
-				Collider* collider2 = otherObject->GetComponent<Collider>();
-	
-				if (collider1 != nullptr && collider2 != nullptr)
+				if (collider != nullptr && otherCollider != nullptr)
 				{
-					if (!collider1->HasTestedCollisionWith(collider2))
+					if (!collider->HasTestedCollisionWith(otherCollider))
 					{
 						Vector2D contactNormal;
 						float penetrationDepth;
 	
-						if (collider1->IntersectsCollider(collider2, contactNormal, penetrationDepth))
+						if (collider->IntersectsCollider(otherCollider, contactNormal, penetrationDepth))
 						{
-							collider1->Notify(OverlapEvent::BEGIN_OVERLAP, gameObject);
-							collider2->Notify(OverlapEvent::BEGIN_OVERLAP, otherObject);
+							//collider->Notify(OverlapEvent::BEGIN_OVERLAP, otherCollider->GetParent());
+							//otherCollider->Notify(OverlapEvent::BEGIN_OVERLAP, collider->GetParent());
 	
-							contacts.push_back({ gameObject, otherObject, contactNormal, penetrationDepth });
+							contacts.push_back({ collider->GetParent(), otherCollider->GetParent(), contactNormal, penetrationDepth });
 						}
 	
-						collider1->AddTestedCollisionWith(collider2);
-						collider2->AddTestedCollisionWith(collider1);
+						collider->AddTestedCollisionWith(otherCollider);
+						otherCollider->AddTestedCollisionWith(collider);
 					}
 				}
 			}
@@ -81,18 +76,18 @@ std::vector<Contact> Collision::DetectCollisions(std::vector<GameObject*> gameOb
 	return contacts;
 }
 
-std::vector<Contact> Collision::DetectCollisions(TileMap * tileMap, std::vector<GameObject*>gameObjects)
+std::vector<Contact> Collision::DetectCollisions(TileMap * tileMap, std::vector<Collider*>colliders)
 {
 	std::vector<Contact> contacts;
 
 	if (!tileMap->GetActive())
 		return contacts;
 
-	for (int i = 0; i < (int)gameObjects.size(); i++)
+	for (int i = 0; i < (int)colliders.size(); i++)
 	{
 		float Xmax, Xmin, Ymax, Ymin;
 
-		Collider* collider = gameObjects[i]->GetComponent<Collider>();
+		Collider* collider = colliders[i];
 
 		collider->GetBounds(Xmax, Xmin, Ymax, Ymin);
 
@@ -133,7 +128,7 @@ std::vector<Contact> Collision::DetectCollisions(TileMap * tileMap, std::vector<
 
 					if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
 					{
-						contacts.push_back({ tileMap, gameObjects[i], contactNormal, penetrationDepth });
+						contacts.push_back({ tileMap, colliders[i]->GetParent(), contactNormal, penetrationDepth });
 					}
 				}
 			
@@ -157,7 +152,7 @@ std::vector<Contact> Collision::DetectCollisions(TileMap * tileMap, std::vector<
 					tilesCollided.push_back(tile);
 					if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
 					{
-						contacts.push_back({ tileMap, gameObjects[i], contactNormal, penetrationDepth });
+						contacts.push_back({ tileMap, colliders[i]->GetParent(), contactNormal, penetrationDepth });
 					}
 				}
 
@@ -188,7 +183,7 @@ std::vector<Contact> Collision::DetectCollisions(TileMap * tileMap, std::vector<
 					tilesCollided.push_back(tile);
 					if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
 					{
-						contacts.push_back({ tileMap, gameObjects[i], contactNormal, penetrationDepth });
+						contacts.push_back({ tileMap, colliders[i]->GetParent(), contactNormal, penetrationDepth });
 					}
 				}
 				alreadyDetected = false;
@@ -211,7 +206,7 @@ std::vector<Contact> Collision::DetectCollisions(TileMap * tileMap, std::vector<
 					tilesCollided.push_back(tile);
 					if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
 					{
-						contacts.push_back({ tileMap, gameObjects[i], contactNormal, penetrationDepth });
+						contacts.push_back({ tileMap, colliders[i]->GetParent(), contactNormal, penetrationDepth });
 					}
 				}
 				alreadyDetected = false;
@@ -238,7 +233,7 @@ std::vector<Contact> Collision::DetectCollisions(TileMap * tileMap, std::vector<
 				tilesCollided.push_back(tile);
 				if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
 				{
-					contacts.push_back({ tileMap, gameObjects[i], contactNormal, penetrationDepth });
+					contacts.push_back({ tileMap, colliders[i]->GetParent(), contactNormal, penetrationDepth });
 
 				}
 			}
@@ -264,7 +259,7 @@ std::vector<Contact> Collision::DetectCollisions(TileMap * tileMap, std::vector<
 
 				if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
 				{
-					contacts.push_back({ tileMap, gameObjects[i], contactNormal, penetrationDepth });
+					contacts.push_back({ tileMap, colliders[i]->GetParent(), contactNormal, penetrationDepth });
 				}
 			}
 
@@ -290,7 +285,7 @@ std::vector<Contact> Collision::DetectCollisions(TileMap * tileMap, std::vector<
 
 				if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
 				{
-					contacts.push_back({ tileMap, gameObjects[i], contactNormal, penetrationDepth });
+					contacts.push_back({ tileMap, colliders[i]->GetParent(), contactNormal, penetrationDepth });
 				}
 			}
 			alreadyDetected = false;
@@ -314,7 +309,7 @@ std::vector<Contact> Collision::DetectCollisions(TileMap * tileMap, std::vector<
 				tilesCollided.push_back(tile);
 				if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
 				{
-					contacts.push_back({ tileMap, gameObjects[i], contactNormal, penetrationDepth });
+					contacts.push_back({ tileMap, colliders[i]->GetParent(), contactNormal, penetrationDepth });
 				}
 			}
 			alreadyDetected = false;

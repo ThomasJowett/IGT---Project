@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Collider.h"
 
 class AABB
 {
@@ -26,10 +27,10 @@ public:
 	int MAXOBJECTS = 5;
 	int MAXLEVELS = 5;
 
-	void Insert(GameObject* gameobject);
+	void Insert(Collider* collider);
 	void Subdivide();
-	int GetIndex(GameObject* gameobject);
-	std::vector<GameObject*>Retrieve(std::vector<GameObject*> &returnObjects, GameObject* gameobject);
+	int GetIndex(Collider* collider);
+	std::vector<Collider*>Retrieve(std::vector<Collider*> &returnObjects, Collider* collider);
 	void Clear();
 
 	//For Debugging
@@ -37,7 +38,7 @@ public:
 private:
 
 	QuadTree * mNodes[4];
-	std::vector<GameObject*> mGameObjects;
+	std::vector<Collider*> mColliders;
 
 	AABB* mBoundary;
 	int mLevel;

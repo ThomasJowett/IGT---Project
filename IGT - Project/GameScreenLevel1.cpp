@@ -61,25 +61,6 @@ GameScreenLevel1::GameScreenLevel1()
 	AddGameObject(gameObject);
 	PlayerPawn* character2 = new PlayerPawn(gameObject, menu);
 
-
-
-	for (int i = 0; i < 5; i++)
-	{
-		//AddGameObjects(BarrelPrefab().GetPrefab());
-		//mGameObjects.back()->GetTransform()->mPosition = Vector3D(Random::FloatInRange(300, 700), Random::FloatInRange(-450, -800), 0);
-		//
-		//AddGameObjects(ChestPrefab().GetPrefab());
-		//mGameObjects.back()->GetTransform()->mPosition = Vector3D(Random::FloatInRange(300, 700), Random::FloatInRange(-450, -800), 0);
-		//
-		//AddGameObjects(LargeLootPrefab().GetPrefab());
-		//mGameObjects.back()->GetTransform()->mPosition = Vector3D(Random::FloatInRange(300, 700), Random::FloatInRange(-450, -800), 0);
-		//
-		//AddGameObjects(MediumLootPrefab().GetPrefab());
-		//mGameObjects.back()->GetTransform()->mPosition = Vector3D(Random::FloatInRange(300, 700), Random::FloatInRange(-450, -800), 0);
-
-		
-	}
-
 	SpawnManager::SpawnGameObjects(mTileMap->GetSpawnRooms(), this);
 	
 
@@ -113,16 +94,6 @@ GameScreenLevel1::GameScreenLevel1()
 
 	PlayerController* playerController2 = new PlayerController(1, character2);
 	mPlayerControllers.push_back(playerController2);
-	
-	
-	//
-	//transform = new Transform(Vector3D(0, -50, 5), 0, Vector2D(1, 1));
-	//gameObject = new GameObject("little box", transform);
-	//gameObject->AddComponent<Sprite>(squareTexture, 16, 16);
-	//gameObject->AddComponent<Box2D>(16, 16, Vector2D());
-	//gameObject->AddComponent<RigidBody2D>(100, Vector2D(0, 0), 1, 0, physicsMaterialcircle);
-	//mGameObjects.emplace_back(gameObject);
-	//Root->AddChild(gameObject);
 
 	SetUpCameras();
 }
@@ -139,22 +110,20 @@ void GameScreenLevel1::Update(float deltaTime, std::vector<SDL_Event> events)
 {
 	GameScreen::Update(deltaTime, events);
 
-	std::vector<GameObject*> collisionObejcts;
+	std::vector<Collider*> activeColliders;
 
-	for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
+	for (Collider* collider: mCollisionObejcts)
 	{
-		Collider* collider = it->get()->GetComponent<Collider>();
-		if (collider && it->get()->GetActive())
+		if (collider->GetParent()->GetActive())
 		{
+			activeColliders.push_back(collider);
 			collider->ClearTestedCollisionWith();
-			collisionObejcts.push_back(it->get());
 		}
 	}
 
-	mShaderBasic->Bind();
-	Collision::DetectCollisions(collisionObejcts);
+	Collision::DetectCollisions(activeColliders);
 
-	Collision::DetectCollisions(mTileMap, collisionObejcts);
+	Collision::DetectCollisions(mTileMap, activeColliders);
 }
 
 void GameScreenLevel1::GameIsPaused(bool isGamePaused)

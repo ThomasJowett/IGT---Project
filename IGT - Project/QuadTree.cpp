@@ -1,5 +1,5 @@
 #include "QuadTree.h"
-#include "Collider.h"
+
 #include "Texture2D.h"
 #include "Sprite.h"
 #include "TextRender.h"
@@ -12,7 +12,7 @@ QuadTree::QuadTree(AABB* boundary, int level)
 	mNodes[2] = nullptr;
 	mNodes[3] = nullptr;
 
-	mGameObjects = std::vector<GameObject*>();
+	mColliders = std::vector<Collider*>();
 }
 
 
@@ -21,23 +21,23 @@ QuadTree::~QuadTree()
 	Clear();
 }
 
-void QuadTree::Insert(GameObject * gameobject)
+void QuadTree::Insert(Collider* collider)
 {
 	if (mNodes[0] != nullptr)
 	{
-		int index = GetIndex(gameobject);
+		int index = GetIndex(collider);
 
 		if (index != -1)
 		{
-			mNodes[index]->Insert(gameobject);
+			mNodes[index]->Insert(collider);
 
 			return; //game object successfully inserted to child so exit function
 		}
 	}
 
-	mGameObjects.push_back(gameobject);
+	mColliders.push_back(collider);
 
-	if (mGameObjects.size() > MAXOBJECTS && mLevel < MAXLEVELS)
+	if (mColliders.size() > MAXOBJECTS && mLevel < MAXLEVELS)
 	{
 		if (mNodes[0] == nullptr)
 		{
@@ -45,13 +45,13 @@ void QuadTree::Insert(GameObject * gameobject)
 		}
 
 		int i = 0;
-		while (i < mGameObjects.size())
+		while (i < mColliders.size())
 		{
-			int index = GetIndex(mGameObjects.at(i));
+			int index = GetIndex(mColliders.at(i));
 			if (index != -1)
 			{
-				mNodes[index]->Insert(mGameObjects.at(i));
-				mGameObjects.erase(mGameObjects.begin() + i);
+				mNodes[index]->Insert(mColliders.at(i));
+				mColliders.erase(mColliders.begin() + i);
 			}
 			else
 			{
@@ -78,10 +78,9 @@ void QuadTree::Subdivide()
 }
 
 //returns which node the gameobject should be inserted into
-int QuadTree::GetIndex(GameObject * gameobject)
+int QuadTree::GetIndex(Collider* collider)
 {
 	int index = -1;
-	Collider* collider = gameobject->GetComponent<Collider>();
 
 	float Xmax, Xmin, Ymax, Ymin;
 
@@ -112,28 +111,28 @@ int QuadTree::GetIndex(GameObject * gameobject)
 	return index;
 }
 
-std::vector<GameObject*> QuadTree::Retrieve(std::vector<GameObject*>& returnObjects, GameObject * gameobject)
+std::vector<Collider*> QuadTree::Retrieve(std::vector<Collider*> &returnObjects, Collider* collider)
 {
-	int index = GetIndex(gameobject);
+	int index = GetIndex(collider);
 
 	//If this quadtree is not the leaf node then retrieve from nodes above it
 	if (index != -1 && mNodes[0] != nullptr)
 	{
-		mNodes[index]->Retrieve(returnObjects, gameobject);
+		mNodes[index]->Retrieve(returnObjects, collider);
 	}
 
 	//Add the objects in this node to the list of return nodes
-	for (GameObject* gameObject : mGameObjects)
+	for (Collider* thisCollider : mColliders)
 	{
-		if(gameObject != gameobject)
-			returnObjects.push_back(gameObject);
+		if(thisCollider != collider)
+			returnObjects.push_back(thisCollider);
 	}
 	return returnObjects;
 }
 
 void QuadTree::Clear()
 {
-	mGameObjects.clear();
+	mColliders.clear();
 
 	for (int i = 0; i < 4; i++)
 	{
