@@ -45,7 +45,7 @@ public:
 	template <typename ComponentType>
 	ComponentType* GetComponent(int number) const;
 
-	Transform* GetTransform() const { return mTransform; }
+	Transform* GetTransform() const { return mTransform;}
 
 	const char* GetName() const { return mName; }
 
@@ -57,6 +57,8 @@ public:
 	SceneNode* GetParent() const { return mParent; }
 
 	void GetAllChildren(std::vector<GameObject*> allGameObjects);
+
+	unsigned int GetUniqueID() { return mUniqueID; }
 private:
 	const char* mName;
 

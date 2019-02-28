@@ -88,6 +88,18 @@ public:
 		return (v1 * alpha) + (v2 * (1 - alpha));
 	}
 
+	//spherically interpolate between v1 and v2
+	static Vector3D Slerp(Vector3D v1, Vector3D v2, float alpha)
+	{
+		float dot = Dot(v1, v2);
+		float theta = acos(dot) * alpha;
+
+		Vector3D relativeVec = v2 - v1 * dot;
+		relativeVec.Normalize();
+
+		return ((v1 * cos(theta)) + (relativeVec * sin(theta)));
+	}
+
 	//Operators----------------------------------------------------------------
 
 	//multiples each component of the vector by the scaler
@@ -202,6 +214,7 @@ public:
 		return Vector2D(x / magnitude, y / magnitude);
 	}
 
+	//set the vectors length to 1
 	void Normalize()
 	{
 		Vector2D normalized = GetNormalized();
@@ -226,16 +239,20 @@ public:
 	}
 
 	//Static----------------------------------------------------------------
+
+	//the unsigned angle between v1 and v2
 	static float Angle(Vector2D v1, Vector2D v2)
 	{
 		return acos(Dot(v1, v2)); 
 	}
 
+	//distance between v1 and v2
 	static float Distance(Vector2D v1, Vector2D v2) 
 	{ 
 		return (v1 - v2).Magnitude(); 
 	}
 
+	//returns the sum of the products of v1 and v2
 	static float Dot(Vector2D v1, Vector2D v2)
 	{
 		return v1.x*v2.x + v1.y*v2.y; 
@@ -246,11 +263,13 @@ public:
 		return v1.x * v2.y - v1.y * v2.x;
 	}
 
+	//linearly interpolate between v1 and v2
 	static Vector2D Lerp(Vector2D v1, Vector2D v2, float alpha) 
 	{ 
 		return (v1 * alpha) + (v2 * (1 - alpha)); 
 	}
 
+	//returns a vector that is the reflection v against the normal
 	static Vector2D Reflect(Vector2D v, Vector2D normal)
 	{
 		Vector2D n = normal.GetNormalized();

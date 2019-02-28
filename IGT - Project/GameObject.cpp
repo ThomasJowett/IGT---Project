@@ -33,6 +33,9 @@ GameObject::GameObject(const GameObject & prefab)
 	{
 		AddComponent(component.get()->Clone());
 	}
+
+	mUniqueID = currentID;
+	currentID++;
 }
 
 GameObject::GameObject()
