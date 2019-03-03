@@ -31,10 +31,10 @@ void Attack::Update(float deltaTime)
 
 Attack * Attack::Clone()
 {
-	return new Attack(nullptr, mDamage, mCurrentTime);
+	return new Attack(nullptr, mDamage, mCoolDown);
 }
 
-void Attack::BeginAttack()
+bool Attack::BeginAttack()
 {
 	if (!mIsOnCoolDown)
 	{
@@ -65,7 +65,12 @@ void Attack::BeginAttack()
 				}
 			}
 		}
+
+		return true;
 	}
+
+	std::cout << "attack not off cooldown\n";
+	return false;
 }
 
 void Attack::StopAttack()

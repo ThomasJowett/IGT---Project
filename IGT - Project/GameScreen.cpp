@@ -216,7 +216,7 @@ void GameScreen::SortObjectsDepth(Camera* camera)
 	{
 		if (it->get()->GetLayer() == SORTED)
 		{
-			Vector3D position = it->get()->GetTransform()->mPosition;
+			Vector3D position = it->get()->GetLocalTransform()->mPosition;
 
 			float topOfScreen = camera->GetTransform()->mPosition.y + (camera->GetOrthoHeight() / 2);
 			float bottomofScreen = camera->GetTransform()->mPosition.y - (camera->GetOrthoHeight() / 2);
@@ -229,7 +229,7 @@ void GameScreen::SortObjectsDepth(Camera* camera)
 
 				float objectDepth = neardepth + alpha * (fardepth - neardepth);
 
-				it->get()->GetTransform()->mPosition.z = objectDepth;
+				it->get()->GetLocalTransform()->mPosition.z = objectDepth;
 			}
 		}
 	}
@@ -240,9 +240,9 @@ bool GameScreen::ManageCameras()
 	if (!mCameraTarget1 || !mCameraTarget2)
 		return false;
 
-	Vector2D player1Location = mCameraTarget1->GetTransform()->mPosition;
+	Vector2D player1Location = mCameraTarget1->GetLocalTransform()->mPosition;
 
-	Vector2D player2Location = mCameraTarget2->GetTransform()->mPosition;
+	Vector2D player2Location = mCameraTarget2->GetLocalTransform()->mPosition;
 
 	Vector2D MidPointLocation = (player1Location + player2Location) / 2;
 

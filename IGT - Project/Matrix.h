@@ -30,6 +30,13 @@ public:
 	Vector2D ToVector2D() const;
 	Vector3D ToVector3D() const;
 
+	Vector3D ExtractTranslation() const;
+	Vector3D ExtractScale()	const;
+	//Quaternion ExtractRotation() const;
+	float ExtractRotationX() const;
+	float ExtractRotationY() const;
+	float ExtractRotationZ() const;
+
 	std::string to_string()const;
 
 	Matrix4x4 operator*(Matrix4x4 other);

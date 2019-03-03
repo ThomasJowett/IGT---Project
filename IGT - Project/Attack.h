@@ -15,7 +15,7 @@ public:
 
 	Attack* Clone()override;
 
-	void BeginAttack();
+	bool BeginAttack();
 	void StopAttack();
 
 	bool GetIsAttacking() const { return mIsAttacking; }

@@ -16,6 +16,15 @@ public:
 	}
 	Transform(Vector3D position, float rotation, Vector2D scale)
 		:mPosition(position), mRotation(rotation), mScale(scale) {;}
+
+	Transform(Matrix4x4 transformationMatrix)
+	{
+		mWorldMatrix = transformationMatrix;
+
+		mPosition = transformationMatrix.ExtractTranslation();
+		mRotation = transformationMatrix.ExtractRotationZ();
+		mScale = transformationMatrix.ExtractScale();
+	}
 	~Transform() { ; }
 
 	Matrix4x4 GetWorldMatrix() const { return mWorldMatrix; }

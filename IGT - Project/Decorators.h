@@ -10,7 +10,10 @@ public:
 
 	Status update(float deltaTime)override
 	{
-		return (!(blackboard->getBool(mBlackboardKey) ^ mIsSet)) ? Status::Success : Status::Failure;
+		if (!(blackboard->getBool(mBlackboardKey) ^ mIsSet))
+			return child->tick(deltaTime);
+
+		return Status::Failure;
 	}
 private:
 	std::string mBlackboardKey;
@@ -26,7 +29,10 @@ public:
 
 	Status update(float deltaTime) override
 	{
-		return (!((blackboard->getBool(mBBKey_1) == blackboard->getBool(mBBKey_1)) ^ mIsEqual)) ? Status::Success : Status::Failure;
+		if (!((blackboard->getBool(mBBKey_1) == blackboard->getBool(mBBKey_1)) ^ mIsEqual))
+			return child->tick(deltaTime);
+
+		return Status::Failure;
 	}
 private:
 	std::string mBBKey_1;

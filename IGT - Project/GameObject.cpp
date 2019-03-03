@@ -41,7 +41,7 @@ GameObject::GameObject(const GameObject & prefab)
 GameObject::GameObject()
 {
 	mName = "Uninitialised";
-	mTransform = new Transform();
+	mLocalTransform = new Transform();
 	mIsActive = false;
 
 	mUniqueID = currentID;
@@ -101,7 +101,7 @@ void GameObject::SetFacing(FACING facing)
 {
 	if (mFacing != facing)
 	{
-		GetTransform()->mScale.x *= -1.0f;
+		GetLocalTransform()->mScale.x *= -1.0f;
 		mFacing = facing;
 	}
 }

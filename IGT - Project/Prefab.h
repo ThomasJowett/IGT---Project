@@ -166,7 +166,7 @@ public:
 		mGameObject->AddComponent<Circle2D>(8, Vector2D());
 		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/snake spritesheet calciumtrice.png"), 32, 32, 10, 5, Vector2D(0, 16));
 		mGameObject->AddComponent<Circle2D>(8, Vector2D());
-		mGameObject->AddComponent<Attack>(25.0f, 2.0f);
+		mGameObject->AddComponent<Attack>(7.0f, 1.0f);
 		mGameObject->AddComponent<Health>(20.0f);
 		mGameObject->AddComponent<AnimatorSnake>();
 		mGameObject->AddComponent<AIController>();
@@ -185,7 +185,7 @@ public:
 		mGameObject->AddComponent<Circle2D>(8, Vector2D());
 		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Bat.png"), 32, 32, 10, 5, Vector2D(0, 16));
 		mGameObject->AddComponent<Circle2D>(8, Vector2D());
-		mGameObject->AddComponent<Attack>(25.0f, 2.0f);
+		mGameObject->AddComponent<Attack>(5.0f, 1.0f);
 		mGameObject->AddComponent<Health>(20.0f);
 		mGameObject->AddComponent<AnimatorSnake>();
 		mGameObject->AddComponent<AIController>();
@@ -204,7 +204,7 @@ public:
 		mGameObject->AddComponent<Circle2D>(8, Vector2D());
 		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Rat.png"), 32, 32, 10, 5, Vector2D(0, 16));
 		mGameObject->AddComponent<Circle2D>(8, Vector2D());
-		mGameObject->AddComponent<Attack>(25.0f, 2.0f);
+		mGameObject->AddComponent<Attack>(5.0f, 1.0f);
 		mGameObject->AddComponent<Health>(20.0f);
 		mGameObject->AddComponent<AnimatorSnake>();
 		mGameObject->AddComponent<AIController>();

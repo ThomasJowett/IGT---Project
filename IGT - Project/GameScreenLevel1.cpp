@@ -51,13 +51,13 @@ GameScreenLevel1::GameScreenLevel1()
 
 	//player 1
 	gameObject = new GameObject(*Factory<Prefab>::CreateInstance("BarbarianCharacter")->GetPrefab());
-	gameObject->GetTransform()->mPosition = mTileMap->GetPlayerStart(0).to_Vector3D();
+	gameObject->GetLocalTransform()->mPosition = mTileMap->GetPlayerStart(0).to_Vector3D();
 	AddGameObject(gameObject);
 	PlayerPawn* character1 = new PlayerPawn(gameObject, menu);
 
 	////player 2
 	gameObject = new GameObject(*ArcherCharacterPrefab().GetPrefab());
-	gameObject->GetTransform()->mPosition = mTileMap->GetPlayerStart(1).to_Vector3D();
+	gameObject->GetLocalTransform()->mPosition = mTileMap->GetPlayerStart(1).to_Vector3D();
 	AddGameObject(gameObject);
 	PlayerPawn* character2 = new PlayerPawn(gameObject, menu);
 

@@ -407,7 +407,7 @@ bool TileMap::GetCollisionAt(Vector2D position)
 //return if the tile has collision on it
 bool TileMap::GetCollisionAt(int X, int Y)
 {
-	if (X >= 0 && Y >= 0 && X <= mTilesWide && mTilesHigh)
+	if (X >= 0 && Y >= 0 && X <= mTilesWide && Y <= mTilesHigh)
 	{
 		return mCollision[X][Y];
 	}
@@ -475,8 +475,8 @@ Vector2D TileMap::TextureCoordinatesAtIndex(int index, int tile)
 //converts a position in the world to x and Y position on the tileMap
 bool TileMap::PositionToTileIndex(Vector2D position, unsigned int &X, unsigned int &Y)
 {
-	Transform * worldTransform = GetWorldTransform();
-	position -= Vector2D(worldTransform->mPosition.x, worldTransform->mPosition.y);
+	Vector2D worldLocation = GetWorldTransform().mPosition;
+	position -= Vector2D(worldLocation.x, worldLocation.y);
 
 	position.x = position.x / mTileWidth;
 	position.y = position.y / mTileHeight;
@@ -493,8 +493,8 @@ bool TileMap::TileIndexToPosition(unsigned int X, unsigned int Y, Vector2D& posi
 	position.x = (float)(X * mTileWidth + (mTileWidth / 2));
 	position.y = (float)(((int)Y * mTileHeight + (float)(mTileHeight / 2)) * -1);
 
-	Transform * worldTransform = GetWorldTransform();
-	position += Vector2D(worldTransform->mPosition.x, worldTransform->mPosition.y);
+	Vector2D worldLocation = GetWorldTransform().mPosition;
+	position += Vector2D(worldLocation.x, worldLocation.y);
 
 	return (X < mTilesWide && Y < mTilesHigh);
 }

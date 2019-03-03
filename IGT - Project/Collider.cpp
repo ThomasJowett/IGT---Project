@@ -165,22 +165,27 @@ std::vector<Vector2D> Box2D::GetCorners() const
 
 	std::vector<Vector2D> corners;
 	corners.resize(4);
-	
-	Matrix4x4 translateWorld = Matrix4x4::Translate(GetParent()->GetWorldTransform()->mPosition);
-	Matrix4x4 rotation = Matrix4x4::RotateZ(GetParent()->GetWorldTransform()->mRotation);
-	
+
+	//Matrix4x4 parentTransform = GetParent()->GetWorldMatrix();
+
+	Transform parentTransform = GetParent()->GetWorldTransform();
+
+	parentTransform.UpdateWorldMatrix();
+
+	Matrix4x4 parentMatrix = parentTransform.GetWorldMatrix();
+
 	Matrix4x4 translateCorner = Matrix4x4::Translate(Vector3D(-halfWidth, -halfHeight, 0));
-	Matrix4x4 mPosition = translateWorld  * rotation * mOffset * translateCorner;
-	corners[0] = ((translateWorld*rotation*mOffset*translateCorner).ToVector2D());
-	
+
+	corners[0] = ((parentMatrix * mOffset * translateCorner).ToVector2D());
+
 	translateCorner = Matrix4x4::Translate(Vector3D(halfWidth, -halfHeight, 0));
-	corners[1] = ((translateWorld*rotation*mOffset*translateCorner).ToVector2D());
-	
+	corners[1] = ((parentMatrix * mOffset * translateCorner).ToVector2D());
+
 	translateCorner = Matrix4x4::Translate(Vector3D(halfWidth, halfHeight, 0));
-	corners[2] = ((translateWorld*rotation*mOffset*translateCorner).ToVector2D());
-	
+	corners[2] = ((parentMatrix * mOffset * translateCorner).ToVector2D());
+
 	translateCorner = Matrix4x4::Translate(Vector3D(-halfWidth, halfHeight, 0));
-	corners[3] = ((translateWorld*rotation*mOffset*translateCorner).ToVector2D());
+	corners[3] = ((parentMatrix * mOffset * translateCorner).ToVector2D());
 
 	return corners;
 }

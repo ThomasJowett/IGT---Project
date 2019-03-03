@@ -3,6 +3,7 @@
 #include "Attack.h"
 #include "Astar.h"
 #include "RigidBody2D.h"
+#include "Messaging.h"
 
 //Move AI Pawn to a location
 class MoveTo : public BrainTree::Leaf
@@ -15,21 +16,21 @@ public:
 	}
 	void initialize()
 	{
-		//mGoal = blackboard->getVector2D(mBlackboardKey);
-		//Get path
-		//std::cout << "Getting path from " << mControlledPawn->GetTransform()->mPosition.to_string() << " to " << mGoal.to_string() << std::endl;
-
-		//mPath = Astar::Generator::GetInstance()->FindPath(mControlledPawn->GetTransform()->mPosition, mGoal);
-		//mCurrentWaypoint = mPath.size() - 1;
 	}
 
 	Status update(float deltaTime) override
 	{
+		if (blackboard->getVector2D(mBlackboardKey) == Vector2D())
+		{
+			return Node::Status::Failure;
+		}
+
+		Vector2D pawnPosition = mControlledPawn->GetWorldTransform().mPosition;
 		//Has the goal moved
 		if (Vector2D::Distance(mGoal, blackboard->getVector2D(mBlackboardKey)) > mAcceptableRadius)
 		{
 			mGoal = blackboard->getVector2D(mBlackboardKey);
-			mPath = Astar::Generator::GetInstance()->FindPath(mControlledPawn->GetTransform()->mPosition, mGoal);
+			mPath = Astar::Generator::GetInstance()->FindPath(pawnPosition, mGoal);
 			mCurrentWaypoint = mPath.size() - 1;
 
 			//return so that it does not move on the same update as the finding path takes place
@@ -37,26 +38,31 @@ public:
 		}
 
 		//Has pawn reached goal
-		if (Vector2D::Distance(mControlledPawn->GetWorldTransform()->mPosition, mGoal) < mAcceptableRadius || mPath.size() == 0)
+		if (Vector2D::Distance(pawnPosition, mGoal) < mAcceptableRadius || mPath.size() == 0)
 		{
 			return Node::Status::Success;
 		}
 
-		if (Vector2D::Distance(mPath[mCurrentWaypoint], mControlledPawn->GetWorldTransform()->mPosition) < mAcceptableRadius)
+		if (Vector2D::Distance(mPath[mCurrentWaypoint], pawnPosition) < mAcceptableRadius)
 		{
-			//std::cout << "waypoint reached\n";
 			mCurrentWaypoint--;
 			if (mCurrentWaypoint < 0)
 			{
 				mCurrentWaypoint = 0;
 			}
 		}
-		else if(Vector2D::Distance(mPath[mCurrentWaypoint], mControlledPawn->GetWorldTransform()->mPosition) < mAcceptableRadius)
-		{
 
+		//has the pawn been pushed off it's path
+		else if(Vector2D::Distance(mPath[mCurrentWaypoint], pawnPosition) > mAcceptableRadius * 10.0f)
+		{
+			mPath = Astar::Generator::GetInstance()->FindPath(pawnPosition, mGoal);
+			mCurrentWaypoint = mPath.size() - 1;
+
+			//return so that it does not move on the same update as the finding path takes place
+			return Node::Status::Running;
 		}
 
-		Vector2D force = (mPath[mCurrentWaypoint] - (Vector2D(mControlledPawn->GetWorldTransform()->mPosition)));
+		Vector2D force = (mPath[mCurrentWaypoint] - (Vector2D(pawnPosition)));
 		force.Normalize();
 		force = force * 1000.0f;
 		mControlledPawn->GetComponent<RigidBody2D>()->AddForce(force);
@@ -96,10 +102,14 @@ public:
 		if (mCurrentTime <= 0.0f)
 		{
 			mCurrentTime = 0.0f;
+			std::cout << "end of wait\n";
 			return Node::Status::Success;
 		}
 		else
+		{
+			std::cout << mCurrentTime <<"\n";
 			return Node::Status::Running;
+		}
 	}
 
 private:
@@ -107,7 +117,7 @@ private:
 	float mCurrentTime;
 };
 
-class AttackTask : public BrainTree::Leaf
+class AttackTask : public BrainTree::Leaf, public Observer<AttackEvent, int>
 {
 public:
 	AttackTask(GameObject* pawn)
@@ -117,12 +127,24 @@ public:
 
 	void initialize()
 	{
-		mPawn->BeginAttack();
+		
 	}
 
 	Status update(float deltaTime)
 	{
-		return Node::Status::Success;
+		return (mPawn->BeginAttack()) ? Node::Status::Success : Node::Status::Running;
+	}
+
+	void OnNotify(AttackEvent event, int value)override
+	{
+		switch (event)
+		{
+		case AttackEvent::ON_ATTACK_END:
+
+			break;
+		default:
+			break;
+		}
 	}
 
 private:

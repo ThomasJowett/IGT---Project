@@ -117,6 +117,7 @@ void AnimatorSnake::CreateAnimations()
 	mAnimations.emplace_back(std::make_unique<Animation>(10, 10, 0.1, mSprite));//turn
 	mAnimations.emplace_back(std::make_unique<Animation>(20, 10, 0.1, mSprite));//left
 	mAnimations.emplace_back(std::make_unique<Animation>(30, 10, 0.1, mSprite));//attack
+	mAnimations.back()->AddObserver(this);
 	mAnimations.emplace_back(std::make_unique<Animation>(40, 10, 0.1, mSprite));//death
 	mAnimations.back()->AddObserver(this);
 }
@@ -126,8 +127,15 @@ void AnimatorSnake::OnNotify(AnimationNotify notify, int chanel)
 	switch (notify)
 	{
 	case AnimationNotify::ANIM_END:
-		//GameScreenManager::GetInstance()->GetCurrentScreen()->RemoveGameOject(GetParent());
-		//TODO: destroy 
+		if (GetState() == SNAKE_ATTACK)
+		{
+			mIsAttacking = false;
+		}
+		else if (GetState() == SNAKE_DEATH)
+		{
+			//GameScreenManager::GetInstance()->GetCurrentScreen()->RemoveGameOject(GetParent());
+			//TODO: destroy 
+		}
 		break;
 	default:
 		break;
@@ -143,6 +151,7 @@ void AnimatorSnake::OnNotify(AttackEvent notify, int payload)
 		mIsAttacking = true;
 		break;
 	case AttackEvent::ON_ATTACK_END:
+		//mIsAttacking = false;
 		break;
 	default:
 		break;

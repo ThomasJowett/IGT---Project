@@ -21,17 +21,17 @@ void DungeonManager::Update(float deltaTime)
 
 void DungeonManager::Render(Shader * shader)
 {
-	GetTransform()->UpdateWorldMatrix();
-	shader->UpdateMatrixUniform(MODEL_U, GetTransform()->GetWorldMatrix(),true);
-
-	for (int i = 0; i < 20; i++)
-	{
-		for (int j = 0; j < 20; j++)
-		{
-
-			GameObject::Render(shader);
-		}
-	}
+	//GetTransform()->UpdateWorldMatrix();
+	//shader->UpdateMatrixUniform(MODEL_U, GetTransform()->GetWorldMatrix(),true);
+	//
+	//for (int i = 0; i < 20; i++)
+	//{
+	//	for (int j = 0; j < 20; j++)
+	//	{
+	//
+	//		GameObject::Render(shader);
+	//	}
+	//}
 
 
 	//render floor

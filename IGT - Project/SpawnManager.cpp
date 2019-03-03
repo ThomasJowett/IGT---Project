@@ -22,7 +22,7 @@ void SpawnManager::SpawnGameObjects(std::unordered_map<std::string, SpawnRoom> s
 				GameObject* gameObject = new GameObject(*prefab.first->GetPrefab());
 
 				screen->AddGameObject(gameObject);
-				gameObject->GetTransform()->mPosition = Vector3D(Random::FloatInRange(minX, maxX), Random::FloatInRange(minY, maxY), 0);
+				gameObject->GetLocalTransform()->mPosition = Vector3D(Random::FloatInRange(minX, maxX), Random::FloatInRange(minY, maxY), 0);
 			}
 		}
 	}

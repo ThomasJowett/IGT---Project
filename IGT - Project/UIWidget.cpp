@@ -106,6 +106,6 @@ void UIWidget::CalculateScreenPosition(Vector2D resolution)
 	float screenWidth = resolution.x / screenScale;
 	float screenHeight = resolution.y / screenScale;
 
-	GetTransform()->mPosition.x = ((screenWidth * mAnchorPoint.x) - (screenWidth / 2)) + mOffset.x;
-	GetTransform()->mPosition.y = ((screenHeight * (1 - mAnchorPoint.y)) - (screenHeight / 2)) + mOffset.y;
+	GetLocalTransform()->mPosition.x = ((screenWidth * mAnchorPoint.x) - (screenWidth / 2)) + mOffset.x;
+	GetLocalTransform()->mPosition.y = ((screenHeight * (1 - mAnchorPoint.y)) - (screenHeight / 2)) + mOffset.y;
 }

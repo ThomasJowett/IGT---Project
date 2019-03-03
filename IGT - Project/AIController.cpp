@@ -11,13 +11,40 @@ AIController::AIController(GameObject* parent)
 		SetupBlackBoard();
 		mAttackRef = GetParent()->GetComponent<Attack>();
 		GetParent()->GetComponent<Health>()->AddObserver(this);
+
+		GetParent()->GetComponent<Collider>()->AddObserver(this);
 	}
 }
 
 void AIController::Update(float deltaTime)
 {
-	if(!mIsDead)
+	if (!mIsDead)
+	{
+		if (mTarget)
+		{
+			Vector2D parentLocation = GetParent()->GetWorldTransform().mPosition;
+			Vector2D targetLocation = mTarget->GetWorldTransform().mPosition;
+
+			float distanceToTarget = Vector2D::Distance(targetLocation, parentLocation);
+			if (distanceToTarget < mAttackRange)
+			{
+				mBehaviourTree.getBlackboard()->setBool("IsInAttackRange", true);
+			}
+			else if (distanceToTarget > mAgroRange)
+			{
+				mTarget = nullptr;
+				mBehaviourTree.getBlackboard()->setBool("IsInAttackRange", false);
+				mBehaviourTree.getBlackboard()->setVector2D("MoveToLocation", mStartingLocation);
+			}
+			else
+			{
+				mBehaviourTree.getBlackboard()->setBool("IsInAttackRange", false);
+				mBehaviourTree.getBlackboard()->setVector2D("MoveToLocation", targetLocation);
+			}
+		}
+
 		mBehaviourTree.update(deltaTime);
+	}
 }
 
 void AIController::BuildBehaviourTree()
@@ -38,7 +65,7 @@ void AIController::BuildBehaviourTree()
 	decorator->setChild(sequence);
 	selector->addChild(std::make_shared<MoveTo>(mBehaviourTree.getBlackboard(), 10.0f, "MoveToLocation", GetParent()));
 	sequence->addChild(std::make_shared<AttackTask>(GetParent()));
-	sequence->addChild(std::make_shared<Wait>(0.4f));
+	sequence->addChild(std::make_shared<Wait>(1.5f));
 	mBehaviourTree.setRoot(selector);
 
 	/*
@@ -62,8 +89,8 @@ void AIController::BuildBehaviourTree()
 void AIController::SetupBlackBoard()
 {
 	//Set the initial move to location to the position it is currently at
-	//mBehaviourTree.getBlackboard()->setVector2D("MoveToLocation", GetParent()->GetTransform()->mPosition);
-	mBehaviourTree.getBlackboard()->setVector2D("MoveToLocation", { 1380, -127 });
+	mBehaviourTree.getBlackboard()->setVector2D("MoveToLocation", Vector2D());
+	//mBehaviourTree.getBlackboard()->setVector2D("MoveToLocation", { 1380, -127 });
 	mBehaviourTree.getBlackboard()->setBool("IsInAttackRange", false);
 }
 
@@ -73,10 +100,26 @@ void AIController::OnNotify(HealthEvent notify, GameObject * gameObject)
 	{
 	case HealthEvent::ON_DEATH:
 		mIsDead = true;
+
 		break;
 
 	default:
 		break;
+	}
+}
+
+void AIController::OnNotify(OverlapEvent notify, GameObject * overlappedWith)
+{
+	switch (notify)
+	{
+	case OverlapEvent::BEGIN_OVERLAP:
+		if (!strcmp(overlappedWith->GetName(), "BarbarianCharacter") || !strcmp(overlappedWith->GetName(), "ArcherCharacter"))
+		{
+			mTarget = overlappedWith;
+			std::cout << mTarget->GetName() << std::endl;
+
+			mStartingLocation = GetParent()->GetWorldTransform().mPosition;
+		}
 	}
 }
 
@@ -87,7 +130,9 @@ void AIController::SetParent(GameObject * parent)
 	{
 		BuildBehaviourTree();
 		SetupBlackBoard();
+		
 		mAttackRef = GetParent()->GetComponent<Attack>();
 		GetParent()->GetComponent<Health>()->AddObserver(this);
+		GetParent()->GetComponent<Collider>()->AddObserver(this);
 	}
 }

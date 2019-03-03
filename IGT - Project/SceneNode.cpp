@@ -7,13 +7,13 @@ SceneNode::SceneNode()
 	mLeftSibling = nullptr;
 	mRightSibling = nullptr;
 
-	mTransform = new Transform();
+	mLocalTransform = new Transform();
 
 	mIsActive = true;
 }
 
 SceneNode::SceneNode(Transform * transform)
-	:mTransform(transform)
+	:mLocalTransform(transform)
 {
 	mParent = nullptr;
 	mLeftChild = nullptr;
@@ -27,7 +27,7 @@ SceneNode::SceneNode(Transform * transform)
 SceneNode::SceneNode(const SceneNode & prefab)
 {
 	mIsActive = prefab.mIsActive;
-	mTransform = new Transform(prefab.GetLocalTransform()->mPosition, prefab.GetLocalTransform()->mRotation, prefab.GetLocalTransform()->mScale);
+	mLocalTransform = new Transform(prefab.GetLocalTransform()->mPosition, prefab.GetLocalTransform()->mRotation, prefab.GetLocalTransform()->mScale);
 
 	if (prefab.mLeftChild)
 	{
@@ -52,7 +52,7 @@ SceneNode::~SceneNode()
 
 	RemoveSelf();
 
-	if (mTransform) delete mTransform;
+	if (mLocalTransform) delete mLocalTransform;
 }
 
 void SceneNode::AddChild(SceneNode * child)
@@ -122,19 +122,19 @@ void SceneNode::Traverse(Shader * shader, Matrix4x4 & worldMatrix)
 	Matrix4x4 previousWorldMatrix = worldMatrix;
 
 	//update it's own matrix
-	mTransform->UpdateWorldMatrix();
+	mLocalTransform->UpdateWorldMatrix();
 
 	//add it to the previous
-	worldMatrix = worldMatrix * mTransform->GetWorldMatrix();
+	worldMatrix = worldMatrix * mLocalTransform->GetWorldMatrix();
 
 	mWorldMatrix = worldMatrix;
-
-	//update the shader world matrix
-	shader->UpdateMatrixUniform(MODEL_U, worldMatrix, true);
 
 	//render the object
 	if (mIsActive)
 	{
+		//update the shader world matrix
+		shader->UpdateMatrixUniform(MODEL_U, worldMatrix, true);
+
 		Render(shader);
 
 		//if the object has children then traverse them
@@ -163,17 +163,23 @@ void SceneNode::Traverse(float deltaTime)
 		mRightSibling->Traverse(deltaTime);
 }
 
-Transform * SceneNode::GetWorldTransform() const
+Transform SceneNode::GetWorldTransform() const
 {
-	SceneNode* parent = mParent;
-	Transform transform = *mTransform;
+	Transform transform = *mLocalTransform;
 
+	SceneNode* parent = mParent;
+	
 	while (parent)
 	{
-		transform.mPosition += parent->mTransform->mPosition;
-		transform.mRotation += parent->mTransform->mRotation;
+		transform.mPosition += parent->mLocalTransform->mPosition;
+		transform.mRotation += parent->mLocalTransform->mRotation;
 
 		parent = parent->mParent;
 	}
-	return &transform;
+	return transform;
 }
+
+//Vector3D SceneNode::GetWorldLocation() const
+//{
+//	return mWorldMatrix.ExtractTranslation();
+//}

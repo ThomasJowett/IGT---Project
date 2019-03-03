@@ -45,16 +45,12 @@ public:
 	template <typename ComponentType>
 	ComponentType* GetComponent(int number) const;
 
-	Transform* GetTransform() const { return mTransform;}
-
 	const char* GetName() const { return mName; }
 
 	void SetFacing(FACING facing);
 
 	Layer GetLayer() const { return mLayer; }
 	void SetLayer(Layer layer) { mLayer = layer; }
-
-	SceneNode* GetParent() const { return mParent; }
 
 	void GetAllChildren(std::vector<GameObject*> allGameObjects);
 

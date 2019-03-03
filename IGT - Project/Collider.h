@@ -16,7 +16,7 @@ class Circle2D;
 class GameObject;
 
 class Collider :
-	public Component, public Subject<OverlapEvent, GameObject*&>
+	public Component, public Subject<OverlapEvent, GameObject*>
 {
 public:
 	Collider(GameObject* parent, ColliderType type, Vector2D offset)
@@ -48,9 +48,9 @@ public:
 
 	Vector2D GetCentre() const
 	{
-		Matrix4x4 translate = Matrix4x4::Translate(GetParent()->GetWorldTransform()->mPosition);
-		Matrix4x4 rotation = Matrix4x4::RotateZ(GetParent()->GetWorldTransform()->mRotation);
-		return (translate * rotation * mOffset).ToVector2D();
+		Transform parentTransform = GetParent()->GetWorldTransform();
+		parentTransform.UpdateWorldMatrix();
+		return (parentTransform.GetWorldMatrix() * mOffset).ToVector2D();
 	}
 
 	void SetOffset(Vector2D offset) { mOffset = Matrix4x4::Translate(Vector3D(offset.x, offset.y, 0)); }

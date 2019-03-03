@@ -32,8 +32,8 @@ std::vector<Contact> Collision::DetectCollisions(std::vector<Collider*> collider
 	
 						if (collider->IntersectsCollider(otherCollider, contactNormal, penetrationDepth))
 						{
-							//collider->Notify(OverlapEvent::BEGIN_OVERLAP, otherCollider->GetParent());
-							//otherCollider->Notify(OverlapEvent::BEGIN_OVERLAP, collider->GetParent());
+							collider->Notify(OverlapEvent::BEGIN_OVERLAP, otherCollider->GetParent());
+							otherCollider->Notify(OverlapEvent::BEGIN_OVERLAP, collider->GetParent());
 	
 							contacts.push_back({ collider->GetParent(), otherCollider->GetParent(), contactNormal, penetrationDepth });
 						}
@@ -363,8 +363,8 @@ void Collision::ResolveCollision(Contact contact)
 		//resolve interpenetration
 		Vector2D translationA = ((contact.normal * contact.penetrationDepth) * ((bodyB->GetMass() / sumMasses)));
 		Vector2D translationB = ((contact.normal * -contact.penetrationDepth) * ((bodyA->GetMass() / sumMasses)));
-		contact.A->GetTransform()->mPosition += Vector3D(translationA.x, translationA.y, 0);
-		contact.B->GetTransform()->mPosition += Vector3D(translationB.x, translationB.y, 0);
+		contact.A->GetLocalTransform()->mPosition += Vector3D(translationA.x, translationA.y, 0);
+		contact.B->GetLocalTransform()->mPosition += Vector3D(translationB.x, translationB.y, 0);
 
 		//relative velocity
 		Vector2D relativeVelocity = velocityB - velocityA;
@@ -387,7 +387,7 @@ void Collision::ResolveCollision(Contact contact)
 	{
 		//resolve interpenetration
 		Vector2D firstTranslation = contact.normal * max(contact.penetrationDepth, 0.0f);
-		contact.A->GetTransform()->mPosition += Vector3D(firstTranslation.x, firstTranslation.y, 0);
+		contact.A->GetLocalTransform()->mPosition += Vector3D(firstTranslation.x, firstTranslation.y, 0);
 
 		//reflect the velocity
 		Vector2D velocity = Vector2D::Reflect(bodyA->GetVelocity(), contact.normal) * bodyA->GetPhysicsMaterial().elasticity;
@@ -405,7 +405,7 @@ void Collision::ResolveCollision(Contact contact)
 	{
 		//resolve interpenetration
 		Vector2D secondTranslation = contact.normal * -(max(contact.penetrationDepth, 0.0f));
-		contact.B->GetTransform()->mPosition += Vector3D(secondTranslation.x, secondTranslation.y, 0);
+		contact.B->GetLocalTransform()->mPosition += Vector3D(secondTranslation.x, secondTranslation.y, 0);
 
 		//reflect the velocity
 		Vector2D velocity = Vector2D::Reflect(bodyB->GetVelocity(), contact.normal) * bodyB->GetPhysicsMaterial().elasticity;

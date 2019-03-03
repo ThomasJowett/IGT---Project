@@ -244,6 +244,30 @@ Vector3D Matrix4x4::ToVector3D() const
 	return Vector3D();
 }
 
+Vector3D Matrix4x4::ExtractTranslation() const
+{
+	return Vector3D(m[0][3], m[1][3], m[2][3]);
+}
+
+Vector3D Matrix4x4::ExtractScale() const
+{
+	Vector3D result;
+	result.x = m[0][0] + m[0][1] + m[0][2];
+	result.y = m[1][0] + m[1][1] + m[1][2];
+	result.z = m[2][0] + m[2][1] + m[2][2];
+	return result;
+}
+
+float Matrix4x4::ExtractRotationX() const
+{
+	return 0.0f;
+}
+
+float Matrix4x4::ExtractRotationZ() const
+{
+	return asin(m[1][0]);
+}
+
 std::string Matrix4x4::to_string() const
 {
 	std::string result;

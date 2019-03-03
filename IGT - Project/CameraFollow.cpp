@@ -18,7 +18,7 @@ CameraFollow * CameraFollow::Clone()
 
 void CameraFollow::Update(float deltaTime)
 {
-	Vector3D desiredPosition = GetParent()->GetTransform()->mPosition + mOffset;
+	Vector3D desiredPosition = GetParent()->GetWorldTransform().mPosition + mOffset;
 
 	Vector3D smoothedPosition = Vector3D::Lerp(mCameraRef->GetTransform()->mPosition, desiredPosition, mSmoothSpeed * deltaTime);
 

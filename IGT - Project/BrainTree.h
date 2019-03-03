@@ -582,7 +582,7 @@ class UntilSuccess : public Decorator
 public:
     Status update(float deltaTime) override
     {
-        while (1) {
+        while (true) {
             auto status = child->tick(deltaTime);
 
             if (status == Status::Success) {
@@ -598,7 +598,7 @@ class UntilFailure : public Decorator
 public:
     Status update(float deltaTime) override
     {
-        while (1) {
+        while (true) {
             auto status = child->tick(deltaTime);
 
             if (status == Status::Failure) {

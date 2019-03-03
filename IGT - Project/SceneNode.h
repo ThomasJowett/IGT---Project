@@ -20,16 +20,21 @@ public:
 	void Traverse(Shader* shader, Matrix4x4 & worldMatrix);
 	void Traverse(float deltaTime);
 
-	Transform* GetLocalTransform() const { return mTransform; };
-	Transform* GetWorldTransform() const;
+	Transform* GetLocalTransform() const { return mLocalTransform; };
+	Transform GetWorldTransform() const;
+
+	//Vector3D GetWorldLocation() const;
 
 	void SetActive(bool isActive) { mIsActive = isActive; }
 	bool GetActive() { return mIsActive; }
 
+	//only updates on render, so will be the position of node in previous frame
 	Matrix4x4 GetWorldMatrix() { return mWorldMatrix; }
 
+	SceneNode* GetParent() const { return mParent; }
+
 protected:
-	Transform* mTransform;
+	Transform* mLocalTransform;
 
 	Matrix4x4 mWorldMatrix;
 
