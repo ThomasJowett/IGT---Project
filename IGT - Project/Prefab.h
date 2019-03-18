@@ -10,9 +10,12 @@
 #include "TextRender.h"
 #include "AnimatorCharacter.h"
 #include "AnimatorSnake.h"
+#include "AnimatorGoblin.h"
 #include "Health.h"
 #include "Attack.h"
 #include "AIController.h"
+#include "Loot.h"
+#include "LootCollector.h"
 
 class Prefab
 {
@@ -60,6 +63,7 @@ struct DerivedRegister : Factory<Prefab>
 	}
 };
 
+//Lootable prefabs ------------------------------------------------
 class BarrelPrefab :public Prefab
 {
 public:
@@ -94,7 +98,10 @@ class CoinsPrefab : public Prefab
 public:
 	CoinsPrefab()
 	{
-		//TODO: coins prefab
+		mGameObject = new GameObject("Coins", new Transform());
+		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("Images/Coins.png"), 16, 16, Vector2D(0, 8));
+		mGameObject->AddComponent<Circle2D>(8, Vector2D(), true);
+		mGameObject->AddComponent<Loot>(1);
 	}
 
 private:
@@ -108,8 +115,8 @@ public:
 	{
 		mGameObject = new GameObject("LargeLootBag", new Transform());
 		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("Images/LootBag_Large.png"), 16, 16, Vector2D(0, 8));
-		mGameObject->AddComponent<Circle2D>(6, Vector2D(0,3));
-		mGameObject->AddComponent<RigidBody2D>(100, Vector2D(0, 0), 1, 0, PhysicsMaterial{ 300.0f, 0.8f, 0.5f, 1.0f });
+		mGameObject->AddComponent<Circle2D>(6, Vector2D(0, 3), true);
+		mGameObject->AddComponent<Loot>(5);
 	}
 private:
 	static DerivedRegister<LargeLootPrefab> reg;
@@ -122,8 +129,8 @@ public:
 	{
 		mGameObject = new GameObject("MediumLootBag", new Transform());
 		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("Images/LootBag_Medium.png"), 16, 16, Vector2D(0, 8));
-		mGameObject->AddComponent<Circle2D>(6, Vector2D(0, 3));
-		mGameObject->AddComponent<RigidBody2D>(100, Vector2D(0, 0), 1, 0, PhysicsMaterial{ 300.0f, 0.8f, 0.5f, 1.0f });
+		mGameObject->AddComponent<Circle2D>(6, Vector2D(0, 3), true);
+		mGameObject->AddComponent<Loot>(2);
 	}
 private:
 	static DerivedRegister<MediumLootPrefab> reg;
@@ -136,21 +143,28 @@ public:
 	{
 		mGameObject = new GameObject("SmallLootBag", new Transform());
 		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("Images/LootBag_Small.png"), 16, 16, Vector2D(0, 8));
-		mGameObject->AddComponent<Circle2D>(6, Vector2D(0, 3));
-		mGameObject->AddComponent<RigidBody2D>(100, Vector2D(0, 0), 1, 0, PhysicsMaterial{ 300.0f, 0.8f, 0.5f, 1.0f });
+		mGameObject->AddComponent<Circle2D>(6, Vector2D(0, 3), true);
+		mGameObject->AddComponent<Loot>(1);
 	}
 private:
 	static DerivedRegister<SmallLootPrefab> reg;
 };
 
+//Enemy prefabs----------------------------------------------------
 class SlimePrefab : public Prefab
 {
 public:
 	SlimePrefab()
 	{
 		mGameObject = new GameObject("Slime", new Transform());
-		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/SlimeSprites.png"), 32, 32, 4, 10, Vector2D(0, 16));
-		//TODO: slime prefab
+		mGameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, PhysicsMaterial{ 30.0f, 0.8f, 0.5f, 10.0f });
+		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Slime.png"), 32, 32, 4, 10, Vector2D(0, 16));
+		mGameObject->AddComponent<Circle2D>(8, Vector2D());
+		mGameObject->AddComponent<Circle2D>(16, Vector2D());
+		mGameObject->AddComponent<Attack>(7.0f, 1.0f);
+		mGameObject->AddComponent<Health>(20.0f);
+		mGameObject->AddComponent<AnimatorGoblin>();
+		mGameObject->AddComponent<AIController>();
 	}
 private:
 	static DerivedRegister<SlimePrefab> reg;
@@ -213,6 +227,26 @@ private:
 	static DerivedRegister<RatPrefab> reg;
 };
 
+class GoblinPrefab : public Prefab
+{
+public:
+	GoblinPrefab()
+	{
+		mGameObject = new GameObject("Goblin", new Transform());
+		mGameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, PhysicsMaterial{ 30.0f, 0.8f, 0.5f, 10.0f });
+		mGameObject->AddComponent<Circle2D>(8, Vector2D());
+		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Goblin.png"), 48, 48, 4, 10, Vector2D(0, 24));
+		mGameObject->AddComponent<Circle2D>(8, Vector2D());
+		mGameObject->AddComponent<Attack>(5.0f, 1.0f);
+		mGameObject->AddComponent<Health>(20.0f);
+		mGameObject->AddComponent<AnimatorGoblin>();
+		mGameObject->AddComponent<AIController>();
+	}
+private:
+	static DerivedRegister<GoblinPrefab> reg;
+};
+
+//Playable Character prefabs--------------------------------------
 class BarbarianCharacterPrefab : public Prefab
 {
 public:
@@ -227,6 +261,7 @@ public:
 		mGameObject->AddComponent<Attack>(25.0f, 2.0f);
 		mGameObject->AddComponent<AnimatorCharacter>();
 		mGameObject->AddComponent<Health>(100.0f);
+		mGameObject->AddComponent<LootCollector>();
 	}
 private:
 	static DerivedRegister<BarbarianCharacterPrefab> reg;
@@ -246,6 +281,7 @@ public:
 		mGameObject->AddComponent<Attack>(25.0f, 2.0f);
 		mGameObject->AddComponent<AnimatorCharacter>();
 		mGameObject->AddComponent<Health>(100.0f);
+		mGameObject->AddComponent<LootCollector>();
 	}
 private:
 	static DerivedRegister<ArcherCharacterPrefab> reg;

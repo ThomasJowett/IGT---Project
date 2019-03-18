@@ -153,8 +153,16 @@
    </properties>
   </object>
   <object id="31" name="EnemyRoom2" type="SpawnRoom" x="1141.33" y="1189.33" width="150" height="123.333"/>
-  <object id="32" name="EnemyRoom3" type="SpawnRoom" x="805.333" y="916" width="212" height="222"/>
-  <object id="33" name="LootRoom4" type="SpawnRoom" x="1333.33" y="725.333" width="134" height="126"/>
+  <object id="32" name="EnemyRoom3" type="SpawnRoom" x="805.333" y="916" width="212" height="222">
+   <properties>
+    <property name="Goblin" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="33" name="LootRoom4" type="SpawnRoom" x="1333.33" y="725.333" width="134" height="126">
+   <properties>
+    <property name="Coins" type="int" value="5"/>
+   </properties>
+  </object>
   <object id="34" name="EnemyRoom6" type="SpawnRoom" x="1060.67" y="325.333" width="327.333" height="170"/>
   <object id="35" name="PuzzleRoom" x="854.667" y="502" width="148" height="137.333"/>
   <object id="36" name="EnemyRoom4" type="SpawnRoom" x="759.333" y="134.667" width="194" height="184"/>

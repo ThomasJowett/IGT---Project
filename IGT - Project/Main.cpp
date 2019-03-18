@@ -11,6 +11,19 @@
 #include "Debug.h"
 #include "Cursor.h"
 
+#include "ImGui/imgui.h"
+#include "ImGui/imgui_impl_sdl.h"
+#include "ImGui/imgui_impl_opengl3.h"
+
+#if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
+#include <GL/gl3w.h>    // Initialize with gl3wInit()
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
+#include <glew.h>    // Initialize with glewInit()
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
+#include <glad/glad.h>  // Initialize with gladLoadGL()
+#else
+#include IMGUI_IMPL_OPENGL_LOADER_CUSTOM
+#endif
 
 //Globals------------------------------------------------------------------------------------
 SDL_Window*			gWindow = nullptr;
@@ -48,6 +61,8 @@ int main(int argc, char* args[])
 
 bool InitSDL()
 {
+	
+
 	//Setup SDL.
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
@@ -75,11 +90,13 @@ bool InitSDL()
 
 		//Create Window-----------------------------------------------------------------------
 
+		SDL_WindowFlags window_flags = (SDL_WindowFlags)(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
 		gWindow = SDL_CreateWindow("Delve, Die, Repeat",
 			SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 			Settings::GetInstance()->GetScreenWidth(), Settings::GetInstance()->GetScreenHeight(),
 			SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 		gGLContext = SDL_GL_CreateContext(gWindow);
+		SDL_GL_MakeCurrent(gWindow, gGLContext);
 
 		SDL_SetWindowResizable(gWindow, SDL_TRUE);
 
@@ -89,6 +106,35 @@ bool InitSDL()
 			std::cerr << "Window was not created. Error: " << SDL_GetError() << std::endl;
 			return false;
 		}
+
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, 0);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+
+		//Setup ImGui-------------------------------------------------------------------------
+		IMGUI_CHECKVERSION();
+		ImGui::CreateContext();
+		ImGuiIO& io = ImGui::GetIO(); (void)io;
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+		io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
+		//io.ConfigViewportsNoAutoMerge = true;
+		//io.ConfigViewportsNoTaskBarIcon = true;
+
+		ImGui::StyleColorsDark();
+
+		// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
+		ImGuiStyle& style = ImGui::GetStyle();
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+		{
+			style.WindowRounding = 0.0f;
+			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+		}
+
+		ImGui_ImplSDL2_InitForOpenGL(gWindow, gGLContext);
+		ImGui_ImplOpenGL3_Init("#version 130");
 
 		//Setup OpenGL------------------------------------------------------------------------
 		glewExperimental = GL_TRUE;
@@ -135,6 +181,8 @@ bool InitSDL()
 		Cursor::CustomCursorType("Cursor_Arrow");
 	}
 	glClearColor(0.0f, 0.5f, 0.1f, 1.0f);
+
+	printf("OpenGL %s, GLSL %s\n", glGetString(GL_VERSION), glGetString(GL_SHADING_LANGUAGE_VERSION));
 	return true;
 }
 
@@ -164,6 +212,11 @@ void CloseSDL()
 	IMG_Quit();
 	SDL_Quit();
 	TTF_Quit();
+
+	//Shutdown ImGui
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
 }
 
 bool Update()
@@ -181,6 +234,7 @@ bool Update()
 	//Get the events.
 	while (SDL_PollEvent(&e) != 0)
 	{
+		ImGui_ImplSDL2_ProcessEvent(&e);
 		events.push_back(e);
 	}
 
@@ -213,14 +267,34 @@ void Render()
 	//Clear the Screen
 	//glClearColor(0, 0.5, 0.1, 1);
 
+	//Clear the buffers
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	//Render the game
 	GameScreenManager::GetInstance()->Render();
+
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplSDL2_NewFrame(gWindow);
+	ImGui::NewFrame();
+
+	//ImGui::ShowDemoWindow();
+
+	ImGui::Render();
+
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		SDL_Window* backup_current_window = SDL_GL_GetCurrentWindow();
+		SDL_GLContext backup_current_context = SDL_GL_GetCurrentContext();
+		ImGui::UpdatePlatformWindows();
+		ImGui::RenderPlatformWindowsDefault();
+		SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
+	}
 
 	//Present Back Buffer to screen
 	SDL_GL_SwapWindow(gWindow);
 
-	//Clear the buffers
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
 //Checks if another instance of the game is already running

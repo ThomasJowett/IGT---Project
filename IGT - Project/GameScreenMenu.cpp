@@ -21,11 +21,7 @@ GameScreenMenu::GameScreenMenu() : GameScreen()
 {
 	mCamera.GetTransform()->mPosition = Vector3D(0, 0, 0);
 
-	SoundManager::GetInstance()->PlayMusic("Music/Diesel.ogg");
-
-	GLuint texture =			Texture2D::GetTexture2D("SpriteSheets/GoblinSprites.png");
-	GLuint backgroundTexture =	Texture2D::GetTexture2D("Images/BackGround.png");
-	GLuint ButtonTexture =		Texture2D::GetTexture2D("Images/ButtonsMenu.png");
+	SoundManager::GetInstance()->PlayMusic("Music/MainMenu.ogg");
 	
 	Transform* transform;
 	GameObject* gameObject;
@@ -38,7 +34,7 @@ GameScreenMenu::GameScreenMenu() : GameScreen()
 	//Background Image
 	transform = new Transform(Vector3D(0, 0, 0), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Backgorund", transform);
-	gameObject->AddComponent<Sprite>(backgroundTexture, 600, 600);
+	gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("Images/BackGround.png"), 600, 600);
 	mGameObjects.emplace_back(gameObject);
 	Root->AddChild(gameObject);
 
@@ -59,6 +55,7 @@ GameScreenMenu::GameScreenMenu() : GameScreen()
 
 GameScreenMenu::~GameScreenMenu()
 {
+	SoundManager::GetInstance()->StopMusic();
 	//Texture2D::DeleteAllTextures();
 	MenuManager::GetInstance()->RemoveAllMenus();
 }

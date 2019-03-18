@@ -3,19 +3,10 @@
 #include "GameScreenManager.h"
 #include "PlayerPawn.h"
 #include "MainMenuPawn.h"
-//#include "Texture2D.h"
-//#include "Sprite.h"
 #include "Collider.h"
 #include "Collision.h"
-//#include "TextRender.h"
-//#include "RigidBody2D.h"
-//#include "AnimatorCharacter.h"
-//#include "AnimatorSnake.h"
 #include "PauseMenu.h"
-//#include "Health.h"
-//#include "Attack.h"
 #include "HUD.h"
-//#include "AIController.h"
 #include "Astar.h"
 #include "RandomGenerator.h"
 #include "SpawnManager.h"
@@ -31,10 +22,6 @@ GameScreenLevel1::GameScreenLevel1()
 
 	mPostProcessShader = mNoPostProcess;
 
-	//GLuint SnakeTexture = Texture2D::GetTexture2D("SpriteSheets/snake spritesheet calciumtrice.png");
-
-
-	Transform* transform;
 	GameObject* gameObject;
 
 	PhysicsMaterial physicsMaterial = { 30.0f, 0.8f, 0.5f, 10.0f };
@@ -55,6 +42,18 @@ GameScreenLevel1::GameScreenLevel1()
 	AddGameObject(gameObject);
 	PlayerPawn* character1 = new PlayerPawn(gameObject, menu);
 
+	//Pause Menu
+	UIMenu* pauseMenu = new PauseMenu(new Transform(), character1);
+	mUIWidgets.emplace_back(pauseMenu);
+	RootWidget->AddChild(pauseMenu);
+	MenuManager::GetInstance()->AddMenu(pauseMenu);
+
+	//Player 1 HUD
+	pauseMenu = new HUD(gameObject);
+	mUIWidgets.emplace_back(pauseMenu);
+	RootWidget->AddChild(pauseMenu);
+	MenuManager::GetInstance()->AddMenu(pauseMenu);
+
 	////player 2
 	gameObject = new GameObject(*ArcherCharacterPrefab().GetPrefab());
 	gameObject->GetLocalTransform()->mPosition = mTileMap->GetPlayerStart(1).to_Vector3D();
@@ -62,18 +61,6 @@ GameScreenLevel1::GameScreenLevel1()
 	PlayerPawn* character2 = new PlayerPawn(gameObject, menu);
 
 	SpawnManager::SpawnGameObjects(mTileMap->GetSpawnRooms(), this);
-
-	//Pause Menu
-	UIMenu* pauseMenu = new PauseMenu(new Transform(), character1);
-	mUIWidgets.emplace_back(pauseMenu);
-	RootWidget->AddChild(pauseMenu);
-	MenuManager::GetInstance()->AddMenu(pauseMenu);
-
-	pauseMenu = new HUD();
-	mUIWidgets.emplace_back(pauseMenu);
-	RootWidget->AddChild(pauseMenu);
-	MenuManager::GetInstance()->AddMenu(pauseMenu);
-	
 
 	//PlayerControllers
 	PlayerController* playerController = new PlayerController(0, character1);

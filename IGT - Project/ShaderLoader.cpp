@@ -1,7 +1,6 @@
 #include "ShaderLoader.h"
 #include <iostream>
 #include <fstream>
-#include "Debug.h"
 
 void CheckShaderError(GLuint shader, GLuint flag, bool isProgram, const char* errorMessage);
 std::string LoadShader(const std::string& filename);

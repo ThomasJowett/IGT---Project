@@ -34,8 +34,9 @@ std::vector<Contact> Collision::DetectCollisions(std::vector<Collider*> collider
 						{
 							collider->Notify(OverlapEvent::BEGIN_OVERLAP, otherCollider->GetParent());
 							otherCollider->Notify(OverlapEvent::BEGIN_OVERLAP, collider->GetParent());
-	
-							contacts.push_back({ collider->GetParent(), otherCollider->GetParent(), contactNormal, penetrationDepth });
+
+							if(!collider->IsTrigger() && !otherCollider->IsTrigger())
+								contacts.push_back({ collider->GetParent(), otherCollider->GetParent(), contactNormal, penetrationDepth });
 						}
 	
 						collider->AddTestedCollisionWith(otherCollider);

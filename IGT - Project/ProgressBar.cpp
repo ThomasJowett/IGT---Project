@@ -1,6 +1,7 @@
 #include "ProgressBar.h"
 #include "Texture2D.h"
 
+
 ProgressBar::ProgressBar(const char * name, Vector2D anchorPoint, Vector2D offset, const char * path, Vector2D size, float initialValue)
 	:UIWidget(name, anchorPoint, offset)
 {
@@ -11,6 +12,28 @@ ProgressBar::ProgressBar(const char * name, Vector2D anchorPoint, Vector2D offse
 	SetIsFocusable(false);
 
 	SetPercent(initialValue);
+}
+
+HealthBar::HealthBar(const char * name, Vector2D anchorPoint, Vector2D offset, const char * path, Vector2D size, float initialValue, GameObject * subject)
+	:ProgressBar(name, anchorPoint, offset, path, size, initialValue)
+{
+	mHealth = subject->GetComponent<Health>();
+	mHealth->AddObserver(this);
+}
+
+void HealthBar::OnNotify(HealthEvent event, GameObject * gameObject)
+{
+	switch (event)
+	{
+	case HealthEvent::ON_DEATH:
+		SetPercent(0.0f);
+		break;
+	case HealthEvent::ON_TAKE_DAMAGE:
+		SetPercent(mHealth->GetHealthAsFraction());
+		break;
+	default:
+		break;
+	}
 }
 
 void ProgressBar::SetPercent(float value)

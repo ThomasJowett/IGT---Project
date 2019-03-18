@@ -27,9 +27,9 @@ void Slider::OnDragged(Vector2D mousePosition)
 {
 	UIWidget::OnDragged(mousePosition);
 
-	float mouseRelativePosition = (mousePosition.x - GetLocalTransform()->mPosition.x) + (mBarWidth / 2);
+	float mouseRelativePosition = (mousePosition.x - GetWorldTransform().mPosition.x) + (mBarWidth / 2);
 	
-	SetValue((int)(mouseRelativePosition/mBarWidth) * mMaxValue);
+	SetValue((int)((mouseRelativePosition/mBarWidth) * mMaxValue));
 }
 
 bool Slider::OnHovered()

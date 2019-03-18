@@ -192,7 +192,14 @@ std::vector<Vector2D> Box2D::GetCorners() const
 
 Component * Box2D::Clone()
 {
-	return new Box2D(nullptr, mWidth, mHeight, mOffset);
+	return new Box2D(nullptr, mWidth, mHeight, mOffset, mIsTrigger);
+}
+
+Vector2D Collider::GetCentre() const
+{
+	Transform parentTransform = GetParent()->GetWorldTransform();
+	parentTransform.UpdateWorldMatrix();
+	return (parentTransform.GetWorldMatrix() * mOffset).ToVector2D();
 }
 
 bool Collider::HasTestedCollisionWith(Collider * collider)
@@ -271,7 +278,7 @@ bool Circle2D::ContainsPoint(Vector2D point)
 bool Circle2D::TestAxis(Vector2D axis, float offset)
 {
 	float min, max;
-	ProjectCircleOnAxis(axis.Perpendicular(), *this, min, max);
+	ProjectCircleOnAxis(axis.Perpendicular(true), *this, min, max);
 
 	return min > offset;
 }
@@ -289,5 +296,5 @@ void Circle2D::GetBounds(float & Xmax, float & Xmin, float & Ymax, float & Ymin)
 
 Component * Circle2D::Clone()
 {
-	return new Circle2D(nullptr, mRadius, mOffset);
+	return new Circle2D(nullptr, mRadius, mOffset, mIsTrigger);
 }

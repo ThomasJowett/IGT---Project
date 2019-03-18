@@ -25,9 +25,30 @@ Matrix4x4::Matrix4x4()
 	m[3][3] = 1.0f;
 }
 
-
-Matrix4x4::~Matrix4x4()
+Matrix4x4::Matrix4x4(float m00, float m01, float m02, float m03,
+	float m10, float m11, float m12, float m13,
+	float m20, float m21, float m22, float m23,
+	float m30, float m31, float m32, float m33)
 {
+	m[0][0] = m00;
+	m[0][1] = m01;
+	m[0][2] = m02;
+	m[0][3] = m03;
+
+	m[1][0] = m10;
+	m[1][1] = m11;
+	m[1][2] = m12;
+	m[1][3] = m13;
+
+	m[2][0] = m20;
+	m[2][1] = m21;
+	m[2][2] = m22;
+	m[2][3] = m23;
+
+	m[3][0] = m30;
+	m[3][1] = m31;
+	m[3][2] = m32;
+	m[3][3] = m33;
 }
 
 Matrix4x4 Matrix4x4::Translate(Vector3D translation)
@@ -82,6 +103,36 @@ Matrix4x4 Matrix4x4::RotateZ(float angle)
 	result.m[1][1] = cos(angle);
 	return result;
 }
+
+Matrix4x4 Matrix4x4::Rotate(float r, float i, float j, float k)
+{
+	Matrix4x4 result;
+	result.m[0][0] = 1 - 2 * j * j - 2 * k * k;
+	result.m[0][1] = 2 * i * j - 2 * k * r;
+	result.m[0][2] = 2 * i * k + 2 * j * r;
+	result.m[0][3] = 0.0f;
+
+	result.m[1][0] = 2 * i * j + 2 * r * k;
+	result.m[1][1] = 1 - 2 * i * i - 2 * k * k;
+	result.m[1][2] = 2 * j * k - 2 * r * i;
+	result.m[1][3] = 0.0f;
+
+	result.m[2][0] = 2 * i * k - 2 * r * j;
+	result.m[2][1] = 2 * j * k + 2 * r * i;
+	result.m[2][2] = 1 - 2 * i * i - 2 * j * j;
+	result.m[2][3] = 0.0f;
+
+	result.m[3][0] = 0.0f;
+	result.m[3][1] = 0.0f;
+	result.m[3][2] = 0.0f;
+	result.m[3][3] = 1.0f;
+	return result;
+}
+
+//Matrix4x4 Matrix4x4::Rotate(Quaternion rotation)
+//{
+//	return Rotate(rotation.r, rotation.i, rotation.j, rotation.k);
+//}
 
 Matrix4x4 Matrix4x4::Perspective(float fovY, float aspectRatio, float nearDepth, float farDepth)
 {
@@ -267,6 +318,48 @@ float Matrix4x4::ExtractRotationZ() const
 {
 	return asin(m[1][0]);
 }
+
+/*Quaternion Matrix4x4::ExtractRotation() const
+{
+	Quaternion q;
+
+	float trace = m[0][0] + m[1][1] + a[2][2];
+
+	if (trace > 0)
+	{
+		float s = 0.5f / sqrt(trace + 1.0f);
+		q.r = 0.25f / s;
+		q.i = (m[2][1] - m[1][2]) * s;
+		q.j = (m[0][2] - m[2][0]) * s;
+		q.z = (m[1][0] - m[0][1]) * s;
+	}
+	else
+	{
+		if (m[0][0] > m[1][1] && m[0][0] > m[2][2]) {
+			float s = 2.0f * sqrtf(1.0f + a[0][0] - a[1][1] - a[2][2]);
+			q.r = (m[2][1] - m[1][2]) / s;
+			q.i = 0.25f * s;
+			q.j = (m[0][1] + m[1][0]) / s;
+			q.k = (m[0][2] + m[2][0]) / s;
+		}
+		else if (m[1][1] > m[2][2]) {
+			float s = 2.0f * sqrtf(1.0f + a[1][1] - a[0][0] - a[2][2]);
+			q.r = (m[0][2] - m[2][0]) / s;
+			q.i = (m[0][1] + m[1][0]) / s;
+			q.j = 0.25f * s;
+			q.k = (m[1][2] + m[2][1]) / s;
+		}
+		else {
+			float s = 2.0f * sqrtf(1.0f + a[2][2] - a[0][0] - a[1][1]);
+			q.r = (m[1][0] - m[0][1]) / s;
+			q.i = (m[0][2] + m[2][0]) / s;
+			q.j = (m[1][2] + m[2][1]) / s;
+			q.k = 0.25f * s;
+		}
+	}
+
+	return q;
+}*/
 
 std::string Matrix4x4::to_string() const
 {

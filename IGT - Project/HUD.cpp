@@ -3,15 +3,16 @@
 #include "ProgressBar.h"
 #include "Texture2D.h"
 
-HUD::HUD()
+HUD::HUD(GameObject* subject)
 	:UIMenu("HUD", new Transform())
 {
+	mSubject = subject;
 	CreateWidgets();
 }
 
 void HUD::CreateWidgets()
 {
-	ProgressBar* progressBar = new ProgressBar("Health Bar", { 0, 0 }, { 64,-7 }, "Images/HealthBar.png", { 52,6 }, 1.0f);
+	ProgressBar* progressBar = new HealthBar("Health Bar", { 0, 0 }, { 64,-7 }, "Images/HealthBar.png", { 52,6 }, 1.0f, mSubject);
 	mWidgets.emplace_back(progressBar);
 	AddChild(progressBar);
 

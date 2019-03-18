@@ -16,6 +16,10 @@ public:
 	}
 	void initialize()
 	{
+		if (!mRigidBody2D)
+		{
+			mRigidBody2D = mControlledPawn->GetComponent<RigidBody2D>();
+		}
 	}
 
 	Status update(float deltaTime) override
@@ -65,7 +69,7 @@ public:
 		Vector2D force = (mPath[mCurrentWaypoint] - (Vector2D(pawnPosition)));
 		force.Normalize();
 		force = force * 1000.0f;
-		mControlledPawn->GetComponent<RigidBody2D>()->AddForce(force);
+		mRigidBody2D->AddForce(force);
 
 		return Node::Status::Running;
 	}
@@ -78,6 +82,8 @@ private:
 	GameObject* mControlledPawn;
 	std::vector<Vector2D> mPath;
 	int mCurrentWaypoint;
+
+	RigidBody2D* mRigidBody2D = nullptr;
 };
 
 //Wait for the specified time when executed
@@ -102,12 +108,10 @@ public:
 		if (mCurrentTime <= 0.0f)
 		{
 			mCurrentTime = 0.0f;
-			std::cout << "end of wait\n";
 			return Node::Status::Success;
 		}
 		else
 		{
-			std::cout << mCurrentTime <<"\n";
 			return Node::Status::Running;
 		}
 	}

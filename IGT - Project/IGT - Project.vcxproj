@@ -129,6 +129,7 @@
     <ClCompile Include="AIController.cpp" />
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="AnimatorCharacter.cpp" />
+    <ClCompile Include="AnimatorGoblin.cpp" />
     <ClCompile Include="AnimatorSnake.cpp" />
     <ClCompile Include="Astar.cpp" />
     <ClCompile Include="Attack.cpp" />
@@ -150,6 +151,13 @@
     <ClCompile Include="Health.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Image.cpp" />
+    <ClCompile Include="ImGui\imgui.cpp" />
+    <ClCompile Include="ImGui\imgui_demo.cpp" />
+    <ClCompile Include="ImGui\imgui_draw.cpp" />
+    <ClCompile Include="ImGui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="ImGui\imgui_impl_sdl.cpp" />
+    <ClCompile Include="ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="Loot.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MainMenuPawn.cpp" />
@@ -194,6 +202,7 @@
     <ClInclude Include="AIController.h" />
     <ClInclude Include="Animator.h" />
     <ClInclude Include="AnimatorCharacter.h" />
+    <ClInclude Include="AnimatorGoblin.h" />
     <ClInclude Include="AnimatorSnake.h" />
     <ClInclude Include="Astar.h" />
     <ClInclude Include="Attack.h" />
@@ -223,6 +232,16 @@
     <ClInclude Include="iComponents.h" />
     <ClInclude Include="iInput.h" />
     <ClInclude Include="Image.h" />
+    <ClInclude Include="ImGui\imconfig.h" />
+    <ClInclude Include="ImGui\imgui.h" />
+    <ClInclude Include="ImGui\imgui_impl_opengl3.h" />
+    <ClInclude Include="ImGui\imgui_impl_sdl.h" />
+    <ClInclude Include="ImGui\imgui_internal.h" />
+    <ClInclude Include="ImGui\imstb_rectpack.h" />
+    <ClInclude Include="ImGui\imstb_textedit.h" />
+    <ClInclude Include="ImGui\imstb_truetype.h" />
+    <ClInclude Include="Loot.h" />
+    <ClInclude Include="LootCollector.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MainMenuPawn.h" />
     <ClInclude Include="Matrix.h" />

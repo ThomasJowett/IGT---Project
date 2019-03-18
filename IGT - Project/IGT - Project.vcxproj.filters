@@ -46,6 +46,12 @@
     <Filter Include="AI">
       <UniqueIdentifier>{c26ab77a-0411-40d8-902a-f7e2d858ff38}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Maths">
+      <UniqueIdentifier>{e651e830-0f91-40a5-a8f3-38103d6eb765}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGui">
+      <UniqueIdentifier>{535d6e92-3641-404a-94e6-920e7723d345}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -55,9 +61,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ShaderLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Matrix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
@@ -195,9 +198,6 @@
     <ClCompile Include="Cursor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Plane.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CameraFollow.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -209,6 +209,36 @@
     </ClCompile>
     <ClCompile Include="SpawnManager.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix.cpp">
+      <Filter>Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane.cpp">
+      <Filter>Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimatorGoblin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Loot.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_demo.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_draw.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_widgets.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_impl_sdl.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_impl_opengl3.cpp">
+      <Filter>ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -257,12 +287,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
@@ -436,14 +460,53 @@
     <ClInclude Include="Cursor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Plane.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CameraManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SpawnManager.h">
       <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector.h">
+      <Filter>Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
+      <Filter>Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimatorGoblin.h">
+      <Filter>Animators</Filter>
+    </ClInclude>
+    <ClInclude Include="Loot.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="LootCollector.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_internal.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imstb_rectpack.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imstb_textedit.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imstb_truetype.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imconfig.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_impl_sdl.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_impl_opengl3.h">
+      <Filter>ImGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

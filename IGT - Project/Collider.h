@@ -36,6 +36,11 @@ public:
 	{
 		mCollisionTestedWith = std::vector<Collider*>();
 	}
+	Collider(GameObject* parent, ColliderType type, Matrix4x4 offset, bool isTrigger)
+		: mType(type), mOffset(offset), mIsTrigger(isTrigger), Component(parent)
+	{
+		mCollisionTestedWith = std::vector<Collider*>();
+	}
 	virtual ~Collider() {}
 
 	virtual Component* Clone() override = 0;
@@ -46,12 +51,8 @@ public:
 	virtual void GetBounds(float& Xmax, float &Xmin, float &Ymax, float &Ymin)const = 0;
 	
 
-	Vector2D GetCentre() const
-	{
-		Transform parentTransform = GetParent()->GetWorldTransform();
-		parentTransform.UpdateWorldMatrix();
-		return (parentTransform.GetWorldMatrix() * mOffset).ToVector2D();
-	}
+	Vector2D GetCentre() const;
+
 
 	void SetOffset(Vector2D offset) { mOffset = Matrix4x4::Translate(Vector3D(offset.x, offset.y, 0)); }
 
@@ -60,6 +61,10 @@ public:
 	void AddTestedCollisionWith(Collider* collider) { mCollisionTestedWith.push_back(collider); }
 	void ClearTestedCollisionWith() { mCollisionTestedWith.clear(); }
 	bool HasTestedCollisionWith(Collider* collider);
+
+	bool IsTrigger() const { return mIsTrigger; }
+	void SetIsTrigger(bool isTrigger) { mIsTrigger = isTrigger; }
+
 protected:
 	std::vector<Collider*> mCollisionTestedWith;
 	bool mCollided; //TODO: have a list of colliders that this is colliding with
@@ -82,8 +87,12 @@ class Box2D : public Collider
 public:
 	Box2D(GameObject* parent, float width, float height, Vector2D offset)
 		: mWidth(width), mHeight(height), Collider(parent, BOX2D, offset) {}
+	Box2D(GameObject* parent, float width, float height, Vector2D offset, bool isTrigger)
+		: mWidth(width), mHeight(height), Collider(parent, BOX2D, offset, isTrigger) {}
 	Box2D(GameObject* parent, float width, float height, Matrix4x4 offset)
 		: mWidth(width), mHeight(height), Collider(parent, BOX2D, offset) {}
+	Box2D(GameObject* parent, float width, float height, Matrix4x4 offset, bool isTrigger)
+		: mWidth(width), mHeight(height), Collider(parent, BOX2D, offset, isTrigger) {}
 	bool IntersectsCollider(Collider* otherCollider, Vector2D& normal, float& penetrationDepth)override;
 	bool ContainsPoint(Vector2D point)override;
 	bool TestAxis(Vector2D axis, float offset)override;
@@ -102,8 +111,16 @@ class Circle2D : public Collider
 public:
 	Circle2D(GameObject* parent, float radius, Vector2D offset)
 		: mRadius(radius), Collider(parent, CIRCLE2D, offset) {}
+
 	Circle2D(GameObject* parent, float radius, Matrix4x4 offset)
 		: mRadius(radius), Collider(parent, CIRCLE2D, offset) {}
+
+	Circle2D(GameObject* parent, float radius, Vector2D offset, bool isTrigger)
+		: mRadius(radius), Collider(parent, CIRCLE2D, offset, isTrigger) {}
+
+	Circle2D(GameObject* parent, float radius, Matrix4x4 offset, bool isTrigger)
+		: mRadius(radius), Collider(parent, CIRCLE2D, offset, isTrigger) {}
+
 	bool IntersectsCollider(Collider* otherCollider, Vector2D& normal, float& penetrationDepth)override;
 	bool ContainsPoint(Vector2D point)override;
 	bool TestAxis(Vector2D axis, float offset)override;
@@ -111,6 +128,7 @@ public:
 	float GetRadius() const { return mRadius; }
 
 	Component* Clone()override;
+
 private:
 	float mRadius;
 };

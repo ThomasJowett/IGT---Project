@@ -200,6 +200,7 @@ void GameScreen::AddGameObject(GameObject * gameObject)
 
 void GameScreen::RemoveGameOject(GameObject * gameObject)
 {
+	//TODO figure out how to delete objects, maybe delayed deletion?
 	for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
 	{
 		if (it->get() == gameObject)

@@ -30,8 +30,8 @@ public:
 	float GetNearDepth() const { return mNearDepth; }
 	float GetFarDepth() const { return mFarDepth; }
 
-	int GetOrthoWidth() const { return mOrthoWidth; }
-	int GetOrthoHeight() const { return mOrthoHeight; }
+	int GetOrthoWidth() const { return (int)mOrthoWidth; }
+	int GetOrthoHeight() const { return (int)mOrthoHeight; }
 
 	Projection GetProjectionMethod() const { return mProjectionMethod; }
 

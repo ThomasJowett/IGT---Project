@@ -22,6 +22,8 @@ DerivedRegister<BatPrefab> BatPrefab::reg("Bat");
 
 DerivedRegister<RatPrefab> RatPrefab::reg("Rat");
 
+DerivedRegister<GoblinPrefab> GoblinPrefab::reg("Goblin");
+
 DerivedRegister<BarbarianCharacterPrefab> BarbarianCharacterPrefab::reg("BarbarianCharacter");
 
 DerivedRegister<ArcherCharacterPrefab> ArcherCharacterPrefab::reg("ArcherCharacter");

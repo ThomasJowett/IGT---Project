@@ -3,6 +3,7 @@
 
 #include "Vector.h"
 #include "Plane.h"
+//#include "Quaternion.h"
 #include <string>
 
 class Matrix4x4
@@ -11,13 +12,20 @@ public:
 	float m[4][4];
 
 	Matrix4x4();
-	~Matrix4x4();
+	Matrix4x4(
+		float m00, float m01, float m02, float m03,
+		float m10, float m11, float m12, float m13,
+		float m20, float m21, float m22, float m23,
+		float m30, float m31, float m32, float m33);
+	~Matrix4x4() = default;
 
 	static Matrix4x4 Translate(Vector3D translation);
 	static Matrix4x4 Scale(Vector3D scale);
 	static Matrix4x4 RotateX(float angle);
 	static Matrix4x4 RotateY(float angle);
 	static Matrix4x4 RotateZ(float angle);
+	static Matrix4x4 Rotate(float r, float i, float j, float k);
+	//static Matrix4x4 Rotate(Quaternion rotation);
 	static Matrix4x4 Perspective(float fovY, float aspectRatio, float nearDepth, float farDepth);
 	static Matrix4x4 Orthographic(float left, float right, float bottom, float top, float nearDepth, float farDepth);
 	static Matrix4x4 LookAt(Vector3D eyePosition, Vector3D lookAtPosition, Vector3D up);

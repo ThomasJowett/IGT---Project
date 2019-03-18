@@ -149,18 +149,12 @@ public:
 
 	bool operator==(const Vector3D & other)
 	{
-		if (x == other.x && y == other.y && z == other.z)
-			return true;
-		else
-			return false;
+		return (x == other.x && y == other.y && z == other.z);
 	}
 
 	bool operator!=(const Vector3D & other)
 	{
-		if (x == other.x && y == other.y && z == other.z)
-			return false;
-		else
-			return true;
+		return !(x == other.x && y == other.y && z == other.z);
 	}
 
 	Vector3D operator=(const Vector3D & other)
@@ -223,9 +217,12 @@ public:
 	}
 
 	//Perpendicular clockwise
-	Vector2D Perpendicular()
+	Vector2D Perpendicular(bool clockwise)
 	{
-		return Vector2D(y, -x);
+		if (clockwise)
+			return Vector2D(y, -x);
+		else
+			return Vector2D(-y, x);
 	}
 
 	std::string to_string()

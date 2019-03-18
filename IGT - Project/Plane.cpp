@@ -1,6 +1,13 @@
 #include "Plane.h"
 
-Plane::Plane() {}
+//Plane with normal pointing up the Y
+Plane::Plane() 
+{
+	a = 0.0f;
+	b = 1.0f;
+	c = 0.0f;
+	d = 0.0f;
+}
 
 Plane::Plane(const Plane & p) :a(p.a), b(p.b), c(p.c), d(p.d) {}
 
