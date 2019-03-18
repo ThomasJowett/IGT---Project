@@ -130,8 +130,6 @@ void GameScreen::Render()
 	identityMatrix = Matrix4x4();
 	RootWidget->Traverse(mShaderGUI, identityMatrix);
 
-	mFPS.Render(mShaderGUI);
-
 	glEnable(GL_DEPTH_TEST);
 }
 
@@ -145,8 +143,6 @@ void GameScreen::Update(float deltaTime, std::vector<SDL_Event> events)
 	Root->Traverse(deltaTime);
 
 	RootWidget->Traverse(deltaTime);
-
-	mFPS.Update(deltaTime);
 }
 
 std::vector<GameObject*> GameScreen::GetAllGameObjects()

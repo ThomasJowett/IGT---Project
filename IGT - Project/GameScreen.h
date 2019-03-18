@@ -65,9 +65,6 @@ protected:
 private:
 	GameObject* mCameraTarget1;
 	GameObject* mCameraTarget2;
-
-
-	FPS mFPS;
 };
 
 #endif //_GAMESCREEN_H

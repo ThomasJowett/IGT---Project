@@ -15,16 +15,6 @@
 #include "ImGui/imgui_impl_sdl.h"
 #include "ImGui/imgui_impl_opengl3.h"
 
-#if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
-#include <GL/gl3w.h>    // Initialize with gl3wInit()
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
-#include <glew.h>    // Initialize with glewInit()
-#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
-#include <glad/glad.h>  // Initialize with gladLoadGL()
-#else
-#include IMGUI_IMPL_OPENGL_LOADER_CUSTOM
-#endif
-
 //Globals------------------------------------------------------------------------------------
 SDL_Window*			gWindow = nullptr;
 SDL_GLContext		gGLContext = nullptr;
@@ -234,7 +224,7 @@ bool Update()
 	//Get the events.
 	while (SDL_PollEvent(&e) != 0)
 	{
-		ImGui_ImplSDL2_ProcessEvent(&e);
+		
 		events.push_back(e);
 	}
 
@@ -251,6 +241,10 @@ bool Update()
 			{
 				Settings::GetInstance()->SetResolution(e.window.data1, e.window.data2);
 			}
+		}
+		else
+		{
+			ImGui_ImplSDL2_ProcessEvent(&e);
 		}
 		if (e.type == SDL_QUIT)
 			return true;
@@ -279,6 +273,23 @@ void Render()
 
 	//ImGui::ShowDemoWindow();
 
+	//FPS Counter
+	ImGuiViewport* viewport = ImGui::GetMainViewport();
+	ImVec2 window_pos = ImVec2(viewport->Pos.x + 10, viewport->Pos.y + 10);
+	//ImVec2 window_pos_pivot;
+	ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, ImVec2(0, 0));
+
+	bool p_open = true;
+
+	ImGui::Begin("FPS", &p_open, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoDecoration
+		| ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar 
+		| ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize 
+		| ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing 
+		| ImGuiWindowFlags_NoNav);
+
+	ImGui::Text("%.1f", ImGui::GetIO().Framerate);
+	ImGui::End();
+
 	ImGui::Render();
 
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -291,10 +302,12 @@ void Render()
 		SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
 	}
 
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
 	//Present Back Buffer to screen
 	SDL_GL_SwapWindow(gWindow);
 
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	
 }
 
 //Checks if another instance of the game is already running
