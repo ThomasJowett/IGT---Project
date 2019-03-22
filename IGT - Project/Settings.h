@@ -29,6 +29,7 @@ public:
 	void SetFullScreen(bool isFullscreen);
 	void SetDisplayMode(SDL_DisplayMode mode);
 	void SetVsync(bool isVsyncEnabled);
+	void SetZoom(float zoom) { if(zoom > 0.0f && zoom < 8.0f) mZoom = zoom; ApplySettings(); }
 	
 	int GetScreenWidth() { return mScreen_Width; }
 	int GetScreenHeight() { return mScreen_Height; }

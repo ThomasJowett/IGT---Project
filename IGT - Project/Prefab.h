@@ -1,6 +1,6 @@
 #pragma once
-#include <vector>
-#include <map>
+
+#include "Factory.h"
 #include "GameObject.h"
 #include "Texture2D.h"
 #include "Sprite.h"
@@ -24,32 +24,6 @@ public:
 
 protected:
 	GameObject* mGameObject;
-};
-
-template<typename T>
-struct Factory
-{
-	typedef std::map<std::string, T*(*)()>map_type;
-
-	static T* CreateInstance(std::string const& name)
-	{
-		typename map_type::iterator it  = getMap()->find(name);
-
-		return (it == getMap()->end() ? nullptr : it->second());
-	}
-
-	
-protected:
-	static map_type *getMap()
-	{
-		if (!gLookUpTable) 
-		{ 
-			gLookUpTable = new map_type;
-		}
-		return gLookUpTable;
-	}
-private:
-	static map_type * gLookUpTable;
 };
 
 template<typename T> Prefab * CreateT() { return new T; }
@@ -213,7 +187,7 @@ class RatPrefab : public Prefab
 public:
 	RatPrefab()
 	{
-		mGameObject = new GameObject("Bat", new Transform());
+		mGameObject = new GameObject("Rat", new Transform());
 		mGameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, PhysicsMaterial{ 30.0f, 0.8f, 0.5f, 10.0f });
 		mGameObject->AddComponent<Circle2D>(8, Vector2D());
 		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Rat.png"), 32, 32, 10, 5, Vector2D(0, 16));

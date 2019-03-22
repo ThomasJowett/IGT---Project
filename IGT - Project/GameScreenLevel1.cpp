@@ -16,6 +16,7 @@
 
 GameScreenLevel1::GameScreenLevel1()
 {
+	mScreenName = "Level 1";
 	//Setup the blur on pause post process
 	mShaderBlur = new BlurShader();
 	mNoPostProcess = new NoPostProcessShader();

@@ -19,6 +19,7 @@
 
 GameScreenMenu::GameScreenMenu() : GameScreen()
 {
+	mScreenName = "Main Menu";
 	mCamera.GetTransform()->mPosition = Vector3D(0, 0, 0);
 
 	SoundManager::GetInstance()->PlayMusic("Music/MainMenu.ogg");

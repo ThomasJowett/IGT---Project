@@ -7,6 +7,7 @@
 #include <Windows.h>
 
 #include "GameScreenManager.h"
+#include "imguiManager.h"
 #include "Settings.h"
 #include "Debug.h"
 #include "Cursor.h"
@@ -51,8 +52,6 @@ int main(int argc, char* args[])
 
 bool InitSDL()
 {
-	
-
 	//Setup SDL.
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
@@ -103,28 +102,7 @@ bool InitSDL()
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 
 		//Setup ImGui-------------------------------------------------------------------------
-		IMGUI_CHECKVERSION();
-		ImGui::CreateContext();
-		ImGuiIO& io = ImGui::GetIO(); (void)io;
-		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-		io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
-		//io.ConfigViewportsNoAutoMerge = true;
-		//io.ConfigViewportsNoTaskBarIcon = true;
-
-		ImGui::StyleColorsDark();
-
-		// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
-		ImGuiStyle& style = ImGui::GetStyle();
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
-			style.WindowRounding = 0.0f;
-			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-		}
-
-		ImGui_ImplSDL2_InitForOpenGL(gWindow, gGLContext);
-		ImGui_ImplOpenGL3_Init("#version 130");
+		ImGui::Manager::GetInstance()->Initialise();
 
 		//Setup OpenGL------------------------------------------------------------------------
 		glewExperimental = GL_TRUE;
@@ -204,9 +182,7 @@ void CloseSDL()
 	TTF_Quit();
 
 	//Shutdown ImGui
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplSDL2_Shutdown();
-	ImGui::DestroyContext();
+	ImGui::Manager::GetInstance()->ShutDown();
 }
 
 bool Update()
@@ -224,13 +200,14 @@ bool Update()
 	//Get the events.
 	while (SDL_PollEvent(&e) != 0)
 	{
-		
 		events.push_back(e);
 	}
 
 	//GameScreenManager::GetInstance()->PauseGame();
 
 	GameScreenManager::GetInstance()->Update((float)(newTime - gOldTime) / 1000.0f, events);
+
+	ImGui::Manager::GetInstance()->Update(events);
 
 	//Handle quiting.
 	for (auto e : events)
@@ -267,47 +244,11 @@ void Render()
 	//Render the game
 	GameScreenManager::GetInstance()->Render();
 
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplSDL2_NewFrame(gWindow);
-	ImGui::NewFrame();
-
-	//ImGui::ShowDemoWindow();
-
-	//FPS Counter
-	ImGuiViewport* viewport = ImGui::GetMainViewport();
-	ImVec2 window_pos = ImVec2(viewport->Pos.x + 10, viewport->Pos.y + 10);
-	//ImVec2 window_pos_pivot;
-	ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, ImVec2(0, 0));
-
-	bool p_open = true;
-
-	ImGui::Begin("FPS", &p_open, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoDecoration
-		| ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar 
-		| ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize 
-		| ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing 
-		| ImGuiWindowFlags_NoNav);
-
-	ImGui::Text("%.1f", ImGui::GetIO().Framerate);
-	ImGui::End();
-
-	ImGui::Render();
-
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-	{
-		SDL_Window* backup_current_window = SDL_GL_GetCurrentWindow();
-		SDL_GLContext backup_current_context = SDL_GL_GetCurrentContext();
-		ImGui::UpdatePlatformWindows();
-		ImGui::RenderPlatformWindowsDefault();
-		SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
-	}
-
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	//Render the imGui
+	ImGui::Manager::GetInstance()->Render();
 
 	//Present Back Buffer to screen
 	SDL_GL_SwapWindow(gWindow);
-
-	
 }
 
 //Checks if another instance of the game is already running

@@ -4244,7 +4244,7 @@ static void ShowExampleAppCustomRendering(bool* p_open)
 void ShowExampleAppDockSpace(bool* p_open)
 {
     static bool opt_fullscreen_persistant = true;
-    static ImGuiDockNodeFlags opt_flags = ImGuiDockNodeFlags_None;
+    static ImGuiDockNodeFlags opt_flags = ImGuiDockNodeFlags_PassthruDockspace;
     bool opt_fullscreen = opt_fullscreen_persistant;
 
     // We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
@@ -4292,7 +4292,7 @@ void ShowExampleAppDockSpace(bool* p_open)
             // Disabling fullscreen would allow the window to be moved to the front of other windows, 
             // which we can't undo at the moment without finer window depth/z control.
             //ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
-
+	
             if (ImGui::MenuItem("Flag: NoSplit",                "", (opt_flags & ImGuiDockNodeFlags_NoSplit) != 0))                 opt_flags ^= ImGuiDockNodeFlags_NoSplit;
             if (ImGui::MenuItem("Flag: NoDockingInCentralNode", "", (opt_flags & ImGuiDockNodeFlags_NoDockingInCentralNode) != 0))  opt_flags ^= ImGuiDockNodeFlags_NoDockingInCentralNode;
             if (ImGui::MenuItem("Flag: NoResize",               "", (opt_flags & ImGuiDockNodeFlags_NoResize) != 0))                opt_flags ^= ImGuiDockNodeFlags_NoResize;
@@ -4310,7 +4310,7 @@ void ShowExampleAppDockSpace(bool* p_open)
             "ImGui::DockSpace() comes with one hard constraint: it needs to be submitted _before_ any window which may be docked into it. Therefore, if you use a dock spot as the central point of your application, you'll probably want it to be part of the very first window you are submitting to imgui every frame." "\n\n"
             "(NB: because of this constraint, the implicit \"Debug\" window can not be docked into an explicit DockSpace() node, because that window is submitted as part of the NewFrame() call. An easy workaround is that you can create your own implicit \"Debug##2\" window after calling DockSpace() and leave it in the window stack for anyone to use.)"
         );
-
+	
         ImGui::EndMenuBar();
     }
 

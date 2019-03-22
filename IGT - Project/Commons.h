@@ -91,7 +91,5 @@ namespace Util
 
 		return elems;
 	}
-
-
 };
 #endif // !_COMMONS_H

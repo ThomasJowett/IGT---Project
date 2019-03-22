@@ -38,7 +38,11 @@ public:
 
 	void SetUpCameras();
 
+	const char* GetScreenName() { return mScreenName; }
+
 protected:
+	const char* mScreenName;
+
 	SceneNode * Root;
 	SceneNode * RootWidget;
 	std::vector<std::unique_ptr<GameObject>>mGameObjects;
