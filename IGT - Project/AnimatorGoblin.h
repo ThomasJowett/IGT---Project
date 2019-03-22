@@ -12,7 +12,8 @@ enum GoblinAnimstates
 	GOBLIN_RIGHT,
 	GOBLIN_BACK,
 	GOBLIN_IDLE,
-	GOBLIN_ATTACK
+	GOBLIN_ATTACK,
+	GOBLIN_DEATH
 };
 
 class AnimatorGoblin :

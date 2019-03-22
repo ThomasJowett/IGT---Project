@@ -1,4 +1,5 @@
 #include "AnimatorGoblin.h"
+#include "GameScreenManager.h"
 
 AnimatorGoblin::AnimatorGoblin(GameObject * parent)
 	:Animator(parent)
@@ -171,9 +172,16 @@ void AnimatorGoblin::OnNotify(AnimationNotify notify, int chanel)
 	switch (notify)
 	{
 	case AnimationNotify::ANIM_END:
-		RevertToPreviousState();
-		mIsAttacking = false;
-		mAttack->StopAttack();
+		if (GetState() == GOBLIN_ATTACK)
+		{
+			RevertToPreviousState();
+			mIsAttacking = false;
+			mAttack->StopAttack();
+		}
+		else if (GetState() == GOBLIN_DEATH)
+		{
+			GameScreenManager::GetInstance()->GetCurrentScreen()->RemoveGameOject(GetParent());
+		}
 		break;
 	default:
 		break;

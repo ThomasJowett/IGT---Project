@@ -52,9 +52,9 @@ public:
 	Layer GetLayer() const { return mLayer; }
 	void SetLayer(Layer layer) { mLayer = layer; }
 
-	void GetAllChildren(std::vector<GameObject*> allGameObjects);
-
 	unsigned int GetUniqueID() { return mUniqueID; }
+
+	bool Destroy();
 private:
 	const char* mName;
 
@@ -68,6 +68,8 @@ private:
 	std::vector<iRenderable*>mRenderableComponents;
 
 	unsigned int mUniqueID;
+
+	bool mDeathFlag = false;
 };
 
 //Add component by passing type and the parameters

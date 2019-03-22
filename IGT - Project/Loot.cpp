@@ -1,6 +1,7 @@
 #include "Loot.h"
 #include "LootCollector.h"
 #include "SoundManager.h"
+#include "GameScreenManager.h"
 
 Loot::Loot(GameObject * parent, int value)
 	:Component(parent), mValue(value)
@@ -31,7 +32,7 @@ void Loot::OnNotify(OverlapEvent event, GameObject * gameObject)
 				mPickedUp = true;
 				collector->PickUpLoot(mValue);
 				SoundManager::GetInstance()->PlaySoundEffect("SoundEffects/yay.ogg", -1, 0);
-				//TODO: destroy self
+				GameScreenManager::GetInstance()->GetCurrentScreen()->RemoveGameOject(GetParent());
 			}
 
 			break;

@@ -179,6 +179,21 @@ Transform SceneNode::GetWorldTransform() const
 	return transform;
 }
 
+void SceneNode::AddAllChildrenToList(std::vector<std::unique_ptr<SceneNode>>& list)
+{
+	list.emplace_back(this);
+
+	if (mLeftChild)
+	{
+		mLeftChild->AddAllChildrenToList(list);
+	}
+
+	if (mRightSibling)
+	{
+		mRightSibling->AddAllChildrenToList(list);
+	}
+}
+
 //Vector3D SceneNode::GetWorldLocation() const
 //{
 //	return mWorldMatrix.ExtractTranslation();

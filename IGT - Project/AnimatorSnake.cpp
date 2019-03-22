@@ -99,7 +99,7 @@ void AnimatorSnake::During(SnakeAnimstates state, float deltaTime)
 			ChangeState(SNAKE_IDLE);
 		break;
 	case SNAKE_DEATH:
-		if( GetTimeInCurrentState() <= mAnimations[4]->GetAnimationLength())
+		//if( GetTimeInCurrentState() <= mAnimations[4]->GetAnimationLength())
 			mAnimations[4]->Update(deltaTime);
 		break;
 	default:
@@ -133,8 +133,7 @@ void AnimatorSnake::OnNotify(AnimationNotify notify, int chanel)
 		}
 		else if (GetState() == SNAKE_DEATH)
 		{
-			//GameScreenManager::GetInstance()->GetCurrentScreen()->RemoveGameOject(GetParent());
-			//TODO: destroy 
+			GameScreenManager::GetInstance()->GetCurrentScreen()->RemoveGameOject(GetParent());
 		}
 		break;
 	default:

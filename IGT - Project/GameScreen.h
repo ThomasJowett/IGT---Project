@@ -45,7 +45,7 @@ protected:
 
 	SceneNode * Root;
 	SceneNode * RootWidget;
-	std::vector<std::unique_ptr<GameObject>>mGameObjects;
+	std::vector<std::unique_ptr<SceneNode>>mGameObjects;
 	std::vector<std::unique_ptr<GameObject>>mUIWidgets;
 	std::vector<PlayerController*>mPlayerControllers;
 
@@ -69,6 +69,8 @@ protected:
 private:
 	GameObject* mCameraTarget1;
 	GameObject* mCameraTarget2;
+
+	std::vector<GameObject*> mToDeleteList;
 };
 
 #endif //_GAMESCREEN_H

@@ -143,15 +143,43 @@ void GameScreen::Update(float deltaTime, std::vector<SDL_Event> events)
 	Root->Traverse(deltaTime);
 
 	RootWidget->Traverse(deltaTime);
+
+	for (GameObject* gameObject : mToDeleteList)
+	{
+		gameObject->RemoveSelf();
+
+		if (Collider* collider = gameObject->GetComponent<Collider>())
+		{
+			for (int i =0; i <mCollisionObejcts.size(); i++)
+			{
+				if (mCollisionObejcts[i] == collider)
+				{
+					mCollisionObejcts.erase(mCollisionObejcts.begin() + i);
+					break;
+				}
+			}
+		}
+
+		for(std::vector< std::unique_ptr<SceneNode>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
+		{
+			if (it->get() == gameObject)
+			{
+				mGameObjects.erase(it);
+				break;
+			}
+		}
+	}
+
+	mToDeleteList.clear();
 }
 
 std::vector<GameObject*> GameScreen::GetAllGameObjects()
 {
 	std::vector<GameObject*> returnObjects;
 
-	for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
+	for (std::vector< std::unique_ptr<SceneNode>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
 	{
-		returnObjects.push_back(it->get());
+		returnObjects.push_back(dynamic_cast<GameObject*>(it->get()));
 	}
 	return returnObjects;
 }
@@ -160,10 +188,13 @@ std::vector<GameObject*> GameScreen::GetAllGameObjectsWithTag(std::string tag)
 {
 	std::vector<GameObject*> returnObjects;
 
-	for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
+	for (std::vector< std::unique_ptr<SceneNode>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
 	{
-		if (it->get()->GetName() == tag)
-			returnObjects.push_back(it->get());
+		if (GameObject* gameobject = dynamic_cast<GameObject*>(it->get()))
+		{
+			if (gameobject->GetName() == tag)
+				returnObjects.push_back(gameobject);
+		}
 	}
 	return returnObjects;
 }
@@ -180,7 +211,9 @@ void GameScreen::AddGameObjects(std::vector<GameObject*> gameObjects)
 //Add a single game object to the scene
 void GameScreen::AddGameObject(GameObject * gameObject)
 {
-	mGameObjects.emplace_back(gameObject);
+	//mGameObjects.emplace_back(gameObject);
+
+	gameObject->AddAllChildrenToList(mGameObjects);
 
 	Collider* collider = gameObject->GetComponent<Collider>();
 	if (collider)
@@ -196,22 +229,15 @@ void GameScreen::AddGameObject(GameObject * gameObject)
 
 void GameScreen::RemoveGameOject(GameObject * gameObject)
 {
-	//TODO figure out how to delete objects, maybe delayed deletion?
-	for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
-	{
-		if (it->get() == gameObject)
-		{
-			delete gameObject;
-			mGameObjects.erase(it);
-		}
-	}
+	gameObject->Destroy();
+	mToDeleteList.emplace_back(gameObject);
 }
 
 void GameScreen::SortObjectsDepth(Camera* camera)
 {
-	for (std::vector< std::unique_ptr<GameObject>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
+	for (std::vector< std::unique_ptr<SceneNode>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
 	{
-		if (it->get()->GetLayer() == SORTED)
+		if (dynamic_cast<GameObject*>(it->get())->GetLayer() == SORTED)
 		{
 			Vector3D position = it->get()->GetLocalTransform()->mPosition;
 

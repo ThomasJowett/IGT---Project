@@ -33,6 +33,8 @@ public:
 
 	SceneNode* GetParent() const { return mParent; }
 
+	void AddAllChildrenToList(std::vector<std::unique_ptr<SceneNode>> &list);
+
 protected:
 	Transform* mLocalTransform;
 

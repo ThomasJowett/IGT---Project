@@ -216,9 +216,6 @@
     <ClCompile Include="Plane.cpp">
       <Filter>Maths</Filter>
     </ClCompile>
-    <ClCompile Include="AnimatorGoblin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Loot.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -245,6 +242,9 @@
     </ClCompile>
     <ClCompile Include="imgui_console.cpp">
       <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimatorGoblin.cpp">
+      <Filter>Animators</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

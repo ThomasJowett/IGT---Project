@@ -106,7 +106,12 @@ void GameObject::SetFacing(FACING facing)
 	}
 }
 
-void GameObject::GetAllChildren(std::vector<GameObject*> allGameObjects)
+bool GameObject::Destroy()
 {
-
+	if (!mDeathFlag)
+	{
+		mDeathFlag = true;
+		return false;
+	}
+	return true;
 }
