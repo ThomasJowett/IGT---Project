@@ -18,17 +18,21 @@ struct SpawnRoom
 class TileSet
 {
 public:
-	TileSet(const char * filename);
+	TileSet(const char * filename, int firstID);
 	~TileSet();
 
-	int GetPaletteWidth() { return mPaletteWidth; }
-	int GetPalatteHeight() { return mPaletteHeight; }
+	int GetPaletteWidth() const { return mPaletteWidth; }
+	int GetPalatteHeight() const { return mPaletteHeight; }
 
-	GLuint GetTextureID() { return mTextureID; }
+	GLuint GetTextureID() const { return mTextureID; }
+
+	int GetFirstID() const { return mFirstID; }
 private:
 	int mPaletteWidth, mPaletteHeight;
 
 	GLuint mTextureID;
+
+	int mFirstID;
 };
 
 class TileMap
@@ -70,13 +74,14 @@ private:
 	//Tile indexes
 	int** mBackgroundTiles;
 	int** mForegroundTiles;
+	int** mDecorationTiles;
 
 	//Tilemap dimensions
 	unsigned int mTilesWide, mTilesHigh;
 	int mTileWidth, mTileHeight;
 
 	//The appearance of the tilemap
-	TileSet* mTileSet;
+	std::vector<TileSet*> mTileSets;
 
 	bool** mCollision;
 

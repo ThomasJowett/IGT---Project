@@ -81,7 +81,7 @@ GameScreenLevel1::~GameScreenLevel1()
 	if (mNoPostProcess) delete mNoPostProcess;
 }
 
-void GameScreenLevel1::Update(float deltaTime, std::vector<SDL_Event> events)
+void GameScreenLevel1::Update(float deltaTime, std::vector<SDL_Event> &events)
 {
 	GameScreen::Update(deltaTime, events);
 

@@ -66,3 +66,9 @@ void Camera::OnNotify(SettingsEvent event, Vector2D data)
 		break;
 	}
 }
+
+Vector2D Camera::WorldTransformToScreenPosition(Transform * transform) const
+{
+
+	return Vector2D();
+}

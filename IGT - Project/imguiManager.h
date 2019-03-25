@@ -16,22 +16,28 @@ namespace ImGui
 
 		static Manager* GetInstance();
 
-		void Update(std::vector<SDL_Event> events);
+		bool Update(std::vector<SDL_Event>&eventQueue);
 		void Render();
 
 		void Initialise();
 
 		void ShutDown();
 
+		void ToggleCollsion();
+
 	private:
 		Manager();
 
 		void DockSpace(bool* p_open);
+		void DrawCollision(bool* p_open);
 
-		bool mShowDockSpace = true;
-		bool mShowConsole = false;
+		bool mShowDockSpace;
+		bool mShowConsole;
+		bool mShowCollision;
 
 		ImGui::Console mConsole;
+
+		bool mCursorOverWindow;
 	};
 
 }

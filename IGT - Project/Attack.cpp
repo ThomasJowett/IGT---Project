@@ -2,6 +2,7 @@
 #include "Health.h"
 #include "GameScreenManager.h"
 #include <iostream>
+#include "SoundManager.h"
 
 Attack::Attack(GameObject * parent, float damage, float cooldown)
 	:iUpdateable(parent), mDamage(damage), mCoolDown(cooldown)
@@ -39,6 +40,7 @@ bool Attack::BeginAttack()
 	if (!mIsOnCoolDown)
 	{
 		std::cout << "attacking " << mDamage << std::endl;
+		SoundManager::GetInstance()->PlaySoundEffect("SoundEffects/Sword_Swing_001.ogg", -1, 0);
 		mIsAttacking = true;
 		mIsOnCoolDown = true;
 

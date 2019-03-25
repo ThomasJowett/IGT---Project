@@ -1,5 +1,6 @@
 #include "Health.h"
 #include <iostream>//TODO: Remove 
+#include "SoundManager.h"
 
 void Health::TakeDamage(float damage)
 {
@@ -15,16 +16,18 @@ void Health::TakeDamage(float damage)
 
 		Notify(HealthEvent::ON_DEATH, GetParent());
 
-		std::cout << GetParent()->GetName() << " is Dead" << std::endl;
+		//std::cout << GetParent()->GetName() << " is Dead" << std::endl;
+		SoundManager::GetInstance()->PlaySoundEffect(mDamageSoundEffect, -1, 0);
 	}
 	else
 	{
 		mHealth -= damage;
 
 		Notify(HealthEvent::ON_TAKE_DAMAGE, GetParent());
+		SoundManager::GetInstance()->PlaySoundEffect(mDeathSoundEffect, -1, 0);
 	}
 
-	std::cout << mHealth << std::endl;
+	//std::cout << mHealth << std::endl;
 }
 
 void Health::Heal(float heal)
@@ -86,5 +89,5 @@ void Health::Update(float deltaTime)
 
 Health * Health::Clone()
 {
-	return new Health(nullptr, mMaxHealth, mHealth, mDamageEffects);
+	return new Health(nullptr, mMaxHealth, mHealth, mDamageEffects, mDamageSoundEffect, mDeathSoundEffect);
 }

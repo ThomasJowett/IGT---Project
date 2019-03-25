@@ -30,7 +30,7 @@ TileMap::TileMap(int ** backgroundTiles, int ** foregroundTiles, bool ** collisi
 	mTileHeight = tileHeight;
 	mTileWidth = tileWidth;
 
-	mTileSet = new TileSet(tileSetName);
+	mTileSets.push_back(new TileSet(tileSetName,1));
 
 	mTilesWide = sizeof(mBackgroundTiles[0]);
 
@@ -58,7 +58,8 @@ TileMap::~TileMap()
 	delete mForeground;
 	delete mBackGround;
 
-	if (mTileSet) delete mTileSet;
+	for(TileSet* tileSet: mTileSets)
+		if (tileSet) delete tileSet;
 }
 
 void TileMap::Update(float deltatime)
@@ -77,13 +78,17 @@ void TileMap::Render(Shader * shader)
 	if (mIsActive)
 	{
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, mTileSet->GetTextureID());
+		glBindTexture(GL_TEXTURE_2D, mTileSets[0]->GetTextureID());
 
 		shader->Updatefloat4(1.0f, 1.0f, 1.0f, 1.0f);
 		mBackGround->Draw();
 		mForeground->Draw();
 
 		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		glBindTexture(GL_TEXTURE_2D, mTileSets[1]->GetTextureID());
+
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 }
@@ -121,15 +126,21 @@ bool TileMap::LoadMap(std::string filename)
 
 		glClearColor((float)colour.r/256.0f, (float)colour.g/255.0f, (float)colour.b/255.0f, (float)colour.a/255.0f);
 
-		//Load Tileset----------------------------------------------------------
+		//Load Tilesets----------------------------------------------------------
 		pLayer = pRoot->FirstChildElement("tileset");
-		std::string tsxPath = pLayer->Attribute("source");
 
-		mTileSet = new TileSet((mapPrefix + tsxPath).c_str());
-
-		if (mTileSet->GetPalatteHeight() == -1)
+		while (pLayer)
 		{
-			return false;
+			std::string tsxPath = pLayer->Attribute("source");
+
+			mTileSets.push_back(new TileSet((mapPrefix + tsxPath).c_str(), atoi(pLayer->Attribute("firstgid"))));
+
+			if (mTileSets.back()->GetPalatteHeight() == -1)
+			{
+				return false;
+			}
+
+			pLayer = pLayer->NextSiblingElement("tileset");
 		}
 
 		//Allocate the memory for the array------------------------------------
@@ -142,7 +153,6 @@ bool TileMap::LoadMap(std::string filename)
 			mForegroundTiles[i] = new int[mTilesWide];
 			mCollision[i] = new bool[mTilesWide];
 		}
-
 		//Load tile data-------------------------------------------------------
 
 		pLayer = pRoot->FirstChildElement("layer");
@@ -440,10 +450,24 @@ Vector2D TileMap::TextureCoordinatesAtIndex(int index, int tile)
 {
 	Vector2D position;
 
+	int tilesetindex;
+	int previousHighestIndex = 1;
+	for (int i = 0; i < mTileSets.size(); i++)
+	{
+		int firstID = mTileSets[i]->GetFirstID() -1;
+		if (tile >= firstID && firstID >= previousHighestIndex)
+		{
+			tilesetindex = i;
+			previousHighestIndex = firstID;
+		}
+
+	}
+	tilesetindex = 0;
+
 	long double intpart;
 
-	float oneTileWide = 1 / (float)mTileSet->GetPaletteWidth();
-	float oneTileHeigh = 1 / (float)mTileSet->GetPalatteHeight();
+	float oneTileWide = 1 / (float)mTileSets[tilesetindex]->GetPaletteWidth();
+	float oneTileHeigh = 1 / (float)mTileSets[tilesetindex]->GetPalatteHeight();
 
 	position.x = (float)modf(oneTileWide * tile, &intpart);
 
@@ -454,7 +478,7 @@ Vector2D TileMap::TextureCoordinatesAtIndex(int index, int tile)
 			position.x = 1.0f;
 	}
 
-	position.y = (float)modf(oneTileHeigh * (tile / mTileSet->GetPaletteWidth()), &intpart);
+	position.y = (float)modf(oneTileHeigh * (tile / mTileSets[tilesetindex]->GetPaletteWidth()), &intpart);
 
 	if (index == 0 || index == 1)
 	{
@@ -499,7 +523,8 @@ bool TileMap::TileIndexToPosition(unsigned int X, unsigned int Y, Vector2D& posi
 	return (X < mTilesWide && Y < mTilesHigh);
 }
 
-TileSet::TileSet(const char * filename)
+TileSet::TileSet(const char * filename, int firstID)
+	:mFirstID(firstID)
 {
 	//Loads the tileset from a .tsx file
 	tinyxml2::XMLDocument doc;
@@ -516,13 +541,19 @@ TileSet::TileSet(const char * filename)
 
 		mPaletteHeight = atoi(pRoot->Attribute("tilecount")) / mPaletteWidth;
 
-		tinyxml2::XMLElement* pImage;
-
-		pImage = pRoot->FirstChildElement("image");
+		tinyxml2::XMLElement*  pImage = pRoot->FirstChildElement("image");
 
 		std::string imagefilepath = mapPrefix + pImage->Attribute("source");
 
 		mTextureID = Texture2D::GetTexture2D(imagefilepath.c_str());
+
+		tinyxml2::XMLElement* pTile = pRoot->FirstChildElement("tile");
+
+		while (pTile)
+		{
+			//TODO: Load animation and probability
+			pTile = pTile->NextSiblingElement("tile");
+		}
 	}
 	else
 	{

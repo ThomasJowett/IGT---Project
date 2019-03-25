@@ -9,7 +9,7 @@ public:
 	GameScreenLevel1();
 	~GameScreenLevel1();
 
-	void Update(float deltaTime, std::vector<SDL_Event> events)override;
+	void Update(float deltaTime, std::vector<SDL_Event> &events)override;
 
 	void GameIsPaused(bool isGamePaused)override;
 

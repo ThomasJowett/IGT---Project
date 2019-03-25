@@ -101,6 +101,9 @@ public:
 	std::vector<Vector2D> GetCorners() const;
 	
 	Component* Clone()override;
+
+	float GetWidth() { return mWidth; }
+	float GetHeight() { return mHeight; }
 private:
 	float mWidth;
 	float mHeight;

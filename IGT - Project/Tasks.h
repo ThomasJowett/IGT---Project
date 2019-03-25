@@ -68,7 +68,7 @@ public:
 
 		Vector2D force = (mPath[mCurrentWaypoint] - (Vector2D(pawnPosition)));
 		force.Normalize();
-		force = force * 1000.0f;
+		force = force * 3000.0f;
 		mRigidBody2D->AddForce(force);
 
 		return Node::Status::Running;

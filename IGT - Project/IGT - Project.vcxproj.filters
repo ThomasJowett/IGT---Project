@@ -246,6 +246,9 @@
     <ClCompile Include="AnimatorGoblin.cpp">
       <Filter>Animators</Filter>
     </ClCompile>
+    <ClCompile Include="Destructible.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="SDL\SDL2.lib">
@@ -521,6 +524,12 @@
       <Filter>ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Factory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Destructible.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -26,9 +26,11 @@ class Health
 {
 public:
 	//Max health
-	Health(GameObject* parent, float maxHealth)
+	Health(GameObject* parent, float maxHealth, std::string damageSoundEffect, std::string deathSoundEffect)
 		:iUpdateable(parent), mMaxHealth(maxHealth)
 	{
+		mDamageSoundEffect = damageSoundEffect;
+		mDeathSoundEffect = deathSoundEffect;
 		mHealth = mMaxHealth;
 	}
 	//Health and max health
@@ -46,8 +48,8 @@ public:
 	}
 
 	//For cloning
-	Health(GameObject* parent, float maxHealth, float health, std::vector<DamageOverTime> damageEffects)
-		:iUpdateable(parent), mMaxHealth(maxHealth), mHealth(health), mDamageEffects(damageEffects) {}
+	Health(GameObject* parent, float maxHealth, float health, std::vector<DamageOverTime> damageEffects, std::string damageSoundEffect, std::string deathSoundEffect)
+		:iUpdateable(parent), mMaxHealth(maxHealth), mHealth(health), mDamageEffects(damageEffects), mDamageSoundEffect(damageSoundEffect), mDeathSoundEffect(deathSoundEffect) {}
 		
 	void TakeDamage(float damage);
 	void Heal(float heal);
@@ -70,4 +72,7 @@ private:
 	float mMaxHealth;
 
 	std::vector<DamageOverTime> mDamageEffects;
+
+	std::string mDamageSoundEffect;
+	std::string mDeathSoundEffect;
 };

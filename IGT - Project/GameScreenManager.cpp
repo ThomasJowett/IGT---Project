@@ -19,9 +19,6 @@ void GameScreenManager::DelayedScreenChange(SCREENS newScreen)
 	//Initialise the new screen.
 	switch (newScreen)
 	{
-	case SCREEN_INTRO:
-		break;
-
 	case SCREEN_MENU:
 		mCurrentScreen = new GameScreenMenu();
 		break;
@@ -45,7 +42,7 @@ void GameScreenManager::Render()
 	mCurrentScreen->Render();
 }
 
-void GameScreenManager::Update(float deltaTime, std::vector<SDL_Event> events)
+void GameScreenManager::Update(float deltaTime, std::vector<SDL_Event>& events)
 {
 	if (mPaused)
 		deltaTime = 0.0f;

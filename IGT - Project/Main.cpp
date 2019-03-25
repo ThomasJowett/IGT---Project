@@ -205,12 +205,11 @@ bool Update()
 
 	//GameScreenManager::GetInstance()->PauseGame();
 
-	GameScreenManager::GetInstance()->Update((float)(newTime - gOldTime) / 1000.0f, events);
-
-	ImGui::Manager::GetInstance()->Update(events);
+	if(ImGui::Manager::GetInstance()->Update(events))
+		GameScreenManager::GetInstance()->Update((float)(newTime - gOldTime) / 1000.0f, events);
 
 	//Handle quiting.
-	for (auto e : events)
+	for (SDL_Event e : events)
 	{
 		if (e.type == SDL_WINDOWEVENT)
 		{
@@ -218,10 +217,6 @@ bool Update()
 			{
 				Settings::GetInstance()->SetResolution(e.window.data1, e.window.data2);
 			}
-		}
-		else
-		{
-			ImGui_ImplSDL2_ProcessEvent(&e);
 		}
 		if (e.type == SDL_QUIT)
 			return true;

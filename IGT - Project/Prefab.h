@@ -16,6 +16,7 @@
 #include "AIController.h"
 #include "Loot.h"
 #include "LootCollector.h"
+#include "Destructible.h"
 
 class Prefab
 {
@@ -47,6 +48,8 @@ public:
 		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("Images/Barrel_Closed.png"), 32, 32, Vector2D(0, 8));
 		mGameObject->AddComponent<Circle2D>(8, Vector2D());
 		mGameObject->AddComponent<RigidBody2D>(100, Vector2D(0, 0), 1, 0, PhysicsMaterial{ 300.0f, 0.8f, 0.5f, 1.0f });
+		mGameObject->AddComponent<Health>(1.0f, "SoundEffects/HitWood.ogg", "SoundEffects/HitWood.ogg");
+		mGameObject->AddComponent<Destructible>();
 	}
 
 private:
@@ -136,7 +139,7 @@ public:
 		mGameObject->AddComponent<Circle2D>(8, Vector2D());
 		mGameObject->AddComponent<Circle2D>(16, Vector2D());
 		mGameObject->AddComponent<Attack>(7.0f, 1.0f);
-		mGameObject->AddComponent<Health>(20.0f);
+		mGameObject->AddComponent<Health>(20.0f, "SoundEffects/HitSlime.ogg", "SoundEffects/HitSlime.ogg");
 		mGameObject->AddComponent<AnimatorGoblin>();
 		mGameObject->AddComponent<AIController>();
 	}
@@ -155,7 +158,7 @@ public:
 		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/snake spritesheet calciumtrice.png"), 32, 32, 10, 5, Vector2D(0, 16));
 		mGameObject->AddComponent<Circle2D>(8, Vector2D());
 		mGameObject->AddComponent<Attack>(7.0f, 1.0f);
-		mGameObject->AddComponent<Health>(20.0f);
+		mGameObject->AddComponent<Health>(20.0f, "SoundEffects/HitSlime.ogg", "SoundEffects/HitSlime.ogg");
 		mGameObject->AddComponent<AnimatorSnake>();
 		mGameObject->AddComponent<AIController>();
 	}
@@ -174,7 +177,7 @@ public:
 		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Bat.png"), 32, 32, 10, 5, Vector2D(0, 16));
 		mGameObject->AddComponent<Circle2D>(8, Vector2D());
 		mGameObject->AddComponent<Attack>(5.0f, 1.0f);
-		mGameObject->AddComponent<Health>(20.0f);
+		mGameObject->AddComponent<Health>(20.0f, "SoundEffects/RatHurt.ogg", "SoundEffects/RatHurt.ogg");
 		mGameObject->AddComponent<AnimatorSnake>();
 		mGameObject->AddComponent<AIController>();
 	}
@@ -193,7 +196,7 @@ public:
 		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Rat.png"), 32, 32, 10, 5, Vector2D(0, 16));
 		mGameObject->AddComponent<Circle2D>(8, Vector2D());
 		mGameObject->AddComponent<Attack>(5.0f, 1.0f);
-		mGameObject->AddComponent<Health>(20.0f);
+		mGameObject->AddComponent<Health>(20.0f, "SoundEffects/RatHurt.ogg", "SoundEffects/RatHurt.ogg");
 		mGameObject->AddComponent<AnimatorSnake>();
 		mGameObject->AddComponent<AIController>();
 	}
@@ -212,7 +215,7 @@ public:
 		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Goblin.png"), 48, 48, 4, 10, Vector2D(0, 24));
 		mGameObject->AddComponent<Circle2D>(8, Vector2D());
 		mGameObject->AddComponent<Attack>(5.0f, 1.0f);
-		mGameObject->AddComponent<Health>(20.0f);
+		mGameObject->AddComponent<Health>(20.0f, "SoundEffects/GoblinHurt.ogg", "SoundEffects/GoblinHurt.ogg");
 		mGameObject->AddComponent<AnimatorGoblin>();
 		mGameObject->AddComponent<AIController>();
 	}
@@ -234,7 +237,7 @@ public:
 		mGameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, PhysicsMaterial{ 30.0f, 0.8f, 0.5f, 10.0f });
 		mGameObject->AddComponent<Attack>(25.0f, 2.0f);
 		mGameObject->AddComponent<AnimatorCharacter>();
-		mGameObject->AddComponent<Health>(100.0f);
+		mGameObject->AddComponent<Health>(100.0f, "SoundEffects/HitSlime.ogg", "SoundEffects/HitSlime.ogg");
 		mGameObject->AddComponent<LootCollector>();
 	}
 private:
@@ -254,7 +257,7 @@ public:
 		mGameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, PhysicsMaterial{ 30.0f, 0.8f, 0.5f, 10.0f });
 		mGameObject->AddComponent<Attack>(25.0f, 2.0f);
 		mGameObject->AddComponent<AnimatorCharacter>();
-		mGameObject->AddComponent<Health>(100.0f);
+		mGameObject->AddComponent<Health>(100.0f, "SoundEffects/HitSlime.ogg", "SoundEffects/HitSlime.ogg");
 		mGameObject->AddComponent<LootCollector>();
 	}
 private:

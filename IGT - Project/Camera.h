@@ -37,6 +37,8 @@ public:
 
 	void OnNotify(SettingsEvent event, Vector2D data)override;
 
+	Vector2D WorldTransformToScreenPosition(Transform* transform)const;
+
 private:
 
 	Transform * mTransform;

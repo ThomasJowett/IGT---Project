@@ -1,5 +1,6 @@
 #include "imguiManager.h"
 #include "imguiManager.h"
+#include "Cursor.h"
 
 extern SDL_Window* gWindow;
 extern SDL_GLContext gGLContext;
@@ -8,6 +9,11 @@ static ImGui::Manager* instance = 0;
 
 ImGui::Manager::Manager()
 {
+	mShowDockSpace = true;
+	mShowConsole = false;
+	mShowCollision = false;
+
+	mCursorOverWindow = false;
 }
 
 void ImGui::Manager::DockSpace(bool* p_open)
@@ -43,6 +49,9 @@ void ImGui::Manager::DockSpace(bool* p_open)
 	if (opt_fullscreen)
 		ImGui::PopStyleVar(2);
 
+	if (mShowCollision)
+		DrawCollision(&mShowCollision);
+
 	// Dockspace
 	ImGuiIO& io = ImGui::GetIO();
 	if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
@@ -56,6 +65,35 @@ void ImGui::Manager::DockSpace(bool* p_open)
 	}
 
 	ImGui::End();
+}
+
+void ImGui::Manager::DrawCollision(bool * p_open)
+{
+	ImVec2 window_pos = ImGui::GetWindowPos();
+	ImVec2 window_size = ImGui::GetWindowSize();
+	ImVec2 window_center = ImVec2(window_pos.x + window_size.x * 0.5f, window_pos.y + window_size.y * 0.5f);
+
+	ImDrawList* draw_list = ImGui::GetBackgroundDrawList();
+
+	GameScreen* currentscreen = GameScreenManager::GetInstance()->GetCurrentScreen();
+	Camera* camera = currentscreen->GetCamera();
+
+	for (Collider* collider : currentscreen->GetAllColliders())
+	{
+		//TODO: get collisions to be rendered ontop of their actual locations
+		if (collider->mType == CIRCLE2D)
+		{
+			Circle2D* circle = dynamic_cast<Circle2D*>(collider);
+			draw_list->AddCircle(window_center, circle->GetRadius() * 4, IM_COL32(0, 255, 0, 200), 32, 1.0f);
+		}
+		else if (collider->mType == BOX2D)
+		{
+			Box2D* box = dynamic_cast<Box2D*>(collider);
+			float width = box->GetWidth() *4;
+			float height = box->GetHeight()*4;
+			draw_list->AddRect(window_center, ImVec2(window_center.x + width, window_center.y + height), IM_COL32(255, 0, 255, 200), 0, ImDrawCornerFlags_All, 1.0f);
+		}
+	}
 }
 
 
@@ -72,7 +110,7 @@ ImGui::Manager * ImGui::Manager::GetInstance()
 	return instance;
 }
 
-void ImGui::Manager::Update(std::vector<SDL_Event> events)
+bool ImGui::Manager::Update(std::vector<SDL_Event> &events)
 {
 	for (SDL_Event e : events)
 	{
@@ -87,7 +125,13 @@ void ImGui::Manager::Update(std::vector<SDL_Event> events)
 				break;
 			}
 		}
+	
+		if (mShowConsole)
+		{
+			ImGui_ImplSDL2_ProcessEvent(&e);
+		}
 	}
+	return !mShowConsole;
 }
 
 void ImGui::Manager::Render()
@@ -119,8 +163,25 @@ void ImGui::Manager::Render()
 	ImGui::Text("%.1f", ImGui::GetIO().Framerate);
 	ImGui::End();
 
-	if(mShowConsole)
+	if (mShowConsole)
+	{
 		mConsole.Draw(&mShowConsole);
+	}
+
+	if (ImGui::IsMouseHoveringAnyWindow())
+	{
+		if (!mCursorOverWindow)
+		{
+			mCursorOverWindow = true;
+		}
+		Cursor::SystemCursorType(SDL_SYSTEM_CURSOR_ARROW);
+		SDL_ShowCursor(true);
+	}
+	else if(mCursorOverWindow)
+	{
+		mCursorOverWindow = false;
+		Cursor::CustomCursorType("Cursor_Arrow");
+	}
 
 	ImGui::Render();
 
@@ -151,12 +212,14 @@ void ImGui::Manager::Initialise()
 
 	ImGui::StyleColorsDark();
 
-	// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
+	//setup the windows style
 	ImGuiStyle& style = ImGui::GetStyle();
 	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 	{
-		style.WindowRounding = 0.0f;
-		style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+		//style.WindowRounding = 0.0f;
+		style.Colors[ImGuiCol_WindowBg].w = 0.3f;
+		style.Colors[ImGuiCol_ChildWindowBg].w = 0.0f;
+		style.Colors[ImGuiCol_ChildBg].w = 0.0f;
 	}
 
 	ImGui_ImplSDL2_InitForOpenGL(gWindow, gGLContext);
@@ -168,4 +231,9 @@ void ImGui::Manager::ShutDown()
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
+}
+
+void ImGui::Manager::ToggleCollsion()
+{
+	mShowCollision = !mShowCollision;
 }

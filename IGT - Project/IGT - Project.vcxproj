@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -140,6 +140,7 @@
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Cursor.cpp" />
+    <ClCompile Include="Destructible.cpp" />
     <ClCompile Include="DungeonManager.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -167,6 +168,7 @@
     <ClCompile Include="MenuManager.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="OptionsMenu.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="Plane.cpp" />
     <ClCompile Include="PlayerController.cpp" />
@@ -221,6 +223,7 @@
     <ClInclude Include="Cursor.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Decorators.h" />
+    <ClInclude Include="Destructible.h" />
     <ClInclude Include="DungeonManager.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="FPS.h" />
@@ -255,6 +258,7 @@
     <ClInclude Include="Messaging.h" />
     <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="OptionsMenu.h" />
+    <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="PlayerController.h" />

@@ -133,7 +133,7 @@ void GameScreen::Render()
 	glEnable(GL_DEPTH_TEST);
 }
 
-void GameScreen::Update(float deltaTime, std::vector<SDL_Event> events)
+void GameScreen::Update(float deltaTime, std::vector<SDL_Event>& events)
 {
 	for (auto playerController : mPlayerControllers)
 	{

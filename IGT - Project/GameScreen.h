@@ -19,7 +19,7 @@ public:
 	virtual ~GameScreen();
 
 	virtual void Render();
-	virtual void Update(float deltaTime, std::vector<SDL_Event> events);
+	virtual void Update(float deltaTime, std::vector<SDL_Event> &events);
 	
 	std::vector<PlayerController*> GetPlayerControllers() { return mPlayerControllers; }
 	std::vector<GameObject*> GetAllGameObjects();
@@ -38,7 +38,11 @@ public:
 
 	void SetUpCameras();
 
+	Camera* GetCamera() { return &mCamera; }
+
 	const char* GetScreenName() { return mScreenName; }
+
+	std::vector<Collider*> GetAllColliders() { return mCollisionObejcts; }
 
 protected:
 	const char* mScreenName;

@@ -1,6 +1,8 @@
 #include "imgui_console.h"
 #include "Settings.h"
+#include "Collision.h"
 #include <locale>
+#include "imguiManager.h"
 
 ImGui::Console::Console()
 {
@@ -10,12 +12,14 @@ ImGui::Console::Console()
 	Commands.push_back("HELP");
 	Commands.push_back("CLEAR");
 	Commands.push_back("HISTORY");
-	Commands.push_back("SHOW COLLISION");
-	Commands.push_back("SHOW QUADTREE");
-	Commands.push_back("LIST OBJECTS");
+	Commands.push_back("QUIT");
+	//Commands.push_back("SHOW_COLLISION");
+	//Commands.push_back("SHOW_QUADTREE");
+	Commands.push_back("LIST_OBJECTS");
 	Commands.push_back("PAUSE");
-	Commands.push_back("SETTINGS VSYNC");
-	Commands.push_back("SETTINGS ZOOM");
+	Commands.push_back("SETTINGS_VSYNC");
+	Commands.push_back("SETTINGS_ZOOM");
+	Commands.push_back("LOAD_LEVEL");
 
 
 	AutoScroll = true;
@@ -37,17 +41,12 @@ void ImGui::Console::Draw(bool * p_open)
 	ImGuiViewport* viewport = ImGui::GetMainViewport();
 
 	ImGui::SetNextWindowSize(ImVec2(viewport->Size.x, viewport->Size.y / 3), ImGuiCond_FirstUseEver);
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
-	ImGui::PushStyleColor(ImGuiCol_ChildWindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
-	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
 
 	if (!ImGui::Begin("Console", p_open))
 	{
-		ImGui::PopStyleColor(3);
 		ImGui::End();
 		return;
 	}
-	ImGui::PopStyleColor(3);
 
 	//if (ImGui::SmallButton("Add Dummy Error")) { AddLog("[error] something went wrong"); } ImGui::SameLine();
 	if (ImGui::SmallButton("Clear")) { ClearLog(); }ImGui::SameLine();
@@ -109,8 +108,10 @@ void ImGui::Console::Draw(bool * p_open)
 		char* s = InputBuf;
 		Strtrim(s);
 		if (s[0])
+		{
 			ExecCommand(s);
-		strcpy_s(s, strlen(s), "");
+			strcpy_s(s, strlen(s), "");
+		}
 
 		reclaim_focus = true;
 	}
@@ -169,15 +170,21 @@ void ImGui::Console::ExecCommand(const char * command_line)
 			AddLog("%3d: %s\n", i, History[i]);
 		}
 	}
-	else if (Stricmp(command_line, "SHOW COLLISION") == 0)
+	else if (Stricmp(command_line, "SHOW_COLLISION") == 0)
 	{
+		//TODO: implement drawing the quadtree
+		ImGui::Manager::GetInstance()->ToggleCollsion();
+
 		AddLog("Command not yet implemented\n");
 	}
-	else if (Stricmp(command_line, "SHOW QUADTREE") == 0)
+	else if (Stricmp(command_line, "SHOW_QUADTREE") == 0)
 	{
+		QuadTree* quadtree = Collision::GetQuadtree();
+
+		//TODO: implement drawing the quadtree
 		AddLog("Command not yet implemented\n");
 	}
-	else if (Stricmp(command_line, "LIST OBJECTS") == 0)
+	else if (Stricmp(command_line, "LIST_OBJECTS") == 0)
 	{
 		for (auto gameObject : GameScreenManager::GetInstance()->GetCurrentScreen()->GetAllGameObjects())
 		{
@@ -188,17 +195,41 @@ void ImGui::Console::ExecCommand(const char * command_line)
 	{
 		GameScreenManager::GetInstance()->TogglePause();
 	}
-	else if (strstr(command_line, "SETTINGS VSYNC"))
+	else if (strstr(command_line, "SETTINGS_VSYNC"))
 	{
 		command_line_str.erase(command_line_str.begin(), command_line_str.begin() + 14);
 
 		Settings::GetInstance()->SetVsync(atoi(command_line_str.c_str()));
 	}
-	else if (strstr(command_line, "SETTINGS ZOOM"))
+	else if (strstr(command_line, "SETTINGS_ZOOM"))
 	{
 		command_line_str.erase(command_line_str.begin(), command_line_str.begin() + 12);
 
 		Settings::GetInstance()->SetZoom(atof(command_line_str.c_str()));
+	}
+	else if (strstr(command_line, "LOAD_LEVEL"))
+	{
+		command_line_str.erase(command_line_str.begin(), command_line_str.begin() + 11);
+
+		
+		if (Stricmp("SCREEN_MENU", command_line_str.c_str()) == 0)
+		{
+			GameScreenManager::GetInstance()->ChangeScreen(SCREEN_MENU);
+		}
+		else if (Stricmp("SCREEN_LEVEL_1", command_line_str.c_str()) == 0)
+		{
+			GameScreenManager::GetInstance()->ChangeScreen(SCREEN_LEVEL_1);
+		}
+		else
+		{
+			AddLog("[error]: 's%' Level not recognised.");
+		}
+	}
+	else if (Stricmp(command_line, "QUIT") == 0)
+	{
+		SDL_Event sdlEvent;
+		sdlEvent.type = SDL_QUIT;
+		SDL_PushEvent(&sdlEvent);
 	}
 	else
 	{
