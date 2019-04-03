@@ -11,6 +11,8 @@
 #include <cassert>
 #include "Vector.h"
 
+#include <iostream>
+
 namespace BrainTree
 {
 
@@ -38,11 +40,11 @@ public:
             initialize();
         }
 
-        status = update(deltaTime);
+		status = update(deltaTime);
 
-        if (status != Status::Running) {
-            terminate(status);
-        }
+		if (status != Status::Running) {
+			terminate(status);
+		}
 
         return status;
     }
@@ -202,7 +204,19 @@ public:
     BehaviorTree() : blackboard(std::make_shared<Blackboard>()) {}
     BehaviorTree(const Node::Ptr &rootNode) : BehaviorTree() { root = rootNode; }
     
-    Status update(float deltaTime) { return root->tick(deltaTime); }
+	Status update(float deltaTime) override
+	{
+		Status status = root->tick(deltaTime);
+
+		_nodeRunning = (status == Status::Running);
+
+		if (_nodeRunning == true)
+		{
+			//std::cout << "node Running" << std::endl;
+			return  status;
+		}
+		return status;
+	}
     
     
     Blackboard::Ptr getBlackboard() const { return blackboard; }
@@ -214,6 +228,8 @@ public:
 private:
     Node::Ptr root = nullptr;
     Blackboard::Ptr blackboard = nullptr;
+
+	bool _nodeRunning;
 };
 
 template <class Parent>

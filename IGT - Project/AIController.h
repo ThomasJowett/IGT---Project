@@ -8,7 +8,7 @@
 #include "Collider.h"
 
 class AIController
-	:public iUpdateable, public Observer<HealthEvent,GameObject*>, public Observer< OverlapEvent, GameObject*>
+	:public iUpdateable, public Observer<HealthEvent,GameObject*>, public Observer< OverlapEvent, Collider*>
 {
 public:
 	AIController(GameObject* parent);
@@ -21,7 +21,7 @@ public:
 	virtual void SetupBlackBoard();
 
 	void OnNotify(HealthEvent notify, GameObject* gameObject)override;
-	void OnNotify(OverlapEvent notify, GameObject* overlappedWith)override;
+	void OnNotify(OverlapEvent notify, Collider* overlappedWith)override;
 
 	void SetParent(GameObject* parent)override;
 

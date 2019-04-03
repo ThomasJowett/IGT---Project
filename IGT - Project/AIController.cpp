@@ -108,15 +108,15 @@ void AIController::OnNotify(HealthEvent notify, GameObject * gameObject)
 	}
 }
 
-void AIController::OnNotify(OverlapEvent notify, GameObject * overlappedWith)
+void AIController::OnNotify(OverlapEvent notify, Collider * overlappedWith)
 {
 	switch (notify)
 	{
 	case OverlapEvent::BEGIN_OVERLAP:
-		if (!strcmp(overlappedWith->GetName(), "BarbarianCharacter") || !strcmp(overlappedWith->GetName(), "ArcherCharacter"))
+		if (overlappedWith->GetCollisionChannel() == CollisionChannel::ENEMY)
 		{
-			mTarget = overlappedWith;
-			std::cout << mTarget->GetName() << std::endl;
+			mTarget = overlappedWith->GetParent();
+			//std::cout << mTarget->GetName() << std::endl;
 
 			mStartingLocation = GetParent()->GetWorldTransform().mPosition;
 		}

@@ -45,6 +45,9 @@ public:
 	template <typename ComponentType>
 	ComponentType* GetComponent(int number) const;
 
+	template <typename ComponentType>
+	std::vector<ComponentType*> GetAllComponents() const;
+
 	const char* GetName() const { return mName; }
 
 	void SetFacing(FACING facing);
@@ -140,6 +143,7 @@ inline ComponentType * GameObject::GetComponent() const
 
 	//TODO: find better solution for getting a component that dosen't use dynamic_cast
 }
+
 template<typename ComponentType>
 inline ComponentType * GameObject::GetComponent(int number) const
 {
@@ -157,4 +161,18 @@ inline ComponentType * GameObject::GetComponent(int number) const
 	}
 	return nullptr;
 }
+
+template<typename ComponentType>
+inline std::vector<ComponentType*> GameObject::GetAllComponents() const
+{
+	std::vector<ComponentType*> returnComponents;
+
+	for (auto && component : mComponents)
+	{
+		if (ComponentType * returnComponent = dynamic_cast<ComponentType*>(component.get()))
+			returnComponents.push_back(returnComponent);
+	}
+	return returnComponents;
+}
+
 #endif // !_GAMEOBJECT_H

@@ -192,7 +192,7 @@ std::vector<Vector2D> Box2D::GetCorners() const
 
 Component * Box2D::Clone()
 {
-	return new Box2D(nullptr, mWidth, mHeight, mOffset, mIsTrigger);
+	return new Box2D(nullptr, mWidth, mHeight, mOffset, mIsTrigger, mGenerateOverlapEvents, mChannel);
 }
 
 Vector2D Collider::GetCentre() const
@@ -296,5 +296,5 @@ void Circle2D::GetBounds(float & Xmax, float & Xmin, float & Ymax, float & Ymin)
 
 Component * Circle2D::Clone()
 {
-	return new Circle2D(nullptr, mRadius, mOffset, mIsTrigger);
+	return new Circle2D(nullptr, mRadius, mOffset, mIsTrigger, mGenerateOverlapEvents, mChannel);
 }

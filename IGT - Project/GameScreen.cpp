@@ -148,14 +148,20 @@ void GameScreen::Update(float deltaTime, std::vector<SDL_Event>& events)
 	{
 		gameObject->RemoveSelf();
 
-		if (Collider* collider = gameObject->GetComponent<Collider>())
+		std::vector<Collider*> colliders = gameObject->GetAllComponents<Collider>();
+		int collidersRemoved = 0;
+
+		if (collidersRemoved < colliders.size())
 		{
-			for (int i =0; i <mCollisionObejcts.size(); i++)
+			for (int i = 0; i < mCollisionObejcts.size(); i++)
 			{
-				if (mCollisionObejcts[i] == collider)
+				for (Collider* collider : colliders)
 				{
-					mCollisionObejcts.erase(mCollisionObejcts.begin() + i);
-					break;
+					if (mCollisionObejcts[i] == collider)
+					{
+						mCollisionObejcts.erase(mCollisionObejcts.begin() + i);
+						collidersRemoved++;
+					}
 				}
 			}
 		}
@@ -215,10 +221,11 @@ void GameScreen::AddGameObject(GameObject * gameObject)
 
 	gameObject->AddAllChildrenToList(mGameObjects);
 
-	Collider* collider = gameObject->GetComponent<Collider>();
-	if (collider)
+	std::vector<Collider*> colliders = gameObject->GetAllComponents<Collider>();
+	for (Collider* collider : colliders)
 	{
-		mCollisionObejcts.push_back(collider);
+		if(collider->GeneratesOverlapEvents())
+			mCollisionObejcts.push_back(collider);
 	}
 
 	if (gameObject->GetParent() == nullptr)

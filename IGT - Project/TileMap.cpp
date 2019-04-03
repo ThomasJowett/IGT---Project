@@ -57,6 +57,7 @@ TileMap::~TileMap()
 	delete mCollider;
 	delete mForeground;
 	delete mBackGround;
+	delete mDecoration;
 
 	for(TileSet* tileSet: mTileSets)
 		if (tileSet) delete tileSet;
@@ -88,6 +89,7 @@ void TileMap::Render(Shader * shader)
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		glBindTexture(GL_TEXTURE_2D, mTileSets[1]->GetTextureID());
+		mDecoration->Draw();
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
@@ -135,7 +137,7 @@ bool TileMap::LoadMap(std::string filename)
 
 			mTileSets.push_back(new TileSet((mapPrefix + tsxPath).c_str(), atoi(pLayer->Attribute("firstgid"))));
 
-			if (mTileSets.back()->GetPalatteHeight() == -1)
+			if (mTileSets.back()->GetPaletteHeight() == -1)
 			{
 				return false;
 			}
@@ -144,14 +146,16 @@ bool TileMap::LoadMap(std::string filename)
 		}
 
 		//Allocate the memory for the array------------------------------------
-		mBackgroundTiles = new int*[mTilesWide];
-		mCollision = new bool*[mTilesWide];
-		mForegroundTiles = new int*[mTilesWide];
+		mBackgroundTiles = new int*[mTilesHigh];
+		mCollision = new bool*[mTilesHigh];
+		mForegroundTiles = new int*[mTilesHigh];
+		mDecorationTiles = new int*[mTilesHigh];
 		for (unsigned int i = 0; i < mTilesHigh; i++)
 		{
 			mBackgroundTiles[i] = new int[mTilesWide];
 			mForegroundTiles[i] = new int[mTilesWide];
 			mCollision[i] = new bool[mTilesWide];
+			mDecorationTiles[i] = new int[mTilesWide];
 		}
 		//Load tile data-------------------------------------------------------
 
@@ -206,6 +210,17 @@ bool TileMap::LoadMap(std::string filename)
 							{
 								int Index = atoi(SeperatedData[(i*mTilesWide) + j].c_str());
 								mForegroundTiles[j][i] = Index - 1;
+							}
+						}
+					}
+					else if (std::strcmp(name, "Decoration") == 0)
+					{
+						for (unsigned int i = 0; i < mTilesHigh; i++)
+						{
+							for (unsigned int j = 0; j < mTilesWide; j++)
+							{
+								int index = atoi(SeperatedData[(i*mTilesWide) + j].c_str());
+								mDecorationTiles[j][i] = index - 1;
 							}
 						}
 					}
@@ -288,7 +303,7 @@ bool TileMap::LoadMap(std::string filename)
 		}
 
 		//create the collider----------------------------------------------------
-		mCollider = new Box2D(this, (float)mTileWidth, (float)mTileHeight, Vector2D(0, 0));
+		mCollider = new Box2D(this, (float)mTileWidth, (float)mTileHeight, Vector2D(0, 0), false, true, WORLD_STATIC);
 		return true;
 	}
 	else
@@ -306,6 +321,7 @@ void TileMap::RedrawMap()
 	int indicesIndex = 0;
 
 	float backgroundDepth = -99.9f;
+	float decorationDepth = -99.8f;
 
 	float foregroundDepth = -0.1f;
 
@@ -388,6 +404,48 @@ void TileMap::RedrawMap()
 	}
 	
 	mForeground = new Mesh(modelForeground);
+
+	IndexedModel modelDecoration;
+
+	indicesIndex = 0;
+
+	for (int i = 0; i < mTilesWide; i++)
+	{
+		float PosX = (float)(i * mTileWidth);
+
+		for (int j = 0; j < mTilesHigh; ++j)
+		{
+			if (mDecorationTiles[i][j] != -1)
+			{
+				float PosY = (float)((j * -mTileHeight) - mTileHeight);
+				modelDecoration.positions.push_back(Vector3D(PosX, PosY, decorationDepth));
+				modelDecoration.texCoords.push_back(TextureCoordinatesAtIndex(0, mDecorationTiles[i][j]));
+
+				PosX += mTileWidth;
+				modelDecoration.positions.push_back(Vector3D(PosX, PosY, decorationDepth));
+				modelDecoration.texCoords.push_back(TextureCoordinatesAtIndex(1, mDecorationTiles[i][j]));
+
+				PosY += mTileHeight;
+				modelDecoration.positions.push_back(Vector3D(PosX, PosY, decorationDepth));
+				modelDecoration.texCoords.push_back(TextureCoordinatesAtIndex(2, mDecorationTiles[i][j]));
+
+				PosX -= mTileWidth;
+				modelDecoration.positions.push_back(Vector3D(PosX, PosY, decorationDepth));
+				modelDecoration.texCoords.push_back(TextureCoordinatesAtIndex(3, mDecorationTiles[i][j]));
+
+				modelDecoration.indices.push_back(indicesIndex);
+				modelDecoration.indices.push_back(indicesIndex + 1);
+				modelDecoration.indices.push_back(indicesIndex + 2);
+				modelDecoration.indices.push_back(indicesIndex);
+				modelDecoration.indices.push_back(indicesIndex + 2);
+				modelDecoration.indices.push_back(indicesIndex + 3);
+
+				indicesIndex += 4;
+			}
+		}
+	}
+
+	mDecoration = new Mesh(modelDecoration);
 }
 
 //returns the index of the tile set at the position
@@ -450,7 +508,7 @@ Vector2D TileMap::TextureCoordinatesAtIndex(int index, int tile)
 {
 	Vector2D position;
 
-	int tilesetindex;
+	int tilesetindex = 0;
 	int previousHighestIndex = 1;
 	for (int i = 0; i < mTileSets.size(); i++)
 	{
@@ -462,12 +520,11 @@ Vector2D TileMap::TextureCoordinatesAtIndex(int index, int tile)
 		}
 
 	}
-	tilesetindex = 0;
 
 	long double intpart;
 
 	float oneTileWide = 1 / (float)mTileSets[tilesetindex]->GetPaletteWidth();
-	float oneTileHeigh = 1 / (float)mTileSets[tilesetindex]->GetPalatteHeight();
+	float oneTileHeigh = 1 / (float)mTileSets[tilesetindex]->GetPaletteHeight();
 
 	position.x = (float)modf(oneTileWide * tile, &intpart);
 
@@ -492,6 +549,12 @@ Vector2D TileMap::TextureCoordinatesAtIndex(int index, int tile)
 		position.x += 0.0001f;
 	else
 		position.x -= 0.0001f;
+
+
+	if (tilesetindex == 1)
+	{
+		std::cout << position.to_string() << index << tile << "\n";
+	}
 
 	return position;
 }

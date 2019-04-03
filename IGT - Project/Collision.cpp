@@ -32,8 +32,8 @@ std::vector<Contact> Collision::DetectCollisions(std::vector<Collider*> collider
 	
 						if (collider->IntersectsCollider(otherCollider, contactNormal, penetrationDepth))
 						{
-							collider->Notify(OverlapEvent::BEGIN_OVERLAP, otherCollider->GetParent());
-							otherCollider->Notify(OverlapEvent::BEGIN_OVERLAP, collider->GetParent());
+							collider->Notify(OverlapEvent::BEGIN_OVERLAP, otherCollider);
+							otherCollider->Notify(OverlapEvent::BEGIN_OVERLAP, collider);
 
 							if(!collider->IsTrigger() && !otherCollider->IsTrigger())
 								contacts.push_back({ collider->GetParent(), otherCollider->GetParent(), contactNormal, penetrationDepth });
@@ -129,7 +129,12 @@ std::vector<Contact> Collision::DetectCollisions(TileMap * tileMap, std::vector<
 
 					if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
 					{
-						contacts.push_back({ tileMap, colliders[i]->GetParent(), contactNormal, penetrationDepth });
+						collider->Notify(OverlapEvent::BEGIN_OVERLAP, tileMap->GetCollider());
+
+						if (!collider->IsTrigger())
+						{
+							contacts.push_back({ tileMap, colliders[i]->GetParent(), contactNormal, penetrationDepth });
+						}
 					}
 				}
 			
@@ -153,7 +158,12 @@ std::vector<Contact> Collision::DetectCollisions(TileMap * tileMap, std::vector<
 					tilesCollided.push_back(tile);
 					if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
 					{
-						contacts.push_back({ tileMap, colliders[i]->GetParent(), contactNormal, penetrationDepth });
+						collider->Notify(OverlapEvent::BEGIN_OVERLAP, tileMap->GetCollider());
+
+						if (!collider->IsTrigger())
+						{
+							contacts.push_back({ tileMap, colliders[i]->GetParent(), contactNormal, penetrationDepth });
+						}
 					}
 				}
 
@@ -184,7 +194,12 @@ std::vector<Contact> Collision::DetectCollisions(TileMap * tileMap, std::vector<
 					tilesCollided.push_back(tile);
 					if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
 					{
-						contacts.push_back({ tileMap, colliders[i]->GetParent(), contactNormal, penetrationDepth });
+						collider->Notify(OverlapEvent::BEGIN_OVERLAP, tileMap->GetCollider());
+
+						if (!collider->IsTrigger())
+						{
+							contacts.push_back({ tileMap, colliders[i]->GetParent(), contactNormal, penetrationDepth });
+						}
 					}
 				}
 				alreadyDetected = false;
@@ -207,7 +222,12 @@ std::vector<Contact> Collision::DetectCollisions(TileMap * tileMap, std::vector<
 					tilesCollided.push_back(tile);
 					if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
 					{
-						contacts.push_back({ tileMap, colliders[i]->GetParent(), contactNormal, penetrationDepth });
+						collider->Notify(OverlapEvent::BEGIN_OVERLAP, tileMap->GetCollider());
+
+						if (!collider->IsTrigger())
+						{
+							contacts.push_back({ tileMap, colliders[i]->GetParent(), contactNormal, penetrationDepth });
+						}
 					}
 				}
 				alreadyDetected = false;
@@ -234,7 +254,12 @@ std::vector<Contact> Collision::DetectCollisions(TileMap * tileMap, std::vector<
 				tilesCollided.push_back(tile);
 				if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
 				{
-					contacts.push_back({ tileMap, colliders[i]->GetParent(), contactNormal, penetrationDepth });
+					collider->Notify(OverlapEvent::BEGIN_OVERLAP, tileMap->GetCollider());
+
+					if (!collider->IsTrigger())
+					{
+						contacts.push_back({ tileMap, colliders[i]->GetParent(), contactNormal, penetrationDepth });
+					}
 
 				}
 			}
@@ -260,7 +285,12 @@ std::vector<Contact> Collision::DetectCollisions(TileMap * tileMap, std::vector<
 
 				if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
 				{
-					contacts.push_back({ tileMap, colliders[i]->GetParent(), contactNormal, penetrationDepth });
+					collider->Notify(OverlapEvent::BEGIN_OVERLAP, tileMap->GetCollider());
+
+					if (!collider->IsTrigger())
+					{
+						contacts.push_back({ tileMap, colliders[i]->GetParent(), contactNormal, penetrationDepth });
+					}
 				}
 			}
 
@@ -286,7 +316,12 @@ std::vector<Contact> Collision::DetectCollisions(TileMap * tileMap, std::vector<
 
 				if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
 				{
-					contacts.push_back({ tileMap, colliders[i]->GetParent(), contactNormal, penetrationDepth });
+					collider->Notify(OverlapEvent::BEGIN_OVERLAP, tileMap->GetCollider());
+
+					if (!collider->IsTrigger())
+					{
+						contacts.push_back({ tileMap, colliders[i]->GetParent(), contactNormal, penetrationDepth });
+					}
 				}
 			}
 			alreadyDetected = false;
@@ -310,7 +345,12 @@ std::vector<Contact> Collision::DetectCollisions(TileMap * tileMap, std::vector<
 				tilesCollided.push_back(tile);
 				if (tileMap->GetCollider()->IntersectsCollider(collider, contactNormal, penetrationDepth))
 				{
-					contacts.push_back({ tileMap, colliders[i]->GetParent(), contactNormal, penetrationDepth });
+					collider->Notify(OverlapEvent::BEGIN_OVERLAP, tileMap->GetCollider());
+
+					if (!collider->IsTrigger())
+					{
+						contacts.push_back({ tileMap, colliders[i]->GetParent(), contactNormal, penetrationDepth });
+					}
 				}
 			}
 			alreadyDetected = false;

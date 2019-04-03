@@ -134,7 +134,7 @@ public:
 		
 	}
 
-	Status update(float deltaTime)
+	Status update(float deltaTime) override
 	{
 		return (mPawn->BeginAttack()) ? Node::Status::Success : Node::Status::Running;
 	}

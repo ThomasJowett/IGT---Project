@@ -17,9 +17,9 @@ Component * Loot::Clone()
 	return new Loot(nullptr, mValue);
 }
 
-void Loot::OnNotify(OverlapEvent event, GameObject * gameObject)
+void Loot::OnNotify(OverlapEvent event, Collider * gameObject)
 {
-	LootCollector* collector = gameObject->GetComponent<LootCollector>();
+	LootCollector* collector = gameObject->GetParent()->GetComponent<LootCollector>();
 
 	if (!mPickedUp)
 	{
@@ -27,7 +27,7 @@ void Loot::OnNotify(OverlapEvent event, GameObject * gameObject)
 		{
 		case OverlapEvent::BEGIN_OVERLAP:
 
-			if (collector)
+			if (collector && gameObject->GetCollisionChannel() == CollisionChannel::WORLD_DYNAMIC)
 			{
 				mPickedUp = true;
 				collector->PickUpLoot(mValue);

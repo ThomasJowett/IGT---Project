@@ -22,7 +22,7 @@ public:
 	~TileSet();
 
 	int GetPaletteWidth() const { return mPaletteWidth; }
-	int GetPalatteHeight() const { return mPaletteHeight; }
+	int GetPaletteHeight() const { return mPaletteHeight; }
 
 	GLuint GetTextureID() const { return mTextureID; }
 
@@ -87,6 +87,7 @@ private:
 
 	Mesh* mBackGround;
 	Mesh* mForeground;
+	Mesh* mDecoration;
 
 	Collider* mCollider;
 

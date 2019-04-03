@@ -124,7 +124,7 @@ std::vector<Collider*> QuadTree::Retrieve(std::vector<Collider*> &returnObjects,
 	//Add the objects in this node to the list of return nodes
 	for (Collider* thisCollider : mColliders)
 	{
-		if(thisCollider != collider)
+		if(thisCollider != collider && (collider->GetParent() != thisCollider->GetParent()))
 			returnObjects.push_back(thisCollider);
 	}
 	return returnObjects;

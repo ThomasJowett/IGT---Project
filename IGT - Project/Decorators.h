@@ -8,7 +8,7 @@ public:
 		:mBlackboardKey(blackboardkey), mIsSet(isSet),
 		Decorator(blackboard) {}
 
-	Status update(float deltaTime)override
+	Status update(float deltaTime) override
 	{
 		if (!(blackboard->getBool(mBlackboardKey) ^ mIsSet))
 			return child->tick(deltaTime);
