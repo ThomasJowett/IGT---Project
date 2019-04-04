@@ -29,7 +29,7 @@ public:
 	void XButtonDown()override {}
 	void YButtonDown()override {}
 
-	void RightTrigger(float scale) {}
+	void RightTrigger(float scale) { if (scale > 0.5f) mAttack->BeginAttack(); }
 	void LeftTrigger(float scale) {}
 
 	void RightBumper()override {}

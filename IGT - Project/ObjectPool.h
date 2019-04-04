@@ -53,6 +53,8 @@ public:
 		}
 	}
 
+	T* GetPrefab() { return mPrefab; }
+
 private:
 	std::list<T*> mObjects;
 	T* mPrefab;

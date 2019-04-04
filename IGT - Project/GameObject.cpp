@@ -110,6 +110,7 @@ bool GameObject::Destroy()
 {
 	if (!mDeathFlag)
 	{
+		SetActive(false);
 		mDeathFlag = true;
 		return false;
 	}

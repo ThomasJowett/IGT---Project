@@ -2,6 +2,8 @@
 
 Factory<Prefab>::map_type * Factory<Prefab>::gLookUpTable = NULL;
 
+DerivedRegister<ArrowPrefab> ArrowPrefab::reg("Arrow");
+
 DerivedRegister<BarrelPrefab> BarrelPrefab::reg("Barrel");
 
 DerivedRegister<ChestPrefab> ChestPrefab::reg("Chest");

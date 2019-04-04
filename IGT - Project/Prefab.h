@@ -17,6 +17,7 @@
 #include "Loot.h"
 #include "LootCollector.h"
 #include "Destructible.h"
+#include "Projectile.h"
 
 class Prefab
 {
@@ -36,6 +37,22 @@ struct DerivedRegister : Factory<Prefab>
 	{
 		getMap()->insert(std::make_pair(name, &CreateT<T>));
 	}
+};
+
+//Projectiles ----------------------------------------------------
+class ArrowPrefab : public Prefab
+{
+public:
+	ArrowPrefab()
+	{
+		mGameObject = new GameObject("Arrow", new Transform());
+		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("Images/Button_A.png"), 16, 16, Vector2D(0, 8));
+		mGameObject->AddComponent<Box2D>(3, 16, Vector2D(0, 0));
+		mGameObject->AddComponent<RigidBody2D>(1.0f, Vector2D(0, 0), 0.1f, 0.0f, PhysicsMaterial{ 0.1f, 0.8f, 0.1f, 0.1f });
+		mGameObject->AddComponent<Projectile>(0.0f, 3.0f);
+	}
+private:
+	static DerivedRegister<ArrowPrefab> reg;
 };
 
 //Lootable prefabs ------------------------------------------------
@@ -257,7 +274,8 @@ public:
 		mGameObject->AddComponent<Circle2D>(20, Vector2D(0, 0), true, false);
 		mGameObject->AddComponent<Circle2D>(50, Vector2D(0, 0), true, true, CollisionChannel::ENEMY);
 		mGameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, PhysicsMaterial{ 30.0f, 0.8f, 0.5f, 10.0f });
-		mGameObject->AddComponent<Attack>(25.0f, 2.0f);
+		//mGameObject->AddComponent<Attack>(25.0f, 2.0f);
+		mGameObject->AddComponent<RangedAttack>(15.0f, 2.0f, Factory<Prefab>::CreateInstance("Arrow")->GetPrefab());
 		mGameObject->AddComponent<AnimatorCharacter>();
 		mGameObject->AddComponent<Health>(100.0f, "SoundEffects/HitSlime.ogg", "SoundEffects/HitSlime.ogg");
 		mGameObject->AddComponent<LootCollector>();

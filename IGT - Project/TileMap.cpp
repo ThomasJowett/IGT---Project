@@ -550,12 +550,6 @@ Vector2D TileMap::TextureCoordinatesAtIndex(int index, int tile)
 	else
 		position.x -= 0.0001f;
 
-
-	if (tilesetindex == 1)
-	{
-		std::cout << position.to_string() << index << tile << "\n";
-	}
-
 	return position;
 }
 

@@ -175,6 +175,7 @@
     <ClCompile Include="PlayerPawn.cpp" />
     <ClCompile Include="Prefab.cpp" />
     <ClCompile Include="ProgressBar.cpp" />
+    <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="RigidBody2D.cpp" />
     <ClCompile Include="SceneNode.cpp" />
@@ -266,6 +267,7 @@
     <ClInclude Include="PostProcess.h" />
     <ClInclude Include="Prefab.h" />
     <ClInclude Include="ProgressBar.h" />
+    <ClInclude Include="Projectile.h" />
     <ClInclude Include="QuadTree.h" />
     <ClInclude Include="RandomGenerator.h" />
     <ClInclude Include="resource.h" />

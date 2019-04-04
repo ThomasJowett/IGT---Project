@@ -151,13 +151,19 @@ void GameScreen::Update(float deltaTime, std::vector<SDL_Event>& events)
 		std::vector<Collider*> colliders = gameObject->GetAllComponents<Collider>();
 		int collidersRemoved = 0;
 
+		
+
 		if (collidersRemoved < colliders.size())
 		{
 			for (int i = 0; i < mCollisionObejcts.size(); i++)
 			{
 				for (Collider* collider : colliders)
 				{
-					if (mCollisionObejcts[i] == collider)
+					if (!collider->GeneratesOverlapEvents())
+					{
+						collidersRemoved++;
+					}
+					else if (mCollisionObejcts[i] == collider)
 					{
 						mCollisionObejcts.erase(mCollisionObejcts.begin() + i);
 						collidersRemoved++;
@@ -217,8 +223,6 @@ void GameScreen::AddGameObjects(std::vector<GameObject*> gameObjects)
 //Add a single game object to the scene
 void GameScreen::AddGameObject(GameObject * gameObject)
 {
-	//mGameObjects.emplace_back(gameObject);
-
 	gameObject->AddAllChildrenToList(mGameObjects);
 
 	std::vector<Collider*> colliders = gameObject->GetAllComponents<Collider>();
