@@ -11,7 +11,7 @@ void ParticleSystem::Update(float deltaTime)
 	GameObject::Update(deltaTime);
 
 	if (mLifeSpan < 0.0f)
-		GameScreenManager::GetInstance()->GetCurrentScreen()->RemoveGameOject(this);
+		GameScreenManager::GetInstance()->GetCurrentScreen()->DestroyGameOject(this);
 	else
 	{
 		mLifeSpan -= deltaTime;

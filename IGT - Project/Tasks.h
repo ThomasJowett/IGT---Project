@@ -126,7 +126,8 @@ class AttackTask : public BrainTree::Leaf, public Observer<AttackEvent, int>
 public:
 	AttackTask(GameObject* pawn)
 	{
-		mPawn = pawn->GetComponent<Attack>();
+		mPawnAttackComp = pawn->GetComponent<Attack>();
+		mPawnRigidBodyComp = pawn->GetComponent<RigidBody2D>();
 	}
 
 	void initialize()
@@ -136,7 +137,7 @@ public:
 
 	Status update(float deltaTime) override
 	{
-		return (mPawn->BeginAttack()) ? Node::Status::Success : Node::Status::Running;
+		return (mPawnAttackComp->BeginAttack(mPawnRigidBodyComp->GetVelocity())) ? Node::Status::Success : Node::Status::Running;
 	}
 
 	void OnNotify(AttackEvent event, int value)override
@@ -152,5 +153,6 @@ public:
 	}
 
 private:
-	Attack* mPawn;
+	Attack* mPawnAttackComp;
+	RigidBody2D* mPawnRigidBodyComp;
 };

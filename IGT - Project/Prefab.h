@@ -46,10 +46,10 @@ public:
 	ArrowPrefab()
 	{
 		mGameObject = new GameObject("Arrow", new Transform());
-		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("Images/Button_A.png"), 16, 16, Vector2D(0, 8));
-		mGameObject->AddComponent<Box2D>(3, 16, Vector2D(0, 0));
-		mGameObject->AddComponent<RigidBody2D>(1.0f, Vector2D(0, 0), 0.1f, 0.0f, PhysicsMaterial{ 0.1f, 0.8f, 0.1f, 0.1f });
-		mGameObject->AddComponent<Projectile>(0.0f, 3.0f);
+		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("Images/Arrow.png"), 3, 16, Vector2D(0, 8));
+		mGameObject->AddComponent<Box2D>(3, 16, Vector2D(0, 0), true, true, CollisionChannel::PROJECTILE);
+		mGameObject->AddComponent<RigidBody2D>(1.0f, Vector2D(0, 0), 0.1f, 0.0f, PhysicsMaterial{ 0.0f, 0.8f, 0.1f, 0.1f });
+		mGameObject->AddComponent<Projectile>(10.0f, 3.0f);
 	}
 private:
 	static DerivedRegister<ArrowPrefab> reg;
@@ -271,11 +271,11 @@ public:
 		mGameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("SpriteSheets/Archer.png"), 64, 64, 10, 10, Vector2D(0, 32));
 		//gameObject->AddComponent<TextRender>("Fonts/nokiafc22.ttf", 8);
 		mGameObject->AddComponent<Box2D>(20, 10, Vector2D(0, 0));
-		mGameObject->AddComponent<Circle2D>(20, Vector2D(0, 0), true, false);
+		mGameObject->AddComponent<Circle2D>(20, Vector2D(0, 0), true, false, CollisionChannel::PLAYER);
 		mGameObject->AddComponent<Circle2D>(50, Vector2D(0, 0), true, true, CollisionChannel::ENEMY);
 		mGameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, PhysicsMaterial{ 30.0f, 0.8f, 0.5f, 10.0f });
 		//mGameObject->AddComponent<Attack>(25.0f, 2.0f);
-		mGameObject->AddComponent<RangedAttack>(15.0f, 2.0f, Factory<Prefab>::CreateInstance("Arrow")->GetPrefab());
+		mGameObject->AddComponent<RangedAttack>(15.0f, 0.5f, Factory<Prefab>::CreateInstance("Arrow")->GetPrefab(), Vector2D(0.0f,32.0f));
 		mGameObject->AddComponent<AnimatorCharacter>();
 		mGameObject->AddComponent<Health>(100.0f, "SoundEffects/HitSlime.ogg", "SoundEffects/HitSlime.ogg");
 		mGameObject->AddComponent<LootCollector>();

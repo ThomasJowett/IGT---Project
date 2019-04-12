@@ -49,7 +49,7 @@ public:
 	{
 		for (int i = 0; i < numberToLoad; i++)
 		{
-			ReturnObjectToPool(AquireObject());
+			ReturnObjectToPool(new T(*mPrefab));
 		}
 	}
 

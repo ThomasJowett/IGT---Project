@@ -2,14 +2,15 @@
 
 #include "iComponents.h"
 #include "Collider.h"
+#include "RigidBody2D.h"
 #include "ObjectPool.h"
+#include <iostream>
 
 class Projectile 
 	: public iUpdateable, public Observer<OverlapEvent, Collider*>
 {
 public:
-	Projectile(GameObject* parent, float damage, float lifeTime)
-		:iUpdateable(parent), mDamage(damage), mLifeTime(lifeTime) {}
+	Projectile(GameObject* parent, float damage, float lifeTime);
 	~Projectile() = default;
 
 	Projectile* Clone()override;
@@ -20,11 +21,16 @@ public:
 
 	void OnNotify(OverlapEvent event, Collider* collider)override;
 
-	void SetObjectPool(ObjectPool<GameObject>* objectPool) { mObjectPool = objectPool; }
+	void Reset(ObjectPool<GameObject>* objectPool, GameObject* instigator);
 private:
 	float mDamage;
 	float mLifeTime;
+	float mInitialLifeTime;
 	ObjectPool<GameObject>* mObjectPool = nullptr;
+
+	GameObject* mInstigator;
+
+	RigidBody2D* mRigidBody;
 
 	void Destroy();
 };

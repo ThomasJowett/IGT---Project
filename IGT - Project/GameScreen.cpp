@@ -144,14 +144,10 @@ void GameScreen::Update(float deltaTime, std::vector<SDL_Event>& events)
 
 	RootWidget->Traverse(deltaTime);
 
-	for (GameObject* gameObject : mToDeleteList)
+	for (GameObject* gameObject : mToRemoveList)
 	{
-		gameObject->RemoveSelf();
-
 		std::vector<Collider*> colliders = gameObject->GetAllComponents<Collider>();
 		int collidersRemoved = 0;
-
-		
 
 		if (collidersRemoved < colliders.size())
 		{
@@ -172,26 +168,39 @@ void GameScreen::Update(float deltaTime, std::vector<SDL_Event>& events)
 			}
 		}
 
-		for(std::vector< std::unique_ptr<SceneNode>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
+		for(std::vector<SceneNode*> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
 		{
-			if (it->get() == gameObject)
+			if (*it == gameObject)
 			{
+				
+
 				mGameObjects.erase(it);
+
+				if (gameObject->GetDeathFlag())
+				{
+					delete gameObject;
+				}
+				else
+				{
+					std::cout << "removed game object" << gameObject->GetUniqueID() << " " << mGameObjects.size() << "\n";
+					gameObject->RemoveSelf();
+				}
+				
 				break;
 			}
 		}
 	}
 
-	mToDeleteList.clear();
+	mToRemoveList.clear();
 }
 
 std::vector<GameObject*> GameScreen::GetAllGameObjects()
 {
 	std::vector<GameObject*> returnObjects;
 
-	for (std::vector< std::unique_ptr<SceneNode>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
+	for (SceneNode* sceneNode : mGameObjects)
 	{
-		returnObjects.push_back(dynamic_cast<GameObject*>(it->get()));
+		returnObjects.push_back(dynamic_cast<GameObject*>(sceneNode));
 	}
 	return returnObjects;
 }
@@ -200,9 +209,9 @@ std::vector<GameObject*> GameScreen::GetAllGameObjectsWithTag(std::string tag)
 {
 	std::vector<GameObject*> returnObjects;
 
-	for (std::vector< std::unique_ptr<SceneNode>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
+	for (SceneNode* sceneNode : mGameObjects)
 	{
-		if (GameObject* gameobject = dynamic_cast<GameObject*>(it->get()))
+		if (GameObject* gameobject = dynamic_cast<GameObject*>(sceneNode))
 		{
 			if (gameobject->GetName() == tag)
 				returnObjects.push_back(gameobject);
@@ -238,32 +247,42 @@ void GameScreen::AddGameObject(GameObject * gameObject)
 	}
 }
 
-void GameScreen::RemoveGameOject(GameObject * gameObject)
+void GameScreen::DestroyGameOject(GameObject * gameObject)
 {
 	gameObject->Destroy();
-	mToDeleteList.emplace_back(gameObject);
+	mToRemoveList.emplace_back(gameObject);
+}
+
+void GameScreen::RemoveGameObject(GameObject * gameObject)
+{
+	gameObject->SetActive(false);
+	mToRemoveList.emplace_back(gameObject);
 }
 
 void GameScreen::SortObjectsDepth(Camera* camera)
 {
-	for (std::vector< std::unique_ptr<SceneNode>> ::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
+	for (SceneNode* sceneNode : mGameObjects)
 	{
-		if (dynamic_cast<GameObject*>(it->get())->GetLayer() == SORTED)
+		if (sceneNode)
 		{
-			Vector3D position = it->get()->GetLocalTransform()->mPosition;
-
-			float topOfScreen = camera->GetTransform()->mPosition.y + (camera->GetOrthoHeight() / 2);
-			float bottomofScreen = camera->GetTransform()->mPosition.y - (camera->GetOrthoHeight() / 2);
-
-			if (position.y < topOfScreen && position.y > bottomofScreen)
+			GameObject* gameObject = dynamic_cast<GameObject*>(sceneNode);
+			if (gameObject->GetLayer() == SORTED)
 			{
-				float alpha = (position.y - camera->GetTransform()->mPosition.y + (camera->GetOrthoHeight() / 2)) / camera->GetOrthoHeight();
-				float neardepth = camera->GetTransform()->mPosition.z - camera->GetNearDepth() - 1.0f;
-				float fardepth = camera->GetTransform()->mPosition.z - camera->GetFarDepth() + 1.0f;
+				Vector3D position = gameObject->GetLocalTransform()->mPosition;
 
-				float objectDepth = neardepth + alpha * (fardepth - neardepth);
+				float topOfScreen = camera->GetTransform()->mPosition.y + (camera->GetOrthoHeight() / 2);
+				float bottomofScreen = camera->GetTransform()->mPosition.y - (camera->GetOrthoHeight() / 2);
 
-				it->get()->GetLocalTransform()->mPosition.z = objectDepth;
+				if (position.y < topOfScreen && position.y > bottomofScreen)
+				{
+					float alpha = (position.y - camera->GetTransform()->mPosition.y + (camera->GetOrthoHeight() / 2)) / camera->GetOrthoHeight();
+					float neardepth = camera->GetTransform()->mPosition.z - camera->GetNearDepth() - 1.0f;
+					float fardepth = camera->GetTransform()->mPosition.z - camera->GetFarDepth() + 1.0f;
+
+					float objectDepth = neardepth + alpha * (fardepth - neardepth);
+
+					gameObject->GetLocalTransform()->mPosition.z = objectDepth;
+				}
 			}
 		}
 	}

@@ -14,7 +14,8 @@ enum CollisionChannel
 	WORLD_STATIC,
 	WORLD_DYNAMIC,
 	PLAYER,
-	ENEMY
+	ENEMY,
+	PROJECTILE
 };
 
 enum class OverlapEvent { BEGIN_OVERLAP, END_OVERLAP};

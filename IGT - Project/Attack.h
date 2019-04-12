@@ -16,7 +16,7 @@ public:
 
 	Attack* Clone()override;
 
-	virtual bool BeginAttack();
+	virtual bool BeginAttack(Vector2D direction);
 	void StopAttack();
 
 	bool GetIsAttacking() const { return mIsAttacking; }
@@ -39,15 +39,17 @@ class RangedAttack
 	: public Attack
 {
 public:
-	RangedAttack(GameObject* parent, float damage, float cooldown, GameObject* prefab);
+	RangedAttack(GameObject* parent, float damage, float cooldown, GameObject* prefab, Vector2D spawnLocation);
 	~RangedAttack() = default;
 
 	void Update(float deltaTime)override;
 
 	RangedAttack* Clone()override;
 
-	bool BeginAttack()override;
+	bool BeginAttack(Vector2D direction)override;
 
 private:
 	ObjectPool<GameObject> mProjectiles;
+
+	Vector2D mSpawnLocation;
 };

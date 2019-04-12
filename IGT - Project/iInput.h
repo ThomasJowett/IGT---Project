@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Vector.h"
+
 class iInput
 {
 public:
@@ -41,6 +43,10 @@ public:
 	virtual void OnPossessed(int controllerID) { mControllerID = controllerID; }
 	virtual void OnUnPossesed() { mControllerID = -1; }
 
-private:
+	void ControlRotation(Vector2D ControlRotation) { mControlRotation = ControlRotation; }
+
+protected:
 	int mControllerID;
+
+	Vector2D mControlRotation;
 };

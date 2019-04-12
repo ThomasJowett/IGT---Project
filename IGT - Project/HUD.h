@@ -8,9 +8,25 @@ public:
 	HUD(GameObject* subject);
 	virtual ~HUD() {}
 
-	void CreateWidgets()override;
+	virtual void CreateWidgets()override {}
 
 	void OnNotify(WidgetEvent event, WidgetEventData data)override {}
-private:
+protected:
 	GameObject* mSubject;
+};
+
+class Player1HUD :
+	public HUD
+{
+public:
+	Player1HUD(GameObject* subject);
+	void CreateWidgets()override;
+};
+
+class Player2HUD:
+	public HUD
+{
+public:
+	Player2HUD(GameObject* subject);
+	void CreateWidgets()override;
 };

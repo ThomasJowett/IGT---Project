@@ -32,7 +32,7 @@ void Loot::OnNotify(OverlapEvent event, Collider * gameObject)
 				mPickedUp = true;
 				collector->PickUpLoot(mValue);
 				SoundManager::GetInstance()->PlaySoundEffect("SoundEffects/Coins.ogg", -1, 0);
-				GameScreenManager::GetInstance()->GetCurrentScreen()->RemoveGameOject(GetParent());
+				GameScreenManager::GetInstance()->GetCurrentScreen()->DestroyGameOject(GetParent());
 			}
 
 			break;

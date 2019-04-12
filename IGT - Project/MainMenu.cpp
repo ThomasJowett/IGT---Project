@@ -2,6 +2,7 @@
 #include "Texture2D.h"
 #include "GameScreenManager.h"
 #include "Image.h"
+#include "TextBox.h"
 
 MainMenu::MainMenu(Transform* transform)
 	:UIMenu("MainMenu", transform)
@@ -26,6 +27,11 @@ void MainMenu::CreateWidgets()
 	image = new Image("A ButtonPrompt", { 1,1 }, { -65, 20 }, Texture2D::GetTexture2D("Images/Button_A.png"), { 16,16 });
 	mWidgets.emplace_back(image);
 	AddChild(image);
+
+	TextBox* text = new TextBox("Select Text", { 1,1 }, { -26,14 }, "Fonts/nokiafc22.ttf", 8, "Select", { 255,255,255 }, LEFT);
+	mWidgets.emplace_back(text);
+	text->AddObserver(this);
+	AddChild(text);
 
 	GLuint ButtonTexture = Texture2D::GetTexture2D("Images/ButtonsMenu.png");
 

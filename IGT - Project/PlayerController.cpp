@@ -34,7 +34,7 @@ void PlayerController::Update(std::vector<SDL_Event> events)
 				if (e.caxis.axis == 0) { mLeftStick.x = (e.caxis.value) / 32767.0f; }
 				else if (e.caxis.axis == 1) { mLeftStick.y = -((e.caxis.value) / 32767.0f); }
 				else if (e.caxis.axis == 2) { mRightStick.x = (e.caxis.value) / 32767.0f; }
-				else if (e.caxis.axis == 3) { mRightStick.y = (e.caxis.value) / 32767.0f; }
+				else if (e.caxis.axis == 3) { mRightStick.y = -((e.caxis.value) / 32767.0f); }
 				else if (e.caxis.axis == 4) { mLeftTrigger = ((e.caxis.value) / 32767.0f); }
 				else if (e.caxis.axis == 5) { mRightTrigger = ((e.caxis.value) / 32767.0f); }
 			}
@@ -191,12 +191,14 @@ void PlayerController::Update(std::vector<SDL_Event> events)
 		}
 	}
 
+	Vector2D wasd;
+
 	if (mControllerID == 0)
 	{
-		if (currentKeyStates[SDL_SCANCODE_A]) { mPawn->MoveRight(-1.0f); }
-		if (currentKeyStates[SDL_SCANCODE_D]) { mPawn->MoveRight(1.0f); }
-		if (currentKeyStates[SDL_SCANCODE_W]) { mPawn->MoveUp(1.0f); }
-		if (currentKeyStates[SDL_SCANCODE_S]) { mPawn->MoveUp(-1.0f); }
+		if (currentKeyStates[SDL_SCANCODE_A]) { mPawn->MoveRight(-1.0f); wasd.x -= 1.0f; }
+		if (currentKeyStates[SDL_SCANCODE_D]) { mPawn->MoveRight(1.0f); wasd.x += 1.0f; }
+		if (currentKeyStates[SDL_SCANCODE_W]) { mPawn->MoveUp(1.0f); wasd.y += 1.0f; }
+		if (currentKeyStates[SDL_SCANCODE_S]) { mPawn->MoveUp(-1.0f); wasd.y -= 1.0f; }
 		if (currentKeyStates[SDL_SCANCODE_SPACE]) { mPawn->AButtonDown(); }
 		if (currentKeyStates[SDL_SCANCODE_1]) { mPawn->BButtonDown(); }
 		if (currentKeyStates[SDL_SCANCODE_2]) { mPawn->XButtonDown(); }
@@ -223,11 +225,20 @@ void PlayerController::Update(std::vector<SDL_Event> events)
 	if (mRightStick.SqrMagnitude() > mJoystickDeadZone)
 	{
 		mPawn->LookRight(mRightStick.x);
-		mPawn->LookUp(-mRightStick.y);
+		mPawn->LookUp(mRightStick.y);
 	}
 
 	mPawn->LeftTrigger(mLeftTrigger);
 	mPawn->RightTrigger(mRightTrigger);
+
+	if (mControllerID == 0)
+	{
+		mPawn->ControlRotation(wasd);
+	}
+	else
+	{
+		mPawn->ControlRotation(mRightStick);
+	}
 }
 
 void PlayerController::PossesPawn(iInput * pawn)

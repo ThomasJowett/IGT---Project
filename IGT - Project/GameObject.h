@@ -58,6 +58,8 @@ public:
 	unsigned int GetUniqueID() { return mUniqueID; }
 
 	bool Destroy();
+
+	bool GetDeathFlag() { return mDeathFlag; }
 private:
 	const char* mName;
 

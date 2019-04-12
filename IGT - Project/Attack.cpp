@@ -37,16 +37,18 @@ Attack * Attack::Clone()
 	return new Attack(nullptr, mDamage, mCoolDown);
 }
 
-bool Attack::BeginAttack()
+bool Attack::BeginAttack(Vector2D direction)
 {
 	if (!mIsOnCoolDown)
 	{
-		//std::cout << "attacking " << mDamage << std::endl;
+		
 		SoundManager::GetInstance()->PlaySoundEffect("SoundEffects/Sword_Swing_001.ogg", -1, 0);
 		mIsAttacking = true;
 		mIsOnCoolDown = true;
 
 		Notify(AttackEvent::ON_ATTACK_BEGIN, 0);
+
+		mCollider->SetOffset(32.0f * direction);
 
 		std::vector<Collider*> colliders;
 
@@ -77,8 +79,6 @@ bool Attack::BeginAttack()
 		}
 		return true;
 	}
-
-	//std::cout << "attack not off cooldown\n";
 	return false;
 }
 
@@ -95,10 +95,10 @@ void Attack::SetParent(GameObject * parent)
 		mCollider = GetParent()->GetComponent<Collider>(2);
 }
 
-RangedAttack::RangedAttack(GameObject * parent, float damage, float cooldown, GameObject* prefab)
-	:Attack(parent, damage, cooldown), mProjectiles(prefab)
+RangedAttack::RangedAttack(GameObject * parent, float damage, float cooldown, GameObject* prefab, Vector2D spawnLocation)
+	:Attack(parent, damage, cooldown), mProjectiles(prefab), mSpawnLocation(spawnLocation)
 {
-	mProjectiles.PreLoadObjects(5);
+	mProjectiles.PreLoadObjects(200);
 }
 
 void RangedAttack::Update(float deltaTime)
@@ -108,31 +108,35 @@ void RangedAttack::Update(float deltaTime)
 
 RangedAttack * RangedAttack::Clone()
 {
-	return new RangedAttack(nullptr, mDamage, mCoolDown, mProjectiles.GetPrefab());
+	return new RangedAttack(nullptr, mDamage, mCoolDown, mProjectiles.GetPrefab(), mSpawnLocation);
 }
 
-bool RangedAttack::BeginAttack()
+bool RangedAttack::BeginAttack(Vector2D direction)
 {
 	if (!mIsOnCoolDown)
 	{
-		SoundManager::GetInstance()->PlaySoundEffect("SoundEffects/Sword_Swing_002.ogg", -1, 0);
+		SoundManager::GetInstance()->PlaySoundEffect("SoundEffects/Bow_Loose.ogg", -1, 0);
 		mIsAttacking = true;
 		mIsOnCoolDown = true;
 
 		Notify(AttackEvent::ON_ATTACK_BEGIN, 0);
 
-		//GameObject* newProjectile = mProjectiles.AquireObject();
+		GameObject* newProjectile = mProjectiles.AquireObject();
 
-		//newProjectile->GetComponent<Projectile>()->SetObjectPool(&mProjectiles);
+		//GameObject* newProjectile = Factory<Prefab>::CreateInstance("Arrow")->GetPrefab();
 
-		GameObject* newProjectile = Factory<Prefab>::CreateInstance("Arrow")->GetPrefab();
+		newProjectile->GetComponent<Projectile>()->Reset(&mProjectiles, GetParent());
 
-		newProjectile->GetLocalTransform()->mPosition = GetParent()->GetWorldTransform().mPosition + Vector3D(0.0f, 0.0f, 0.0f);
+		newProjectile->GetLocalTransform()->mPosition = GetParent()->GetWorldTransform().mPosition + mSpawnLocation.to_Vector3D();
 
 		RigidBody2D* rigidBody = newProjectile->GetComponent<RigidBody2D>();
 
 		rigidBody->SetVelocity(Vector2D(0, 0));
-		rigidBody->ApplyImpulse(Vector2D(100,0));//TODO apply impulse at characters rotation
+
+		if ((direction.x && direction.y) == 0.0f)
+			direction.x = 1.0f;
+
+		rigidBody->ApplyImpulse(300.0f * direction.GetNormalized());
 
 		GameScreenManager::GetInstance()->GetCurrentScreen()->AddGameObject(newProjectile);
 

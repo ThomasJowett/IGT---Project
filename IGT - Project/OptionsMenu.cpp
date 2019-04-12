@@ -164,13 +164,43 @@ void OptionsMenu::CreateWidgets()
 	AddChild(widget);
 
 	//Controls------------------------------------------------------------------------------------------------------------
+	widget = new Image("Controller", { 0.25,0.5 }, { 0,0 }, Texture2D::GetTexture2D("Images/Control Layout Lines.png"), { 247, 208 });
+	mWidgets.emplace_back(widget);
+	widget->AddObserver(this);
+	mControlsButtons.push_back(widget);
+	AddChild(widget); 
+	
 	widget = new Image("Controller", { 0.25,0.5 }, { 0,0 }, Texture2D::GetTexture2D("Images/Controller.png"), { 147, 108 });
 	mWidgets.emplace_back(widget);
 	widget->AddObserver(this);
 	mControlsButtons.push_back(widget);
 	AddChild(widget);
 
+	widget = new TextBox("Attack Controller Text", { 0.25,0.5 }, { 75,62 }, "Fonts/nokiafc22.ttf", 8, "Attack", { 255,255,255 }, LEFT);
+	mWidgets.emplace_back(widget);
+	widget->AddObserver(this);
+	mControlsButtons.push_back(widget);
+	AddChild(widget);
+
+	widget = new TextBox("Move Controler Text", { 0.25,0.5 }, { -105,10 }, "Fonts/nokiafc22.ttf", 8, "Move", { 255,255,255 }, RIGHT);
+	mWidgets.emplace_back(widget);
+	widget->AddObserver(this);
+	mControlsButtons.push_back(widget);
+	AddChild(widget);
+
+	widget = new TextBox("Aim Controler Text", { 0.25,0.5 }, { 20,-56 }, "Fonts/nokiafc22.ttf", 8, "Aim", { 255,255,255 }, CENTER);
+	mWidgets.emplace_back(widget);
+	widget->AddObserver(this);
+	mControlsButtons.push_back(widget);
+	AddChild(widget);
+
 	widget = new TextBox("Move Text", { 0.75,0.5 }, { -20,44 }, "Fonts/nokiafc22.ttf", 8, "Move", { 255,255,255 }, CENTER);
+	mWidgets.emplace_back(widget);
+	widget->AddObserver(this);
+	mControlsButtons.push_back(widget);
+	AddChild(widget);
+
+	widget = new TextBox("Attack Text", { 0.75,0.5 }, { -20,24 }, "Fonts/nokiafc22.ttf", 8, "Attack", { 255,255,255 }, CENTER);
 	mWidgets.emplace_back(widget);
 	widget->AddObserver(this);
 	mControlsButtons.push_back(widget);
@@ -195,6 +225,12 @@ void OptionsMenu::CreateWidgets()
 	AddChild(widget);
 
 	widget = new Image("D", { 0.75,0.5 }, { 76,50 }, Texture2D::GetTexture2D("Images/Key_D.png"), { 16, 16 });
+	mWidgets.emplace_back(widget);
+	widget->AddObserver(this);
+	mControlsButtons.push_back(widget);
+	AddChild(widget);
+
+	widget = new Image("Left Mouse", { 0.75,0.5 }, { 52,30 }, Texture2D::GetTexture2D("Images/Left Mouse.png"), { 16, 16 });
 	mWidgets.emplace_back(widget);
 	widget->AddObserver(this);
 	mControlsButtons.push_back(widget);

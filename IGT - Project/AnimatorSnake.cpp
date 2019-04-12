@@ -133,7 +133,7 @@ void AnimatorSnake::OnNotify(AnimationNotify notify, int chanel)
 		}
 		else if (GetState() == SNAKE_DEATH)
 		{
-			GameScreenManager::GetInstance()->GetCurrentScreen()->RemoveGameOject(GetParent());
+			GameScreenManager::GetInstance()->GetCurrentScreen()->DestroyGameOject(GetParent());
 		}
 		break;
 	default:

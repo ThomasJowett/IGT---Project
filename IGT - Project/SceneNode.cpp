@@ -179,7 +179,7 @@ Transform SceneNode::GetWorldTransform() const
 	return transform;
 }
 
-void SceneNode::AddAllChildrenToList(std::vector<std::unique_ptr<SceneNode>>& list)
+void SceneNode::AddAllChildrenToList(std::vector<SceneNode*>& list)
 {
 	list.emplace_back(this);
 

@@ -28,7 +28,9 @@ public:
 	void AddGameObjects(std::vector<GameObject*> gameObjects);
 	void AddGameObject(GameObject* gameObject);
 
-	void RemoveGameOject(GameObject* gameObject);
+	void DestroyGameOject(GameObject* gameObject);
+
+	void RemoveGameObject(GameObject* gameObject);
 
 	virtual void GameIsPaused(bool isGamePaused) {}
 
@@ -49,7 +51,7 @@ protected:
 
 	SceneNode * Root;
 	SceneNode * RootWidget;
-	std::vector<std::unique_ptr<SceneNode>>mGameObjects;
+	std::vector<SceneNode*>mGameObjects;
 	std::vector<std::unique_ptr<GameObject>>mUIWidgets;
 	std::vector<PlayerController*>mPlayerControllers;
 
@@ -74,7 +76,7 @@ private:
 	GameObject* mCameraTarget1;
 	GameObject* mCameraTarget2;
 
-	std::vector<GameObject*> mToDeleteList;
+	std::vector<GameObject*> mToRemoveList;
 };
 
 #endif //_GAMESCREEN_H

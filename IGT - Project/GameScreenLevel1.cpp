@@ -28,7 +28,7 @@ GameScreenLevel1::GameScreenLevel1()
 	PhysicsMaterial physicsMaterial = { 30.0f, 0.8f, 0.5f, 10.0f };
 	PhysicsMaterial physicsMaterialcircle = { 300.0f, 0.8f, 0.5f, 1.0f };
 
-	MainMenuPawn* menu = new MainMenuPawn();
+	MainMenuPawn* menuPawn = new MainMenuPawn();
 
 	mTileMap = new TileMap("TestMap.tmx");
 	AddGameObject(mTileMap);
@@ -41,25 +41,31 @@ GameScreenLevel1::GameScreenLevel1()
 	gameObject = new GameObject(*Factory<Prefab>::CreateInstance("BarbarianCharacter")->GetPrefab());
 	gameObject->GetLocalTransform()->mPosition = mTileMap->GetPlayerStart(0).to_Vector3D();
 	AddGameObject(gameObject);
-	PlayerPawn* character1 = new PlayerPawn(gameObject, menu);
+	PlayerPawn* character1 = new PlayerPawn(gameObject, menuPawn);
 
 	//Pause Menu
-	UIMenu* pauseMenu = new PauseMenu(new Transform(), character1);
-	mUIWidgets.emplace_back(pauseMenu);
-	RootWidget->AddChild(pauseMenu);
-	MenuManager::GetInstance()->AddMenu(pauseMenu);
+	UIMenu* uiMenu = new PauseMenu(new Transform(), character1);
+	mUIWidgets.emplace_back(uiMenu);
+	RootWidget->AddChild(uiMenu);
+	MenuManager::GetInstance()->AddMenu(uiMenu);
 
 	//Player 1 HUD
-	pauseMenu = new HUD(gameObject);
-	mUIWidgets.emplace_back(pauseMenu);
-	RootWidget->AddChild(pauseMenu);
-	MenuManager::GetInstance()->AddMenu(pauseMenu);
+	uiMenu = new Player1HUD(gameObject);
+	mUIWidgets.emplace_back(uiMenu);
+	RootWidget->AddChild(uiMenu);
+	MenuManager::GetInstance()->AddMenu(uiMenu);
 
-	////player 2
+	//player 2
 	gameObject = new GameObject(*ArcherCharacterPrefab().GetPrefab());
 	gameObject->GetLocalTransform()->mPosition = mTileMap->GetPlayerStart(1).to_Vector3D();
 	AddGameObject(gameObject);
-	PlayerPawn* character2 = new PlayerPawn(gameObject, menu);
+	PlayerPawn* character2 = new PlayerPawn(gameObject, menuPawn);
+
+	//Player 2 HUD
+	uiMenu = new Player2HUD(gameObject);
+	mUIWidgets.emplace_back(uiMenu);
+	RootWidget->AddChild(uiMenu);
+	MenuManager::GetInstance()->AddMenu(uiMenu);
 
 	SpawnManager::SpawnGameObjects(mTileMap->GetSpawnRooms(), this);
 

@@ -180,7 +180,7 @@ void AnimatorGoblin::OnNotify(AnimationNotify notify, int chanel)
 		}
 		else if (GetState() == GOBLIN_DEATH)
 		{
-			GameScreenManager::GetInstance()->GetCurrentScreen()->RemoveGameOject(GetParent());
+			GameScreenManager::GetInstance()->GetCurrentScreen()->DestroyGameOject(GetParent());
 		}
 		break;
 	default:

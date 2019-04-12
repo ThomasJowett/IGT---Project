@@ -29,7 +29,7 @@ public:
 	void XButtonDown()override {}
 	void YButtonDown()override {}
 
-	void RightTrigger(float scale) { if (scale > 0.5f) mAttack->BeginAttack(); }
+	void RightTrigger(float scale) { if (scale > 0.5f) mAttack->BeginAttack(mControlRotation); }
 	void LeftTrigger(float scale) {}
 
 	void RightBumper()override {}
@@ -37,7 +37,7 @@ public:
 
 	void MousePosition(int x, int y) {}
 
-	virtual void MouseLeftClick()override { mAttack->BeginAttack(); }
+	virtual void MouseLeftClick()override { mAttack->BeginAttack(mControlRotation); }
 	virtual void MouseLeftUnClick()override {}
 	virtual void MouseRightClick()override {}
 	virtual void MouseRightUnClick()override {}
