@@ -253,7 +253,7 @@ public:
 		mGameObject->AddComponent<Circle2D>(20, Vector2D(0, 0), true, false, CollisionChannel::PLAYER);//attack volume
 		mGameObject->AddComponent<Circle2D>(50, Vector2D(0, 0), true, true, CollisionChannel::ENEMY);//enemy agro range
 		mGameObject->AddComponent<RigidBody2D>(1, Vector2D(0, 0), 10, 0, PhysicsMaterial{ 30.0f, 0.8f, 0.5f, 10.0f });
-		mGameObject->AddComponent<Attack>(25.0f, 2.0f);
+		mGameObject->AddComponent<Attack>(25.0f, 0.5f);
 		mGameObject->AddComponent<AnimatorCharacter>();
 		mGameObject->AddComponent<Health>(100.0f, "SoundEffects/HitSlime.ogg", "SoundEffects/HitSlime.ogg");
 		mGameObject->AddComponent<LootCollector>();

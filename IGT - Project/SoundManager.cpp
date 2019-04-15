@@ -142,6 +142,9 @@ void SoundManager::SetSoundEffectVolume(unsigned int volume)
 
 void SoundManager::SetMusicVolume(unsigned int volume)
 {
+	if (volume == 1)
+		volume = 0;
+
 	if (volume <= SDL_MIX_MAXVOLUME)
 	{
 		mMusicVolume = volume;

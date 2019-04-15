@@ -99,6 +99,20 @@ void Settings::LoadSettings()
 	else
 	{
 		std::cerr << "Unable to locate Settings.ini\n";
+
+		mFullscreen = true;
+
+		SDL_GetCurrentDisplayMode(0, &mCurrentMode);
+
+		mScreen_Height = mCurrentMode.h;
+		mScreen_Width = mCurrentMode.w;
+
+		SoundManager::GetInstance()->SetMusicVolume(128);
+		SoundManager::GetInstance()->SetSoundEffectVolume(128);
+		SoundManager::GetInstance()->SetMasterVolume(128);
+
+		ApplySettings();
+		SaveSettings();
 	}
 
 	file.close();
