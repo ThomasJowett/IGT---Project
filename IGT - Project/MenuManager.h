@@ -31,6 +31,6 @@ private:
 
 	std::vector<UIMenu*>mMenus;
 	
-	int mCurrentMenuID;
+	int mCurrentMenuID = 0;
 	int mPreviousMenuID;
 };

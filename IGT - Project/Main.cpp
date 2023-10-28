@@ -21,6 +21,7 @@ SDL_Window*			gWindow = nullptr;
 SDL_GLContext		gGLContext = nullptr;
 Uint32				gOldTime;
 SDL_GameController* gGameControllers[4];
+std::string gApplicationLocation;
 
 //Function Prototypes------------------------------------------------------------------------
 bool InitSDL();
@@ -52,6 +53,12 @@ int main(int argc, char* args[])
 
 bool InitSDL()
 {
+	char buffer[MAX_PATH];
+	GetModuleFileNameA(NULL, buffer, MAX_PATH);
+	std::string executablePath(buffer);
+	size_t lastSlash = executablePath.find_last_of("\\/");
+	gApplicationLocation = executablePath.substr(0, lastSlash);
+
 	//Setup SDL.
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
@@ -105,12 +112,10 @@ bool InitSDL()
 		ImGui::Manager::GetInstance()->Initialise();
 
 		//Setup OpenGL------------------------------------------------------------------------
-		glewExperimental = GL_TRUE;
-		GLint GlewInitResult = glewInit();
-		if (GLEW_OK != GlewInitResult)
+		if (!gladLoadGLLoader(SDL_GL_GetProcAddress))
 		{
-			DBG_OUTPUT("Glew Setup failed. ERROR: ", glewGetErrorString(GlewInitResult), "\n");
-			std::cerr << "Glew Setup failed. ERROR: " << glewGetErrorString(GlewInitResult) << std::endl;
+			DBG_OUTPUT("glad Setup failed.", "\n");
+			std::cerr << "glad Setup failed." << std::endl;
 			return false;
 		}
 

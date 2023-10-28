@@ -6,6 +6,8 @@
 #include <math.h>
 #include "Commons.h"
 
+extern std::string gApplicationLocation;
+
 TileMap::TileMap()
 {
 }
@@ -102,7 +104,7 @@ bool TileMap::LoadMap(std::string filename)
 
 	std::string mapPrefix = "Maps/";
 
-	if (doc.LoadFile((mapPrefix + filename).c_str()) == 0)
+	if (doc.LoadFile((gApplicationLocation + '/' + mapPrefix + filename).c_str()) == 0)
 	{
 		tinyxml2::XMLElement* pRoot;
 		tinyxml2::XMLElement* pLayer;
@@ -135,7 +137,7 @@ bool TileMap::LoadMap(std::string filename)
 		{
 			std::string tsxPath = pLayer->Attribute("source");
 
-			mTileSets.push_back(new TileSet((mapPrefix + tsxPath).c_str(), atoi(pLayer->Attribute("firstgid"))));
+			mTileSets.push_back(new TileSet((gApplicationLocation+ '/' + mapPrefix + tsxPath).c_str(), atoi(pLayer->Attribute("firstgid"))));
 
 			if (mTileSets.back()->GetPaletteHeight() == -1)
 			{

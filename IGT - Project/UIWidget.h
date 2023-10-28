@@ -46,7 +46,7 @@ public:
 
 	Vector2D GetOffset() const { return mOffset; };
 protected:
-	Box2D * mCollisionBox;
+	Box2D * mCollisionBox = nullptr;
 private:
 	
 	bool mIsFocusable;

@@ -42,8 +42,8 @@ protected:
 
 	bool mIsActive;
 
-	SceneNode * mParent;
-	SceneNode * mLeftChild;
-	SceneNode * mRightSibling;
-	SceneNode * mLeftSibling;
+	SceneNode * mParent = nullptr;
+	SceneNode * mLeftChild = nullptr;
+	SceneNode * mRightSibling = nullptr;
+	SceneNode * mLeftSibling = nullptr;
 };

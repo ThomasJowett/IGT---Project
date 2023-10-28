@@ -4,9 +4,11 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <filesystem>
 
 extern SDL_Window* gWindow;
 extern SDL_GLContext gGLContext;
+extern std::string gApplicationLocation;
 
 static Settings* instance = 0;
 
@@ -46,7 +48,7 @@ void Settings::SaveSettings()
 void Settings::LoadSettings()
 {
 	std::ifstream file;
-	file.open("Settings.ini");
+	file.open(gApplicationLocation + "/Settings.ini");
 
 	std::string line;
 
@@ -111,7 +113,7 @@ void Settings::LoadSettings()
 		SoundManager::GetInstance()->SetSoundEffectVolume(128);
 		SoundManager::GetInstance()->SetMasterVolume(128);
 
-		ApplySettings();
+		//ApplySettings();
 		SaveSettings();
 	}
 

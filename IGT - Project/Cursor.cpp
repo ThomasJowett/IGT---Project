@@ -1,14 +1,17 @@
 #include "Cursor.h"
 #include <Windows.h>
+#include <filesystem>
 #include <SDL_image.h>
 #include "Debug.h"
 #include "Commons.h"
 
+extern std::string gApplicationLocation;
+
 void Cursor::LoadCursors()
 {
-	Cursor::CreateCustomCursor(SDL_SYSTEM_CURSOR_ARROW, "Images/Cursor_Arrow.png", 0, 0);
-	Cursor::CreateCustomCursor(SDL_SYSTEM_CURSOR_CROSSHAIR, "Images/Cursor_Crosshairs.png", 32, 32);
-	Cursor::CreateCustomCursor(SDL_SYSTEM_CURSOR_HAND, "Images/Cursor_Pointer.png", 0, 0);
+	Cursor::CreateCustomCursor(SDL_SYSTEM_CURSOR_ARROW, gApplicationLocation + "/Images/Cursor_Arrow.png", 0, 0);
+	Cursor::CreateCustomCursor(SDL_SYSTEM_CURSOR_CROSSHAIR, gApplicationLocation + "/Images/Cursor_Crosshairs.png", 32, 32);
+	Cursor::CreateCustomCursor(SDL_SYSTEM_CURSOR_HAND, gApplicationLocation + "/Images/Cursor_Pointer.png", 0, 0);
 }
 
 //load from a .cur file

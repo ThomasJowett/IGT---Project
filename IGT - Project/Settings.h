@@ -25,7 +25,7 @@ public:
 	void ApplySettings();
 
 	void SetResolution(int width, int height);
-	void SetScreenScale(float scale);	
+	void SetScreenScale(float scale);
 	void SetFullScreen(bool isFullscreen);
 	void SetDisplayMode(SDL_DisplayMode mode);
 	void SetVsync(bool isVsyncEnabled);

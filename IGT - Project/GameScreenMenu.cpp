@@ -17,12 +17,14 @@
 #include <iostream>
 #include <utility>
 
+extern std::string gApplicationLocation;
+
 GameScreenMenu::GameScreenMenu() : GameScreen()
 {
 	mScreenName = "Main Menu";
 	mCamera.GetTransform()->mPosition = Vector3D(0, 0, 0);
 
-	SoundManager::GetInstance()->PlayMusic("Music/MainMenu.ogg");
+	SoundManager::GetInstance()->PlayMusic((gApplicationLocation + "/Music/MainMenu.ogg").c_str());
 	
 	Transform* transform;
 	GameObject* gameObject;
@@ -35,7 +37,7 @@ GameScreenMenu::GameScreenMenu() : GameScreen()
 	//Background Image
 	transform = new Transform(Vector3D(0, 0, 0), 0, Vector2D(1, 1));
 	gameObject = new GameObject("Backgorund", transform);
-	gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("Images/BackGround.png"), 600, 600);
+	gameObject->AddComponent<Sprite>(Texture2D::GetTexture2D("Images/Background.png"), 600, 600);
 	AddGameObject(gameObject);
 
 	//Main Menu

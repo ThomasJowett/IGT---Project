@@ -1,7 +1,7 @@
 #ifndef _COMMONS_H
 #define _COMMONS_H
 
-#include<glew.h>
+#include <glad/glad.h>
 #include <string>
 #include <vector>
 #include"Vector.h"

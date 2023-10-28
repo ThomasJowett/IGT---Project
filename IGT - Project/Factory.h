@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <string>
 
 template<typename T>
 struct Factory

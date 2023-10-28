@@ -2,6 +2,8 @@
 #include <iostream>
 #include "Commons.h"
 
+extern std::string gApplicationLocation;
+
 TextRender::TextRender(GameObject* parent, const char * path, int pointSize)
 	:iRenderable(parent)
 {
@@ -35,10 +37,11 @@ TextRender::~TextRender()
 
 void TextRender::LoadFont(const char * path, int pointSize)
 {
-	mPath = path;
+	std::string full_path = gApplicationLocation + '/' + path;
+	mPath = full_path.c_str();
 	mPointSize = pointSize;
 
-	mFont = TTF_OpenFont(path, pointSize);
+	mFont = TTF_OpenFont(full_path.c_str(), pointSize);
 	if (mFont == nullptr)
 	{
 		std::cerr << "TTF_OpenFont()Failed: " << TTF_GetError() << std::endl;

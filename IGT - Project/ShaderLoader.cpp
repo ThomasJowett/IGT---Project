@@ -2,6 +2,8 @@
 #include <iostream>
 #include <fstream>
 
+extern std::string gApplicationLocation;
+
 void CheckShaderError(GLuint shader, GLuint flag, bool isProgram, const char* errorMessage);
 std::string LoadShader(const std::string& filename);
 GLuint CreateShader(const std::string& text, GLenum shaderType);
@@ -68,7 +70,7 @@ void CheckShaderError(GLuint shader, GLuint flag, bool isProgram, const char* er
 std::string LoadShader(const std::string& filename)
 {
 	std::ifstream file;
-	file.open((filename).c_str());
+	file.open((gApplicationLocation + '/' + filename).c_str());
 
 	std::string output;
 	std::string line;

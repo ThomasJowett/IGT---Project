@@ -1,0 +1,12 @@
+[submodule "IGT - Project/SDL3"]
+	path = IGT - Project/SDL3
+	url = https://github.com/libsdl-org/SDL.git
+[submodule "IGT - Project/SDL_ttf"]
+	path = IGT - Project/SDL_ttf
+	url = https://github.com/libsdl-org/SDL_ttf.git
+[submodule "IGT - Project/SDL_image"]
+	path = IGT - Project/SDL_image
+	url = https://github.com/libsdl-org/SDL_image.git
+[submodule "IGT - Project/SDL_mixer"]
+	path = IGT - Project/SDL_mixer
+	url = https://github.com/libsdl-org/SDL_mixer.git

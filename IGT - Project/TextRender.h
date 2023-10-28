@@ -33,14 +33,14 @@ public:
 
 private:
 	bool UpdateText();
-	TTF_Font * mFont;
+	TTF_Font * mFont = nullptr;
 	const char* mText;
 	SDL_Colour mTextColour;
 	Vector2D mOffset;
 	ALIGNMENT mAlignment;
 
 	GLuint mTextureID;
-	Mesh* mMesh;
+	Mesh* mMesh = nullptr;
 
 	const char* mPath;
 	int mPointSize;
