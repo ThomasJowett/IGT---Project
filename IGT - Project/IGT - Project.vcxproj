@@ -1,14 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
@@ -19,48 +11,26 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{77E692FE-83D3-4319-8F64-D8C5A8C7F98E}</ProjectGuid>
-    <RootNamespace>IGTProject</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <ProjectGuid>{8D969F08-F956-1B3F-C291-64BC2E11601B}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>IGT - Project</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
-  <ImportGroup Label="Shared">
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -69,62 +39,141 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\IGT - Project\GL;..\IGT - Project\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
-    <Link>
-      <AdditionalLibraryDirectories>$(PROJECTDIR)\IGT - Project\GL;$(PROJECTDIR)\IGT - Project\SDL;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\Debug\</OutDir>
+    <IntDir>..\obj\Debug\IGT - Project\</IntDir>
+    <TargetName>IGT - Project</TargetName>
+    <TargetExt>.exe</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\Release\</OutDir>
+    <IntDir>..\obj\Release\IGT - Project\</IntDir>
+    <TargetName>IGT - Project</TargetName>
+    <TargetExt>.exe</TargetExt>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>GL;SDL3\include;..\&amp;{prj.name}\SDL_ttf;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\IGT - Project\SDL\include;..\IGT - Project\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <MinimalRebuild>false</MinimalRebuild>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(PROJECTDIR)\IGT - Project\SDL;$(PROJECTDIR)\IGT - Project\GL;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL_tff.lib;SDL_image.lib;SDL_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>GL;SDL3\include;..\&amp;{prj.name}\SDL_ttf;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>SDL_tff.lib;SDL_image.lib;SDL_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="AIController.h" />
+    <ClInclude Include="Animator.h" />
+    <ClInclude Include="AnimatorCharacter.h" />
+    <ClInclude Include="AnimatorGoblin.h" />
+    <ClInclude Include="AnimatorSnake.h" />
+    <ClInclude Include="Astar.h" />
+    <ClInclude Include="Attack.h" />
+    <ClInclude Include="BinaryTree.h" />
+    <ClInclude Include="BrainTree.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraFollow.h" />
+    <ClInclude Include="CameraManager.h" />
+    <ClInclude Include="CheckBox.h" />
+    <ClInclude Include="Collider.h" />
+    <ClInclude Include="Collision.h" />
+    <ClInclude Include="Commons.h" />
+    <ClInclude Include="Cursor.h" />
+    <ClInclude Include="Debug.h" />
+    <ClInclude Include="Decorators.h" />
+    <ClInclude Include="Destructible.h" />
+    <ClInclude Include="DungeonManager.h" />
+    <ClInclude Include="FPS.h" />
+    <ClInclude Include="Factory.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameScreen.h" />
+    <ClInclude Include="GameScreenLevel1.h" />
+    <ClInclude Include="GameScreenManager.h" />
+    <ClInclude Include="GameScreenMenu.h" />
+    <ClInclude Include="GeometryGenerator.h" />
+    <ClInclude Include="HUD.h" />
+    <ClInclude Include="Health.h" />
+    <ClInclude Include="ImGui\imconfig.h" />
+    <ClInclude Include="ImGui\imgui.h" />
+    <ClInclude Include="ImGui\imgui_impl_opengl3.h" />
+    <ClInclude Include="ImGui\imgui_impl_sdl.h" />
+    <ClInclude Include="ImGui\imgui_internal.h" />
+    <ClInclude Include="ImGui\imstb_rectpack.h" />
+    <ClInclude Include="ImGui\imstb_textedit.h" />
+    <ClInclude Include="ImGui\imstb_truetype.h" />
+    <ClInclude Include="Image.h" />
+    <ClInclude Include="Loot.h" />
+    <ClInclude Include="LootCollector.h" />
+    <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="MainMenuPawn.h" />
+    <ClInclude Include="Matrix.h" />
+    <ClInclude Include="MenuManager.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Messaging.h" />
+    <ClInclude Include="ObjectPool.h" />
+    <ClInclude Include="OptionsMenu.h" />
+    <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="PauseMenu.h" />
+    <ClInclude Include="Plane.h" />
+    <ClInclude Include="PlayerController.h" />
+    <ClInclude Include="PlayerPawn.h" />
+    <ClInclude Include="PostProcess.h" />
+    <ClInclude Include="Prefab.h" />
+    <ClInclude Include="ProgressBar.h" />
+    <ClInclude Include="Projectile.h" />
+    <ClInclude Include="QuadTree.h" />
+    <ClInclude Include="RandomGenerator.h" />
+    <ClInclude Include="RigidBody2D.h" />
+    <ClInclude Include="SceneNode.h" />
+    <ClInclude Include="Settings.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShaderLoader.h" />
+    <ClInclude Include="Slider.h" />
+    <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="SpawnManager.h" />
+    <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Tasks.h" />
+    <ClInclude Include="TextBox.h" />
+    <ClInclude Include="TextRender.h" />
+    <ClInclude Include="Texture2D.h" />
+    <ClInclude Include="TileMap.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="TinyXML2.h" />
+    <ClInclude Include="Transform.h" />
+    <ClInclude Include="UIMenu.h" />
+    <ClInclude Include="UIWidget.h" />
+    <ClInclude Include="Vector.h" />
+    <ClInclude Include="iComponents.h" />
+    <ClInclude Include="iInput.h" />
+    <ClInclude Include="imguiManager.h" />
+    <ClInclude Include="imgui_console.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIController.cpp" />
     <ClCompile Include="Animator.cpp" />
@@ -145,21 +194,19 @@
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameScreen.cpp" />
+    <ClCompile Include="GameScreenLevel1.cpp" />
     <ClCompile Include="GameScreenManager.cpp" />
     <ClCompile Include="GameScreenMenu.cpp" />
-    <ClCompile Include="GameScreenLevel1.cpp" />
     <ClCompile Include="GeometryGenerator.cpp" />
-    <ClCompile Include="Health.cpp" />
     <ClCompile Include="HUD.cpp" />
-    <ClCompile Include="Image.cpp" />
-    <ClCompile Include="imguiManager.cpp" />
+    <ClCompile Include="Health.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imgui_demo.cpp" />
     <ClCompile Include="ImGui\imgui_draw.cpp" />
     <ClCompile Include="ImGui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="ImGui\imgui_impl_sdl.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
-    <ClCompile Include="imgui_console.cpp" />
+    <ClCompile Include="Image.cpp" />
     <ClCompile Include="Loot.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
@@ -167,6 +214,7 @@
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="MenuManager.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="ObjectPool.cpp" />
     <ClCompile Include="OptionsMenu.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
@@ -193,122 +241,13 @@
     <ClCompile Include="TinyXML2.cpp" />
     <ClCompile Include="UIMenu.cpp" />
     <ClCompile Include="UIWidget.cpp" />
+    <ClCompile Include="imguiManager.cpp" />
+    <ClCompile Include="imgui_console.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="GL\glew32.lib" />
-    <Library Include="SDL\SDL2.lib" />
-    <Library Include="SDL\SDL2main.lib" />
-    <Library Include="SDL\SDL2test.lib" />
-    <Library Include="SDL\SDL2_image.lib" />
-    <Library Include="SDL\SDL2_mixer.lib" />
-    <Library Include="SDL\SDL2_ttf.lib" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="AIController.h" />
-    <ClInclude Include="Animator.h" />
-    <ClInclude Include="AnimatorCharacter.h" />
-    <ClInclude Include="AnimatorGoblin.h" />
-    <ClInclude Include="AnimatorSnake.h" />
-    <ClInclude Include="Astar.h" />
-    <ClInclude Include="Attack.h" />
-    <ClInclude Include="BinaryTree.h" />
-    <ClInclude Include="BrainTree.h" />
-    <ClInclude Include="Button.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="CameraFollow.h" />
-    <ClInclude Include="CameraManager.h" />
-    <ClInclude Include="CheckBox.h" />
-    <ClInclude Include="Collider.h" />
-    <ClInclude Include="Collision.h" />
-    <ClInclude Include="Commons.h" />
-    <ClInclude Include="Cursor.h" />
-    <ClInclude Include="Debug.h" />
-    <ClInclude Include="Decorators.h" />
-    <ClInclude Include="Destructible.h" />
-    <ClInclude Include="DungeonManager.h" />
-    <ClInclude Include="Factory.h" />
-    <ClInclude Include="FPS.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="GameScreen.h" />
-    <ClInclude Include="GameScreenManager.h" />
-    <ClInclude Include="GameScreenMenu.h" />
-    <ClInclude Include="GameScreenLevel1.h" />
-    <ClInclude Include="GeometryGenerator.h" />
-    <ClInclude Include="Health.h" />
-    <ClInclude Include="HUD.h" />
-    <ClInclude Include="iComponents.h" />
-    <ClInclude Include="iInput.h" />
-    <ClInclude Include="Image.h" />
-    <ClInclude Include="imguiManager.h" />
-    <ClInclude Include="ImGui\imconfig.h" />
-    <ClInclude Include="ImGui\imgui.h" />
-    <ClInclude Include="ImGui\imgui_impl_opengl3.h" />
-    <ClInclude Include="ImGui\imgui_impl_sdl.h" />
-    <ClInclude Include="ImGui\imgui_internal.h" />
-    <ClInclude Include="ImGui\imstb_rectpack.h" />
-    <ClInclude Include="ImGui\imstb_textedit.h" />
-    <ClInclude Include="ImGui\imstb_truetype.h" />
-    <ClInclude Include="imgui_console.h" />
-    <ClInclude Include="Loot.h" />
-    <ClInclude Include="LootCollector.h" />
-    <ClInclude Include="MainMenu.h" />
-    <ClInclude Include="MainMenuPawn.h" />
-    <ClInclude Include="Matrix.h" />
-    <ClInclude Include="MenuManager.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="Messaging.h" />
-    <ClInclude Include="ObjectPool.h" />
-    <ClInclude Include="OptionsMenu.h" />
-    <ClInclude Include="ParticleSystem.h" />
-    <ClInclude Include="PauseMenu.h" />
-    <ClInclude Include="Plane.h" />
-    <ClInclude Include="PlayerController.h" />
-    <ClInclude Include="PlayerPawn.h" />
-    <ClInclude Include="PostProcess.h" />
-    <ClInclude Include="Prefab.h" />
-    <ClInclude Include="ProgressBar.h" />
-    <ClInclude Include="Projectile.h" />
-    <ClInclude Include="QuadTree.h" />
-    <ClInclude Include="RandomGenerator.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="RigidBody2D.h" />
-    <ClInclude Include="SceneNode.h" />
-    <ClInclude Include="Settings.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="ShaderLoader.h" />
-    <ClInclude Include="Slider.h" />
-    <ClInclude Include="SoundManager.h" />
-    <ClInclude Include="SpawnManager.h" />
-    <ClInclude Include="Sprite.h" />
-    <ClInclude Include="Tasks.h" />
-    <ClInclude Include="TextBox.h" />
-    <ClInclude Include="TextRender.h" />
-    <ClInclude Include="Texture2D.h" />
-    <ClInclude Include="TileMap.h" />
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="TinyXML2.h" />
-    <ClInclude Include="Transform.h" />
-    <ClInclude Include="UIMenu.h" />
-    <ClInclude Include="UIWidget.h" />
-    <ClInclude Include="Vector.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="IGT - Project.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
-    <None Include="Shaders\BasicShader.frag" />
-    <None Include="Shaders\BasicShader.vert" />
-    <None Include="Shaders\BlurShader.frag" />
-    <None Include="Shaders\GUIShader.frag" />
-    <None Include="Shaders\GUIShader.vert" />
-    <None Include="Shaders\NoPostProcess.frag" />
-    <None Include="Shaders\PassThroughShader.vert" />
-    <None Include="Shaders\SplitScreen.frag" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="icon1.ico" />
-    <Image Include="Images\Logo.png" />
+    <ProjectReference Include="SDL\SDL.vcxproj">
+      <Project>{081D880B-7426-887C-FDA1-9E7C69AA937C}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
